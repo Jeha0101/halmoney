@@ -275,7 +275,7 @@ class Recruit_main extends StatelessWidget {
                             color:Colors.blueAccent,
                           ),),
                           SizedBox(width:10),
-                          Text('30')
+                          Text('300')
                         ],
                       ),
 
