@@ -1,6 +1,6 @@
 {
-    "name": "project_silver_app",
-    "short_name": "project_silver_app",
+    "name": "halmoney",
+    "short_name": "halmoney",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
