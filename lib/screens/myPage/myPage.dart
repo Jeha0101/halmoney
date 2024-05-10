@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:halmoney/screens/home/home.dart';
@@ -116,7 +115,7 @@ class MyPageScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  
+
                   //지원현황
                   GestureDetector(
                     onTap: (){
@@ -155,7 +154,7 @@ class MyPageScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  
+
                   //찜 목록
                   GestureDetector(
                     onTap: (){
@@ -194,7 +193,7 @@ class MyPageScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  
+
                   //최근 본 공고
                   GestureDetector(
                     onTap: (){
@@ -232,7 +231,7 @@ class MyPageScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  
+
                   //내가 쓴 글
                   GestureDetector(
                     onTap: (){
@@ -271,7 +270,7 @@ class MyPageScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  
+
                   //내가 작성한 댓글
                   GestureDetector(
                     onTap: (){
