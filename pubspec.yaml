@@ -64,6 +64,7 @@ flutter:
   assets:
      - assets/images/img_logo.jpg
      - assets/images/img_kakao.png
+     - assets/images/
      - assets/font/
      - assets/
 
