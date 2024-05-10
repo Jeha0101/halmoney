@@ -399,16 +399,6 @@ class AI_mainpage extends StatelessWidget {
                     child: Column(
                       children:[
                         SizedBox(height: 10,),
-                        ElevatedButton(
-                            onPressed: (){
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => Recruit_main(),
-                                ),
-                              );
-                            },
-                            child:AI_recommendation() ),
                         AI_recommendation(),
                         SizedBox(height: 10,),
                         AI_recommendation(),
