@@ -8,6 +8,7 @@ class AI_mainpage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Logo and Boxes',
+      debugShowCheckedModeBanner:  false,
       home: Scaffold(
         appBar: AppBar(
             title: Text('Logo and Boxes'),
