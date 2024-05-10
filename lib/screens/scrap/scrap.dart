@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:harmoney_3/models/jopOpening.dart';
+import 'package:halmoney/models/jopOpening.dart';
 
 class MyScrapScreen extends StatelessWidget{
   const MyScrapScreen({super.key,});

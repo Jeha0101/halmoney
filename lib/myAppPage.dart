@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:harmoney_3/screens/home/home.dart';
-import 'package:harmoney_3/screens/myPage/myPage.dart';
+import 'package:halmoney/screens/home/home.dart';
+import 'package:halmoney/screens/myPage/myPage.dart';
 
 class MyAppPage extends StatefulWidget{
   const MyAppPage({super.key});

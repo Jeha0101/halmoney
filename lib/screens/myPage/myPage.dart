@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:harmoney_3/screens/home/home.dart';
-import 'package:harmoney_3/screens/scrap/scrap.dart';
+import 'package:halmoney/screens/home/home.dart';
+import 'package:halmoney/screens/scrap/scrap.dart';
 
 class MyPageScreen extends StatelessWidget {
   const MyPageScreen({super.key,});
