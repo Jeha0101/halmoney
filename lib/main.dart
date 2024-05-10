@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:halmoney/pages/signup_pg_one.dart';
 import 'package:halmoney/theme.dart';
+import 'package:halmoney/myAppPage.dart';
 
 
 void main() {
@@ -15,8 +16,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: theme(context),
-      home: const SignupPgOne(),
+      debugShowCheckedModeBanner:  false,
+      home: MyAppPage(),
+      // home: const SignupPgOne(),
       // initialRoute: "/login",
       // routes: {
       //   "/login" : (context) => LoginPage(),
