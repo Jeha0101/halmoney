@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:halmoney/pages/extra_resume_page.dart';
 import 'package:halmoney/pages/signup_pg_one.dart';
 import 'package:halmoney/theme.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:halmoney/myAppPage.dart';
 
 
@@ -16,6 +18,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      theme: theme(context),
+      //datepicker 날짜 한국어 변환
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        //Locale('en', ''), //English, no country code
+        Locale('ko', ''), //Korean, no country code
+      ],
       debugShowCheckedModeBanner:  false,
       home: MyAppPage(),
       // home: const SignupPgOne(),
