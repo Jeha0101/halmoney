@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:halmoney/pages/extra_resume_page.dart';
 import 'package:halmoney/pages/signup_pg_one.dart';
 import 'package:halmoney/theme.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -18,7 +19,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: theme(context),
-      home: const ExtraResumePage(),
       //datepicker 날짜 한국어 변환
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
