@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:halmoney/pages/agreement_page.dart';
+import 'package:halmoney/pages/extra_resume_page.dart';
+import 'package:halmoney/pages/login_page.dart';
+import 'package:halmoney/pages/select_skill_page.dart';
+import 'package:halmoney/pages/select_stren_page.dart';
+import 'package:halmoney/pages/signup_page_two.dart';
 import 'package:halmoney/pages/signup_pg_one.dart';
 import 'package:halmoney/theme.dart';
-
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,27 +22,16 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: theme(context),
-      home: const SignupPgOne(),
-      // initialRoute: "/login",
-      // routes: {
-      //   "/login" : (context) => LoginPage(),
-      //   "/signup" : (context) => SignupPage()
-      // },
-      /*home: Scaffold(
-        appBar: AppBar(
-          title: Text('할MONEY'),
-
-        ),
-        body: Center(
-          child: Text(
-            '할MONEY',
-            style: TextStyle(
-              fontSize: 50,
-              color: Colors.indigo,
-            ),
-          )
-        ),
-      ),*/
+      home: const ExtraResumePage(),
+      //datepicker 날짜 한국어 변환
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        //Locale('en', ''), //English, no country code
+        Locale('ko', ''), //Korean, no country code
+      ],
     );
   }
 }
