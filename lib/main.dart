@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:halmoney/pages/agreement_page.dart';
-import 'package:halmoney/pages/extra_resume_page.dart';
-import 'package:halmoney/pages/login_page.dart';
-import 'package:halmoney/pages/select_skill_page.dart';
-import 'package:halmoney/pages/select_stren_page.dart';
-import 'package:halmoney/pages/signup_page_two.dart';
 import 'package:halmoney/pages/signup_pg_one.dart';
 import 'package:halmoney/theme.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:halmoney/myAppPage.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -32,6 +28,29 @@ class MyApp extends StatelessWidget {
         //Locale('en', ''), //English, no country code
         Locale('ko', ''), //Korean, no country code
       ],
+      debugShowCheckedModeBanner:  false,
+      home: MyAppPage(),
+      // home: const SignupPgOne(),
+      // initialRoute: "/login",
+      // routes: {
+      //   "/login" : (context) => LoginPage(),
+      //   "/signup" : (context) => SignupPage()
+      // },
+      /*home: Scaffold(
+        appBar: AppBar(
+          title: Text('할MONEY'),
+
+        ),
+        body: Center(
+          child: Text(
+            '할MONEY',
+            style: TextStyle(
+              fontSize: 50,
+              color: Colors.indigo,
+            ),
+          )
+        ),
+      ),*/
     );
   }
 }
