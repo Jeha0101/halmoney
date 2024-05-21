@@ -1,7 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:halmoney/screens/map/mapPage.dart';
+//import 'package:halmoney/screens/map/mapPage.dart';
 import 'package:halmoney/screens/myPage/myPage.dart';
 import 'package:halmoney/AI_pages/AI_main_page.dart';
 import 'package:halmoney/screens/myPage/myPage.dart';
@@ -131,10 +131,10 @@ class MyHomePage extends StatelessWidget{
                       // 위젯 내부
                       GestureDetector(
                         onTap: (){
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => MapPage()),
-                          );
+                          //Navigator.push(
+                            //context,
+                           // MaterialPageRoute(builder: (context) => MapPage()),
+                         // );
                         },
                         child: Container(
                           padding: const EdgeInsets.all(20.0),
