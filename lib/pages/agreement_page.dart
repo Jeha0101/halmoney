@@ -46,7 +46,7 @@ class _TermsOfServiceAgreementState extends State<AgreementPage>{
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Image(
-              image: AssetImage('assets/images/img_logo.jpg'),
+              image: AssetImage('assets/images/img_logo.png'),
               width: 100,
               height: 120,
             ),
