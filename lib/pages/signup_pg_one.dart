@@ -1,75 +1,312 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+
+
 class SignupPgOne extends StatelessWidget {
-  const SignupPgOne ({super.key});
+  const SignupPgOne({super.key});
+
+  //const SignupPgOne({super.key});
+
+  void _onPickerChanged(DateTime date){
+    final textDate = date.toString().split(' ').first;
+    print(textDate);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body : Padding(
+      body: Padding(
           padding: const EdgeInsets.only(left:30.0, right:30.0, top:80.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              //타이틀
               const Text(
-                '본인의 정보를 입력해주세요.',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontFamily: 'NanumGothic',
-                  fontWeight: FontWeight.w600)),
+                  '본인의 정보를 입력해주세요.',
+                  style: TextStyle(
+                      fontSize: 23.0,
+                      fontFamily: 'NanumGothic',
+                      fontWeight: FontWeight.w600)),
+
+              const SizedBox(height:30),
+
+              const Text(
+                  '성별',
+                  style: TextStyle(
+                      fontSize: 18.0,
+                      color: Colors.black87,
+                      fontFamily: 'NanumGothic',
+                      fontWeight: FontWeight.w600)),
 
               const SizedBox(height:20),
 
-              //성별
-              const Text(
-                '성별',
-                style: TextStyle(
-                  fontSize: 18.0,
-                  color: Colors.black54,
-                  fontFamily: 'NanumGothic',
-                  fontWeight: FontWeight.w500)),
+              Row(
+                  children: [
+                    Expanded(
+                        child: MyButtonList(
+                          buttons: [
+                            ButtonData(text: '여성'),
+                            ButtonData(text: '남성'),
+                          ],
+                        )
+                    )
+                  ]
+              ),
 
-              ElevatedButton(
-                onPressed: (){},
-                style: ButtonStyle(
-                  /*
-                            * MaterialState
-                            * hovered: 호버링 상태 (마우스 커서를 올려둠)
-                            * focused: 포커스 되었을때 (텍스트필드)
-                            * pressed: 눌렀을 때
-                            * dragged: 드래그 했을 때
-                            * selected: 선택되었을 때(라이도, 체크박스)
-                            * disabled : 비활성화 되었을 때
-                            * scrollUnder: 다른 컴포넌트 밑으로 스크롤링 되었을 때
-                            * error : 에러 상태
-                  */
-                  //버튼 색
-                  backgroundColor: MaterialStateProperty.resolveWith(
-                        (Set<MaterialState> states){
-                      if(states.contains(MaterialState.selected)){
-                        return const Color.fromARGB(250, 51, 51, 255);
-                      }
-                      return Colors.grey;
-                    },
+              const SizedBox(height:35),
+
+                //생년월일
+              const Text(
+                  '생년월일',
+                  style: TextStyle(
+                      fontSize: 18.0,
+                      color: Colors.black87,
+                      fontFamily: 'NanumGothic',
+                      fontWeight: FontWeight.w600)),
+
+              const SizedBox(height:20),
+
+              SizedBox(
+                width: 400,
+                height: 100,
+                child: CupertinoDatePicker(
+                  onDateTimeChanged: _onPickerChanged,
+                  minimumYear: 1920,
+                  maximumYear: DateTime.now().year,
+                  initialDateTime: DateTime.now(),
+                  maximumDate: DateTime.now(),
+                  //dateOrder : DatePickerDateOrder.ymd,
+                  mode: CupertinoDatePickerMode.date,
+                  use24hFormat: true,
+                ),
+              ),
+
+              const SizedBox(height:35),
+
+                //주소
+              const Text(
+                  '주소',
+                  style: TextStyle(
+                      fontSize: 18.0,
+                      color: Colors.black87,
+                      fontFamily: 'NanumGothic',
+                      fontWeight: FontWeight.w600)),
+
+              const SizedBox(height:20),
+
+              const Expanded(child: DropdownButtonExample()),
+
+              const SizedBox(height:80),
+
+              Expanded(
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      //backgroundColor: _buttonActive ? const Color.fromARGB(250, 51, 51, 255) : Colors.grey,
+                      backgroundColor: const Color.fromARGB(250, 51, 51, 255),
+                      minimumSize: const Size(360,45),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      )
                   ),
-                  // //글자 색
-                  foregroundColor:MaterialStateProperty.resolveWith(
-                           (Set<MaterialState> states){
-                         if(states.contains(MaterialState.selected)){
-                           return Colors.white;
-                         }
-                         return null;
-                       },
+                  onPressed: () {},
+                  child: const Text('다음',style: TextStyle(color: Colors.white),),
                 ),
               ),
-                child: const Text(
-                    "남성"
-                ),
-              ),
+              const SizedBox(height:20),
             ],
           ),
         ),
+      );
+  }
+}
+
+
+//성별 버튼 색깔 변경 처리
+class MyButtonList extends StatefulWidget{
+  const MyButtonList({super.key, required this.buttons});
+
+  final List<ButtonData> buttons;
+
+  @override
+  State<MyButtonList> createState() => _MyButtonListState();
+}
+
+class _MyButtonListState extends State<MyButtonList> {
+  late List<bool> favoriateState;
+
+  @override
+  void initState() {
+    favoriateState = List.generate(
+        widget.buttons.length, (index) => widget.buttons[index].isFavorite);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        for (var i = 0; i < widget.buttons.length; i++)
+          MyWidget(
+            text: widget.buttons[i].text,
+            onPressed: () {
+              for (var j = 0; j < favoriateState.length; j++) {
+                favoriateState[j] = false;
+              }
+              setState(() {
+                favoriateState[i] = true;
+                if (widget.buttons[i].onPressed != null) {
+                  widget.buttons[i].onPressed!();
+                }
+              });
+            },
+            isFavourte: favoriateState[i],
+          ),
+      ],
+    );
+  }
+}
+
+class ButtonData {
+  final String text;
+  final Function()? onPressed;
+  final bool isFavorite;
+
+  ButtonData({required this.text, this.onPressed, this.isFavorite = false});
+}
+
+class MyWidget extends StatelessWidget {
+  const MyWidget(
+      {super.key,
+        required this.text,
+        required this.onPressed,
+        this.isFavourte = false});
+
+  final String text;
+  final Function()? onPressed;
+  final bool isFavourte;
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+        style: ElevatedButton.styleFrom(
+            backgroundColor: isFavourte ? const Color.fromARGB(250, 51, 51, 255) : Colors.grey,
+            minimumSize: const Size(160, 45),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12))
+        ),
+        onPressed: onPressed,
+        child: Text(text, style: const TextStyle(fontSize: 18)));
+  }
+}
+
+//주소 선택 dropdown
+
+class DropdownButtonExample extends StatefulWidget{
+  const DropdownButtonExample({super.key});
+
+  @override
+  State<DropdownButtonExample> createState() => _DropdownButtonExampleState();
+}
+
+class _DropdownButtonExampleState extends State<DropdownButtonExample>{
+  List<String> cities = ['-시/도-', '서울특별시', '경기도'];
+  List<List<String>> gugun = [
+    ['-시/군/구-'],
+    ['-시/군/구-', '강남구','강동구','강북구','강서구','관악구','광진구','구로구','금천구','노원구',
+      '도봉구','동대문구','동작구','마포구','서대문구','서초구','성동구','성북구','송파구','양천구','영등포구',
+      '용산구','은평구','종로구','중구','중랑구'],
+    ['-시/군/구-', '가평구','고양시','과천시','광명시', '광주시','구리시','군포시','김포시',
+      '남양주시','동두천시','부천시','성남시','수원시', '시흥시','안산시','안성시','안성시',
+    '안양시','양주시','여주시','오산시','용인시','의왕시','의정부시','이천시','파주시','평택시',
+    '포천시','하남시','화성시']
+  ];
+  // 동읍면까지 한다면...
+  // List<List<List<String>>> dongeupmeon = [
+  //   [['-동/읍/면-']],
+  //   [
+  //     ['-동/읍/면-'],
+  //     [['-동/읍/면-'],'']
+  //   ]
+  // ];
+  //final _cities = ['서울', '경기'];
+  //final _seoulgu = ['강남구','강동구','강북구','강서구','관악구','광진구','구로구','금천구','노원구',
+  //'도봉구','동대문구','동작구','마포구','서대문구','서초구','성동구','성북구','송파구','양천구','영등포구',
+  //'용산구','은평구','종로구','중구','중랑구'];
+  //String? _selectedCity;
+
+  String selectedSido = '-시/도-';
+  String selectedGugun = '-시/군/구-';
+  String selectedDong = '';
+
+  //void initState(){
+  //  super.initState();
+  //  setState(() {
+  //    _selectedCity = _cities[0];
+  //  });
+  //}
+
+  @override
+  Widget build(BuildContext context){
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child:Row(
+        children: [
+          Container(
+            width: 180,
+            height: 90,
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: DropdownButton<String>(
+              //itemHeight: null,
+              itemHeight: 80,
+              isExpanded: true,
+              value: selectedSido.isNotEmpty? selectedSido : null,
+              onChanged: (value){
+                setState(() {
+                  selectedSido = value!;
+                  selectedGugun=gugun[0][0];
+                });
+              },
+              items: cities.map((String value){
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+            ),
+          ),
+
+            //시구군
+          Container(
+            width: 180,
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            height: 90,
+            child: DropdownButton<String>(
+              //itemHeight: null,
+              itemHeight: 80,
+              isExpanded: true,
+              value: selectedGugun.isNotEmpty? selectedGugun : null,
+              onChanged: (value){
+                setState(() {
+                  selectedGugun = value!;
+                });
+              },
+              items: selectedSido.isEmpty? [] : gugun[cities.indexOf(selectedSido)].map((String g){
+                return DropdownMenuItem<String>(
+                  value: g,
+                  child: Text(g),
+                );
+              }).toList(),
+            ),
+          ),
+
+            //SizedBox(height:20),
+            // Text(
+            //   '당신이 선택한 주소는: ',
+            //   style: TextStyle(fontWeight: FontWeight.bold),
+            // ),
+            // Text('$selectedSido $selectedGugun')
+          ],
+      )
     );
   }
 }
