@@ -1,7 +1,11 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:harmoney_3/screens/myPage/myPage.dart';
+import 'package:halmoney/screens/map/mapPage.dart';
+import 'package:halmoney/screens/myPage/myPage.dart';
+import 'package:halmoney/AI_pages/AI_main_page.dart';
+import 'package:halmoney/screens/myPage/myPage.dart';
+import 'package:halmoney/screens/map/mapPage.dart';
 
 class MyHomePage extends StatelessWidget{
   const MyHomePage({super.key});
@@ -63,40 +67,48 @@ class MyHomePage extends StatelessWidget{
                       ),
                       SizedBox(height: 20,),
                       // 위젯 내부
-                      Container(
-                        padding: const EdgeInsets.all(20.0),
-                        height: 100,
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(20),
-                          ),
-                          boxShadow: [
-                            BoxShadow(color : Colors.grey,
-                              spreadRadius:2.5,
-                              blurRadius: 10.0,
-                              offset: Offset(2,2),
-                              blurStyle: BlurStyle.inner,
+                      GestureDetector(
+                        onTap: (){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => AI_mainpage()),
+                          );
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(20.0),
+                          height: 100,
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(20),
                             ),
-                          ],
-                        ),
-                        child: const Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'AI추천 공고 보기',
-                              style: TextStyle(
-                                fontSize: 20,
+                            boxShadow: [
+                              BoxShadow(color : Colors.grey,
+                                spreadRadius:2.5,
+                                blurRadius: 10.0,
+                                offset: Offset(2,2),
+                                blurStyle: BlurStyle.inner,
                               ),
-                            ),
-                            const Image(
-                              image: AssetImage('assets/images/ai.png'),
-                              width: 70,
-                              height: 70,
-                              fit: BoxFit.contain,
-                            ),
-                          ],
+                            ],
+                          ),
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'AI추천 공고 보기',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                ),
+                              ),
+                              const Image(
+                                image: AssetImage('assets/images/ai.png'),
+                                width: 70,
+                                height: 70,
+                                fit: BoxFit.contain,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],
@@ -118,42 +130,51 @@ class MyHomePage extends StatelessWidget{
                       ),
                       SizedBox(height: 20,),
                       // 위젯 내부
-                      Container(
-                        padding: const EdgeInsets.all(20.0),
-                        height: 100,
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(20),
-                          ),
-                          boxShadow: [
-                            BoxShadow(color : Colors.grey,
-                              spreadRadius:2.5,
-                              blurRadius: 10.0,
-                              offset: Offset(2,2),
-                              blurStyle: BlurStyle.inner,
+                      GestureDetector(
+                        onTap: (){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => MapScreen()),
+                          );
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(20.0),
+                          height: 100,
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(20),
                             ),
-                          ],
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              '지역 검색',
-                              style: TextStyle(
-                                fontSize: 20,
+                            boxShadow: [
+                              BoxShadow(color : Colors.grey,
+                                spreadRadius:2.5,
+                                blurRadius: 10.0,
+                                offset: Offset(2,2),
+                                blurStyle: BlurStyle.inner,
                               ),
-                            ),
-                            const Image(
-                              image: AssetImage('assets/images/location.png'),
-                              width: 60,
-                              height: 60,
-                              fit: BoxFit.contain,
-                            ),
-                          ],
+                            ],
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                '지역 검색',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                ),
+                              ),
+                              const Image(
+                                image: AssetImage('assets/images/location.png'),
+                                width: 60,
+                                height: 60,
+                                fit: BoxFit.contain,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
+                      SizedBox(height: 20,),
                     ],
                   )
               ),

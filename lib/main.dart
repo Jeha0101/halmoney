@@ -20,6 +20,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      locale: Locale('ko', 'KR'),
+
       title: 'Flutter Demo',
       theme: theme(context),
       //datepicker 날짜 한국어 변환

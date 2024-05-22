@@ -3,7 +3,6 @@
 
 
         android:label="halmoney"
->>>>>>> 07d05d7ddac5aeeae3f6ce33c3e88413261b1bc7
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
