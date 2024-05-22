@@ -5,6 +5,7 @@ import 'package:halmoney/screens/map/mapPage.dart';
 import 'package:halmoney/screens/myPage/myPage.dart';
 import 'package:halmoney/AI_pages/AI_main_page.dart';
 import 'package:halmoney/screens/myPage/myPage.dart';
+import 'package:halmoney/screens/map/mapPage.dart';
 
 class MyHomePage extends StatelessWidget{
   const MyHomePage({super.key});
@@ -133,7 +134,7 @@ class MyHomePage extends StatelessWidget{
                         onTap: (){
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => MapPage()),
+                            MaterialPageRoute(builder: (context) => MapScreen()),
                           );
                         },
                         child: Container(
