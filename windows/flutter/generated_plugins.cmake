@@ -4,8 +4,8 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   cloud_firestore
-  desktop_drop
   firebase_core
+  firebase_storage
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST

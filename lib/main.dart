@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:halmoney/pages/extra_resume_page.dart';
-import 'package:halmoney/pages/signup_pg_one.dart';
+import 'package:halmoney/pages/signup_page_one.dart';
 import 'package:halmoney/theme.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:halmoney/myAppPage.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -29,7 +32,7 @@ class MyApp extends StatelessWidget {
         Locale('ko', ''), //Korean, no country code
       ],
       debugShowCheckedModeBanner:  false,
-      home: MyAppPage(),
+      home: const SignupPageOne(),
       // home: const SignupPgOne(),
       // initialRoute: "/login",
       // routes: {

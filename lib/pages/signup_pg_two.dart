@@ -1,16 +1,70 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:halmoney/pages/signup_pg_two.dart';
+
+final TextEditingController genderController = TextEditingController();
+final TextEditingController dobController = TextEditingController();
+final TextEditingController addressController = TextEditingController();
 
 
-
-class SignupPgOne extends StatelessWidget {
-  const SignupPgOne({super.key});
+class SignupPgTwo extends StatelessWidget {
+  final String id; //전달받은 id를 저장할 변수
+  const SignupPgTwo({Key? key, required this.id}) : super(key: key);
 
   //const SignupPgOne({super.key});
 
   void _onPickerChanged(DateTime date){
     final textDate = date.toString().split(' ').first;
+    dobController.text = textDate;
     print(textDate);
+  }
+
+  void _saveData(BuildContext context) async {
+    final gender = genderController.text;
+    final dob = dobController.text;
+    final address = addressController.text;
+
+    // Debugging: Print the collected data
+    print("Gender: $gender, DOB: $dob, Address: $address");
+
+    try {
+      final QuerySnapshot result = await FirebaseFirestore.instance
+          .collection('user')
+          .where('id', isEqualTo: id)
+          .get();
+
+      final List<DocumentSnapshot> documents = result.docs;
+
+      if (documents.isNotEmpty) {
+        final String docId = documents.first.id;
+
+        await FirebaseFirestore.instance.collection('user').doc(docId).update({
+          'gender': gender,
+          'dob': dob,
+          'address': address,
+        });
+
+        print("User updated successfully");
+
+        // Show success message
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("User updated successfully")),
+        );
+      } else {
+        print("User not found");
+        // Show error message
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("User not found")),
+        );
+      }
+    } catch (error) {
+      print("Failed to update user: $error");
+      // Show error message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Failed to update user: $error")),
+      );
+    }
   }
 
   @override
@@ -45,8 +99,18 @@ class SignupPgOne extends StatelessWidget {
                     Expanded(
                         child: MyButtonList(
                           buttons: [
-                            ButtonData(text: '여성'),
-                            ButtonData(text: '남성'),
+                            ButtonData(
+                              text: '여성',
+                              onPressed: (){
+                                genderController.text='여성';
+                              }
+                            ),
+                            ButtonData(
+                              text: '남성',
+                              onPressed: (){
+                                genderController.text='남성';
+                              }
+                            ),
                           ],
                         )
                     )
@@ -94,7 +158,7 @@ class SignupPgOne extends StatelessWidget {
 
               const SizedBox(height:20),
 
-              const Expanded(child: DropdownButtonExample()),
+              Expanded(child : DropdownButtonExample(addressController: addressController)),
 
               const SizedBox(height:80),
 
@@ -108,8 +172,10 @@ class SignupPgOne extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12),
                       )
                   ),
-                  onPressed: () {},
-                  child: const Text('다음',style: TextStyle(color: Colors.white),),
+                  onPressed: (){
+                    _saveData(context);
+                  },
+                  child: const Text('가입완료',style: TextStyle(color: Colors.white),),
                 ),
               ),
               const SizedBox(height:20),
@@ -202,7 +268,9 @@ class MyWidget extends StatelessWidget {
 //주소 선택 dropdown
 
 class DropdownButtonExample extends StatefulWidget{
-  const DropdownButtonExample({super.key});
+  const DropdownButtonExample({super.key, required this.addressController});
+
+  final TextEditingController addressController;
 
   @override
   State<DropdownButtonExample> createState() => _DropdownButtonExampleState();
@@ -220,30 +288,11 @@ class _DropdownButtonExampleState extends State<DropdownButtonExample>{
     '안양시','양주시','여주시','오산시','용인시','의왕시','의정부시','이천시','파주시','평택시',
     '포천시','하남시','화성시']
   ];
-  // 동읍면까지 한다면...
-  // List<List<List<String>>> dongeupmeon = [
-  //   [['-동/읍/면-']],
-  //   [
-  //     ['-동/읍/면-'],
-  //     [['-동/읍/면-'],'']
-  //   ]
-  // ];
-  //final _cities = ['서울', '경기'];
-  //final _seoulgu = ['강남구','강동구','강북구','강서구','관악구','광진구','구로구','금천구','노원구',
-  //'도봉구','동대문구','동작구','마포구','서대문구','서초구','성동구','성북구','송파구','양천구','영등포구',
-  //'용산구','은평구','종로구','중구','중랑구'];
-  //String? _selectedCity;
 
   String selectedSido = '-시/도-';
   String selectedGugun = '-시/군/구-';
   String selectedDong = '';
 
-  //void initState(){
-  //  super.initState();
-  //  setState(() {
-  //    _selectedCity = _cities[0];
-  //  });
-  //}
 
   @override
   Widget build(BuildContext context){
@@ -264,6 +313,7 @@ class _DropdownButtonExampleState extends State<DropdownButtonExample>{
                 setState(() {
                   selectedSido = value!;
                   selectedGugun=gugun[0][0];
+                  addressController.text = '$selectedSido, $selectedGugun';
                 });
               },
               items: cities.map((String value){
@@ -288,6 +338,7 @@ class _DropdownButtonExampleState extends State<DropdownButtonExample>{
               onChanged: (value){
                 setState(() {
                   selectedGugun = value!;
+                  addressController.text = '$selectedSido, $selectedGugun';
                 });
               },
               items: selectedSido.isEmpty? [] : gugun[cities.indexOf(selectedSido)].map((String g){

@@ -34,9 +34,9 @@ dependencies:
     sdk: flutter
 
   file_picker: ^4.5.0
-  desktop_drop: ^0.3.2
+  #desktop_drop: ^0.3.2
   http: 1.0.0
-  cloud_firestore: ^4.17.3
+  firebase_core: ^2.31.1
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -44,6 +44,8 @@ dependencies:
   cupertino_icons: ^1.0.6
   google_fonts: 6.2.1
   carousel_slider: ^4.2.1
+  firebase_storage: ^11.7.6
+  cloud_firestore: ^4.17.4
 
 dev_dependencies:
   flutter_test:

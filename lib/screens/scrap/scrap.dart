@@ -29,7 +29,7 @@ class MyScrapScreen extends StatelessWidget{
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              icon: Icon(Icons.arrow_back_ios_rounded,),
+              icon: const Icon(Icons.arrow_back_ios_rounded,),
               color: Colors.grey,
             ),
           ),
@@ -64,15 +64,15 @@ class MyScrapScreen extends StatelessWidget{
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "${jopOpenings[index].id}",
+                              jopOpenings[index].id,
                               style: const TextStyle(
                                 fontSize: 18,
                                 color: Colors.black54,
                               ),
                             ),
-                            SizedBox(height: 10,),
+                            const SizedBox(height: 10,),
                             Text(
-                              "${jopOpenings[index].title}",
+                              jopOpenings[index].title,
                               style: const TextStyle(
                                 fontSize: 20,
                                 color: Colors.black,
@@ -84,7 +84,7 @@ class MyScrapScreen extends StatelessWidget{
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.favorite_border_rounded,
                             size: 40,
                             color: Colors.red,
@@ -92,7 +92,7 @@ class MyScrapScreen extends StatelessWidget{
                         ),
                       ],
                     ),
-                    SizedBox(height: 10,),
+                    const SizedBox(height: 10,),
 
                     // address, wage, ongoing
                     Row(
@@ -103,14 +103,14 @@ class MyScrapScreen extends StatelessWidget{
                           children: [
                             Row(
                               children: [
-                                Text(
+                                const Text(
                                   "주소",
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 15,
                                     color: Colors.black54,
                                   ),
                                 ),
-                                SizedBox(width: 15,),
+                                const SizedBox(width: 15,),
                                 Text(
                                   "${jopOpenings[index].address_first} ${jopOpenings[index].address_second} ${jopOpenings[index].address_third} ${jopOpenings[index].address_fourth}",
                                   style: const TextStyle(
@@ -120,17 +120,17 @@ class MyScrapScreen extends StatelessWidget{
                                 ),
                               ],
                             ),
-                            SizedBox(height: 10,),
+                            const SizedBox(height: 10,),
                             Row(
                               children: [
-                                Text(
+                                const Text(
                                   "시급",
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 15,
                                     color: Colors.black54,
                                   ),
                                 ),
-                                SizedBox(width: 15,),
+                                const SizedBox(width: 15,),
                                 Text(
                                   "${jopOpenings[index].wage}원",
                                   style: const TextStyle(
@@ -169,15 +169,15 @@ class MyScrapScreen extends StatelessWidget{
                         ),
                       ],
                     ),
-                    SizedBox(height: 10,),
+                    const SizedBox(height: 10,),
 
                     // 모집공고 상세보기
-                    Row(
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Text(
                           "모집공고 상세보기",
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 20,
                             color: Colors.black,
                           ),
