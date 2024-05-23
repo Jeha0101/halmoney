@@ -47,6 +47,11 @@ class AppAddressRepository {
         List<dynamic> _result = _body["result"];
         List<AddressDepthServerModel> _model =
             _result.map((e) => AddressDepthServerModel.fromJson(e)).toList();
+
+        // "서울특별시"와 "경기도"만 필터링
+        if (code == null){
+          _model = _model.where((item) => item.name == "서울특별시" || item.name == "경기도").toList();
+        }
         return _model;
       } else {
         return [];
