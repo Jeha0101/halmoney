@@ -40,7 +40,7 @@ class MyAppState extends State<MyAppPage>{
 
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.home), label : '홈',),
-          BottomNavigationBarItem(icon: Icon(Icons.person_search_outlined), label: '구인하기',),
+          BottomNavigationBarItem(icon: Icon(Icons.person_search_outlined), label: '채용공고',),
           BottomNavigationBarItem(icon: Icon(Icons.chat_outlined), label: '커뮤니티',),
           BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: '마이페이지',),
         ],
