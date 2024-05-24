@@ -24,14 +24,7 @@ class Communitypage extends StatelessWidget{
           appBar: AppBar(
             title : const Text('커뮤니티'),
             centerTitle: true,
-            backgroundColor: Color.fromARGB(250, 51, 51, 255),
-            leading: IconButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              icon: Icon(Icons.arrow_back_ios_rounded,),
-              color: Colors.grey,
-            ),
+            backgroundColor: Colors.white,
           ),
           body: Stack(
             children: [
