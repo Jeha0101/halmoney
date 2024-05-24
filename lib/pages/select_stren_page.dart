@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:halmoney/pages/extra_resume_page.dart';
 
 class SelectStrenPage extends StatelessWidget {
   const SelectStrenPage({super.key});
@@ -67,7 +68,12 @@ class SelectStrenPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   )
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const ExtraResumePage())
+                );
+              },
               child: const Text('다음 페이지로 이동',style: TextStyle(color: Colors.white),),
             ),
 

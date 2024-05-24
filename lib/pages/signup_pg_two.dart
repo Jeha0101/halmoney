@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:halmoney/pages/signup_pg_two.dart';
+import 'package:halmoney/pages/select_interest.dart';
 
 final TextEditingController genderController = TextEditingController();
 final TextEditingController dobController = TextEditingController();
@@ -10,7 +10,7 @@ final TextEditingController addressController = TextEditingController();
 
 class SignupPgTwo extends StatelessWidget {
   final String id; //전달받은 id를 저장할 변수
-  const SignupPgTwo({Key? key, required this.id}) : super(key: key);
+  const SignupPgTwo({super.key, required this.id});
 
   //const SignupPgOne({super.key});
 
@@ -174,6 +174,10 @@ class SignupPgTwo extends StatelessWidget {
                   ),
                   onPressed: (){
                     _saveData(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SelectInterest(id: id)),
+                    );
                   },
                   child: const Text('가입완료',style: TextStyle(color: Colors.white),),
                 ),

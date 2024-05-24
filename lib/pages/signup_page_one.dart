@@ -1,7 +1,11 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:halmoney/pages/signup_page_one.dart';
 import 'package:halmoney/pages/signup_pg_two.dart';
+import 'dart:convert';
+import 'package:crypto/crypto.dart';
+
 
 class SignupPageOne extends StatefulWidget {
   const SignupPageOne({super.key});
@@ -53,6 +57,10 @@ class _SignupPageOneState extends State<SignupPageOne>{
     print('Password: $password');
     print('Phone: $phone');
 
+    // 비밀번호 해쉬화
+    final bytes = utf8.encode(password);
+    final hashedPassword = sha256.convert(bytes).toString();
+
     try {
       final QuerySnapshot result = await FirebaseFirestore.instance
           .collection('user')
@@ -69,7 +77,7 @@ class _SignupPageOneState extends State<SignupPageOne>{
         FirebaseFirestore.instance.collection('user').add({
           'name': name,
           'id': id,
-          'password': password,
+          'password': hashedPassword,
           'phone': phone,
         });
 
@@ -115,8 +123,8 @@ class _SignupPageOneState extends State<SignupPageOne>{
                   height: 45,
                   child : TextField(
                     controller: _nameController,
-                    style: TextStyle(fontSize: 15.0, height: 2.0),
-                    decoration: InputDecoration(
+                    style: const TextStyle(fontSize: 15.0, height: 2.0),
+                    decoration: const InputDecoration(
                         hintText: '이름을 입력하세요'
                     ),
                   ),
@@ -136,8 +144,8 @@ class _SignupPageOneState extends State<SignupPageOne>{
                   height: 45,
                   child : TextField(
                     controller: _idController,
-                    style: TextStyle(fontSize: 15.0, height: 2.0),
-                    decoration: InputDecoration(
+                    style: const TextStyle(fontSize: 15.0, height: 2.0),
+                    decoration: const InputDecoration(
                         hintText: '아이디를 입력하세요'
                     ),
                   ),
@@ -158,8 +166,8 @@ class _SignupPageOneState extends State<SignupPageOne>{
                   child : TextField(
                     controller: _passwordController,
                     obscureText: true,
-                    style: TextStyle(fontSize: 15.0, height: 2.0),
-                    decoration: InputDecoration(
+                    style: const TextStyle(fontSize: 15.0, height: 2.0),
+                    decoration: const InputDecoration(
                         hintText: '비밀번호를 입력하세요'
                     ),
                   ),
@@ -180,8 +188,8 @@ class _SignupPageOneState extends State<SignupPageOne>{
                   child : TextField(
                     controller: _confirmPasswordController,
                     obscureText: true,
-                    style: TextStyle(fontSize: 15.0, height: 2.0),
-                    decoration: InputDecoration(
+                    style: const TextStyle(fontSize: 15.0, height: 2.0),
+                    decoration: const InputDecoration(
                         hintText: '비밀번호를 한 번 더 입력하세요'
                     ),
                   ),
@@ -202,8 +210,8 @@ class _SignupPageOneState extends State<SignupPageOne>{
                   height: 45,
                   child : TextField(
                     controller: _phoneController,
-                    style: TextStyle(fontSize: 15.0, height: 2.0),
-                    decoration: InputDecoration(
+                    style: const TextStyle(fontSize: 15.0, height: 2.0),
+                    decoration: const InputDecoration(
                         hintText: '전화번호를 입력하세요'
                     ),
                   ),

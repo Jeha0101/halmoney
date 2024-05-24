@@ -34,10 +34,12 @@ dependencies:
     sdk: flutter
 
   file_picker: ^8.0.3
-  #desktop_drop: ^0.3.2
+  desktop_drop: ^0.4.4
   http: ^1.2.1
   equatable: ^2.0.0
   firebase_core: ^2.31.1
+  shared_preferences: ^2.2.3
+  crypto: ^3.0.3
 
 
   # The following adds the Cupertino Icons font to your application.
