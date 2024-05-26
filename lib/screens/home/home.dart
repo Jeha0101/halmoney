@@ -19,19 +19,34 @@ class MyHomePage extends StatelessWidget{
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        textTheme: GoogleFonts.notoSansKrTextTheme(
-          Theme.of(context).textTheme,
-        ),
+          fontFamily: 'NanumGothicBold',
       ),
       home : SafeArea(
-        top: true,
-        left: false,
-        bottom: true,
-        right: false,
         child: Scaffold(
           appBar: AppBar(
-            title : Text('할MONEY'),
             backgroundColor: Colors.white,
+            elevation: 1.0,
+            title: Row(
+              //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Image.asset(
+                  'assets/images/img_logo.png',
+                  fit: BoxFit.contain,
+                  height: 40,
+                ),
+                Container(
+                  padding: const EdgeInsets.all(10.0),
+                  child: const Text('할MONEY',
+                    style : TextStyle(
+                    fontFamily: 'NotoSansKR-Variable',
+                    //fontWeight: FontWeight.w600,
+                    fontSize: 23.0,
+                    color: Colors.black,
+                    )
+                  ),
+                )
+              ]
+            ),
           ),
           body: ListView(
             children: [
