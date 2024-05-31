@@ -21,9 +21,6 @@ class MyHomePage extends StatelessWidget{
       home : SafeArea(
         child: Scaffold(
           appBar: AppBar(
-            title : const Text('할MONEY'),
-            backgroundColor: Colors.white,
-            elevation: 1.0,
             title: Row(
               //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
