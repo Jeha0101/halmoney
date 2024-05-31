@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:halmoney/screens/home/home.dart';
 import 'package:halmoney/screens/myPage/myPage.dart';
 import 'package:halmoney/Community_pages/Community_main_page.dart';
@@ -15,10 +14,10 @@ class MyAppState extends State<MyAppPage>{
   int _selectedIndex = 0;
 
   final List<Widget> _navIndex = [
-    MyHomePage(),
-    MyPageScreen(),
-    Communitypage(),
-    MyPageScreen(),
+    const MyHomePage(),
+    const MyPageScreen(),
+    const Communitypage(),
+    const MyPageScreen(),
   ];
 
   void _onNavTapped(int index) {

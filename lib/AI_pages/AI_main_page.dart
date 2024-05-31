@@ -1,9 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'AI_recommendation_widget.dart';
-import '../Recruit_detail_pages/Recruit_main_page.dart';
 
 class AI_mainpage extends StatelessWidget {
+  const AI_mainpage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -27,6 +27,7 @@ class AI_mainpage extends StatelessWidget {
           children: <Widget>[
             Divider(),
             SizedBox(height:15),
+
             Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -41,7 +42,7 @@ class AI_mainpage extends StatelessWidget {
                           color: Colors.grey.withOpacity(0.5), // 그림자 색상
                           spreadRadius: 3, // 그림자 확장 반경
                           blurRadius: 5, // 그림자 흐림 반경
-                          offset: Offset(3, 5), // 그림자 위치 (수평, 수직)
+                          offset: const Offset(3, 5), // 그림자 위치 (수평, 수직)
                         ),
                       ],
                     ),
@@ -55,8 +56,8 @@ class AI_mainpage extends StatelessWidget {
                             Container(
                               color: Colors.white,
                               height: 30,
-                              padding: EdgeInsets.all(5), // 간격을 주기 위한 패딩
-                              child: Text(
+                              padding: const EdgeInsets.all(5), // 간격을 주기 위한 패딩
+                              child: const Text(
                                 '이런 조건을 원해요!', // 제목
                                 style: TextStyle(
                                   fontSize: 16,
@@ -74,7 +75,7 @@ class AI_mainpage extends StatelessWidget {
                           child:Container(
                             height: 46,
 
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               color: Colors.white,
                               border: Border(
                                 bottom: BorderSide(
@@ -93,7 +94,7 @@ class AI_mainpage extends StatelessWidget {
                                   style:ElevatedButton.styleFrom(
                                       minimumSize: const Size(55,30),
                                       backgroundColor: Colors.white,
-                                      side: BorderSide(
+                                      side: const BorderSide(
                                         color: Color.fromRGBO(208, 208, 208, 1.0),
                                         width:1,
                                       ),
@@ -101,9 +102,9 @@ class AI_mainpage extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(12),
                                       )
                                   ),
-                                  child: Text('송파구',style: TextStyle(fontSize: 15, color: Colors.black, fontWeight: FontWeight.bold),),
+                                  child: const Text('송파구',style: TextStyle(fontSize: 15, color: Colors.black, fontWeight: FontWeight.bold),),
                                 ),
-                                SizedBox(width:20,),
+                                const SizedBox(width:20,),
                                 ElevatedButton(
                                   onPressed: () {
                                     // 버튼을 눌렀을 때의 동작
@@ -111,7 +112,7 @@ class AI_mainpage extends StatelessWidget {
                                   style:ElevatedButton.styleFrom(
                                       minimumSize: const Size(55,30),
                                       backgroundColor: Colors.white,
-                                      side: BorderSide(
+                                      side: const BorderSide(
                                         color: Color.fromRGBO(208, 208, 208, 1.0),
                                         width:1,
                                       ),
@@ -119,9 +120,9 @@ class AI_mainpage extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(12),
                                       )
                                   ),
-                                  child: Text('송파구',style: TextStyle(fontSize: 15, color: Colors.black, fontWeight: FontWeight.bold),),
+                                  child: const Text('송파구',style: TextStyle(fontSize: 15, color: Colors.black, fontWeight: FontWeight.bold),),
                                 ),
-                                SizedBox(width:20,),
+                                const SizedBox(width:20,),
                                 ElevatedButton(
                                   onPressed: () {
                                     // 버튼을 눌렀을 때의 동작
@@ -129,7 +130,7 @@ class AI_mainpage extends StatelessWidget {
                                   style:ElevatedButton.styleFrom(
                                       minimumSize: const Size(55,30),
                                       backgroundColor: Colors.white,
-                                      side: BorderSide(
+                                      side: const BorderSide(
                                         color: Color.fromRGBO(208, 208, 208, 1.0),
                                         width:1,
                                       ),
@@ -137,9 +138,9 @@ class AI_mainpage extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(12),
                                       )
                                   ),
-                                  child: Text('송파구',style: TextStyle(fontSize: 15, color: Colors.black, fontWeight: FontWeight.bold),),
+                                  child: const Text('송파구',style: TextStyle(fontSize: 15, color: Colors.black, fontWeight: FontWeight.bold),),
                                 ),
-                                SizedBox(width:20,),
+                                const SizedBox(width:20,),
                                 ElevatedButton(
                                   onPressed: () {
                                     // 버튼을 눌렀을 때의 동작
@@ -147,7 +148,7 @@ class AI_mainpage extends StatelessWidget {
                                   style:ElevatedButton.styleFrom(
                                       minimumSize: const Size(55,30),
                                       backgroundColor: Colors.white,
-                                      side: BorderSide(
+                                      side: const BorderSide(
                                         color: Color.fromRGBO(208, 208, 208, 1.0),
                                         width:1,
                                       ),
@@ -155,9 +156,9 @@ class AI_mainpage extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(12),
                                       )
                                   ),
-                                  child: Text('송파구',style: TextStyle(fontSize: 15, color: Colors.black, fontWeight: FontWeight.bold),),
+                                  child: const Text('송파구',style: TextStyle(fontSize: 15, color: Colors.black, fontWeight: FontWeight.bold),),
                                 ),
-                                SizedBox(width:20,),
+                                const SizedBox(width:20,),
                               ],
                             ),
                           ),
@@ -168,7 +169,7 @@ class AI_mainpage extends StatelessWidget {
                           child:Container(
                             height: 46,
 
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               color: Colors.white,
                               border: Border(
                                 bottom: BorderSide(
@@ -187,7 +188,7 @@ class AI_mainpage extends StatelessWidget {
                                   style:ElevatedButton.styleFrom(
                                       minimumSize: const Size(40,25),
                                       backgroundColor: Colors.white,
-                                      side: BorderSide(
+                                      side: const BorderSide(
                                         color: Color.fromRGBO(208, 208, 208, 1.0),
                                         width:1,
                                       ),
@@ -195,9 +196,9 @@ class AI_mainpage extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(12),
                                       )
                                   ),
-                                  child: Text('관리직',style: TextStyle(fontSize: 13, color: Colors.black, fontWeight: FontWeight.bold),),
+                                  child: const Text('관리직',style: TextStyle(fontSize: 13, color: Colors.black, fontWeight: FontWeight.bold),),
                                 ),
-                                SizedBox(width:20,),
+                                const SizedBox(width:20,),
                                 ElevatedButton(
                                   onPressed: () {
                                     // 버튼을 눌렀을 때의 동작
@@ -205,7 +206,7 @@ class AI_mainpage extends StatelessWidget {
                                   style:ElevatedButton.styleFrom(
                                       minimumSize: const Size(40,25),
                                       backgroundColor: Colors.white,
-                                      side: BorderSide(
+                                      side: const BorderSide(
                                         color: Color.fromRGBO(208, 208, 208, 1.0),
                                         width:1,
                                       ),
@@ -213,9 +214,9 @@ class AI_mainpage extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(12),
                                       )
                                   ),
-                                  child: Text('건축/건설',style: TextStyle(fontSize: 13, color: Colors.black, fontWeight: FontWeight.bold),),
+                                  child: const Text('건축/건설',style: TextStyle(fontSize: 13, color: Colors.black, fontWeight: FontWeight.bold),),
                                 ),
-                                SizedBox(width:20,),
+                                const SizedBox(width:20,),
                                 ElevatedButton(
                                   onPressed: () {
                                     // 버튼을 눌렀을 때의 동작
@@ -223,7 +224,7 @@ class AI_mainpage extends StatelessWidget {
                                   style:ElevatedButton.styleFrom(
                                       minimumSize: const Size(40,25),
                                       backgroundColor: Colors.white,
-                                      side: BorderSide(
+                                      side: const BorderSide(
                                         color: Color.fromRGBO(208, 208, 208, 1.0),
                                         width:1,
                                       ),
@@ -231,9 +232,9 @@ class AI_mainpage extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(12),
                                       )
                                   ),
-                                  child: Text('보조교사',style: TextStyle(fontSize: 13, color: Colors.black, fontWeight: FontWeight.bold),),
+                                  child: const Text('보조교사',style: TextStyle(fontSize: 13, color: Colors.black, fontWeight: FontWeight.bold),),
                                 ),
-                                SizedBox(width:20,),
+                                const SizedBox(width:20,),
                                 ElevatedButton(
                                   onPressed: () {
                                     // 버튼을 눌렀을 때의 동작
@@ -241,7 +242,7 @@ class AI_mainpage extends StatelessWidget {
                                   style:ElevatedButton.styleFrom(
                                       minimumSize: const Size(40,25),
                                       backgroundColor: Colors.white,
-                                      side: BorderSide(
+                                      side: const BorderSide(
                                         color: Color.fromRGBO(208, 208, 208, 1.0),
                                         width:1,
                                       ),
@@ -249,9 +250,9 @@ class AI_mainpage extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(12),
                                       )
                                   ),
-                                  child: Text('사무직',style: TextStyle(fontSize: 13, color: Colors.black, fontWeight: FontWeight.bold),),
+                                  child: const Text('사무직',style: TextStyle(fontSize: 13, color: Colors.black, fontWeight: FontWeight.bold),),
                                 ),
-                                SizedBox(width:20,),
+                                const SizedBox(width:20,),
                               ],
                             ),
                           ),
@@ -263,7 +264,7 @@ class AI_mainpage extends StatelessWidget {
                           child:Container(
                             height: 46,
 
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               color: Colors.white,
                               border: Border(
                                 bottom: BorderSide(
@@ -282,7 +283,7 @@ class AI_mainpage extends StatelessWidget {
                                   style:ElevatedButton.styleFrom(
                                       minimumSize: const Size(40,25),
                                       backgroundColor: Colors.white,
-                                      side: BorderSide(
+                                      side: const BorderSide(
                                         color: Color.fromRGBO(208, 208, 208, 1.0),
                                         width:1,
                                       ),
@@ -290,9 +291,9 @@ class AI_mainpage extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(12),
                                       )
                                   ),
-                                  child: Text('월급',style: TextStyle(fontSize: 13, color: Colors.black, fontWeight: FontWeight.bold),),
+                                  child: const Text('월급',style: TextStyle(fontSize: 13, color: Colors.black, fontWeight: FontWeight.bold),),
                                 ),
-                                SizedBox(width:20,),
+                                const SizedBox(width:20,),
                                 ElevatedButton(
                                   onPressed: () {
                                     // 버튼을 눌렀을 때의 동작
@@ -300,7 +301,7 @@ class AI_mainpage extends StatelessWidget {
                                   style:ElevatedButton.styleFrom(
                                       minimumSize: const Size(40,25),
                                       backgroundColor: Colors.white,
-                                      side: BorderSide(
+                                      side: const BorderSide(
                                         color: Color.fromRGBO(208, 208, 208, 1.0),
                                         width:1,
                                       ),
@@ -308,9 +309,9 @@ class AI_mainpage extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(12),
                                       )
                                   ),
-                                  child: Text('주급',style: TextStyle(fontSize: 13, color: Colors.black, fontWeight: FontWeight.bold),),
+                                  child: const Text('주급',style: TextStyle(fontSize: 13, color: Colors.black, fontWeight: FontWeight.bold),),
                                 ),
-                                SizedBox(width:20,),
+                                const SizedBox(width:20,),
                                 ElevatedButton(
                                   onPressed: () {
                                     // 버튼을 눌렀을 때의 동작
@@ -318,7 +319,7 @@ class AI_mainpage extends StatelessWidget {
                                   style:ElevatedButton.styleFrom(
                                       minimumSize: const Size(40,25),
                                       backgroundColor: Colors.white,
-                                      side: BorderSide(
+                                      side: const BorderSide(
                                         color: Color.fromRGBO(208, 208, 208, 1.0),
                                         width:1,
                                       ),
@@ -326,9 +327,9 @@ class AI_mainpage extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(12),
                                       )
                                   ),
-                                  child: Text('시간제',style: TextStyle(fontSize: 13, color: Colors.black, fontWeight: FontWeight.bold),),
+                                  child: const Text('시간제',style: TextStyle(fontSize: 13, color: Colors.black, fontWeight: FontWeight.bold),),
                                 ),
-                                SizedBox(width:20,),
+                                const SizedBox(width:20,),
                                 ElevatedButton(
                                   onPressed: () {
                                     // 버튼을 눌렀을 때의 동작
@@ -336,7 +337,7 @@ class AI_mainpage extends StatelessWidget {
                                   style:ElevatedButton.styleFrom(
                                       minimumSize: const Size(40,25),
                                       backgroundColor: Colors.white,
-                                      side: BorderSide(
+                                      side: const BorderSide(
                                         color: Color.fromRGBO(208, 208, 208, 1.0),
                                         width:1,
                                       ),
@@ -344,9 +345,9 @@ class AI_mainpage extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(12),
                                       )
                                   ),
-                                  child: Text('상관 없음',style: TextStyle(fontSize: 13, color: Colors.black, fontWeight: FontWeight.bold),),
+                                  child: const Text('상관 없음',style: TextStyle(fontSize: 13, color: Colors.black, fontWeight: FontWeight.bold),),
                                 ),
-                                SizedBox(width:20,),
+                                const SizedBox(width:20,),
                               ],
                             ),
                           ),
@@ -375,9 +376,9 @@ class AI_mainpage extends StatelessWidget {
                         )
                     ),
 
-                    child: Text('설정하기', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+                    child: const Text('설정하기', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
                   ),
-                  SizedBox(width:34),
+                  const SizedBox(width:34),
                 ]
             ),
 
@@ -396,14 +397,14 @@ class AI_mainpage extends StatelessWidget {
                           color: Colors.grey.withOpacity(0.5), // 그림자 색상
                           spreadRadius: 3, // 그림자 확장 반경
                           blurRadius: 5, // 그림자 흐림 반경
-                          offset: Offset(3, 5), // 그림자 위치 (수평, 수직)
+                          offset: const Offset(3, 5), // 그림자 위치 (수평, 수직)
                         ),
                       ],
                     ),
 
 
                   // 두번째 박스의 색상 (임의 지정)
-                  child: SingleChildScrollView(
+                  child: const SingleChildScrollView(
                     child: Column(
                       children:[
                         SizedBox(height: 10,),
@@ -424,7 +425,7 @@ class AI_mainpage extends StatelessWidget {
 
               ],
             ),
-            SizedBox(height: 10), // 두번째 박스와 버튼 사이 여백
+            const SizedBox(height: 10), // 두번째 박스와 버튼 사이 여백
             ElevatedButton(
               onPressed: () {
               },
@@ -438,7 +439,7 @@ class AI_mainpage extends StatelessWidget {
                   )
               ),
 
-              child: Text('다시 추천 받기', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+              child: const Text('다시 추천 받기', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
             ),
           ],
         ),

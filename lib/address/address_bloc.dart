@@ -21,24 +21,24 @@ class AddressDepthBloc extends Bloc<AddressDepthEvent, AddressDepthState> {
   Future<void> _major(
       AddressDepthMajorEvent event, Emitter<AddressDepthState> emit) async {
     if (state.address!.major.address.isEmpty) {
-      String? _token = state.accessToken;
-      if (_token == null) {
-        String? _result = await _repository.getSgisApiAccessToken();
-        if (_result == null) {
+      String? token = state.accessToken;
+      if (token == null) {
+        String? result = await _repository.getSgisApiAccessToken();
+        if (result == null) {
           emit(AddressDepthErrorState(address: state.address));
         } else {
-          _token = _result;
+          token = result;
         }
       }
-      if (_token != null) {
-        List<AddressDepthServerModel> _result =
-        await _repository.depthAddressInformation(token: _token);
-        if (_result.isNotEmpty) {
+      if (token != null) {
+        List<AddressDepthServerModel> result =
+        await _repository.depthAddressInformation(token: token);
+        if (result.isNotEmpty) {
           emit(AddressDepthMajorState(
               address: state.address!.coptyWith(
-                major: AddressDepthDetailModel(current: null, address: _result),
+                major: AddressDepthDetailModel(current: null, address: result),
               ),
-              accessToken: _token));
+              accessToken: token));
         } else {
           emit(AddressDepthErrorState(address: state.address));
         }
@@ -49,14 +49,14 @@ class AddressDepthBloc extends Bloc<AddressDepthEvent, AddressDepthState> {
   Future<void> _middle(
       AddressDepthMiddleEvent event, Emitter<AddressDepthState> emit) async {
     HapticFeedback.mediumImpact();
-    List<AddressDepthServerModel> _result =
+    List<AddressDepthServerModel> result =
     await _repository.depthAddressInformation(
         token: state.accessToken!, code: event.selected.code);
-    if (_result.isNotEmpty) {
+    if (result.isNotEmpty) {
       emit(AddressDepthMiddleState(
           address: state.address!.coptyWith(
             major: state.address!.major.copyWith(current: event.selected),
-            middle: AddressDepthDetailModel(current: null, address: _result),
+            middle: AddressDepthDetailModel(current: null, address: result),
           ),
           accessToken: state.accessToken));
     } else {
@@ -67,14 +67,14 @@ class AddressDepthBloc extends Bloc<AddressDepthEvent, AddressDepthState> {
   Future<void> _minor(
       AddressDepthMinorEvent event, Emitter<AddressDepthState> emit) async {
     HapticFeedback.mediumImpact();
-    List<AddressDepthServerModel> _result =
+    List<AddressDepthServerModel> result =
     await _repository.depthAddressInformation(
         token: state.accessToken!, code: event.selected.code);
-    if (_result.isNotEmpty) {
+    if (result.isNotEmpty) {
       emit(AddressDepthMinorState(
           address: state.address!.coptyWith(
             middle: state.address!.middle.copyWith(current: event.selected),
-            minor: AddressDepthDetailModel(current: null, address: _result),
+            minor: AddressDepthDetailModel(current: null, address: result),
           ),
           accessToken: state.accessToken));
     } else {

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:halmoney/pages/signup_page_one.dart';
+import 'package:halmoney/AI_pages/AI_recommendation_widget.dart';
+import 'package:halmoney/pages/login_page.dart';
+import 'package:halmoney/pages/select_skill_page.dart';
 import 'package:halmoney/theme.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -20,7 +22,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      locale: Locale('ko', 'KR'),
+      locale: const Locale('ko', 'KR'),
 
       title: 'Flutter Demo',
       theme: theme(context),
@@ -34,7 +36,7 @@ class MyApp extends StatelessWidget {
         Locale('ko', ''), //Korean, no country code
       ],
       debugShowCheckedModeBanner:  false,
-      home: const SignupPageOne(),
+      home: const AI_recommendation(),
       // home: const SignupPgOne(),
       // initialRoute: "/login",
       // routes: {

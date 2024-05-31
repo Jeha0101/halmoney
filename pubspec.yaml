@@ -34,10 +34,12 @@ dependencies:
     sdk: flutter
 
   file_picker: ^8.0.3
-  #desktop_drop: ^0.3.2
+  desktop_drop: ^0.4.4
   http: ^1.2.1
   equatable: ^2.0.0
   firebase_core: ^2.31.1
+  shared_preferences: ^2.2.3
+  crypto: ^3.0.3
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -73,11 +75,11 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-     - assets/images/img_logo.png
-     - assets/images/img_kakao.png
-     - assets/images/
-     - assets/font/
-     - assets/
+    - assets/images/img_logo.png
+    - assets/images/img_kakao.png
+    - assets/images/
+    - assets/font/
+    - assets/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -98,8 +100,8 @@ flutter:
     - family: wavve
       fonts:
         - asset: assets/font/WavvePADO-Regular.otf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
+    #       - asset: fonts/Schyler-Italic.ttf
+    #         style: italic
     - family: NanumGothic
       fonts:
         - asset: assets/font/NanumGothic.ttf

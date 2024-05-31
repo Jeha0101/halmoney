@@ -1,15 +1,14 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:halmoney/Recruit_detail_pages/Recruit_main_page.dart';
-import 'package:halmoney/Community_pages/Community_detail_page.dart';
 
 class Community_comment extends StatelessWidget {
+  const Community_comment({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 53,
       width: 420,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
      
         border: Border(
           bottom: BorderSide(
@@ -20,13 +19,13 @@ class Community_comment extends StatelessWidget {
 
         ),
       ),
-      child:Column(
+      child:const Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Row(
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(
+                padding: EdgeInsets.symmetric(
                     horizontal: 10, vertical: 4),
                 child: Text(
                   '저도 너무 궁금합니다!!!!!!!!',
@@ -41,7 +40,7 @@ class Community_comment extends StatelessWidget {
           Row(
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(
+                padding: EdgeInsets.symmetric(
                     horizontal: 10, vertical: 2),
                 child: Text(
                   'ID',
@@ -53,7 +52,7 @@ class Community_comment extends StatelessWidget {
               ),
               SizedBox(width:320,),
               Padding(
-                padding: const EdgeInsets.symmetric(
+                padding: EdgeInsets.symmetric(
                     horizontal: 10, vertical: 2),
                 child: Text(
                   '답글달기',

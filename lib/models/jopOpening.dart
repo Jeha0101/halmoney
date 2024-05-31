@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 class JopOpening{
   final String id;
@@ -26,25 +25,25 @@ class JopOpening{
 
 List<JopOpening> jopOpenings =[
   JopOpening(
-    id: '스타벅스',
-    title: '함께 근무할 크루 모집합니다.',
-    address_first: '서울시',
-    address_second: '강동구',
-    address_third: '강일동',
-    address_fourth: '',
-    wage: '9860',
-    scrap: true,
-    ongoing: true,),
+      id: '스타벅스',
+      title: '함께 근무할 크루 모집합니다.',
+      address_first: '서울시',
+      address_second: '강동구',
+      address_third: '강일동',
+      address_fourth: '',
+      wage: '9860',
+      scrap: true,
+      ongoing: true,),
   JopOpening(
-    id: '쿠팡',
-    title: '물류센터 재고 정리',
-    address_first: '서울시',
-    address_second: '강동구',
-    address_third: '고덕1동',
-    address_fourth: '',
-    wage: '9860',
-    scrap: false,
-    ongoing: false,),
+      id: '쿠팡',
+      title: '물류센터 재고 정리',
+      address_first: '서울시',
+      address_second: '강동구',
+      address_third: '고덕1동',
+      address_fourth: '',
+      wage: '9860',
+      scrap: false,
+      ongoing: false,),
   JopOpening(
       id: '행복요양원',
       title: '어르신 산책 도우미',

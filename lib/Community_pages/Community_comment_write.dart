@@ -7,6 +7,8 @@ class Comment {
 }
 
 class CommunityComment_Write extends StatefulWidget {
+  const CommunityComment_Write({super.key});
+
   @override
   _CommunityCommentSectionState createState() => _CommunityCommentSectionState();
 }
@@ -35,20 +37,20 @@ class _CommunityCommentSectionState extends State<CommunityComment_Write> {
               Expanded(
                 child: TextField(
                   controller: _commentController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: '댓글 입력...',
                     border: OutlineInputBorder(),
                   ),
                 ),
               ),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               ElevatedButton(
                 onPressed: () {
                   if (_commentController.text.isNotEmpty) {
                     _addComment('사용자', _commentController.text);
                   }
                 },
-                child: Text('등록'),
+                child: const Text('등록'),
               ),
             ],
           ),
