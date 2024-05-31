@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:halmoney/pages/agreement_page.dart';
 
 final storage = FirebaseStorage.instance;
 
@@ -73,7 +74,12 @@ class LoginPage extends StatelessWidget{
                     )
                   ),
 
-                  TextButton(onPressed: (){},
+                  TextButton(onPressed: (){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const AgreementPage())
+                    );
+                  },
                     style: TextButton.styleFrom(
                       foregroundColor: const Color.fromARGB(250, 51,51, 51),
                       padding: const EdgeInsets.only(left: 220),

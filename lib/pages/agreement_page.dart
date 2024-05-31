@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:halmoney/pages/signup_page_one.dart';
 
 class AgreementPage extends StatefulWidget {
   //statefulwidget : 변경 가능한 상태를 가진 위젯
@@ -71,7 +72,12 @@ class _TermsOfServiceAgreementState extends State<AgreementPage>{
                           borderRadius: BorderRadius.circular(12),
                         )
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const SignupPageOne())
+                      );
+                    },
                     child: const Text('다음',style: TextStyle(color: Colors.white),),
                   ),
                 ),

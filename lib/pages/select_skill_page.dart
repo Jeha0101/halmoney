@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:halmoney/pages/select_stren_page.dart';
 
 class SelectSkillPage extends StatelessWidget {
   const SelectSkillPage({super.key});
@@ -67,7 +68,12 @@ class SelectSkillPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                     )
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const SelectStrenPage())
+                  );
+                },
                 child: const Text('다음 페이지로 이동',style: TextStyle(color: Colors.white),),
               ),
 
