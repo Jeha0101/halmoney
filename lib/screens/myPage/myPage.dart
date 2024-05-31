@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:halmoney/screens/home/home.dart';
 import 'package:halmoney/screens/scrap/scrap.dart';
 
 class MyPageScreen extends StatelessWidget {
@@ -29,17 +28,17 @@ class MyPageScreen extends StatelessWidget {
           ),
           body: ListView(
             children: [
-              Divider(),
-              SizedBox(height: 30,),
+              const Divider(),
+              const SizedBox(height: 30,),
               //개인정보란
               Row(
                 children: [
-                  SizedBox(width: 40,),
+                  const SizedBox(width: 40,),
                   Container(
                     height: 75,
                     width: 75,
                     alignment: Alignment.center,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Colors.white,
                       shape: BoxShape.circle,
                       boxShadow: [
@@ -50,25 +49,25 @@ class MyPageScreen extends StatelessWidget {
                       ),
                     ],
                     ),
-                    child: Icon(
+                    child: const Icon(
                       Icons.person_outline,
                       size: 60,
                     ),
                   ),
-                  SizedBox(width: 20,),
-                  Text(
+                  const SizedBox(width: 20,),
+                  const Text(
                     '홍길동',
                     style: TextStyle(
                       fontSize: 25,
                     ),
                   ),
-                  Icon(
+                  const Icon(
                     Icons.keyboard_arrow_right,
                     size: 40,
                   ),
                 ],
               ),
-              SizedBox(height: 30,),
+              const SizedBox(height: 30,),
               //마이페이지 메뉴
               GridView.count(
                 shrinkWrap: true,
@@ -81,7 +80,7 @@ class MyPageScreen extends StatelessWidget {
                     onTap: (){
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => MyScrapScreen()),
+                        MaterialPageRoute(builder: (context) => const MyScrapScreen()),
                       );
                     },
                     child: Container(
@@ -100,12 +99,12 @@ class MyPageScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.edit_note,
                             size: 50,
                           ),
                           SizedBox(height: 10,),
-                          const Text(
+                          Text(
                             '이력서 관리',
                             style: TextStyle(
                               fontSize: 20,
@@ -121,7 +120,7 @@ class MyPageScreen extends StatelessWidget {
                     onTap: (){
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => MyScrapScreen()),
+                        MaterialPageRoute(builder: (context) => const MyScrapScreen()),
                       );
                     },
                     child: Container(
@@ -139,12 +138,12 @@ class MyPageScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.recent_actors_outlined,
                             size: 50,
                           ),
                           SizedBox(height: 10,),
-                          const Text(
+                          Text(
                             '지원현황',
                             style: TextStyle(
                               fontSize: 20,
@@ -160,7 +159,7 @@ class MyPageScreen extends StatelessWidget {
                     onTap: (){
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => MyScrapScreen()),
+                        MaterialPageRoute(builder: (context) => const MyScrapScreen()),
                       );
                     },
                     child: Container(
@@ -178,12 +177,12 @@ class MyPageScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.favorite_border_rounded,
                             size: 50,
                           ),
                           SizedBox(height: 10,),
-                          const Text(
+                          Text(
                             '찜 목록',
                             style: TextStyle(
                               fontSize: 20,
@@ -199,7 +198,7 @@ class MyPageScreen extends StatelessWidget {
                     onTap: (){
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => MyScrapScreen()),
+                        MaterialPageRoute(builder: (context) => const MyScrapScreen()),
                       );
                     },
                     child: Container(
@@ -216,12 +215,12 @@ class MyPageScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.access_time,
                             size: 50,
                           ),
                           SizedBox(height: 10,),
-                          const Text(
+                          Text(
                             '최근 본 공고',
                             style: TextStyle(
                               fontSize: 20,
@@ -237,7 +236,7 @@ class MyPageScreen extends StatelessWidget {
                     onTap: (){
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => MyScrapScreen()),
+                        MaterialPageRoute(builder: (context) => const MyScrapScreen()),
                       );
                     },
                     child: Container(
@@ -255,12 +254,12 @@ class MyPageScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.list_alt,
                             size: 50,
                           ),
                           SizedBox(height: 10,),
-                          const Text(
+                          Text(
                             '내가 쓴 글',
                             style: TextStyle(
                               fontSize: 20,
@@ -276,7 +275,7 @@ class MyPageScreen extends StatelessWidget {
                     onTap: (){
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => MyScrapScreen()),
+                        MaterialPageRoute(builder: (context) => const MyScrapScreen()),
                       );
                     },
                     child: Container(
@@ -293,12 +292,12 @@ class MyPageScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.insert_comment_outlined,
                             size: 50,
                           ),
                           SizedBox(height: 10,),
-                          const Text(
+                          Text(
                             '내가 작성한 댓글',
                             style: TextStyle(
                               fontSize: 20,

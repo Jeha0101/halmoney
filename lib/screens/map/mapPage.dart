@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:halmoney/address/address_bloc.dart';
@@ -13,7 +11,7 @@ class MapScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double _width = MediaQuery.of(context).size.width;
+    double width = MediaQuery.of(context).size.width;
     return BlocProvider<AddressDepthBloc>(
       create: (_) => AddressDepthBloc(),
       child: BlocConsumer<AddressDepthBloc, AddressDepthState>(
@@ -54,22 +52,22 @@ class MapScreen extends StatelessWidget {
                 body:
                   ListView(
                     children: [
-                      Container(
+                      SizedBox(
                         height: 180,
                         child:
                           Column(
                             children: [
-                              Divider(),
+                              const Divider(),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 5,
                                   ),
                                   Container(
-                                    padding: EdgeInsets.all(20),
+                                    padding: const EdgeInsets.all(20),
                                     child:
-                                      Text("채용 공고를 검색할 지역을 선택하세요",
+                                      const Text("채용 공고를 검색할 지역을 선택하세요",
                                         style: TextStyle(
                                           fontSize: 20,
                                         ),
@@ -87,12 +85,12 @@ class MapScreen extends StatelessWidget {
                                           .read<AddressDepthBloc>()
                                           .add(AddressDepthResetEvent(type: 0)),
                                       child:
-                                        Container(
-                                          width: _width/3,
+                                        SizedBox(
+                                          width: width/3,
                                           child: Center(
                                             child:
                                               Text(state.address!.major.current!.name,
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                   fontSize: 15,
                                                 ),
                                               ),
@@ -101,10 +99,10 @@ class MapScreen extends StatelessWidget {
                                     ),
                                   ]
                                   else ...[
-                                    Container(
-                                      width: _width/3,
+                                    SizedBox(
+                                      width: width/3,
                                       child:
-                                        Center(
+                                        const Center(
                                           child:
                                             Text("시/도",
                                               style: TextStyle(
@@ -115,7 +113,7 @@ class MapScreen extends StatelessWidget {
                                         ),
                                     ),
                                   ],
-                                  Icon(Icons.keyboard_arrow_right),
+                                  const Icon(Icons.keyboard_arrow_right),
 
                                   // 시,구,군 표시
                                   if (state.address!.middle.current != null) ...[
@@ -124,11 +122,11 @@ class MapScreen extends StatelessWidget {
                                             .read<AddressDepthBloc>()
                                             .add(AddressDepthResetEvent(type: 0)),
                                         child:
-                                        Container(
-                                          width: _width/3-30,
+                                        SizedBox(
+                                          width: width/3-30,
                                           child: Center(
                                             child: Text(state.address!.middle.current!.name,
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 fontSize: 15,
                                               ),
                                             ),
@@ -138,10 +136,10 @@ class MapScreen extends StatelessWidget {
                                     ),
                                   ]
                                   else ...[
-                                    Container(
-                                      width: _width/3-30,
+                                    SizedBox(
+                                      width: width/3-30,
                                       child:
-                                        Center(
+                                        const Center(
                                           child:
                                           Text("시/구/군",
                                             style: TextStyle(
@@ -152,16 +150,16 @@ class MapScreen extends StatelessWidget {
                                         ),
                                     ),
                                   ],
-                                  Icon(Icons.keyboard_arrow_right),
+                                  const Icon(Icons.keyboard_arrow_right),
 
                                   // 동 표시
                                   if (state.address!.minor.current != null) ...[
-                                    Container(
-                                      width: _width/3-30,
+                                    SizedBox(
+                                      width: width/3-30,
                                       child: Center(
                                         child:
                                           Text(state.address!.minor.current!.name,
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               fontSize: 15,
                                             ),
                                           ),
@@ -169,10 +167,10 @@ class MapScreen extends StatelessWidget {
                                     )
                                   ]
                                   else ...[
-                                    Container(
-                                      width: _width/3-30,
+                                    SizedBox(
+                                      width: width/3-30,
                                       child:
-                                        Center(
+                                        const Center(
                                           child:
                                             Text("동",
                                               style: TextStyle(
@@ -185,7 +183,7 @@ class MapScreen extends StatelessWidget {
                                   ],
                                 ],
                               ),
-                              SizedBox(height: 20,),
+                              const SizedBox(height: 20,),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
@@ -212,20 +210,20 @@ class MapScreen extends StatelessWidget {
                                         ),
                                     ),
                                   ),
-                                  SizedBox(width: 15,),
+                                  const SizedBox(width: 15,),
                                 ],
                               ),
-                              SizedBox(height: 10,),
+                              const SizedBox(height: 10,),
                             ],
                           ),
                       ),
-                      Divider(),
-                      Container(
+                      const Divider(),
+                      SizedBox(
                         height: MediaQuery.of(context).size.height-260,
                         child: Row(
                         children: [
                           _listView(
-                            width: _width/3,
+                            width: width/3,
                             color: Colors.white,
                             selecteColor: Colors.grey,
                             onTap: (i) => context.read<AddressDepthBloc>().add(
@@ -236,7 +234,7 @@ class MapScreen extends StatelessWidget {
                           ),
                           if (state is AddressDepthMiddleState || state is AddressDepthMinorState)...[
                             _listView(
-                              width: _width/3,
+                              width: width/3,
                               color: Colors.white,
                               selecteColor: Colors.grey,
                               onTap: (i) => context.read<AddressDepthBloc>().add(
@@ -248,7 +246,7 @@ class MapScreen extends StatelessWidget {
                           ],
                           if (state is AddressDepthMinorState)...[
                             _listView(
-                              width: _width/3,
+                              width: width/3,
                               color: Colors.white,
                               selecteColor: Colors.grey,
                               onTap: (i) => context.read<AddressDepthBloc>().add(

@@ -1,25 +1,26 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 
 
 
 class Recruit_main extends StatelessWidget {
+  const Recruit_main({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Pomodoro Timer APP',
       home: Scaffold(
           appBar: AppBar(
-              title: Text('Logo box'),
+              title: const Text('Logo box'),
               backgroundColor: Colors.blue,
               toolbarHeight: 35
           ),
           body: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children:<Widget>[
-                SizedBox(height:10),
-                Row(
+                const SizedBox(height:10),
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     SizedBox(width:33),
@@ -31,7 +32,7 @@ class Recruit_main extends StatelessWidget {
                       ),)
                   ],
                 ),
-                SizedBox(height:10),
+                const SizedBox(height:10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -50,14 +51,14 @@ class Recruit_main extends StatelessWidget {
                   ],
 
                 ),
-                SizedBox(height: 13),
+                const SizedBox(height: 13),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
                       width: 342,
                       height: 150,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         border: Border(
                           top: BorderSide(
                             color: Color.fromARGB(250, 51, 51, 255), // 테두리 색상
@@ -73,7 +74,7 @@ class Recruit_main extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Row(
+                          const Row(
                             children: [
                               SizedBox(width:25),
                               Text('근무지',
@@ -86,8 +87,8 @@ class Recruit_main extends StatelessWidget {
                               Text('송파구 방이동 ')
                             ],
                           ),
-                          SizedBox(height:10),
-                          Row(
+                          const SizedBox(height:10),
+                          const Row(
                             children: [
                               SizedBox(width:8),
 
@@ -101,17 +102,17 @@ class Recruit_main extends StatelessWidget {
                               Text('세후 월 200만원')
                             ],
                           ),
-                          SizedBox(height:10),
+                          const SizedBox(height:10),
                           Row(
                             children: [
-                              SizedBox(width:35),
-                              Text('요일',
+                              const SizedBox(width:35),
+                              const Text('요일',
                                 style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black,
                                 ),),
-                              SizedBox(width: 25),
+                              const SizedBox(width: 25),
                               Row(
                                 children: [
                                   Container(
@@ -125,7 +126,7 @@ class Recruit_main extends StatelessWidget {
                                         ),
                                         borderRadius: BorderRadius.circular(7),
                                       ),
-                                      child:Row(
+                                      child:const Row(
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           children:[
                                             Text('월')
@@ -133,7 +134,7 @@ class Recruit_main extends StatelessWidget {
                                       )
 
                                   ),
-                                  SizedBox(width: 5),
+                                  const SizedBox(width: 5),
                                   Container(
                                       width:30,
                                       height:30,
@@ -145,7 +146,7 @@ class Recruit_main extends StatelessWidget {
                                         ),
                                         borderRadius: BorderRadius.circular(7),
                                       ),
-                                      child:Row(
+                                      child:const Row(
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           children:[
                                             Text('화')
@@ -153,7 +154,7 @@ class Recruit_main extends StatelessWidget {
                                       )
 
                                   ),
-                                  SizedBox(width: 5),
+                                  const SizedBox(width: 5),
                                   Container(
                                       width:30,
                                       height:30,
@@ -165,7 +166,7 @@ class Recruit_main extends StatelessWidget {
                                         ),
                                         borderRadius: BorderRadius.circular(7),
                                       ),
-                                      child:Row(
+                                      child:const Row(
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           children:[
                                             Text('수')
@@ -173,7 +174,7 @@ class Recruit_main extends StatelessWidget {
                                       )
 
                                   ),
-                                  SizedBox(width: 5),
+                                  const SizedBox(width: 5),
                                   Container(
                                       width:30,
                                       height:30,
@@ -185,7 +186,7 @@ class Recruit_main extends StatelessWidget {
                                         ),
                                         borderRadius: BorderRadius.circular(7),
                                       ),
-                                      child:Row(
+                                      child:const Row(
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           children:[
                                             Text('목')
@@ -193,7 +194,7 @@ class Recruit_main extends StatelessWidget {
                                       )
 
                                   ),
-                                  SizedBox(width: 5),
+                                  const SizedBox(width: 5),
                                   Container(
                                       width:30,
                                       height:30,
@@ -205,7 +206,7 @@ class Recruit_main extends StatelessWidget {
                                         ),
                                         borderRadius: BorderRadius.circular(7),
                                       ),
-                                      child:Row(
+                                      child:const Row(
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           children:[
                                             Text('금')
@@ -213,7 +214,7 @@ class Recruit_main extends StatelessWidget {
                                       )
 
                                   ),
-                                  SizedBox(width: 5),
+                                  const SizedBox(width: 5),
                                   Container(
                                       width:30,
                                       height:30,
@@ -225,7 +226,7 @@ class Recruit_main extends StatelessWidget {
                                         ),
                                         borderRadius: BorderRadius.circular(7),
                                       ),
-                                      child:Row(
+                                      child:const Row(
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           children:[
                                             Text('토')
@@ -233,7 +234,7 @@ class Recruit_main extends StatelessWidget {
                                       )
 
                                   ),
-                                  SizedBox(width: 5),
+                                  const SizedBox(width: 5),
                                   Container(
                                       width:30,
                                       height:30,
@@ -245,7 +246,7 @@ class Recruit_main extends StatelessWidget {
                                         ),
                                         borderRadius: BorderRadius.circular(7),
                                       ),
-                                      child:Row(
+                                      child:const Row(
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           children:[
                                             Text('일')
@@ -259,8 +260,8 @@ class Recruit_main extends StatelessWidget {
 
                             ],
                           ),
-                          SizedBox(height:10),
-                          Row(
+                          const SizedBox(height:10),
+                          const Row(
                             children: [
                               SizedBox(width:35),
                               Text('날짜',
@@ -286,10 +287,10 @@ class Recruit_main extends StatelessWidget {
                     )
                   ],
                 ),
-                SizedBox(height:15),
+                const SizedBox(height:15),
                 Column(
                   children: [
-                    Row(
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         SizedBox(width:25),
@@ -300,13 +301,13 @@ class Recruit_main extends StatelessWidget {
                         ),),
                       ],
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Column(
                       children: [
                         Container(
                             width: 342,
                             height: 180,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               border: Border(
                                 right: BorderSide(
                                   color: Color.fromARGB(250, 51, 51, 255), // 테두리 색상
@@ -319,7 +320,7 @@ class Recruit_main extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            child:SingleChildScrollView(
+                            child:const SingleChildScrollView(
                               child:Column(
                                 children: [
                                   Text(

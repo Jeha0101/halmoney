@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class Community_Write extends StatelessWidget {
   Community_Write({super.key});
@@ -17,12 +16,12 @@ class Community_Write extends StatelessWidget {
       appBar: AppBar(
         title: const Text('글 쓰기'),
         centerTitle: true,
-        backgroundColor: Color.fromARGB(250, 51, 51, 255),
+        backgroundColor: const Color.fromARGB(250, 51, 51, 255),
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop(); // 뒤로가기 버튼
           },
-          icon: Icon(Icons.arrow_back_ios_rounded),
+          icon: const Icon(Icons.arrow_back_ios_rounded),
           color: Colors.grey,
         ),
       ),
@@ -40,7 +39,7 @@ class Community_Write extends StatelessWidget {
                 TextFormField(
                   controller: _titleController,
                   focusNode: _titleFocusNode, // 제목 입력 필드의 포커스 노드 설정
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: '제목',
                     border: OutlineInputBorder(),
                   ),
@@ -51,12 +50,12 @@ class Community_Write extends StatelessWidget {
                     return null;
                   },
                 ),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
                 TextFormField(
                   controller: _contentController,
                   focusNode: _contentFocusNode, // 내용 입력 필드의 포커스 노드 설정
                   maxLines: 10,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: '내용',
                     border: OutlineInputBorder(),
                   ),
@@ -67,7 +66,7 @@ class Community_Write extends StatelessWidget {
                     return null;
                   },
                 ),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
                 Center(
                   child: ElevatedButton(
                     onPressed: () {
@@ -79,10 +78,10 @@ class Community_Write extends StatelessWidget {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromARGB(250, 51, 51, 255), // 배경색
+                      backgroundColor: const Color.fromARGB(250, 51, 51, 255), // 배경색
                       foregroundColor: Colors.white, // 텍스트 색상
                     ),
-                    child: Text('등록'),
+                    child: const Text('등록'),
                   ),
                 ),
               ],

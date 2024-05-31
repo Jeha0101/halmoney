@@ -1,15 +1,16 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:halmoney/Recruit_detail_pages/Recruit_main_page.dart';
 
 class AI_recommendation extends StatelessWidget {
+  const AI_recommendation({super.key});
+
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Recruit_main()),
+          MaterialPageRoute(builder: (context) => const Recruit_main()),
         );
       },
       style: ElevatedButton.styleFrom(
@@ -19,13 +20,13 @@ class AI_recommendation extends StatelessWidget {
           borderRadius: BorderRadius.circular(8.0),
         ),
       ),
-      child: Container(
+      child: SizedBox(
         width: 310,
         height: 100,
         child: Row(
           children: [
-            SizedBox(width: 10),
-            Container(
+            const SizedBox(width: 10),
+            SizedBox(
               width: 90,
               height: 90,
               child: Column(
@@ -38,15 +39,15 @@ class AI_recommendation extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(width: 15),
-            Container(
+            const SizedBox(width: 15),
+            SizedBox(
               width: 150,
               height: 80,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Container(
-                    child: Row(
+                    child: const Row(
                       children: [
                         Text(
                           '송파구청 관리인',
@@ -55,9 +56,9 @@ class AI_recommendation extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(height: 3),
+                  const SizedBox(height: 3),
                   Container(
-                    child: Row(
+                    child: const Row(
                       children: [
                         Text(
                           '서울 송파구 방이동',
@@ -66,9 +67,9 @@ class AI_recommendation extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(height: 3),
+                  const SizedBox(height: 3),
                   Container(
-                    child: Row(
+                    child: const Row(
                       children: [
                         Text(
                           '세후 월 500~550 만원',

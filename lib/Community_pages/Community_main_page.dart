@@ -24,18 +24,18 @@ class Communitypage extends StatelessWidget{
           appBar: AppBar(
             title : const Text('커뮤니티'),
             centerTitle: true,
-            backgroundColor: Color.fromARGB(250, 51, 51, 255),
+            backgroundColor: const Color.fromARGB(250, 51, 51, 255),
             leading: IconButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              icon: Icon(Icons.arrow_back_ios_rounded,),
+              icon: const Icon(Icons.arrow_back_ios_rounded,),
               color: Colors.grey,
             ),
           ),
           body: Stack(
             children: [
-              Column(
+              const Column(
                 children: [
                   Community_widget(),
                 ],
@@ -50,9 +50,9 @@ class Communitypage extends StatelessWidget{
                       MaterialPageRoute(builder: (context) => Community_Write()),
                     );
                   },
-                  backgroundColor: Color.fromARGB(250, 51, 51, 255),
+                  backgroundColor: const Color.fromARGB(250, 51, 51, 255),
                   foregroundColor: Colors.white,
-                  child: Icon(Icons.add),
+                  child: const Icon(Icons.add),
                 ),
               ),
             ],
