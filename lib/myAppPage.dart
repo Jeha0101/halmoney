@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:halmoney/screens/home/home.dart';
 import 'package:halmoney/screens/myPage/myPage.dart';
 import 'package:halmoney/Community_pages/Community_main_page.dart';
+import 'package:halmoney/JobSearch_pages/JobSearch_main_page.dart';
 
 class MyAppPage extends StatefulWidget{
   const MyAppPage({super.key});
@@ -15,7 +16,7 @@ class MyAppState extends State<MyAppPage>{
 
   final List<Widget> _navIndex = [
     const MyHomePage(),
-    const MyPageScreen(),
+    const JobSearch(),
     const Communitypage(),
     const MyPageScreen(),
   ];
