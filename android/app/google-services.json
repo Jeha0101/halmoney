@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "687960876390",
+    "project_id": "halmoney20-398d5",
+    "storage_bucket": "halmoney20-398d5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:687960876390:android:6f4dc9a2e82013615c14a7",
+        "android_client_info": {
+          "package_name": "com.example.halmoney"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCG9yaBdCiZVbe4L-IsJTpjtSIa3hI64Ls"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
