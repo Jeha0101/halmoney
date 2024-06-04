@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:halmoney/screens/resume/resumeCreate.dart';
 import 'package:halmoney/screens/scrap/scrap.dart';
 
 class MyPageScreen extends StatelessWidget {
@@ -80,7 +81,7 @@ class MyPageScreen extends StatelessWidget {
                     onTap: (){
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const MyScrapScreen()),
+                        MaterialPageRoute(builder: (context) => ResumeCreate()),
                       );
                     },
                     child: Container(
