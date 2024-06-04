@@ -92,9 +92,17 @@ class CommunityDetail extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Halmoney'),
-          backgroundColor: const Color.fromARGB(250, 51, 51, 255),
-          toolbarHeight: 35,
+
+          title: Text('커뮤니티'),
+          centerTitle: true,
+          backgroundColor: Colors.white,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: const Icon(Icons.arrow_back_ios_rounded,),
+            color: Colors.grey,
+          ),
         ),
         body: SingleChildScrollView(
           child: Column(

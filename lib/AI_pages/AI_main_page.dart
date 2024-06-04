@@ -11,14 +11,23 @@ class AI_mainpage extends StatelessWidget {
       debugShowCheckedModeBanner:  false,
       home: Scaffold(
         appBar: AppBar(
-            title: const Text('Logo and Boxes'),
-            backgroundColor: Colors.amber,
-            toolbarHeight: 35
+          title: Text('AI추천 공고'),
+          centerTitle: true,
+          backgroundColor: Colors.white,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: const Icon(Icons.arrow_back_ios_rounded,),
+            color: Colors.grey,
+          ),
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            const SizedBox(height:15),
+            Divider(),
+            SizedBox(height:15),
+
             Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

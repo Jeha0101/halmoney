@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:halmoney/AI_pages/AI_recommendation_widget.dart';
+import 'package:halmoney/myAppPage.dart';
 import 'package:halmoney/pages/login_page.dart';
 import 'package:halmoney/pages/select_skill_page.dart';
 import 'package:halmoney/theme.dart';
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
         Locale('ko', ''), //Korean, no country code
       ],
       debugShowCheckedModeBanner:  false,
-      home: const AI_recommendation(),
+      home: const MyAppPage(),
       // home: const SignupPgOne(),
       // initialRoute: "/login",
       // routes: {

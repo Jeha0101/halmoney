@@ -48,6 +48,13 @@ class MapScreen extends StatelessWidget {
                   title : const Text('지역 검색'),
                   centerTitle: true,
                   backgroundColor: Colors.white,
+                  leading: IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    icon: const Icon(Icons.arrow_back_ios_rounded,),
+                    color: Colors.grey,
+                  ),
                 ),
                 body:
                   ListView(
