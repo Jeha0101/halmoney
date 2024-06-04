@@ -237,10 +237,6 @@ class _SignupPageOneState extends State<SignupPageOne>{
                     ),
                     onPressed: () {
                       _validateAndSubmit();
-                  //    Navigator.push(
-                  //        context,
-                  //        MaterialPageRoute(builder: (context) => const SignupPgTwo())
-                  //    );
                     },
                     child: const Text('다음',style: TextStyle(color: Colors.white),),
                   ),

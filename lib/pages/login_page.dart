@@ -1,11 +1,52 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:halmoney/myAppPage.dart';
 import 'package:halmoney/pages/agreement_page.dart';
 
 final storage = FirebaseStorage.instance;
 
 class LoginPage extends StatelessWidget{
-  const LoginPage({super.key});
+  LoginPage({super.key});
+
+  final TextEditingController _idController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  Future<void> _login(BuildContext context) async {
+    final String id = _idController.text;
+    final String password = _passwordController.text;
+
+    //Firestore에서 사용자 문서(토큰) 가져오기
+    try{
+      final QuerySnapshot result = await FirebaseFirestore.instance
+          .collection('user')
+          .where('id', isEqualTo: id)
+          .where('password', isEqualTo: password)
+          .get();
+
+      final List<DocumentSnapshot> documents = result.docs;
+
+      if(documents.isNotEmpty){
+        //로그인 성공
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const MyAppPage()),
+        );
+      } else {
+        //오류 처리
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('아이디 또는 비밀번호가 잘못되었습니다.')),
+        );
+      }
+    } catch (e) {
+      //오류 처리
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('오류가 발생했습니다: $e')),
+    );
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -34,20 +75,16 @@ class LoginPage extends StatelessWidget{
                       fontWeight: FontWeight.w800,
                     ),
                   ),
-                  const TextField(
+                  TextField(
+                    controller : _idController,
                     decoration: InputDecoration(
                       labelText: '아이디'
-                      // hintText : '아이디',
-                      // enabledBorder: OutlineInputBorder(
-                      //   borderSide : BorderSide(
-                      //     color: Colors.black38,
-                      //     width: 1.0,
-                      //   )
-                      // )
+
                     ),
                     keyboardType: TextInputType.emailAddress,
                   ),
-                  const TextField(
+                  TextField(
+                    controller: _passwordController,
                     decoration: InputDecoration(
                       labelText: '비밀번호'
                     ),
@@ -68,7 +105,7 @@ class LoginPage extends StatelessWidget{
                         borderRadius: BorderRadius.circular(12),
                       )
                     ),
-                    onPressed: (){},
+                    onPressed: () => _login(context),
                     child: const Text(
                       "로그인",
                     )

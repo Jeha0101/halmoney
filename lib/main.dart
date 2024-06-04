@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:halmoney/AI_pages/AI_main_page.dart';
 import 'package:halmoney/AI_pages/AI_recommendation_widget.dart';
+import 'package:halmoney/AI_pages/AI_select_cond_page.dart';
+import 'package:halmoney/JobSearch_pages/JobSearch_main_page.dart';
 import 'package:halmoney/myAppPage.dart';
 import 'package:halmoney/pages/login_page.dart';
 import 'package:halmoney/pages/select_skill_page.dart';
 import 'package:halmoney/theme.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load(fileName: ".env");
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -20,6 +21,8 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
+  //final String userId = 'sook123';
 
   // This widget is the root of your application.
   @override
@@ -39,7 +42,7 @@ class MyApp extends StatelessWidget {
         Locale('ko', ''), //Korean, no country code
       ],
       debugShowCheckedModeBanner:  false,
-      home: const MyAppPage(),
+      home: MyAppPage(),
       // home: const SignupPgOne(),
       // initialRoute: "/login",
       // routes: {

@@ -78,6 +78,7 @@ flutter:
   assets:
     - assets/images/img_logo.png
     - assets/images/img_kakao.png
+    - assets/images/resume.png
     - assets/images/
     - assets/font/
     - assets/

@@ -8,10 +8,10 @@ class AI_recommendation extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        /*Navigator.push(
+        Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const Recruit_main()),
-        );*/
+        );
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.white,

@@ -19,8 +19,15 @@ class MyHomePage extends StatelessWidget{
           fontFamily: 'NanumGothicBold',
       ),
       home : SafeArea(
+        top: true,
+        left: false,
+        bottom: true,
+        right: false,
         child: Scaffold(
+          //backgroundColor: Colors.grey[100],
           appBar: AppBar(
+            backgroundColor: Colors.white,
+            elevation: 1.0,
             title: Row(
               //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -30,17 +37,18 @@ class MyHomePage extends StatelessWidget{
                   height: 40,
                 ),
                 Container(
-                  padding: const EdgeInsets.all(10.0),
-                  child: const Text('할MONEY',
-                    style : TextStyle(
-                    fontFamily: 'NotoSansKR-Variable',
-                    //fontWeight: FontWeight.w600,
-                    fontSize: 23.0,
-                    color: Colors.black,
-                    )
-                  ),
-                )
-              ]
+                    padding: const EdgeInsets.all(8.0),
+                    child: const Text(
+                      '할MONEY',
+                      style : TextStyle(
+                        fontFamily: 'NanumGothicFamily',
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18.0,
+                        color: Colors.black,
+                        //Color.fromARGB(250, 51, 51, 255),
+                      ),)
+                ),
+              ],
             ),
           ),
           body: ListView(
@@ -61,9 +69,78 @@ class MyHomePage extends StatelessWidget{
                 },
               ),
               const Divider(),
+
+              //이력서 생성 버튼
+              Padding(
+                  padding: const EdgeInsets.only(left:20.0, right: 20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 25,),
+                      // 위젯 설명 텍스트
+                      const Text(
+                        '손쉽게 이력서를 생성해보세요!',
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(height: 20,),
+                      // 위젯 내부
+                      GestureDetector(
+                        onTap: (){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const SelectSkillPage()),
+                          );
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(20.0),
+                          height: 100,
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(20),
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color : Colors.grey,
+                                spreadRadius:1.0,
+                                blurRadius: 10.0,
+                                offset: Offset(2,2),
+                                blurStyle: BlurStyle.inner,
+                              ),
+                            ],
+                          ),
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                'AI 자동 이력서 생성',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                ),
+                              ),
+                              Spacer(),
+                              Image(
+                                image: AssetImage('assets/images/resume.png'),
+                                width: 60,
+                                height: 60,
+                                fit: BoxFit.contain,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20,),
+                    ],
+                  )
+              ),
+
               //AI 추천 공고 위젯
               Padding(
-                  padding: const EdgeInsets.only(left:20.0, right: 20.0,),
+                  padding: const EdgeInsets.only(left:20.0, right: 20.0, top: 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -72,7 +149,8 @@ class MyHomePage extends StatelessWidget{
                       const Text(
                         '  AI추천 서비스를 이용해보세요!',
                         style: TextStyle(
-                          fontSize: 15,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                       const SizedBox(height: 20,),
@@ -93,17 +171,21 @@ class MyHomePage extends StatelessWidget{
                               Radius.circular(20),
                             ),
                             boxShadow: [
-                              BoxShadow(color : Colors.grey,
-                                spreadRadius:2.5,
+                              BoxShadow(
+                                color : Colors.grey,
+                                spreadRadius:1.0,
                                 blurRadius: 10.0,
                                 offset: Offset(2,2),
                                 blurStyle: BlurStyle.inner,
+                                // spreadRadius: 0.5,
+                                // blurRadius: 10,
+                                // offset: const Offset(2, 2),
                               ),
                             ],
                           ),
                           child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(
                                 'AI추천 공고 보기',
@@ -111,6 +193,7 @@ class MyHomePage extends StatelessWidget{
                                   fontSize: 20,
                                 ),
                               ),
+                              Spacer(),
                               Image(
                                 image: AssetImage('assets/images/ai.png'),
                                 width: 70,
@@ -121,21 +204,24 @@ class MyHomePage extends StatelessWidget{
                           ),
                         ),
                       ),
+                      const SizedBox(height: 20,),
                     ],
                   )
               ),
-              //지역?지도 검색 위젯
+
+              //맞춤 검색 - 추천시스템
               Padding(
-                  padding: const EdgeInsets.only(left:20.0, right: 20.0,),
+                  padding: const EdgeInsets.only(left:20.0, right: 20.0,top: 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 25,),
                       // 위젯 설명 텍스트
                       const Text(
-                        '  지역 검색을 통해 원하는 일자리를 찾아보세요!',
+                        '  맞춤 검색을 통해 원하는 일자리를 찾아보세요!',
                         style: TextStyle(
-                          fontSize: 15,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                       const SizedBox(height: 20,),
@@ -156,17 +242,92 @@ class MyHomePage extends StatelessWidget{
                               Radius.circular(20),
                             ),
                             boxShadow: [
-                              BoxShadow(color : Colors.grey,
-                                spreadRadius:2.5,
+                              BoxShadow(
+                                color : Colors.grey,
+                                spreadRadius:1.0,
                                 blurRadius: 10.0,
                                 offset: Offset(2,2),
                                 blurStyle: BlurStyle.inner,
+                                // spreadRadius: 0.5,
+                                // blurRadius: 10,
+                                // offset: const Offset(2, 2),
                               ),
                             ],
                           ),
                           child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                '맞춤 추천 시스템',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                ),
+                              ),
+                              Spacer(),
+                              Image(
+                                image: AssetImage('assets/images/search.png'),
+                                width: 60,
+                                height: 60,
+                                fit: BoxFit.contain,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20,),
+                    ],
+                  )
+              ),
+
+              //지역 검색 위젯
+              Padding(
+                  padding: const EdgeInsets.only(left:20.0, right: 20.0,top: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 25,),
+                      // 위젯 설명 텍스트
+                      const Text(
+                        '  지역 검색을 통해 원하는 일자리를 찾아보세요!',
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(height: 20,),
+                      // 위젯 내부
+                      GestureDetector(
+                        onTap: (){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const MapScreen()),
+                          );
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(20.0),
+                          height: 100,
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(20),
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color : Colors.grey,
+                                spreadRadius:1.0,
+                                blurRadius: 10.0,
+                                offset: Offset(2,2),
+                                blurStyle: BlurStyle.inner,
+                                // spreadRadius: 0.5,
+                                // blurRadius: 10,
+                                // offset: const Offset(2, 2),
+                              ),
+                            ],
+                          ),
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(
                                 '지역 검색',
@@ -174,6 +335,7 @@ class MyHomePage extends StatelessWidget{
                                   fontSize: 20,
                                 ),
                               ),
+                              Spacer(),
                               Image(
                                 image: AssetImage('assets/images/location.png'),
                                 width: 60,
