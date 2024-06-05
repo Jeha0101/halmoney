@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:halmoney/AI_pages/AI_recommendation_widget.dart';
 import 'package:halmoney/myAppPage.dart';
 import 'package:halmoney/pages/login_page.dart';
 import 'package:halmoney/pages/select_skill_page.dart';
@@ -19,6 +18,8 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  final String id ='sum0304';
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -37,7 +38,7 @@ class MyApp extends StatelessWidget {
         Locale('ko', ''), //Korean, no country code
       ],
       debugShowCheckedModeBanner:  false,
-      home: const MyAppPage(),
+      home: MyAppPage(id: id),
       // home: const SignupPgOne(),
       // initialRoute: "/login",
       // routes: {

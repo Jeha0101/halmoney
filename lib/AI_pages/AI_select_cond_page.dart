@@ -1,0 +1,464 @@
+import 'package:flutter/material.dart';
+import 'package:halmoney/AI_pages/AI_recomm_result_page.dart';
+import 'package:halmoney/pages/signup_pg_two.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+class AISelectCondPage extends StatefulWidget {
+  final String id;
+  const AISelectCondPage({super.key, required this.id});
+
+  @override
+  _AISelectCondPage createState() => _AISelectCondPage();
+}
+
+class _AISelectCondPage extends State<AISelectCondPage> {
+  final TextEditingController addressController = TextEditingController();
+
+  Future<void> _AIrecommCondition(BuildContext context, List<String> selectedJobs) async {
+    final address = addressController.text;
+    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+    try {
+      final QuerySnapshot result = await _firestore
+          .collection('user')
+          .where('id', isEqualTo: widget.id)
+          .get();
+
+      final List<DocumentSnapshot> documents = result.docs;
+
+      if (documents.isNotEmpty) {
+        final String docId = documents.first.id;
+
+        await _firestore
+            .collection('user')
+            .doc(docId)
+            .collection('AIRecommendation')
+            .doc('recomCondition')
+            .set({'workplace': address});
+
+        for (String job in selectedJobs) {
+          // Store each job in the database (implement as needed)
+          await _firestore
+              .collection('user')
+              .doc(docId)
+              .collection('AIRecommendation')
+              .doc('recomCondition')
+              .update({
+            'jobs': FieldValue.arrayUnion([job])
+          });
+        }
+
+        print("Interest place updated successfully");
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Interest place updated successfully")),
+        );
+      } else {
+        print("User not found");
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("User not found")),
+        );
+      }
+    } catch (error) {
+      print("Failed to update interest place: $error");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Failed to update interest place: $error")),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color.fromARGB(250, 51, 51, 255),
+        elevation: 1.0,
+        title: Row(
+          children: [
+            Image.asset(
+              'assets/images/img_logo.png',
+              fit: BoxFit.contain,
+              height: 40,
+            ),
+            Container(
+              padding: const EdgeInsets.all(8.0),
+              child: const Text(
+                '할MONEY',
+                style: TextStyle(
+                  fontFamily: 'NanumGothicFamily',
+                  fontWeight: FontWeight.w600,
+                  fontSize: 18.0,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 25.0, right: 30.0, top: 40.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                '이런 조건을 원해요!',
+                style: TextStyle(
+                  fontSize: 18.0,
+                  fontFamily: 'NanumGothic',
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 40),
+
+              const Text(
+                '근무지역',
+                style: TextStyle(
+                  fontSize: 20.0,
+                  fontFamily: 'NanumGothic',
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+
+              const SizedBox(height: 10),
+
+              DropdownButtonExample(addressController: addressController),
+
+              const SizedBox(height: 40),
+
+              const Text(
+                '업직종',
+                style: TextStyle(
+                  fontSize: 20.0,
+                  fontFamily: 'NanumGothic',
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+
+              const SizedBox(height: 10),
+
+              Container(
+                height: 200,
+                child: ChooseJobButton(),
+              ),
+
+              const SizedBox(height: 40),
+
+              const Text(
+                '급여형태',
+                style: TextStyle(
+                  fontSize: 20.0,
+                  fontFamily: 'NanumGothic',
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+
+              const SizedBox(height: 10),
+
+              Container(
+                height: 200,
+                child: ChoosePayButton(),
+              ),
+
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color.fromARGB(250, 51, 51, 255),
+                  minimumSize: const Size(360, 45),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                onPressed: () {
+                  final selectedJobs = ChooseJobButton.selectedJobs;
+                  _AIrecommCondition(context, selectedJobs);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AIRecommResultPage()),
+                  );
+                },
+                child: const Text(
+                  '결과보기',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+
+              const SizedBox(height: 20),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ChoosePayButton extends StatefulWidget {
+  const ChoosePayButton({super.key});
+
+  @override
+  State<ChoosePayButton> createState() => _ChoosePayButton();
+}
+
+class _ChoosePayButton extends State<ChoosePayButton> {
+  var payment = ['월급', '주급', '시급', '시간제', '상관없음'];
+
+  final List<String> selectedPay = [];
+
+  void toggleSkill(String pay) {
+    setState(() {
+      if (selectedPay.contains(pay)) {
+        selectedPay.remove(pay);
+      } else {
+        selectedPay.add(pay);
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+    const double itemHeight = 100;
+    final double itemWidth = size.width / 2;
+
+    return GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          crossAxisSpacing: 16.0,
+          mainAxisSpacing: 16.0,
+          childAspectRatio: (itemWidth / itemHeight)),
+      itemCount: payment.length,
+      itemBuilder: (context, index) {
+        final pay = payment[index];
+        final isSelected = selectedPay.contains(pay);
+
+        return ButtonTheme(
+            minWidth: 70.0,
+            height: 30.0,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                  isSelected ? Colors.blue : Color.fromARGB(250, 255, 255, 250),
+                  foregroundColor: Colors.black54,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12))),
+              onPressed: () => toggleSkill(pay),
+              child: Text(
+                pay,
+                style: const TextStyle(
+                    fontSize: 14.0, fontWeight: FontWeight.w600),
+              ),
+            ));
+      },
+    );
+  }
+}
+
+class ChooseJobButton extends StatefulWidget {
+  const ChooseJobButton({super.key});
+
+  static List<String> selectedJobs = [];
+  @override
+  State<ChooseJobButton> createState() => _ChooseJobButton();
+}
+
+class _ChooseJobButton extends State<ChooseJobButton> {
+  var jobs = [
+    '외식/음료',
+    '매장관리/판매',
+    '서비스',
+    '사무직',
+    '고객상담/리서치/영업',
+    '생산/건설/노무',
+    'IT/기술',
+    '디자인',
+    '미디어',
+    '운전/배달',
+    '청소',
+    '병원/간호/연구',
+    '교육/강사'
+  ];
+
+  void toggleSkill(String job) {
+    setState(() {
+      if (ChooseJobButton.selectedJobs.contains(job)) {
+        ChooseJobButton.selectedJobs.remove(job);
+      } else {
+        ChooseJobButton.selectedJobs.add(job);
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+    const double itemHeight = 100;
+    final double itemWidth = size.width / 2;
+
+    return GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          crossAxisSpacing: 16.0,
+          mainAxisSpacing: 16.0,
+          childAspectRatio: (itemWidth / itemHeight)),
+      itemCount: jobs.length,
+      itemBuilder: (context, index) {
+        final job = jobs[index];
+        final isSelected = ChooseJobButton.selectedJobs.contains(job);
+
+        return ButtonTheme(
+            minWidth: 70.0,
+            height: 30.0,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                  isSelected ? Colors.blue : Color.fromARGB(250, 255, 255, 250),
+                  foregroundColor: Colors.black54,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12))),
+              onPressed: () => toggleSkill(job),
+              child: Text(
+                job,
+                style: const TextStyle(
+                    fontSize: 14.0, fontWeight: FontWeight.w600),
+              ),
+            ));
+      },
+    );
+  }
+}
+
+class DropdownButtonExample extends StatefulWidget {
+  const DropdownButtonExample({super.key, required this.addressController});
+
+  final TextEditingController addressController;
+
+  @override
+  State<DropdownButtonExample> createState() => _DropdownButtonExampleState();
+}
+
+class _DropdownButtonExampleState extends State<DropdownButtonExample> {
+  List<String> cities = ['-시/도-', '서울특별시', '경기도'];
+  List<List<String>> gugun = [
+    ['-시/군/구-'],
+    [
+      '-시/군/구-',
+      '강남구',
+      '강동구',
+      '강북구',
+      '강서구',
+      '관악구',
+      '광진구',
+      '구로구',
+      '금천구',
+      '노원구',
+      '도봉구',
+      '동대문구',
+      '동작구',
+      '마포구',
+      '서대문구',
+      '서초구',
+      '성동구',
+      '성북구',
+      '송파구',
+      '양천구',
+      '영등포구',
+      '용산구',
+      '은평구',
+      '종로구',
+      '중구',
+      '중랑구'
+    ],
+    [
+      '-시/군/구-',
+      '가평구',
+      '고양시',
+      '과천시',
+      '광명시',
+      '광주시',
+      '구리시',
+      '군포시',
+      '김포시',
+      '남양주시',
+      '동두천시',
+      '부천시',
+      '성남시',
+      '수원시',
+      '시흥시',
+      '안산시',
+      '안성시',
+      '안성시',
+      '안양시',
+      '양주시',
+      '여주시',
+      '오산시',
+      '용인시',
+      '의왕시',
+      '의정부시',
+      '이천시',
+      '파주시',
+      '평택시',
+      '포천시',
+      '하남시',
+      '화성시'
+    ]
+  ];
+
+  String selectedSido = '-시/도-';
+  String selectedGugun = '-시/군/구-';
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            Container(
+              width: 180,
+              height: 60,
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: DropdownButton<String>(
+                itemHeight: 60,
+                isExpanded: true,
+                value: selectedSido.isNotEmpty ? selectedSido : null,
+                onChanged: (value) {
+                  setState(() {
+                    selectedSido = value!;
+                    selectedGugun = gugun[0][0];
+                    widget.addressController.text = '$selectedSido, $selectedGugun';
+                  });
+                },
+                items: cities.map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
+            ),
+
+            Container(
+              width: 180,
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              height: 60,
+              child: DropdownButton<String>(
+                itemHeight: 60,
+                isExpanded: true,
+                value: selectedGugun.isNotEmpty ? selectedGugun : null,
+                onChanged: (value) {
+                  setState(() {
+                    selectedGugun = value!;
+                    widget.addressController.text = '$selectedSido, $selectedGugun';
+                  });
+                },
+                items: selectedSido.isEmpty
+                    ? []
+                    : gugun[cities.indexOf(selectedSido)].map((String g) {
+                  return DropdownMenuItem<String>(
+                    value: g,
+                    child: Text(g),
+                  );
+                }).toList(),
+              ),
+            ),
+          ],
+        ));
+  }
+}
