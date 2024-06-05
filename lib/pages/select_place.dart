@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:halmoney/myAppPage.dart';
 
 class SelectPlace extends StatefulWidget {
   final String id;
@@ -233,10 +234,10 @@ class _SelectPlaceState extends State<SelectPlace> {
                     ),
                     onPressed: () {
                       _onSaveButtonPressed();
-                      //Navigator.push(
-                      //    context,
-                      //    MaterialPageRoute(builder: (context) => Home())
-                      //);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => MyAppPage())
+                      );
                     },
                     child: const Text(
                       '선택 완료', style: TextStyle(color: Colors.white),),

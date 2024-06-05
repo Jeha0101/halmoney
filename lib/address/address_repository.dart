@@ -3,6 +3,7 @@ import 'package:http/http.dart';
 import 'package:halmoney/address/address_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class AppAddressRepository {
   static final AppAddressRepository instance = AppAddressRepository._internal();
@@ -14,8 +15,8 @@ class AppAddressRepository {
   //AccessToken 받아오기
   Future<String?> getSgisApiAccessToken() async {
     try {
-      const String _key = "d2ec0e8d0a054d4eaf42";
-      const String _secret = "1410af31ca234fe8b355";
+      final String _key = dotenv.get('ADDRESS_API_KEY');
+      final String _secret = dotenv.get('ADDRESS_API_SECRET');
       http.Response _response = await http.get(
         Uri.parse(
             "https://sgisapi.kostat.go.kr/OpenAPI3/auth/authentication.json?consumer_key=$_key&consumer_secret=$_secret"),
