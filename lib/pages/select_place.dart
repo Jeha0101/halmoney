@@ -236,7 +236,7 @@ class _SelectPlaceState extends State<SelectPlace> {
                       _onSaveButtonPressed();
                       Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => MyAppPage())
+                          MaterialPageRoute(builder: (context) => MyAppPage(id: widget.id))
                       );
                     },
                     child: const Text(
