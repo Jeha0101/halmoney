@@ -1,11 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:halmoney/AI_pages/AI_select_cond_page.dart';
 
 class AIRecommResultPage extends StatelessWidget {
-  const AIRecommResultPage({super.key});
+  final List<DocumentSnapshot> jobs;
+  const AIRecommResultPage({super.key, required this.jobs});
 
   @override
   Widget build(BuildContext context) {
+    print('AIRecommResultPage ${jobs.length} jobs');
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromARGB(250, 51, 51, 255),
@@ -34,39 +38,10 @@ class AIRecommResultPage extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-            padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 30.0),
+            padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0, bottom: 10.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                AI_recommendation(),
-                SizedBox(
-                  height: 10,
-                ),
-                AI_recommendation(),
-                SizedBox(
-                  height: 10,
-                ),
-                AI_recommendation(),
-                SizedBox(
-                  height: 10,
-                ),
-                AI_recommendation(),
-                SizedBox(
-                  height: 10,
-                ),
-                AI_recommendation(),
-                SizedBox(
-                  height: 10,
-                ),
-                AI_recommendation(),
-                SizedBox(
-                  height: 10,
-                ),
-                AI_recommendation(),
-                SizedBox(
-                  height: 30,
-                ),
-              ],
+              children: jobs.map((job) => AI_recommendation(job: job)).toList(),
             )),
       ),
     );
@@ -74,10 +49,12 @@ class AIRecommResultPage extends StatelessWidget {
 }
 
 class AI_recommendation extends StatelessWidget {
-  const AI_recommendation({super.key});
+  final DocumentSnapshot job;
+  const AI_recommendation({super.key, required this.job});
 
   @override
   Widget build(BuildContext context) {
+    final Map<String, dynamic> jobData = job.data() as Map<String, dynamic>;
     return ElevatedButton(
       onPressed: () {
         /*Navigator.push(
@@ -93,14 +70,14 @@ class AI_recommendation extends StatelessWidget {
         ),
       ),
       child: SizedBox(
-        width: 380,
+        width: 370,
         height: 100,
         child: Row(
           children: [
             const SizedBox(width: 10),
-            SizedBox(
-              width: 90,
-              height: 90,
+            Container(
+              width: 100,
+              height: 100,
               child: Column(
                 children: [
                   Image.asset(
@@ -112,49 +89,58 @@ class AI_recommendation extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 15),
-            SizedBox(
-              width: 150,
+            Container(
+              width: 200,
               height: 80,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Container(
-                    child: const Row(
+                    child: Row(
                       children: [
-                        Text(
-                          '송파구청 관리인',
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black),
+                        Expanded(
+                          child: Text(
+                            jobData['job_name'] ?? '',
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 3),
+                  SizedBox(height: 3),
                   Container(
-                    child: const Row(
+                    child: Row(
                       children: [
-                        Text(
-                          '서울 송파구 방이동',
-                          style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w500,
-                              color: Color.fromARGB(250, 69, 99, 255)),
+                        Expanded(
+                            child: Text(
+                              jobData['address'] ?? '',
+                              style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color.fromARGB(250, 69, 99, 255)),
+                              overflow: TextOverflow.ellipsis,
+                            ),
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 3),
+                  SizedBox(height: 3),
                   Container(
-                    child: const Row(
+                    child: Row(
                       children: [
-                        Text(
-                          '세후 월 500~550 만원',
-                          style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.normal,
-                              color: Colors.black),
+                        Expanded(
+                          child: Text(
+                            jobData['wage'] ?? '',
+                            style: TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.normal,
+                                color: Colors.black),
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                       ],
                     ),

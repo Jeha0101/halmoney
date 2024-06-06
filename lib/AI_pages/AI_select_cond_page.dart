@@ -14,11 +14,13 @@ class AISelectCondPage extends StatefulWidget {
 class _AISelectCondPage extends State<AISelectCondPage> {
   final TextEditingController addressController = TextEditingController();
 
-  Future<void> _AIrecommCondition(BuildContext context, List<String> selectedJobs) async {
-    final address = addressController.text;
+  Future<void> _AIrecommCondition(BuildContext context, List<String> selectedJobs,
+      List<String> selectedPay, List<String> selectedTime) async {
+    final seladdress = addressController.text;
     final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
     try {
+      //사용자의 구인공고 필터링 조건을 Firestore에 저장
       final QuerySnapshot result = await _firestore
           .collection('user')
           .where('id', isEqualTo: widget.id)
@@ -29,23 +31,53 @@ class _AISelectCondPage extends State<AISelectCondPage> {
       if (documents.isNotEmpty) {
         final String docId = documents.first.id;
 
+        var addressParts = seladdress.split(',');
+        var selectedGugun = addressParts.length > 1 ? addressParts[1].trim(): '';
+
         await _firestore
             .collection('user')
             .doc(docId)
             .collection('AIRecommendation')
             .doc('recomCondition')
-            .set({'workplace': address});
+            .set({
+          'location': seladdress,
+          'job_type': selectedJobs,
+          'payment_type': selectedPay,
+          'working_days': selectedTime,
+        });
 
-        for (String job in selectedJobs) {
-          // Store each job in the database (implement as needed)
-          await _firestore
-              .collection('user')
-              .doc(docId)
-              .collection('AIRecommendation')
-              .doc('recomCondition')
-              .update({
-            'jobs': FieldValue.arrayUnion([job])
-          });
+        //구인 공고 필터링
+        Query jobQuery = _firestore.collection('jobs');
+
+
+        final QuerySnapshot jobResult = await jobQuery.get();
+        final List<DocumentSnapshot> jobDocuments = jobResult.docs;
+
+        //공고 필터링
+        final filteredJobs = jobDocuments.where((job){
+          final jobData = job.data() as Map<String, dynamic>;
+
+          final address = jobData['address'] as String;
+          final jobName = jobData['job_name'] as String;
+          final wage = jobData['wage'] as String;
+          final workTimeWeek = jobData['work_time_week'] as String;
+
+          final addMatch =  selectedGugun.isEmpty || address.contains(selectedGugun);
+          final jobMatch = selectedJobs.isEmpty || selectedJobs.any((job) => jobName.contains(job));
+          final payMatch = selectedPay.isEmpty || selectedPay.any((pay) => wage.contains(pay));
+          final timeMatch = selectedTime.isEmpty || selectedTime.any((time) => workTimeWeek.contains(time));
+
+          return addMatch && jobMatch && payMatch && timeMatch;
+        }).toList();
+
+        print('Filtered jobs count:${filteredJobs.length}');
+        if(filteredJobs.isNotEmpty){
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AIRecommResultPage(jobs: filteredJobs))
+          );
+        } else {
+          print('No matching jobs found');
         }
 
         print("Interest place updated successfully");
@@ -137,7 +169,7 @@ class _AISelectCondPage extends State<AISelectCondPage> {
               const SizedBox(height: 10),
 
               Container(
-                height: 200,
+                height: 330,
                 child: ChooseJobButton(),
               ),
 
@@ -155,25 +187,43 @@ class _AISelectCondPage extends State<AISelectCondPage> {
               const SizedBox(height: 10),
 
               Container(
-                height: 200,
+                height: 130,
                 child: ChoosePayButton(),
               ),
+
+              const SizedBox(height: 40),
+
+              const Text(
+                '근무시간',
+                style: TextStyle(
+                  fontSize: 20.0,
+                  fontFamily: 'NanumGothic',
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+
+              const SizedBox(height: 10),
+
+              Container(
+                height: 260,
+                child: ChooseTimeButton(),
+              ),
+
+              const SizedBox(height: 30),
 
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromARGB(250, 51, 51, 255),
-                  minimumSize: const Size(360, 45),
+                  minimumSize: const Size(360, 50),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
                 onPressed: () {
                   final selectedJobs = ChooseJobButton.selectedJobs;
-                  _AIrecommCondition(context, selectedJobs);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => AIRecommResultPage()),
-                  );
+                  final selectedPay = ChoosePayButton.selectedPay;
+                  final selectedTime = ChooseTimeButton.selectedTime;
+                  _AIrecommCondition(context, selectedJobs, selectedPay, selectedTime);
                 },
                 child: const Text(
                   '결과보기',
@@ -190,8 +240,74 @@ class _AISelectCondPage extends State<AISelectCondPage> {
   }
 }
 
+//근무시간
+class ChooseTimeButton extends StatefulWidget {
+  const ChooseTimeButton({super.key});
+
+  static List<String> selectedTime = [];
+  @override
+  State<ChooseTimeButton> createState() => _ChooseTimeButton();
+}
+
+class _ChooseTimeButton extends State<ChooseTimeButton> {
+  var workdays = ['주6일', '주5일', '주4일', '주3일', '주2일', '주1일',
+  '월~일', '월~토', '월~금', '주말(토,일)', '상관없음'];
+
+
+  void toggleSkill(String time) {
+    setState(() {
+      if (ChooseTimeButton.selectedTime.contains(time)) {
+        ChooseTimeButton.selectedTime.remove(time);
+      } else {
+        ChooseTimeButton.selectedTime.add(time);
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+    const double itemHeight = 100;
+    final double itemWidth = size.width / 2;
+
+    return GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          crossAxisSpacing: 16.0,
+          mainAxisSpacing: 16.0,
+          childAspectRatio: (itemWidth / itemHeight)),
+      itemCount: workdays.length,
+      itemBuilder: (context, index) {
+        final time = workdays[index];
+        final isSelected = ChooseTimeButton.selectedTime.contains(time);
+
+        return ButtonTheme(
+            minWidth: 70.0,
+            height: 30.0,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                  isSelected ? Colors.blue : Color.fromARGB(250, 255, 255, 250),
+                  foregroundColor: Colors.black54,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12))),
+              onPressed: () => toggleSkill(time),
+              child: Text(
+                time,
+                style: const TextStyle(
+                    fontSize: 14.0, fontWeight: FontWeight.w600),
+              ),
+            ));
+      },
+    );
+  }
+}
+
+//급여지급 형태
 class ChoosePayButton extends StatefulWidget {
   const ChoosePayButton({super.key});
+
+  static List<String> selectedPay = [];
 
   @override
   State<ChoosePayButton> createState() => _ChoosePayButton();
@@ -200,14 +316,12 @@ class ChoosePayButton extends StatefulWidget {
 class _ChoosePayButton extends State<ChoosePayButton> {
   var payment = ['월급', '주급', '시급', '시간제', '상관없음'];
 
-  final List<String> selectedPay = [];
-
   void toggleSkill(String pay) {
     setState(() {
-      if (selectedPay.contains(pay)) {
-        selectedPay.remove(pay);
+      if (ChoosePayButton.selectedPay.contains(pay)) {
+        ChoosePayButton.selectedPay.remove(pay);
       } else {
-        selectedPay.add(pay);
+        ChoosePayButton.selectedPay.add(pay);
       }
     });
   }
@@ -227,7 +341,7 @@ class _ChoosePayButton extends State<ChoosePayButton> {
       itemCount: payment.length,
       itemBuilder: (context, index) {
         final pay = payment[index];
-        final isSelected = selectedPay.contains(pay);
+        final isSelected = ChoosePayButton.selectedPay.contains(pay);
 
         return ButtonTheme(
             minWidth: 70.0,
@@ -261,19 +375,21 @@ class ChooseJobButton extends StatefulWidget {
 
 class _ChooseJobButton extends State<ChooseJobButton> {
   var jobs = [
-    '외식/음료',
-    '매장관리/판매',
-    '서비스',
-    '사무직',
-    '고객상담/리서치/영업',
-    '생산/건설/노무',
-    'IT/기술',
+    '주방',
+    '음료 조리',
+    '바리스타',
+    '안내',
+    '사무',
+    '상담',
+    '회계',
+    '사회복지사',
     '디자인',
-    '미디어',
-    '운전/배달',
+    '운전',
+    '배달',
     '청소',
-    '병원/간호/연구',
-    '교육/강사'
+    '요양',
+    '간호',
+    '교사'
   ];
 
   void toggleSkill(String job) {
