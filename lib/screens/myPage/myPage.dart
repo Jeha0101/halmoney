@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:halmoney/pages/select_skill_page.dart';
 import 'package:halmoney/screens/resume/resumeCreate.dart';
+import 'package:halmoney/screens/resume/resumeEdit.dart';
 import 'package:halmoney/screens/scrap/scrap.dart';
 
 class MyPageScreen extends StatelessWidget {
-  const MyPageScreen({super.key,});
+  final String id;
+  //final bool isLoggedIn;
+
+  const MyPageScreen({super.key, required this.id});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        textTheme: GoogleFonts.notoSansKrTextTheme(
-          Theme.of(context).textTheme,
-        ),
+          fontFamily: 'NanumGothicBold'
       ),
 
       home : SafeArea(
@@ -81,7 +84,7 @@ class MyPageScreen extends StatelessWidget {
                     onTap: (){
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ResumeCreate()),
+                        MaterialPageRoute(builder: (context) => ResumeCreate()),//(id: id)),
                       );
                     },
                     child: Container(
@@ -301,7 +304,7 @@ class MyPageScreen extends StatelessWidget {
                           Text(
                             '내가 작성한 댓글',
                             style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 18,
                             ),
                           ),
                         ],
