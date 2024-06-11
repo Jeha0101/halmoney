@@ -42,8 +42,8 @@ class MyApp extends StatelessWidget {
         Locale('ko', ''), //Korean, no country code
       ],
       debugShowCheckedModeBanner:  false,
-      //home: MyAppPage(id: id),
-      home: LoginPage(),
+      home: MyAppPage(id: id),
+      //home: LoginPage(),
 
       /*home: Scaffold(
         appBar: AppBar(
