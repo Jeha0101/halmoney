@@ -37,7 +37,7 @@ dependencies:
   desktop_drop: ^0.4.4
   http: ^1.2.1
   equatable: ^2.0.0
-  firebase_core: ^2.31.1
+  firebase_core: ^3.0.0
   shared_preferences: ^2.2.3
   crypto: ^3.0.3
 
@@ -49,8 +49,8 @@ dependencies:
   google_fonts: 6.2.1
   carousel_slider: ^4.2.1
   flutter_bloc: ^8.1.5
-  firebase_storage: ^11.7.6
-  cloud_firestore: ^4.17.4
+  firebase_storage: ^12.0.0
+  cloud_firestore: ^5.0.0
   flutter_dotenv: ^5.1.0
 
 dev_dependencies:
@@ -226,6 +226,7 @@ flutter:
     - assets/images/
     - assets/font/
     - assets/
+    - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
