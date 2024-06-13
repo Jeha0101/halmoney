@@ -26,17 +26,25 @@ class _ResumeManageState extends State<ResumeManage> {
 
   Future<void> _fetchResumes() async {
     try {
-      QuerySnapshot querySnapshot = await _firestore
+      final QuerySnapshot result = await _firestore
           .collection('user')
-          .doc(widget.id)
-          .collection('resumes')
-          .orderBy('createdAt', descending: true)
+          .where('id', isEqualTo: widget.id)
           .get();
+      final List<DocumentSnapshot> documents = result.docs;
 
-      setState(() {
-        _resumes = querySnapshot.docs;
-        _isLoading = false;
-      });
+      if (documents.isNotEmpty) {
+        final String docId = documents.first.id;
+        QuerySnapshot querySnapshot = await _firestore
+            .collection('user')
+            .doc(docId)
+            .collection('resumes')
+            .orderBy('createdAt', descending: true)
+            .get();
+        setState(() {
+          _resumes = querySnapshot.docs;
+          _isLoading = false;
+        });
+      }
     } catch (e) {
       print("Failed to fetch resumes: $e");
       setState(() {
@@ -129,7 +137,7 @@ class _ResumeManageState extends State<ResumeManage> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => ResumeView(
-                          userId: widget.id,
+                          id: widget.id,
                           resumeId: resume.id,
                         ),
                       ),

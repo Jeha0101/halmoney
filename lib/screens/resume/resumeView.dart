@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
-import 'dart:typed_data';
-import 'dart:ui' as ui;
 
 class ResumeView extends StatefulWidget {
-  final String userId;
+  final String id;
   final String resumeId;
 
-  const ResumeView({Key? key, required this.userId, required this.resumeId})
+  const ResumeView({Key? key, required this.id, required this.resumeId})
       : super(key: key);
 
   @override
@@ -28,16 +26,27 @@ class _ResumeViewState extends State<ResumeView> {
 
   Future<void> _fetchResumeData() async {
     try {
-      DocumentSnapshot doc = await _firestore
+      final QuerySnapshot result = await _firestore
           .collection('user')
-          .doc(widget.userId)
-          .collection('resumes')
-          .doc(widget.resumeId)
+          .where('id', isEqualTo: widget.id)
           .get();
 
-      setState(() {
-        _resumeData = doc.data() as Map<String, dynamic>;
-      });
+      final List<DocumentSnapshot> documents = result.docs;
+
+      if (documents.isNotEmpty) {
+        final String docId = documents.first.id;
+
+        DocumentSnapshot doc = await _firestore
+            .collection('user')
+            .doc(docId)
+            .collection('resumes')
+            .doc(widget.resumeId)
+            .get();
+
+        setState(() {
+          _resumeData = doc.data() as Map<String, dynamic>;
+        });
+      }
     } catch (e) {
       print("Failed to fetch resume data: $e");
     }
@@ -45,13 +54,24 @@ class _ResumeViewState extends State<ResumeView> {
 
   Future<void> _deleteResume() async {
     try {
-      await _firestore
+      final QuerySnapshot result = await _firestore
           .collection('user')
-          .doc(widget.userId)
-          .collection('resumes')
-          .doc(widget.resumeId)
-          .delete();
-      Navigator.of(context).pop();
+          .where('id', isEqualTo: widget.id)
+          .get();
+
+      final List<DocumentSnapshot> documents = result.docs;
+
+      if (documents.isNotEmpty) {
+        final String docId = documents.first.id;
+
+        await _firestore
+            .collection('user')
+            .doc(docId)
+            .collection('resumes')
+            .doc(widget.resumeId)
+            .delete();
+        Navigator.of(context).pop();
+      }
     } catch (e) {
       print("Failed to delete resume: $e");
     }
@@ -309,27 +329,35 @@ class _ResumeViewState extends State<ResumeView> {
                     await _deleteResume();
                   }
                 },
-                style: ElevatedButton.styleFrom(
-                  //primary: Color.fromARGB(250, 51, 51, 255),
-                  padding: EdgeInsets.symmetric(vertical: 15.0),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 51, 51, 255)),
+                  padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.symmetric(vertical: 15.0)),
                 ),
                 child: Text(
                   '삭제하기',
-                  style: TextStyle(fontSize: 16),
+                  style: TextStyle(fontSize: 16,color: Colors.white),
                 ),
               ),
             ),
             SizedBox(width: 10),
             Expanded(
               child: ElevatedButton(
-                onPressed: _copyTextToClipboard,
-                style: ElevatedButton.styleFrom(
-                  //color: Color.fromARGB(250, 51, 51, 255),
-                  padding: EdgeInsets.symmetric(vertical: 15.0),
+                onPressed: () {
+                  _copyTextToClipboard();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('텍스트가 복사되었습니다'),
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
+                },
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 51, 51, 255)),
+                  padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.symmetric(vertical: 15.0)),
                 ),
                 child: Text(
                   '텍스트 복사하기',
-                  style: TextStyle(fontSize: 16),
+                  style: TextStyle(fontSize: 16, color: Colors.white),
                 ),
               ),
             ),

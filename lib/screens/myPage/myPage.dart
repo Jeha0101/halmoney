@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:halmoney/screens/resume/resumeManage.dart';
+import 'package:halmoney/screens/resume/select_skill_page.dart';
 //import 'package:halmoney/screens/resume/resumeCreate.dart';
 import 'package:halmoney/screens/scrap/UserLikes.dart';
 import 'package:halmoney/pages/extra_resume_page.dart';
@@ -94,7 +96,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ExtraResumePage(id: widget.id)),
+                        MaterialPageRoute(builder: (context) => ResumeManage(id: widget.id)),
                       );
                     },
                     child: Container(
