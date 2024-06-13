@@ -2,14 +2,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:halmoney/AI_pages/AI_select_cond_page.dart';
+import 'package:halmoney/Recruit_detail_pages/Recruit_main_page.dart';
 
-class AIRecommResultPage extends StatelessWidget {
+class CondSearchResultPage extends StatelessWidget {
   final List<DocumentSnapshot> jobs;
-  const AIRecommResultPage({super.key, required this.jobs});
+  const CondSearchResultPage({super.key, required this.jobs});
 
   @override
   Widget build(BuildContext context) {
-    print('AIRecommResultPage ${jobs.length} jobs');
+    print('CondSearchResultPage ${jobs.length} jobs');
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromARGB(250, 51, 51, 255),
@@ -41,26 +42,34 @@ class AIRecommResultPage extends StatelessWidget {
             padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0, bottom: 10.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: jobs.map((job) => AI_recommendation(job: job)).toList(),
+              children: jobs.map((job) => Cond_Search(job: job)).toList(),
             )),
       ),
     );
   }
 }
 
-class AI_recommendation extends StatelessWidget {
+class Cond_Search extends StatelessWidget {
   final DocumentSnapshot job;
-  const AI_recommendation({super.key, required this.job});
+  const Cond_Search({super.key, required this.job});
 
   @override
   Widget build(BuildContext context) {
     final Map<String, dynamic> jobData = job.data() as Map<String, dynamic>;
     return ElevatedButton(
       onPressed: () {
-        /*Navigator.push(
+        Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const Recruit_main()),
-        );*/
+          MaterialPageRoute(builder: (context) => Recruit_main(
+              title: jobData['title'],
+              address: jobData['address'],
+              wage: jobData['wage'],
+              career: jobData['job_name'],
+              detail: jobData['detail'],
+              workweek: jobData['work_time_week'],
+              //userId: widget.id,
+          )),
+        );
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.white,
