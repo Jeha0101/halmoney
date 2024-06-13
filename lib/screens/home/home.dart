@@ -1,11 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:halmoney/AI_pages/AI_recomm_page.dart';
 import 'package:halmoney/AI_pages/AI_select_cond_page.dart';
 import 'package:halmoney/screens/map/mapPage.dart';
-
-
+import 'package:url_launcher/url_launcher.dart';
 import '../resume/select_skill_page.dart';
 
 class MyHomePage extends StatelessWidget{
@@ -66,10 +64,19 @@ class MyHomePage extends StatelessWidget{
                   viewportFraction: 1.0,
                 ),
                 itemBuilder: (context, itemIndex, realIndex){
-                  return Image.asset(
-                    mainUrls[itemIndex],
-                    fit: BoxFit.cover,
-                    width: MediaQuery.of(context).size.width,
+                  return GestureDetector(
+                    onTap: (){
+                      if (itemIndex == 0) {
+                        plus50();
+                      } else if (itemIndex == 1) {
+                        worknet();
+                      }
+                    },
+                    child: Image.asset(
+                      mainUrls[itemIndex],
+                      fit: BoxFit.cover,
+                      width: MediaQuery.of(context).size.width,
+                    ),
                   );
                 },
               ),
@@ -361,5 +368,21 @@ class MyHomePage extends StatelessWidget{
         ),
       ),
     );
+  }
+  void plus50() async {
+    const url = 'https://50plus.or.kr';
+    if (await launch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+  void worknet() async {
+    const url = 'https://www.work.go.kr/senior/main/main.do';
+    if (await launch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }
