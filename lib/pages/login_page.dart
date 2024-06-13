@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:halmoney/myAppPage.dart';
 import 'package:halmoney/pages/agreement_page.dart';
+import 'dart:convert';
+import 'package:crypto/crypto.dart';
 
 final storage = FirebaseStorage.instance;
 
@@ -16,12 +18,15 @@ class LoginPage extends StatelessWidget{
     final String id = _idController.text;
     final String password = _passwordController.text;
 
+    final bytes = utf8.encode(password);
+    final hashedPassword = sha256.convert(bytes).toString();
+
     //Firestore에서 사용자 문서(토큰) 가져오기
     try{
       final QuerySnapshot result = await FirebaseFirestore.instance
           .collection('user')
           .where('id', isEqualTo: id)
-          .where('password', isEqualTo: password)
+          .where('password', isEqualTo: hashedPassword)
           .get();
 
       final List<DocumentSnapshot> documents = result.docs;
