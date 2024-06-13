@@ -61,6 +61,7 @@ class Cond_Search extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => Recruit_main(
+            num: jobData['num'],
               title: jobData['title'],
               address: jobData['address'],
               wage: jobData['wage'],

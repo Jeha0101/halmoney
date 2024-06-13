@@ -20,43 +20,43 @@ class _JobSearchState extends State<JobSearch> {
   @override
   void initState() {
     super.initState();
-    _fetchJobsAndUserLikes();
+    _fetchUserLikes();
+    _fetchJobs();
+
   }
 
-  Future<void> _fetchJobsAndUserLikes() async {
+  Future<void> _fetchUserLikes() async {
     try {
-      // Fetching user document ID
-      final QuerySnapshot resultId = await _firestore
+      final QuerySnapshot userQuery = await _firestore
           .collection('user')
           .where('id', isEqualTo: widget.id)
           .get();
-      final List<DocumentSnapshot> documentId = resultId.docs;
 
-      if (documentId.isNotEmpty) {
-        userDocId = documentId.first.id;
-      } else {
-        print("JobSearch user not found");
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("공고페이지에서 사용자가 확인되지 않았습니다.")),
-        );
-        return;
+      if (userQuery.docs.isNotEmpty) {
+        final String userId = userQuery.docs.first.id;
+        final QuerySnapshot userLikesQuery = await _firestore
+            .collection('user')
+            .doc(userId)
+            .collection('users_like')
+            .get();
+
+        setState(() {
+          userLikes = userLikesQuery.docs.map((doc) => doc['num'].toString()).toList();
+        });
+        print(userLikes);
       }
+    } catch (error) {
+      print("Failed to fetch user likes: $error");
+    }
+  }
 
-      // Fetching user likes
-      final QuerySnapshot userLikesQuery = await _firestore
-          .collection('user')
-          .doc(userDocId)
-          .collection('users_like')
-          .get();
-
-      userLikes = userLikesQuery.docs.map((doc) => doc['num'].toString()).toList();
-
-      // Fetching job information
-      final QuerySnapshot jobResult = await _firestore.collection('jobs').get();
-      final List<DocumentSnapshot> jobDocuments = jobResult.docs;
+  Future<void> _fetchJobs() async {
+    try {
+      final QuerySnapshot result = await _firestore.collection('jobs').get();
+      final List<DocumentSnapshot> documents = result.docs;
 
       setState(() {
-        jobs = jobDocuments.map((doc) {
+        jobs = documents.map((doc) {
           final data = doc.data() as Map<String, dynamic>;
           return {
             'num': data['num'] ?? 0,
@@ -66,14 +66,15 @@ class _JobSearchState extends State<JobSearch> {
             'career': data['career'] ?? 'No Career',
             'detail': data['detail'] ?? 'No detail',
             'workweek': data['work_time_week'] ?? 'No work Week',
-            'isLiked': userLikes.contains(data['num'].toString()),
+            'isLiked': userLikes.contains(data['num'].toString()) ?? false
           };
         }).toList();
+        print(jobs);
       });
     } catch (error) {
-      print("Failed to fetch jobs and user likes: $error");
+      print("Failed to fetch jobs: $error");
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Failed to fetch jobs and user likes: $error")),
+        SnackBar(content: Text("Failed to fetch jobs: $error")),
       );
     }
   }

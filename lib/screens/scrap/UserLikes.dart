@@ -121,6 +121,7 @@ class _UserLikesState extends State<UserLikesScreen>{
                   detail: job['detail'],
                   workweek: job['week'],
                   isLiked: job['isLiked'],
+                  userDocId: '',
 
                 ),
               );
