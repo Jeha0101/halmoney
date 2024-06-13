@@ -23,12 +23,14 @@ class _CommunityState extends State<Communitypage> {
       final QuerySnapshot result = await _firestore.collection('community').get();
       final List<DocumentSnapshot> documents = result.docs;
 
+
       setState(() {
         writings = documents.map((doc) {
           final data = doc.data() as Map<String, dynamic>;
           return {
             'title': data['title']??'No title',
             'contents': data['contents']??'No contents',
+            'timestamp': data['timestamp'] as Timestamp,
           };
         }).toList();
       });
@@ -72,6 +74,7 @@ class _CommunityState extends State<Communitypage> {
                  return Community_widget(id: widget.id,
                      title: writing['title'],
                      contents: writing['contents'],
+                   timestamp: writing['timestamp'],
                  );
                },
              ),
