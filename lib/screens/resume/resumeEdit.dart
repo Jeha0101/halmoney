@@ -19,7 +19,6 @@ class ResumeItem {
   late List<String> selectedStrens;
   late String selfIntroduction;
   late String title;
-  File? image;
 
   ResumeItem({
     required this.name,
@@ -31,7 +30,6 @@ class ResumeItem {
     required this.selectedSkills,
     required this.selectedStrens,
     required this.selfIntroduction,
-    this.image,
   });
 
   //이력서 데이터를 Map으로 변환하는 함수
@@ -44,7 +42,6 @@ class ResumeItem {
       'phone': phone,
       'workExperiences': workExperiences.map((e) => e.toMap()).toList(),
       'selfIntroduction': selfIntroduction,
-      'image': image?.path, // 이미지 경로를 저장
     };
   }
 }
@@ -194,17 +191,6 @@ class _ResumeEditState extends State<ResumeEdit> {
     } catch (e) {
       print('Exception: $e');
       return 'Failed to fetch response: $e';
-    }
-  }
-
-  // 이미지 저장
-  Future<void> _pickImage() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      setState(() {
-        resumeItem.image = File(pickedFile.path);
-      });
     }
   }
 
@@ -360,42 +346,6 @@ class _ResumeEditState extends State<ResumeEdit> {
                         children: [
                           const SizedBox(
                             width: 5,
-                          ),
-                          GestureDetector(
-                            onTap: _pickImage,
-                            child: Container(
-                              height: 100,
-                              width: 100,
-                              alignment: Alignment.center,
-                              decoration: const BoxDecoration(
-                                color: Colors.white,
-                                shape: BoxShape.circle,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey,
-                                    spreadRadius: 2.5,
-                                    blurRadius: 10.0,
-                                    blurStyle: BlurStyle.inner,
-                                  ),
-                                ],
-                              ),
-                              child: resumeItem.image == null
-                                  ? const Text(
-                                      '사진\n등록',
-                                      style: TextStyle(fontSize: 15),
-                                    )
-                                  : ClipOval(
-                                      child: Image.file(
-                                        resumeItem.image!,
-                                        width: 100,
-                                        height: 100,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 35,
                           ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
