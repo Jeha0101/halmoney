@@ -69,10 +69,10 @@ class SelectStrenPage extends StatelessWidget {
                   )
               ),
               onPressed: () {
-                Navigator.push(
+                /*Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => const ExtraResumePage())
-                );
+                );*/
               },
               child: const Text('다음 페이지로 이동',style: TextStyle(color: Colors.white),),
             ),

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:halmoney/screens/resume/resumeCreate.dart';
-import 'package:halmoney/screens/scrap/scrap.dart';
-
+import 'package:halmoney/screens/scrap/UserLikes.dart';
+import 'package:halmoney/pages/extra_resume_page.dart';
 class MyPageScreen extends StatelessWidget {
-  const MyPageScreen({super.key,});
+  final String id;
+  const MyPageScreen({super.key, required this.id});
 
   @override
   Widget build(BuildContext context) {
@@ -43,12 +44,12 @@ class MyPageScreen extends StatelessWidget {
                       color: Colors.white,
                       shape: BoxShape.circle,
                       boxShadow: [
-                      BoxShadow(color : Colors.grey,
-                        spreadRadius:2.5,
-                        blurRadius: 10.0,
-                        blurStyle: BlurStyle.inner,
-                      ),
-                    ],
+                        BoxShadow(color : Colors.grey,
+                          spreadRadius:2.5,
+                          blurRadius: 10.0,
+                          blurStyle: BlurStyle.inner,
+                        ),
+                      ],
                     ),
                     child: const Icon(
                       Icons.person_outline,
@@ -56,8 +57,8 @@ class MyPageScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 20,),
-                  const Text(
-                    '홍길동',
+                  Text(
+                    '$id 님',
                     style: TextStyle(
                       fontSize: 25,
                     ),
@@ -74,14 +75,14 @@ class MyPageScreen extends StatelessWidget {
                 shrinkWrap: true,
                 primary: false,
                 crossAxisCount: 2,
-                  childAspectRatio: 4/3 ,
+                childAspectRatio: 4/3 ,
                 children: <Widget>[
                   //이력서 관리
                   GestureDetector(
                     onTap: (){
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ResumeCreate()),
+                        MaterialPageRoute(builder: (context) => ExtraResumePage(id: id)),
                       );
                     },
                     child: Container(
@@ -121,7 +122,7 @@ class MyPageScreen extends StatelessWidget {
                     onTap: (){
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const MyScrapScreen()),
+                        MaterialPageRoute(builder: (context) => UserLikesScreen(id: id)),
                       );
                     },
                     child: Container(
@@ -160,7 +161,7 @@ class MyPageScreen extends StatelessWidget {
                     onTap: (){
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const MyScrapScreen()),
+                        MaterialPageRoute(builder: (context) => UserLikesScreen(id: id)),
                       );
                     },
                     child: Container(
@@ -199,7 +200,7 @@ class MyPageScreen extends StatelessWidget {
                     onTap: (){
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const MyScrapScreen()),
+                        MaterialPageRoute(builder: (context) => UserLikesScreen(id: id)),
                       );
                     },
                     child: Container(
@@ -237,7 +238,7 @@ class MyPageScreen extends StatelessWidget {
                     onTap: (){
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const MyScrapScreen()),
+                        MaterialPageRoute(builder: (context) => UserLikesScreen(id: id)),
                       );
                     },
                     child: Container(
@@ -276,7 +277,7 @@ class MyPageScreen extends StatelessWidget {
                     onTap: (){
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const MyScrapScreen()),
+                        MaterialPageRoute(builder: (context) => UserLikesScreen(id: id)),
                       );
                     },
                     child: Container(

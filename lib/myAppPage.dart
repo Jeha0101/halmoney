@@ -22,9 +22,9 @@ class MyAppState extends State<MyAppPage>{
     super.initState();
     _navIndex = [
       MyHomePage(id: widget.id),
-      const JobSearch(),
-      const Communitypage(),
-      const MyPageScreen(),
+      JobSearch(id: widget.id),
+      Communitypage(id: widget.id),
+      MyPageScreen(id: widget.id),
     ];
   }
   /*final List<Widget> _navIndex = [

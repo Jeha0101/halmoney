@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
         Locale('ko', ''), //Korean, no country code
       ],
       debugShowCheckedModeBanner:  false,
-      home: AISelectCondPage(id: id),
+      home: LoginPage()
       // home: const SignupPgOne(),
       // initialRoute: "/login",
       // routes: {
