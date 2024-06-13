@@ -225,6 +225,7 @@ flutter:
     - assets/images/img_kakao.png
     - assets/images/resume.png
     - assets/images/
+    - assets/images/mainImages/
     - assets/font/
     - assets/
     - .env

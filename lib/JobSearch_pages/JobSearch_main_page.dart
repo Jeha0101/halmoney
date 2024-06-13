@@ -81,6 +81,7 @@ class _JobSearchState extends State<JobSearch> {
             'career': data['career'] ?? 'No Career',
             'detail': data['detail'] ?? 'No detail',
             'workweek': data['work_time_week'] ?? 'No work Week',
+            'image_path': data['image_path']??'No_path',
             'isLiked': userLikes.contains(data['num'].toString())
           };
         }).toList();
@@ -157,6 +158,7 @@ class _JobSearchState extends State<JobSearch> {
                   career: job['career'],
                   detail: job['detail'],
                   workweek: job['workweek'],
+                  image_path: job['image_path'],
                   isLiked: job['isLiked'],
                   userDocId: userDocId ?? '',
                 ),

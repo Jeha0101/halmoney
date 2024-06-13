@@ -15,6 +15,7 @@ class Recruit_main extends StatelessWidget {
   final String career;
   final String detail;
   final String workweek;
+  final String image_path;
 
   Recruit_main({
     required this.id,
@@ -25,6 +26,7 @@ class Recruit_main extends StatelessWidget {
     required this.career,
     required this.detail,
     required this.workweek,
+    required this.image_path,
     Key? key,
   }): super(key: key);
 
@@ -94,8 +96,9 @@ class Recruit_main extends StatelessWidget {
                         children: [
                           ClipRRect(
                               borderRadius: BorderRadius.circular(17),
+
                               child: Image.asset(
-                                'assets/images/songpa.png',
+                                image_path,
                                 height: 175,
                                 width: 335,
                                 fit: BoxFit.cover,

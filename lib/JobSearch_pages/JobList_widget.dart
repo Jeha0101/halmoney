@@ -13,6 +13,7 @@ class JobList extends StatefulWidget {
   final String workweek;
   final bool isLiked;
   final String userDocId;
+  final String image_path;
 
   const JobList({
     required this.id,
@@ -25,6 +26,7 @@ class JobList extends StatefulWidget {
     required this.workweek,
     required this.isLiked,
     required this.userDocId,
+    required this.image_path,
     Key? key,
   }) : super(key: key);
 
@@ -65,6 +67,7 @@ class _JobListState extends State<JobList> {
           'career': widget.career,
           'detail': widget.detail,
           'week': widget.workweek,
+          'image_path': widget.image_path,
         });
       } else {
         final QuerySnapshot favoriteResult = await _firestore
@@ -119,6 +122,7 @@ class _JobListState extends State<JobList> {
               career: widget.career,
               detail: widget.detail,
               workweek: widget.workweek,
+              image_path: widget.image_path,
             ),
           ),
         );
@@ -142,7 +146,7 @@ class _JobListState extends State<JobList> {
                 child: Column(
                   children: [
                     Image.asset(
-                      "assets/images/songpa.png",
+                      widget.image_path,
                       width: 90,
                       height: 90,
                     )

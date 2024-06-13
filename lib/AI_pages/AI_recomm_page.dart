@@ -218,6 +218,7 @@ class _AIRecommPage extends State<AIRecommPage> {
                     career: job['career'],
                     detail: job['detail'],
                     workweek: job['workweek'],
+                    image_path: job['image_path'],
                   ),
                 ),
               );
