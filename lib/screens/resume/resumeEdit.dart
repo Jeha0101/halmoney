@@ -153,8 +153,8 @@ class _ResumeEditState extends State<ResumeEdit> {
     const requestsTimeOut = const Duration(seconds: 60);
 
     String prompt = '''다음 특징을 갖는 사람의 자기소개서 작성 :
-    성별:$gender, 생년월:$dob, 경력 :$workExperiences, 기술:$selectedSkills, 장점:$selectedStrens;
-    주의 : 성별과 생년월을 언급할 필요는 없다. 공적인 말투.'안녕하세요', '감사합니다'와 같은 인사와 마무리 인사는 모두 생략한다''';
+    성별:$gender, 생년:$dob, 경력 :$workExperiences, 기술:$selectedSkills, 장점:$selectedStrens;
+    주의 : 성별과 생년월을 언급할 필요는 없다. 공적인 말투.'안녕하세요'와 같은 인사는 생략한다''';
 
     try {
       final response = await http.post(
