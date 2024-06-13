@@ -85,6 +85,7 @@ class _JobSearchState extends State<JobSearch> {
             'isLiked': userLikes.contains(data['num'].toString())
           };
         }).toList();
+        print(jobs);
       });
     } catch (error) {
       print("Failed to fetch jobs: $error");
@@ -93,6 +94,7 @@ class _JobSearchState extends State<JobSearch> {
       );
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -110,35 +112,15 @@ class _JobSearchState extends State<JobSearch> {
         right: false,
         child: Scaffold(
           appBar: AppBar(
-            backgroundColor: Color.fromARGB(250, 51, 51, 255),
-            elevation: 1.0,
-            title: Row(
-              children: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  icon: const Icon(Icons.arrow_back_ios_rounded),
-                  color: Colors.grey,
-                ),
-                Image.asset(
-                  'assets/images/img_logo.png',
-                  fit: BoxFit.contain,
-                  height: 40,
-                ),
-                Container(
-                  padding: const EdgeInsets.all(8.0),
-                  child: const Text(
-                    '할MONEY',
-                    style: TextStyle(
-                      fontFamily: 'NanumGothicFamily',
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18.0,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ],
+            title: const Text('공고리스트'),
+            centerTitle: true,
+            backgroundColor: const Color.fromARGB(250, 51, 51, 255),
+            leading: IconButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              icon: const Icon(Icons.arrow_back_ios_rounded),
+              color: Colors.grey,
             ),
           ),
           body: jobs.isEmpty
@@ -170,3 +152,4 @@ class _JobSearchState extends State<JobSearch> {
     );
   }
 }
+

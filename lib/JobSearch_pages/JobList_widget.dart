@@ -67,7 +67,6 @@ class _JobListState extends State<JobList> {
           'career': widget.career,
           'detail': widget.detail,
           'week': widget.workweek,
-          'image_path': widget.image_path,
         });
       } else {
         final QuerySnapshot favoriteResult = await _firestore
@@ -86,10 +85,17 @@ class _JobListState extends State<JobList> {
 
   Future<void> _saveViewedJob() async {
     try {
-      if (widget.userDocId.isNotEmpty) {
+      final QuerySnapshot result = await _firestore
+          .collection('user')
+          .where('id', isEqualTo: widget.id)
+          .get();
+      final List<DocumentSnapshot> documents = result.docs;
+
+      if (documents.isNotEmpty) {
+        final String docId = documents.first.id;
         final viewedJobsRef = _firestore
             .collection('user')
-            .doc(widget.userDocId)
+            .doc(docId)
             .collection('viewed_jobs')
             .doc();
 
@@ -146,7 +152,7 @@ class _JobListState extends State<JobList> {
                 child: Column(
                   children: [
                     Image.asset(
-                      widget.image_path,
+                      "assets/images/songpa.png",
                       width: 90,
                       height: 90,
                     )

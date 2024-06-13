@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:halmoney/AI_pages/AI_select_cond_page.dart';
-import 'package:halmoney/myAppPage.dart';
 import 'package:halmoney/pages/login_page.dart';
-import 'package:halmoney/screens/resume/select_skill_page.dart';
 import 'package:halmoney/theme.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'JobSearch_pages/JobSearch_main_page.dart';
 import 'firebase_options.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 

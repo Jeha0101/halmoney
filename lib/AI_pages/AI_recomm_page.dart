@@ -1,6 +1,8 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:halmoney/Recruit_detail_pages/Recruit_main_page.dart';
+import 'cond_search_result_page.dart';
 
 class AIRecommPage extends StatefulWidget {
   final String id;
@@ -17,8 +19,8 @@ class _AIRecommPage extends State<AIRecommPage> {
   List<String> interestWork = []; // 사용자의 관심 분야 목록
   List<Map<String, dynamic>> viewedJobs = []; // 사용자가 본 공고 목록
   List<Map<String, dynamic>> likedJobs = []; // 사용자가 찜한 공고 목록
-  List<Map<String, dynamic>> recommendedJobs = []; // 추천된 공고 목록
-  List<Map<String, dynamic>> allJobs = []; // 모든 공고 목록
+  List<DocumentSnapshot> recommendedJobs = []; // 추천된 공고 목록
+  List<DocumentSnapshot> allJobs = []; // 모든 공고 목록
   bool isLoading = true; // 로딩 상태 플래그
 
   @override
@@ -47,7 +49,7 @@ class _AIRecommPage extends State<AIRecommPage> {
             .collection('Interest')
             .doc('interests_work')
             .get();
-        final interestWorkData = interestWorkSnapshot.data() as Map<String, dynamic>?;
+        final interestWorkData = interestWorkSnapshot.data();
         if (interestWorkData != null) {
           setState(() {
             interestWork = List<String>.from(interestWorkData['int_work']);
@@ -61,10 +63,12 @@ class _AIRecommPage extends State<AIRecommPage> {
             .collection('Interest')
             .doc('interest_place')
             .get();
-        final interestPlaceData = interestPlaceSnapshot.data() as Map<String, dynamic>?;
+        final interestPlaceData = interestPlaceSnapshot.data();
         if (interestPlaceData != null) {
           setState(() {
-            interestPlace = interestPlaceData['inter_place'];
+            String place = interestPlaceData['inter_place'];
+            var placeparts = place.split('>');
+            interestPlace = placeparts.length > 1 ? placeparts[1].trim():'';
           });
         }
 
@@ -84,20 +88,6 @@ class _AIRecommPage extends State<AIRecommPage> {
           }).toList();
         });
 
-        // 사용자가 찜한 공고 목록 가져오기
-        final likedJobsSnapshot = await _firestore
-            .collection('user')
-            .doc(docId)
-            .collection('users_like')
-            .get();
-        setState(() {
-          likedJobs = likedJobsSnapshot.docs.map((doc) {
-            final data = doc.data() as Map<String, dynamic>;
-            return {
-              'job_title': data['job_title']
-            };
-          }).toList();
-        });
 
         // 모든 공고 가져오기 및 추천 계산
         await fetchAllJobs();
@@ -117,11 +107,7 @@ class _AIRecommPage extends State<AIRecommPage> {
       // 모든 공고 가져오기
       final QuerySnapshot jobSnapshot = await _firestore.collection('jobs').get();
       setState(() {
-        allJobs = jobSnapshot.docs.map((doc) {
-          final data = doc.data() as Map<String, dynamic>;
-          data['doc_id'] = doc.id; // 문서 ID를 데이터에 포함시키기
-          return data;
-        }).toList();
+        allJobs = jobSnapshot.docs;
       });
     } catch (error) {
       print("Failed to fetch all jobs: $error");
@@ -131,48 +117,167 @@ class _AIRecommPage extends State<AIRecommPage> {
     }
   }
 
+  // TF-IDF 계산을 위한 함수
+  Map<String, double> computeTF(String document, List<String> corpus) {
+    Map<String, double> tf = {};
+    List<String> words = document.split(' ');
+
+    for (String word in words) {
+      tf[word] = (tf[word] ?? 0) + 1;
+    }
+
+    for (String word in tf.keys) {
+      tf[word] = tf[word]! / words.length;
+    }
+
+    return tf;
+  }
+
+  Map<String, double> computeIDF(List<String> corpus) {
+    Map<String, double> idf = {};
+    int totalDocuments = corpus.length;
+
+    for (String document in corpus) {
+      List<String> words = document.split(' ').toSet().toList();
+      for (String word in words) {
+        idf[word] = (idf[word] ?? 0) + 1;
+      }
+    }
+
+    for (String word in idf.keys) {
+      idf[word] = log(totalDocuments / (idf[word]!));
+    }
+
+    return idf;
+  }
+
+  Map<String, double> computeTFIDF(String document, List<String> corpus) {
+    Map<String, double> tf = computeTF(document, corpus);
+    Map<String, double> idf = computeIDF(corpus);
+
+    Map<String, double> tfidf = {};
+    for (String word in tf.keys) {
+      tfidf[word] = tf[word]! * idf[word]!;
+    }
+
+    return tfidf;
+  }
+
+  double cosineSimilarity(Map<String, double> vec1, Map<String, double> vec2) {
+    double dotProduct = 0.0;
+    double magnitude1 = 0.0;
+    double magnitude2 = 0.0;
+
+    for (String key in vec1.keys) {
+      dotProduct += vec1[key]! * (vec2[key] ?? 0);
+      magnitude1 += pow(vec1[key]!, 2);
+    }
+
+    for (String key in vec2.keys) {
+      magnitude2 += pow(vec2[key]!, 2);
+    }
+
+    magnitude1 = sqrt(magnitude1);
+    magnitude2 = sqrt(magnitude2);
+
+    if (magnitude1 != 0.0 && magnitude2 != 0.0) {
+      return dotProduct / (magnitude1 * magnitude2);
+    } else {
+      return 0.0;
+    }
+  }
+
+
   // 추천 계산 함수
   void computeRecommendations() {
-    // 사용자의 관심 분야와 찜한 공고 제목을 하나의 프로파일로 합치기
+    // 사용자의 관심 분야와 열람한 공고 제목을 하나의 프로파일로 합치기
     List<String> userProfile = List.from(interestWork);
-    userProfile.addAll(likedJobs.map<String>((job) => job['job_title'] as String).toList());
+    userProfile.addAll(viewedJobs.map<String>((job) => job['job_title']).toList());
+    String userProfileStr = userProfile.join(' ');
 
-    // 공고 목록과 사용자의 프로파일을 비교하여 유사도 점수 계산
+    print("User Profile: $userProfile");
+
+    /*// 공고 목록과 사용자의 프로파일을 비교하여 유사도 점수 계산
     final List<Map<String, dynamic>> recommendations = [];
-    for (var job in allJobs) {
+    for (var jobDoc in allJobs) {
+      final job = jobDoc.data() as Map<String, dynamic>;
       final String jobTitle = job['title'] ?? '';
-      final String jobDescription = job['description'] ?? '';
+      final String jobDescription = job['detail'] ?? '';
       final String jobAddress = job['address'] ?? '';
 
       // 공고 제목과 설명을 합쳐서 유사도 계산
-      final List<String> jobKeywords = (jobTitle + ' ' + jobDescription).split(' ');
+      final List<String> jobKeywords = ('$jobTitle $jobDescription').split(' ');
+      // 공고 키워드 출력
+      print("Job Keywords for '$jobTitle': $jobKeywords");
 
       // 사용자 프로파일과 공고 키워드의 겹치는 개수를 유사도 점수로 사용
-      int similarityScore = userProfile.fold(0, (prev, keyword) => prev + (jobKeywords.contains(keyword) ? 1 : 0));
+      int similarityScore = userProfile.fold(0, (prev, keyword) => prev + (jobKeywords.contains(keyword) ? 2 : 0));
 
       // 관심 지역과 공고 지역이 일치하면 유사도 점수 증가
       if (jobAddress.contains(interestPlace)) {
-        similarityScore += 1;
-      }
+        similarityScore += 3;
+      }*/
 
-      job['similarity_score'] = similarityScore;
-      recommendations.add(job);
+    List<String> jobDescriptions = allJobs.map<String>((jobDoc) {
+        final job = jobDoc.data() as Map<String, dynamic>;
+        return '${job['title'] ?? ''} ${job['detail'] ?? ''}';
+      }).toList();
+
+    List<Map<String, dynamic>> recommendations = [];
+
+    Map<String, double> userProfileTFIDF = computeTFIDF(userProfileStr, jobDescriptions + [userProfileStr]);
+
+    for (int i = 0; i < allJobs.length; i++) {
+        final jobDoc = allJobs[i];
+        final job = jobDoc.data() as Map<String, dynamic>;
+        String jobDesc = '${job['title'] ?? ''} ${job['detail'] ?? ''}';
+        Map<String, double> jobTFIDF = computeTFIDF(jobDesc, jobDescriptions + [userProfileStr]);
+
+        double similarityScore = cosineSimilarity(userProfileTFIDF, jobTFIDF);
+        if (job['address'].contains(interestPlace)) {
+          similarityScore += 0.3; // 관심 지역에 일치하는 경우 점수를 약간 증가시킴
+        }
+
+        job['similarity_score'] = similarityScore;
+      recommendations.add({
+        'job': jobDoc,
+        'similarity_score': similarityScore
+      });
     }
 
     // 유사도 점수를 기준으로 공고 정렬
     recommendations.sort((a, b) => b['similarity_score'].compareTo(a['similarity_score']));
 
+    // 상위 15개 공고만 선택
+    final topRecommendations = recommendations.take(15).toList();
+
+    // 상위 15개 공고의 유사도 점수 출력
+    print("Top 15 Recommendations:");
+    for (var recommendation in topRecommendations) {
+      final job = recommendation['job'] as DocumentSnapshot;
+      final jobData = job.data() as Map<String, dynamic>;
+      print("Job: ${jobData['title']}, Similarity Score: ${recommendation['similarity_score']}");
+    }
+
     setState(() {
-      recommendedJobs = recommendations;
+      recommendedJobs = topRecommendations.map((r) => r['job'] as DocumentSnapshot).toList();
       isLoading = false;
     });
+
+    // 이동할 때 filtered job list를 넘김
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CondSearchResultPage(jobs: recommendedJobs),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(250, 51, 51, 255),
+        backgroundColor: const Color.fromARGB(250, 51, 51, 255),
         elevation: 1.0,
         title: Row(
           children: [
@@ -196,36 +301,7 @@ class _AIRecommPage extends State<AIRecommPage> {
           ],
         ),
       ),
-      body: isLoading
-          ? Center(child: CircularProgressIndicator())
-          : ListView.builder(
-        itemCount: recommendedJobs.length,
-        itemBuilder: (context, index) {
-          final job = recommendedJobs[index];
-          return ListTile(
-            title: Text(job['title']),
-            subtitle: Text("${job['address']} - ${job['category']}"),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Recruit_main(
-                    id: job['id'],
-                    num: job['num'],
-                    title: job['title'],
-                    address: job['address'],
-                    wage: job['wage'],
-                    career: job['career'],
-                    detail: job['detail'],
-                    workweek: job['workweek'],
-                    image_path: job['image_path'],
-                  ),
-                ),
-              );
-            },
-          );
-        },
-      ),
+      body: isLoading ? const Center(child: CircularProgressIndicator()) : Container(),
     );
   }
 }

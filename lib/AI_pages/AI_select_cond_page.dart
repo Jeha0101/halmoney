@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:halmoney/AI_pages/cond_search_result_page.dart';
-import 'package:halmoney/pages/signup_pg_two.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AISelectCondPage extends StatefulWidget {
@@ -17,11 +16,11 @@ class _AISelectCondPage extends State<AISelectCondPage> {
   Future<void> _AIrecommCondition(BuildContext context, List<String> selectedJobs,
       List<String> selectedPay, List<String> selectedTime) async {
     final seladdress = addressController.text;
-    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
     try {
       //사용자의 구인공고 필터링 조건을 Firestore에 저장
-      final QuerySnapshot result = await _firestore
+      final QuerySnapshot result = await firestore
           .collection('user')
           .where('id', isEqualTo: widget.id)
           .get();
@@ -34,7 +33,7 @@ class _AISelectCondPage extends State<AISelectCondPage> {
         var addressParts = seladdress.split(',');
         var selectedGugun = addressParts.length > 1 ? addressParts[1].trim(): '';
 
-        await _firestore
+        await firestore
             .collection('user')
             .doc(docId)
             .collection('AIRecommendation')
@@ -47,7 +46,7 @@ class _AISelectCondPage extends State<AISelectCondPage> {
         });
 
         //구인 공고 필터링
-        Query jobQuery = _firestore.collection('jobs');
+        Query jobQuery = firestore.collection('jobs');
 
 
         final QuerySnapshot jobResult = await jobQuery.get();
@@ -102,7 +101,7 @@ class _AISelectCondPage extends State<AISelectCondPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(250, 51, 51, 255),
+        backgroundColor: const Color.fromARGB(250, 51, 51, 255),
         elevation: 1.0,
         title: Row(
           children: [
@@ -168,7 +167,7 @@ class _AISelectCondPage extends State<AISelectCondPage> {
 
               const SizedBox(height: 10),
 
-              Container(
+              const SizedBox(
                 height: 330,
                 child: ChooseJobButton(),
               ),
@@ -186,7 +185,7 @@ class _AISelectCondPage extends State<AISelectCondPage> {
 
               const SizedBox(height: 10),
 
-              Container(
+              const SizedBox(
                 height: 130,
                 child: ChoosePayButton(),
               ),
@@ -204,7 +203,7 @@ class _AISelectCondPage extends State<AISelectCondPage> {
 
               const SizedBox(height: 10),
 
-              Container(
+              const SizedBox(
                 height: 260,
                 child: ChooseTimeButton(),
               ),
@@ -287,7 +286,7 @@ class _ChooseTimeButton extends State<ChooseTimeButton> {
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                   backgroundColor:
-                  isSelected ? Colors.blue : Color.fromARGB(250, 255, 255, 250),
+                  isSelected ? Colors.blue : const Color.fromARGB(250, 255, 255, 250),
                   foregroundColor: Colors.black54,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12))),
@@ -349,7 +348,7 @@ class _ChoosePayButton extends State<ChoosePayButton> {
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                   backgroundColor:
-                  isSelected ? Colors.blue : Color.fromARGB(250, 255, 255, 250),
+                  isSelected ? Colors.blue : const Color.fromARGB(250, 255, 255, 250),
                   foregroundColor: Colors.black54,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12))),
@@ -425,7 +424,7 @@ class _ChooseJobButton extends State<ChooseJobButton> {
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                   backgroundColor:
-                  isSelected ? Colors.blue : Color.fromARGB(250, 255, 255, 250),
+                  isSelected ? Colors.blue : const Color.fromARGB(250, 255, 255, 250),
                   foregroundColor: Colors.black54,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12))),
