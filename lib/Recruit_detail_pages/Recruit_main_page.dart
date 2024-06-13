@@ -4,8 +4,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:halmoney/resume2/select_skill_page2.dart';
 
 class Recruit_main extends StatelessWidget {
+  final String id;
   final int num;
   final String title;
   final String address;
@@ -13,8 +15,10 @@ class Recruit_main extends StatelessWidget {
   final String career;
   final String detail;
   final String workweek;
+  final String image_path;
 
   Recruit_main({
+    required this.id,
     required this.num,
     required this.title,
     required this.address,
@@ -22,6 +26,7 @@ class Recruit_main extends StatelessWidget {
     required this.career,
     required this.detail,
     required this.workweek,
+    required this.image_path,
     Key? key,
   }): super(key: key);
 

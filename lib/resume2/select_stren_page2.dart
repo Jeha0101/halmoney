@@ -76,7 +76,7 @@ class _SelectStrenPageState extends State<SelectStrenPage>{
 
             const TextField(
               decoration: InputDecoration(
-                  labelText: '기타 장점을 작성해주세요'
+                  labelText: '기타 장점을 작성해주세요!'
               ),
             ),
 

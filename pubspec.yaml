@@ -53,6 +53,7 @@ dependencies:
   cloud_firestore: ^5.0.0
   flutter_dotenv: ^5.1.0
   image_picker: ^1.1.2
+  url_launcher: ^6.3.0
 
 dev_dependencies:
   flutter_test:
@@ -225,6 +226,7 @@ flutter:
     - assets/images/img_kakao.png
     - assets/images/resume.png
     - assets/images/
+    - assets/images/mainImages/
     - assets/font/
     - assets/
     - .env

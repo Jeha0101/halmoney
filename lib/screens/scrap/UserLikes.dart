@@ -52,6 +52,7 @@ class _UserLikesState extends State<UserLikesScreen>{
               'wage': data['wage']?? 'No wage',
               'week': data['week']?? 'No week',
               'detail': data['detail']?? 'No detail',
+              'image_path':data['image_path']??'No path',
               'isLiked': true,
               // 나머지 필드도 필요에 따라 추가할 수 있습니다.
             };
@@ -121,6 +122,7 @@ class _UserLikesState extends State<UserLikesScreen>{
                   detail: job['detail'],
                   workweek: job['week'],
                   isLiked: job['isLiked'],
+                  image_path: job['image_path'],
                   userDocId: '',
 
                 ),

@@ -1,5 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:halmoney/Recruit_detail_pages/Recruit_main_page.dart';
 
 class JobList extends StatefulWidget {
@@ -12,7 +12,8 @@ class JobList extends StatefulWidget {
   final String detail;
   final String workweek;
   final bool isLiked;
-  //final String userDocId;
+  final String userDocId;
+  final String image_path;
 
   const JobList({
     required this.id,
@@ -24,9 +25,10 @@ class JobList extends StatefulWidget {
     required this.detail,
     required this.workweek,
     required this.isLiked,
-    //required this.userDocId,
-    super.key,
-  });
+    required this.userDocId,
+    required this.image_path,
+    Key? key,
+  }) : super(key: key);
 
   @override
   _JobListState createState() => _JobListState();
@@ -118,6 +120,7 @@ class _JobListState extends State<JobList> {
           context,
           MaterialPageRoute(
             builder: (context) => Recruit_main(
+              id: widget.id,
               num: widget.num,
               title: widget.title,
               address: widget.address,
@@ -125,6 +128,7 @@ class _JobListState extends State<JobList> {
               career: widget.career,
               detail: widget.detail,
               workweek: widget.workweek,
+              image_path: widget.image_path,
             ),
           ),
         );
@@ -141,8 +145,8 @@ class _JobListState extends State<JobList> {
         children: [
           Row(
             children: [
-              const SizedBox(width: 10),
-              SizedBox(
+              SizedBox(width: 10),
+              Container(
                 width: 100,
                 height: 100,
                 child: Column(
@@ -155,8 +159,8 @@ class _JobListState extends State<JobList> {
                   ],
                 ),
               ),
-              const SizedBox(width: 15),
-              SizedBox(
+              SizedBox(width: 15),
+              Container(
                 width: 250,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -167,7 +171,7 @@ class _JobListState extends State<JobList> {
                           Expanded(
                             child: Text(
                               widget.title,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black,
@@ -193,7 +197,7 @@ class _JobListState extends State<JobList> {
                           Expanded(
                             child: Text(
                               widget.address,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.w500,
                                 color: Color.fromARGB(250, 69, 99, 255),
@@ -204,13 +208,13 @@ class _JobListState extends State<JobList> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 3),
+                    SizedBox(height: 3),
                     Container(
                       child: Row(
                         children: [
                           Text(
                             widget.wage,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.normal,
                               color: Colors.black,

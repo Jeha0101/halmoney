@@ -4,10 +4,9 @@ import 'package:halmoney/screens/resume/extra_resume_page.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:convert';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
+import 'package:halmoney/screens/resume/resumeManage.dart';
 
-//이력서 데이터 class
+//이력서 데이터
 class ResumeItem {
   late String name;
   late String gender;
@@ -18,7 +17,7 @@ class ResumeItem {
   late List<String> selectedSkills;
   late List<String> selectedStrens;
   late String selfIntroduction;
-  File? image;
+  late String title;
 
   ResumeItem({
     required this.name,
@@ -30,7 +29,6 @@ class ResumeItem {
     required this.selectedSkills,
     required this.selectedStrens,
     required this.selfIntroduction,
-    this.image,
   });
 
   //이력서 데이터를 Map으로 변환하는 함수
@@ -42,10 +40,7 @@ class ResumeItem {
       'address': address,
       'phone': phone,
       'workExperiences': workExperiences.map((e) => e.toMap()).toList(),
-      'selectedSkills': selectedSkills,
-      'selectedStrens': selectedStrens,
       'selfIntroduction': selfIntroduction,
-      'image': image?.path, // 이미지 경로를 저장
     };
   }
 }
@@ -72,7 +67,8 @@ class _ResumeEditState extends State<ResumeEdit> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   late ResumeItem resumeItem;
   bool _isLoading = true;
-  final TextEditingController _selfIntroductionController = TextEditingController();
+  final TextEditingController _selfIntroductionController =
+      TextEditingController();
 
   @override
   void initState() {
@@ -94,7 +90,7 @@ class _ResumeEditState extends State<ResumeEdit> {
         final String docId = documents.first.id;
 
         final DocumentSnapshot ds =
-        await _firestore.collection('user').doc(docId).get();
+            await _firestore.collection('user').doc(docId).get();
 
         final data = ds.data() as Map<String, dynamic>;
 
@@ -157,8 +153,8 @@ class _ResumeEditState extends State<ResumeEdit> {
     const requestsTimeOut = const Duration(seconds: 60);
 
     String prompt = '''다음 특징을 갖는 사람의 자기소개서 작성 :
-    성별:$gender, 생년월:$dob, 경력 :$workExperiences, 기술:$selectedSkills, 장점:$selectedStrens;
-    주의 : 성별과 생년월을 언급할 필요는 없다. '안녕하세요', '감사합니다'와 같은 인사와 마무리 인사는 모두 생략한다''';
+    성별:$gender, 생년:$dob, 경력 :$workExperiences, 기술:$selectedSkills, 장점:$selectedStrens;
+    주의 : 성별과 생년월을 언급할 필요는 없다. 공적인 말투.'안녕하세요'와 같은 인사는 생략한다''';
 
     try {
       final response = await http.post(
@@ -197,42 +193,43 @@ class _ResumeEditState extends State<ResumeEdit> {
     }
   }
 
-  // 이미지 저장
-  Future<void> _pickImage() async {
-    final pickedFile =
-    await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      setState(() {
-        resumeItem.image = File(pickedFile.path);
-      });
-    }
-  }
-
   // 이력서 저장
   Future<void> _saveResume(String title) async {
-    try {
-      final CollectionReference resumesCollection = _firestore
-          .collection('user')
-          .doc(widget.id)
-          .collection('resumes');
+    final QuerySnapshot result = await _firestore
+        .collection('user')
+        .where('id', isEqualTo: widget.id)
+        .get();
+    final List<DocumentSnapshot> documents = result.docs;
 
-      final DocumentReference newResume = resumesCollection.doc();
+    if (documents.isNotEmpty) {
+      final String docId = documents.first.id;
 
-      await newResume.set({
-        'title': title,
-        'resumeItem': resumeItem.toMap(),
-        'createdAt': FieldValue.serverTimestamp(),
-      });
+      try {
+        final CollectionReference resumesCollection =
+            _firestore.collection('user').doc(docId).collection('resumes');
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Resume saved successfully")),
-      );
-    } catch (error) {
-      print("Failed to save resume data: $error");
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Failed to save resume data: $error")),
-      );
+        final DocumentReference newResume = resumesCollection.doc();
+
+        await newResume.set({
+          'title': title,
+          'resumeItem': resumeItem.toMap(),
+          'createdAt': FieldValue.serverTimestamp(),
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Resume saved successfully")),
+        );
+      } catch (error) {
+        print("Failed to save resume data: $error");
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Failed to save resume data: $error")),
+        );
+      }
     }
+    Navigator.of(context).pop(true);
+    Navigator.of(context).pop(true);
+    Navigator.of(context).pop(true);
+    Navigator.of(context).pop(true);
   }
 
   // 앱 바 뒤로가기 버튼
@@ -242,12 +239,33 @@ class _ResumeEditState extends State<ResumeEdit> {
 
   //안드로이드 뒤로가기 버튼
   Future<bool> _onWillPop() async {
-    int count = 0;
-    while (count < 4) {
-      Navigator.of(context).pop();
-      count++;
-    }
-    return true;
+    return await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('이력서 작성을 취소하시겠습니까?'),
+              content: Text('지금까지 작성한 이력서는 저장되지 않습니다.'),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('취소'),
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                  },
+                ),
+                ElevatedButton(
+                  child: Text('확인'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        ) ??
+        false;
   }
 
   // 이력서 제목 입력받는 팝업창
@@ -291,239 +309,199 @@ class _ResumeEditState extends State<ResumeEdit> {
       onWillPop: _onWillPop,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: SafeArea(
-          top: true,
-          left: false,
-          bottom: true,
-          right: false,
-          child: Scaffold(
-            appBar: AppBar(
-              title: const Text('이력서 작성'),
-              centerTitle: true,
-              elevation: 1.0,
-              backgroundColor: Colors.white,
-              leading: IconButton(
-                icon: Icon(Icons.arrow_back),
-                onPressed: _goBack,
-              ),
+        home: Scaffold(
+          appBar: AppBar(
+            title: const Text('이력서 작성'),
+            centerTitle: true,
+            elevation: 1.0,
+            backgroundColor: Colors.white,
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: _goBack,
             ),
-            body: _isLoading
-                ? Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircularProgressIndicator(
-                    color: Color(0xff1044FC),
+          ),
+          body: _isLoading
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(
+                        color: Color(0xff1044FC),
+                      ),
+                      SizedBox(height: 20),
+                      Text(
+                        'AI 이력서를 생성중입니다',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ],
                   ),
-                  SizedBox(height: 20),
-                  Text(
-                    'AI 이력서를 생성중입니다',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ],
-              ),
-            )
-                : Padding(
-              padding: const EdgeInsets.only(left: 30.0, right: 30.0),
-              child: ListView(
-                children: [
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  // 개인정보란
-                  Row(
+                )
+              : Padding(
+                  padding: const EdgeInsets.only(left: 30.0, right: 30.0),
+                  child: ListView(
                     children: [
                       const SizedBox(
-                        width: 5,
+                        height: 30,
                       ),
-                      GestureDetector(
-                        onTap: _pickImage,
-                        child: Container(
-                          height: 100,
-                          width: 100,
-                          alignment: Alignment.center,
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.circle,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey,
-                                spreadRadius: 2.5,
-                                blurRadius: 10.0,
-                                blurStyle: BlurStyle.inner,
+                      // 개인정보란
+                      Row(
+                        children: [
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                resumeItem.name,
+                                style: TextStyle(
+                                  fontSize: 25,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              Text(
+                                resumeItem.gender,
+                                style: TextStyle(
+                                  fontSize: 15,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              Text(
+                                resumeItem.dob + '년생',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                ),
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 40,
+                      ),
+                      // 주소, 전화번호란
+                      Row(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '주소',
+                                style: TextStyle(fontSize: 18),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                '전화번호',
+                                style: TextStyle(fontSize: 18),
                               ),
                             ],
                           ),
-                          child: resumeItem.image == null
-                              ? const Text(
-                            '사진\n등록',
-                            style: TextStyle(fontSize: 15),
-                          )
-                              : ClipOval(
-                            child: Image.file(
-                              resumeItem.image!,
-                              width: 100,
-                              height: 100,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 35,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            resumeItem.name,
-                            style: TextStyle(
-                              fontSize: 25,
-                            ),
-                          ),
                           SizedBox(
-                            height: 8,
+                            width: 30,
                           ),
-                          Text(
-                            resumeItem.gender,
-                            style: TextStyle(
-                              fontSize: 15,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 8,
-                          ),
-                          Text(
-                            resumeItem.dob + '년생',
-                            style: TextStyle(
-                              fontSize: 15,
-                            ),
-                          )
-                        ],
-                      )
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  // 주소, 전화번호란
-                  Row(
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '주소',
-                            style: TextStyle(fontSize: 18),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            '전화번호',
-                            style: TextStyle(fontSize: 18),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                resumeItem.address,
+                                style: TextStyle(fontSize: 18),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                resumeItem.phone,
+                                style: TextStyle(fontSize: 18),
+                              ),
+                            ],
                           ),
                         ],
                       ),
                       SizedBox(
-                        width: 30,
+                        height: 10,
                       ),
+                      Divider(),
+
+                      // 경력란
+                      const SizedBox(height: 10),
+                      const Text(
+                        '경력 사항',
+                        style: TextStyle(fontSize: 18),
+                      ),
+                      const SizedBox(height: 10),
                       Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            resumeItem.address,
-                            style: TextStyle(fontSize: 18),
+                        children: resumeItem.workExperiences.map((experience) {
+                          return Container(
+                            margin: const EdgeInsets.symmetric(vertical: 10.0),
+                            padding: const EdgeInsets.all(15.0),
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(color: Colors.grey),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '${experience.place}',
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                SizedBox(height: 5),
+                                Text(
+                                  '근무 기간   ${experience.startYear}년 ${experience.startMonth}월 ~ ${experience.endYear}년 ${experience.endMonth}월',
+                                  style: TextStyle(fontSize: 14),
+                                ),
+                                SizedBox(height: 5),
+                                Text(
+                                  '근무 내용   ${experience.description}',
+                                  style: TextStyle(fontSize: 14),
+                                ),
+                              ],
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                      Divider(),
+
+                      // 자기소개서
+                      const SizedBox(height: 10),
+                      const Text(
+                        '자기소개서',
+                        style: TextStyle(fontSize: 18),
+                      ),
+                      const SizedBox(height: 10),
+                      TextField(
+                        controller: _selfIntroductionController,
+                        maxLines: 10,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: '자기소개서를 입력하세요',
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: _showSaveDialog,
+                        child: const Text('저장하기',
+                            style: TextStyle(color: Colors.white)),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              const Color.fromARGB(250, 51, 51, 255),
+                          minimumSize: const Size(360, 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
                           ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            resumeItem.phone,
-                            style: TextStyle(fontSize: 18),
-                          ),
-                        ],
+                        ),
                       ),
                     ],
                   ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Divider(),
-
-                  // 경력란
-                  const SizedBox(height: 10),
-                  const Text(
-                    '경력 사항',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                  const SizedBox(height: 10),
-                  Column(
-                    children: resumeItem.workExperiences.map((experience) {
-                      return Container(
-                        margin: const EdgeInsets.symmetric(vertical: 10.0),
-                        padding: const EdgeInsets.all(15.0),
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(color: Colors.grey),
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '${experience.place}',
-                              style: TextStyle(fontSize: 18),
-                            ),
-                            SizedBox(height: 5),
-                            Text(
-                              '근무 기간: ${experience.startYear}년 ${experience.startMonth}월 ~ ${experience.endYear}년 ${experience.endMonth}월',
-                              style: TextStyle(fontSize: 14),
-                            ),
-                            SizedBox(height: 5),
-                            Text(
-                              '근무 내용: ${experience.description}',
-                              style: TextStyle(fontSize: 14),
-                            ),
-                          ],
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                  Divider(),
-
-                  // 자기소개서
-                  const SizedBox(height: 10),
-                  const Text(
-                    '자기소개서',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                  const SizedBox(height: 10),
-                  TextField(
-                    controller: _selfIntroductionController,
-                    maxLines: 10,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: '자기소개서를 입력하세요',
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: _showSaveDialog,
-                    child: const Text('저장하기', style: TextStyle(color: Colors.white)),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(250, 51, 51, 255),
-                      minimumSize: const Size(360, 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+                ),
         ),
       ),
     );
