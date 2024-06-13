@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:halmoney/Recruit_detail_pages/Recruit_main_page.dart';
@@ -9,6 +10,7 @@ class JobList extends StatelessWidget {
   final String career;
   final String detail;
   final String workweek;
+  final String userDocId;
 
   const JobList({
     required this.title,
@@ -17,13 +19,44 @@ class JobList extends StatelessWidget {
     required this.career,
     required this.detail,
     required this.workweek,
+    required this.userDocId,
     Key? key,
   }) : super(key: key);
+
+  Future<void> _saveViewedJob() async {
+    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+    try{
+      print('Querying firestore with userId in joblist: $userDocId');
+      if (userDocId.isNotEmpty) {
+        // Use Firestore's auto-generated ID for each new document
+        final viewedJobsRef = _firestore
+            .collection('user')
+            .doc(userDocId)
+            .collection('viewed_jobs')
+            .doc();
+
+        await viewedJobsRef.set({
+          'job_title': title,
+          'viewed_at': Timestamp.now(),
+        });
+        print('Job viewing history saved successfully.');
+      } else {
+        print('User document ID is empty.');
+      }
+
+  }catch (error) {
+      print('Failed to save job viewing history: $error');
+    }
+
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
 
         onPressed: () {
+          _saveViewedJob();
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => Recruit_main(
@@ -33,7 +66,6 @@ class JobList extends StatelessWidget {
                 career: career,
                 detail: detail,
                 workweek: workweek
-
             )),
           );
         },

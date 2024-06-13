@@ -100,19 +100,30 @@ class _SelectPlaceState extends State<SelectPlace> {
 
   // 내 주소 선택 버튼 눌렀을 때
   void _onSelectAddressButtonPressed() async {
+    print('originalAdress on button pressed: $originalAddress');
+    setState(() {
+      selectedAddress='';
+    });
     await _updateInterest(originalAddress);
   }
-
   // 다른 주소 선택 버튼 눌렀을 때
-  void _onSaveButtonPressed() async {
-    await _updateInterest(selectedAddress);
-  }
-
   void _onAddressSelected(String address) {
     setState(() {
       selectedAddress = address;
     });
   }
+
+  // 선택 완료 버튼 눌렀을 때
+  void _onSaveButtonPressed() async {
+    if (selectedAddress.isEmpty) {
+      // 다른 주소를 선택하지 않았다면, 기존 주소를 사용
+      await _updateInterest(originalAddress);
+    } else {
+      // 다른 주소를 선택했다면, 선택된 주소를 사용
+      await _updateInterest(selectedAddress);
+    }
+  }
+
 
 
   @override
@@ -174,7 +185,9 @@ class _SelectPlaceState extends State<SelectPlace> {
                       ),
                       const Spacer(),
                       ElevatedButton(
-                          onPressed: _onSelectAddressButtonPressed,
+                          onPressed: () {
+                            _onSelectAddressButtonPressed();
+                            },
                           style: ElevatedButton.styleFrom(
                             minimumSize: const Size(130, 40), // 너비 200, 높이 60
                             padding: const EdgeInsets.symmetric(

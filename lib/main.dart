@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:halmoney/AI_pages/AI_recomm_page.dart';
 import 'package:halmoney/AI_pages/AI_select_cond_page.dart';
 import 'package:halmoney/myAppPage.dart';
 import 'package:halmoney/pages/login_page.dart';
@@ -20,7 +21,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  final String id ='sum0304';
+  //final String id ='sumin1234';
 
   // This widget is the root of your application.
   @override
@@ -40,7 +41,7 @@ class MyApp extends StatelessWidget {
         Locale('ko', ''), //Korean, no country code
       ],
       debugShowCheckedModeBanner:  false,
-      home: AISelectCondPage(id: id),
+      home: LoginPage(),
       // home: const SignupPgOne(),
       // initialRoute: "/login",
       // routes: {

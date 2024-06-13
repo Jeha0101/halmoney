@@ -4,7 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:halmoney/JobSearch_pages/JobList_widget.dart';
 
 class JobSearch extends StatefulWidget {
-  const JobSearch({super.key});
+  final String id;
+  const JobSearch({super.key, required this.id});
 
   @override
   _JobsSearchState createState() => _JobsSearchState();
@@ -13,14 +14,35 @@ class JobSearch extends StatefulWidget {
 class _JobsSearchState extends State<JobSearch> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   List<Map<String, dynamic>> jobs = [];
+  String? userDocId;
 
   @override
   void initState() {
     super.initState();
-    _fetchJobs();
+    _fetchJobsAndUserDocId();
   }
-  Future<void> _fetchJobs() async {
+  Future<void> _fetchJobsAndUserDocId() async {
     try {
+      //사용자id 가져오는 부분
+      final QuerySnapshot resultId = await _firestore
+          .collection('user')
+          .where('id', isEqualTo: widget.id)
+          .get();
+      final List<DocumentSnapshot> documentId = resultId.docs;
+
+      if(documentId.isNotEmpty){
+        setState(() {
+          userDocId = documentId.first.id;
+        });
+      } else{
+        print("JobSearch user not found");
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("공고페이지에서 사용자가 확인되지 않았습니다.")),
+        );
+        return;
+      }
+
+      //job 정보 가져오는 부분
       final QuerySnapshot result = await _firestore.collection('jobs').get();
       final List<DocumentSnapshot> documents = result.docs;
 
@@ -35,7 +57,6 @@ class _JobsSearchState extends State<JobSearch> {
             'career': data['career']??'No Career',
             'detail': data['detail']?? 'No detail',
             'workweek': data['work_time_week']??'No work Week'
-
           };
         }).toList();
       });
@@ -91,7 +112,7 @@ class _JobsSearchState extends State<JobSearch> {
                   career: job['career'],
                   detail: job['detail'],
                   workweek: job['workweek'],
-
+                  userDocId: userDocId ?? '',
                 ),
               );
             },

@@ -1,8 +1,7 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Recruit_main extends StatelessWidget {
   final String title;
@@ -20,7 +19,9 @@ class Recruit_main extends StatelessWidget {
     required this.detail,
     required this.workweek,
     Key? key,
-  }): super(key: key);
+  }) : super(key: key);
+
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
