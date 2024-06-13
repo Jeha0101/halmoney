@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:halmoney/screens/resume/select_skill_page.dart';
 import 'package:halmoney/screens/resume/resumeView.dart';
@@ -92,11 +91,14 @@ class _ResumeManageState extends State<ResumeManage> {
             children: [
               Divider(),
               GestureDetector(
-                onTap: () {
-                  Navigator.push(
+                onTap: () async{
+                  final result = await Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => SelectSkillPage(id: widget.id)),
                   );
+                  if (result ==true){
+                    _fetchResumes();
+                  }
                 },
                 child: Container(
                   margin: const EdgeInsets.all(15.0),
@@ -132,8 +134,8 @@ class _ResumeManageState extends State<ResumeManage> {
               ..._resumes.map((resume) {
                 Map<String, dynamic> data = resume.data() as Map<String, dynamic>;
                 return GestureDetector(
-                  onTap: (){
-                    Navigator.push(
+                  onTap: () async {
+                    final result = await Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => ResumeView(
@@ -142,11 +144,13 @@ class _ResumeManageState extends State<ResumeManage> {
                         ),
                       ),
                     );
+                    if (result == true) {
+                      _fetchResumes();
+                    }
                   },
                   child: Container(
                     margin: const EdgeInsets.all(15.0),
                     padding: const EdgeInsets.all(18.0),
-                    height: 180,
                     decoration: const BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.all(

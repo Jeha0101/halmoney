@@ -4,8 +4,7 @@ import 'package:halmoney/screens/resume/extra_resume_page.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:convert';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
+import 'package:halmoney/screens/resume/resumeManage.dart';
 
 //이력서 데이터
 class ResumeItem {
@@ -227,6 +226,10 @@ class _ResumeEditState extends State<ResumeEdit> {
         );
       }
     }
+    Navigator.of(context).pop(true);
+    Navigator.of(context).pop(true);
+    Navigator.of(context).pop(true);
+    Navigator.of(context).pop(true);
   }
 
   // 앱 바 뒤로가기 버튼
@@ -252,7 +255,6 @@ class _ResumeEditState extends State<ResumeEdit> {
                 ElevatedButton(
                   child: Text('확인'),
                   onPressed: () {
-                    Navigator.of(context).pop();
                     Navigator.of(context).pop();
                     Navigator.of(context).pop();
                     Navigator.of(context).pop();
