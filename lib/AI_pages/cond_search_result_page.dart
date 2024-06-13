@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:halmoney/AI_pages/AI_select_cond_page.dart';
 import 'package:halmoney/Recruit_detail_pages/Recruit_main_page.dart';
 
 class CondSearchResultPage extends StatelessWidget {
@@ -13,7 +11,7 @@ class CondSearchResultPage extends StatelessWidget {
     print('CondSearchResultPage ${jobs.length} jobs');
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(250, 51, 51, 255),
+        backgroundColor: const Color.fromARGB(250, 51, 51, 255),
         elevation: 1.0,
         title: Row(
           children: [
@@ -85,7 +83,7 @@ class Cond_Search extends StatelessWidget {
         child: Row(
           children: [
             const SizedBox(width: 10),
-            Container(
+            SizedBox(
               width: 100,
               height: 100,
               child: Column(
@@ -99,7 +97,7 @@ class Cond_Search extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 15),
-            Container(
+            SizedBox(
               width: 200,
               height: 80,
               child: Column(
@@ -111,7 +109,7 @@ class Cond_Search extends StatelessWidget {
                         Expanded(
                           child: Text(
                             jobData['job_name'] ?? '',
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black),
@@ -121,14 +119,14 @@ class Cond_Search extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(height: 3),
+                  const SizedBox(height: 3),
                   Container(
                     child: Row(
                       children: [
                         Expanded(
                             child: Text(
                               jobData['address'] ?? '',
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 13,
                                   fontWeight: FontWeight.w500,
                                   color: Color.fromARGB(250, 69, 99, 255)),
@@ -138,14 +136,14 @@ class Cond_Search extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(height: 3),
+                  const SizedBox(height: 3),
                   Container(
                     child: Row(
                       children: [
                         Expanded(
                           child: Text(
                             jobData['wage'] ?? '',
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.normal,
                                 color: Colors.black),

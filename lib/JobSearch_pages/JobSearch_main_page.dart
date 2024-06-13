@@ -8,68 +8,56 @@ class JobSearch extends StatefulWidget {
   const JobSearch({super.key, required this.id});
 
   @override
-  _JobSearchState createState() => _JobSearchState();
+  _JobsSearchState createState() => _JobsSearchState();
 }
 
-class _JobSearchState extends State<JobSearch> {
+class _JobsSearchState extends State<JobSearch> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   List<Map<String, dynamic>> jobs = [];
-  String? userDocId;
-  List<String> userLikes = [];
+  //String? userDocId;
 
   @override
   void initState() {
     super.initState();
-    _fetchUserLikes();
-    _fetchJobs();
-
+    _fetchJobsAndUserDocId();
   }
-
-  Future<void> _fetchUserLikes() async {
+  Future<void> _fetchJobsAndUserDocId() async {
     try {
-      final QuerySnapshot userQuery = await _firestore
+      //사용자id 가져오는 부분
+      final QuerySnapshot resultId = await _firestore
           .collection('user')
           .where('id', isEqualTo: widget.id)
           .get();
+      final List<DocumentSnapshot> documentId = resultId.docs;
 
-      if (userQuery.docs.isNotEmpty) {
-        final String userId = userQuery.docs.first.id;
-        final QuerySnapshot userLikesQuery = await _firestore
-            .collection('user')
-            .doc(userId)
-            .collection('users_like')
-            .get();
-
-        setState(() {
-          userLikes = userLikesQuery.docs.map((doc) => doc['num'].toString()).toList();
-        });
-        print(userLikes);
+      if(documentId.isNotEmpty){
+        final String docId = documentId.first.id;
+      } else{
+        print("JobSearch user not found");
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("공고페이지에서 사용자가 확인되지 않았습니다.")),
+        );
+        return;
       }
-    } catch (error) {
-      print("Failed to fetch user likes: $error");
-    }
-  }
 
-  Future<void> _fetchJobs() async {
-    try {
+      //job 정보 가져오는 부분
       final QuerySnapshot result = await _firestore.collection('jobs').get();
       final List<DocumentSnapshot> documents = result.docs;
 
       setState(() {
         jobs = documents.map((doc) {
           final data = doc.data() as Map<String, dynamic>;
+          // null 값을 처리하는 부분
           return {
-            'num': data['num'] ?? 0,
+            'num' : data['num'] ?? 'No Num',
             'title': data['title'] ?? 'No Title.',
-            'address': data['address'] ?? 'No address',
-            'wage': data['wage'] ?? 'No Wage',
-            'career': data['career'] ?? 'No Career',
-            'detail': data['detail'] ?? 'No detail',
-            'workweek': data['work_time_week'] ?? 'No work Week',
-            'isLiked': userLikes.contains(data['num'].toString()) ?? false
+            'address': data['address']??'No address',
+            'wage':data['wage']??'No Wage',
+            'career': data['career']??'No Career',
+            'detail': data['detail']?? 'No detail',
+            'workweek': data['work_time_week']??'No work Week'
           };
         }).toList();
-        print(jobs);
       });
     } catch (error) {
       print("Failed to fetch jobs: $error");
@@ -78,6 +66,8 @@ class _JobSearchState extends State<JobSearch> {
       );
     }
   }
+  // Firestore에서 jobs 컬렉션의 데이터를 가져오기
+
 
   @override
   Widget build(BuildContext context) {
@@ -95,60 +85,41 @@ class _JobSearchState extends State<JobSearch> {
         right: false,
         child: Scaffold(
           appBar: AppBar(
-            backgroundColor: Color.fromARGB(250, 51, 51, 255),
-            elevation: 1.0,
-            title: Row(
-              children: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  icon: const Icon(Icons.arrow_back_ios_rounded),
-                  color: Colors.grey,
-                ),
-                Image.asset(
-                  'assets/images/img_logo.png',
-                  fit: BoxFit.contain,
-                  height: 40,
-                ),
-                Container(
-                  padding: const EdgeInsets.all(8.0),
-                  child: const Text(
-                    '할MONEY',
-                    style: TextStyle(
-                      fontFamily: 'NanumGothicFamily',
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18.0,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ],
+            title: const Text('공고리스트'),
+            centerTitle: true,
+            backgroundColor: const Color.fromARGB(250, 51, 51, 255),
+            leading: IconButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              icon: const Icon(Icons.arrow_back_ios_rounded),
+              color: Colors.grey,
             ),
           ),
           body: jobs.isEmpty
               ? const Center(child: CircularProgressIndicator())
               : ListView.builder(
-                  itemCount: jobs.length,
-                  itemBuilder: (context, index) {
-                    final job = jobs[index];
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: JobList(
-                        id: widget.id,
-                        num: job['num'],
-                        title: job['title'],
-                        address: job['address'],
-                        wage: job['wage'],
-                        career: job['career'],
-                        detail: job['detail'],
-                        workweek: job['workweek'],
-                        isLiked: job['isLiked'],
-                        userDocId: userDocId ?? '',
-                      ),
-                    );
-                  },
+            itemCount: jobs.length,
+            itemBuilder: (context, index) {
+              final job = jobs[index];
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: JobList(
+                  title: job['title'],
+                  address: job['address'],
+                  wage: job['wage'],
+                  career: job['career'],
+                  detail: job['detail'],
+                  workweek: job['workweek'],
+                  id: widget.id,
+                  num: job['num'],
+                  isLiked: false,
+                  //userDocId: userDocId ?? '',
                 ),
+              );
+            },
+          ),
+
         ),
       ),
     );

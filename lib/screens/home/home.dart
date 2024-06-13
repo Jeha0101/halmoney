@@ -1,11 +1,11 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:halmoney/AI_pages/AI_recomm_page.dart';
 import 'package:halmoney/AI_pages/AI_select_cond_page.dart';
-import 'package:halmoney/screens/map/mapPage.dart';
+//import 'package:halmoney/screens/map/mapPage.dart';
 
 
+import '../map/mapPage.dart';
 import '../resume/select_skill_page.dart';
 
 class MyHomePage extends StatelessWidget{
@@ -307,7 +307,7 @@ class MyHomePage extends StatelessWidget{
                         onTap: (){
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const MapScreen()),
+                            MaterialPageRoute(builder: (context) => MapScreen()),
                           );
                         },
                         child: Container(
