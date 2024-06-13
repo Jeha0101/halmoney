@@ -1,11 +1,12 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:halmoney/AI_pages/AI_recomm_page.dart';
 import 'package:halmoney/AI_pages/AI_select_cond_page.dart';
 import 'package:halmoney/screens/map/mapPage.dart';
 
 
-import '../../pages/select_skill_page.dart';
+import '../resume/select_skill_page.dart';
 
 class MyHomePage extends StatelessWidget{
   final String id;
@@ -95,7 +96,7 @@ class MyHomePage extends StatelessWidget{
                         onTap: (){
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const SelectSkillPage()),
+                            MaterialPageRoute(builder: (context) => SelectSkillPage(id: id)),
                           );
                         },
                         child: Container(
@@ -142,7 +143,78 @@ class MyHomePage extends StatelessWidget{
                   )
               ),
 
-              //AI 추천 공고 위젯
+              //AI 추천 시스템
+              Padding(
+                  padding: const EdgeInsets.only(left:20.0, right: 20.0,top: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 25,),
+                      // 위젯 설명 텍스트
+                      const Text(
+                        '  AI 추천 공고를 확인해보세요!',
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(height: 20,),
+                      // 위젯 내부
+                      GestureDetector(
+                        onTap: (){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => AIRecommPage(id: id)),
+                          );
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(20.0),
+                          height: 100,
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(20),
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color : Colors.grey,
+                                spreadRadius:1.0,
+                                blurRadius: 10.0,
+                                offset: Offset(2,2),
+                                blurStyle: BlurStyle.inner,
+                                // spreadRadius: 0.5,
+                                // blurRadius: 10,
+                                // offset: const Offset(2, 2),
+                              ),
+                            ],
+                          ),
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                'AI 추천 시스템',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                ),
+                              ),
+                              Spacer(),
+                              Image(
+                                image: AssetImage('assets/images/search.png'),
+                                width: 60,
+                                height: 60,
+                                fit: BoxFit.contain,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20,),
+                    ],
+                  )
+              ),
+
+              //맞춤 검색
               Padding(
                   padding: const EdgeInsets.only(left:20.0, right: 20.0, top: 20),
                   child: Column(
@@ -151,7 +223,7 @@ class MyHomePage extends StatelessWidget{
                       const SizedBox(height: 20,),
                       // 위젯 설명 텍스트
                       const Text(
-                        '  AI추천 서비스를 이용해보세요!',
+                        ' 원하는 조건을 설정해 검색해보세요!',
                         style: TextStyle(
                           fontSize: 17,
                           fontWeight: FontWeight.w600,
@@ -192,7 +264,7 @@ class MyHomePage extends StatelessWidget{
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(
-                                'AI추천 공고 보기',
+                                '맞춤 검색 공고 보기',
                                 style: TextStyle(
                                   fontSize: 20,
                                 ),
@@ -213,76 +285,6 @@ class MyHomePage extends StatelessWidget{
                   )
               ),
 
-              //맞춤 검색 - 추천시스템
-              Padding(
-                  padding: const EdgeInsets.only(left:20.0, right: 20.0,top: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 25,),
-                      // 위젯 설명 텍스트
-                      const Text(
-                        '  맞춤 검색을 통해 원하는 일자리를 찾아보세요!',
-                        style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const SizedBox(height: 20,),
-                      // 위젯 내부
-                      GestureDetector(
-                        onTap: (){
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => const MapScreen()),
-                          );
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(20.0),
-                          height: 100,
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(20),
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color : Colors.grey,
-                                spreadRadius:1.0,
-                                blurRadius: 10.0,
-                                offset: Offset(2,2),
-                                blurStyle: BlurStyle.inner,
-                                // spreadRadius: 0.5,
-                                // blurRadius: 10,
-                                // offset: const Offset(2, 2),
-                              ),
-                            ],
-                          ),
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                '맞춤 추천 시스템',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                ),
-                              ),
-                              Spacer(),
-                              Image(
-                                image: AssetImage('assets/images/search.png'),
-                                width: 60,
-                                height: 60,
-                                fit: BoxFit.contain,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 20,),
-                    ],
-                  )
-              ),
 
               //지역 검색 위젯
               Padding(

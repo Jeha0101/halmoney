@@ -149,8 +149,8 @@ class InterestButton extends StatefulWidget{
 
 class _InterestButton extends State<InterestButton>{
   //출력할 스킬 목록
-  var interests =['카페','요리','돌봄','교육','운전','아이','노인','영업','반려동물',
-  '고객상담','IT','청소','운동','생산','판매','서비스','방송','안전'];
+  var interests =['음료 조리','주방','요양','교사','운전','운동','노인','안내','반려동물',
+  '고객상담','IT','청소','사무','생산','판매','배달','방송','안전'];
   //선택한 스킬을 담을 LIST
   //List<String> skillList = List<String>();
 

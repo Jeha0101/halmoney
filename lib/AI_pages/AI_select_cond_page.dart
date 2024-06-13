@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:halmoney/AI_pages/AI_recomm_result_page.dart';
+import 'package:halmoney/AI_pages/cond_search_result_page.dart';
 import 'package:halmoney/pages/signup_pg_two.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -74,7 +74,7 @@ class _AISelectCondPage extends State<AISelectCondPage> {
         if(filteredJobs.isNotEmpty){
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => AIRecommResultPage(jobs: filteredJobs))
+            MaterialPageRoute(builder: (context) => CondSearchResultPage(jobs: filteredJobs))
           );
         } else {
           print('No matching jobs found');
@@ -251,7 +251,7 @@ class ChooseTimeButton extends StatefulWidget {
 
 class _ChooseTimeButton extends State<ChooseTimeButton> {
   var workdays = ['주6일', '주5일', '주4일', '주3일', '주2일', '주1일',
-  '월~일', '월~토', '월~금', '주말(토,일)', '상관없음'];
+  '월~일', '월~토', '월~금', '주말(토,일)', '기타'];
 
 
   void toggleSkill(String time) {
@@ -314,7 +314,7 @@ class ChoosePayButton extends StatefulWidget {
 }
 
 class _ChoosePayButton extends State<ChoosePayButton> {
-  var payment = ['월급', '주급', '시급', '시간제', '상관없음'];
+  var payment = ['월급', '주급', '시급', '시간제', '기타'];
 
   void toggleSkill(String pay) {
     setState(() {

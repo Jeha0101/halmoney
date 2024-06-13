@@ -1,8 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:halmoney/pages/select_stren_page.dart';
+import 'package:halmoney/screens/resume/select_stren_page.dart';
 
-class SelectSkillPage extends StatelessWidget {
-  const SelectSkillPage({super.key});
+class SelectSkillPage extends StatefulWidget {
+  final String id;
+  const SelectSkillPage({super.key, required this.id});
+
+  @override
+  State<SelectSkillPage> createState() => _SelectSkillPageState();
+}
+
+class _SelectSkillPageState extends State<SelectSkillPage>{
+  final List<String> selectedSkills=[];
+
+  void updateSelectedSkills(List<String> skills) {
+    setState(() {
+      selectedSkills.clear();
+      selectedSkills.addAll(skills);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +62,12 @@ class SelectSkillPage extends StatelessWidget {
 
             const SizedBox(height: 30),
 
-            const Expanded(child: SkillChooseButton()),
+            Expanded(
+              child: SkillChooseButton(
+                selectedSkills: selectedSkills,
+                onSelectedSkillsChanged: updateSelectedSkills,
+              ),
+            ),
 
             const SizedBox(height: 30),
 
@@ -71,7 +91,12 @@ class SelectSkillPage extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const SelectStrenPage())
+                      MaterialPageRoute(
+                        builder: (context) => SelectStrenPage(
+                          id : widget.id,
+                          selectedSkills: selectedSkills
+                        ),
+                      )
                   );
                 },
                 child: const Text('다음 페이지로 이동',style: TextStyle(color: Colors.white),),
@@ -86,13 +111,20 @@ class SelectSkillPage extends StatelessWidget {
 }
 
 class SkillChooseButton extends StatefulWidget{
-  const SkillChooseButton({super.key});
+  final List<String> selectedSkills;
+  final ValueChanged<List<String>> onSelectedSkillsChanged;
+
+  const SkillChooseButton({
+    super.key,
+    required this.selectedSkills,
+    required this.onSelectedSkillsChanged,
+  });
 
   @override
-  State<SkillChooseButton> createState() => _SkillChooseButton();
+  State<SkillChooseButton> createState() => _SkillChooseButtonState();
 }
 
-class _SkillChooseButton extends State<SkillChooseButton>{
+class _SkillChooseButtonState extends State<SkillChooseButton>{
   //출력할 스킬 목록
   var skills =['IT업무', '학생관리','고객상담','주방보조','빵 포장','식사 지도','사무보조',
   '사업경영','청소','자격증보유','커피제조','요리','건축/건설','디자인업무','교육','요양/사회복지',
@@ -100,14 +132,12 @@ class _SkillChooseButton extends State<SkillChooseButton>{
   //선택한 스킬을 담을 LIST
   //List<String> skillList = List<String>();
 
-  final List<String> selectedSkils=[];
-
   void toggleSkill(String skill){
     setState(() {
-      if(selectedSkils.contains(skill)){
-        selectedSkils.remove(skill);
+      if(widget.selectedSkills.contains(skill)){
+        widget.selectedSkills.remove(skill);
       }else{
-        selectedSkils.add(skill);
+        widget.selectedSkills.add(skill);
       }
     });
   }
@@ -129,7 +159,7 @@ class _SkillChooseButton extends State<SkillChooseButton>{
         itemCount: skills.length,
         itemBuilder: (context, index){
           final skill = skills[index];
-          final isSelected = selectedSkils.contains(skill);
+          final isSelected = widget.selectedSkills.contains(skill);
 
           return ButtonTheme(
               minWidth: 100.0,
@@ -149,7 +179,7 @@ class _SkillChooseButton extends State<SkillChooseButton>{
     );
   }
 }
-void main(){
-  runApp(const MaterialApp(home:SelectSkillPage()));
-}
+//void main(){
+//  runApp(const MaterialApp(home:SelectSkillPage()));
+//}
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:halmoney/Recruit_detail_pages/Recruit_main_page.dart';
+
 class JobList extends StatefulWidget {
   final String id;
   final int num;
@@ -11,6 +12,7 @@ class JobList extends StatefulWidget {
   final String detail;
   final String workweek;
   final bool isLiked;
+  final String userDocId;
 
   const JobList({
     required this.id,
@@ -22,6 +24,7 @@ class JobList extends StatefulWidget {
     required this.detail,
     required this.workweek,
     required this.isLiked,
+    required this.userDocId,
     Key? key,
   }) : super(key: key);
 
@@ -32,8 +35,8 @@ class JobList extends StatefulWidget {
 class _JobListState extends State<JobList> {
   late bool isFavorite;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  // Firebase에 "찜하기" 데이터를 추가 또는 삭제하는 함수
 
+  @override
   void initState() {
     super.initState();
     isFavorite = widget.isLiked;
@@ -61,7 +64,7 @@ class _JobListState extends State<JobList> {
           'wage': widget.wage,
           'career': widget.career,
           'detail': widget.detail,
-          'week': widget.workweek
+          'week': widget.workweek,
         });
       } else {
         final QuerySnapshot favoriteResult = await _firestore
@@ -78,12 +81,32 @@ class _JobListState extends State<JobList> {
     }
   }
 
+  Future<void> _saveViewedJob() async {
+    try {
+      if (widget.userDocId.isNotEmpty) {
+        final viewedJobsRef = _firestore
+            .collection('user')
+            .doc(widget.userDocId)
+            .collection('viewed_jobs')
+            .doc();
 
+        await viewedJobsRef.set({
+          'job_title': widget.title,
+          'viewed_at': Timestamp.now(),
+        });
+      } else {
+        print('User document ID is empty.');
+      }
+    } catch (error) {
+      print('Failed to save job viewing history: $error');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
+        _saveViewedJob();
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -128,7 +151,6 @@ class _JobListState extends State<JobList> {
               SizedBox(width: 15),
               Container(
                 width: 250,
-
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -146,11 +168,10 @@ class _JobListState extends State<JobList> {
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
-
                           IconButton(
                             onPressed: toggleFavorite,
                             icon: Icon(
-                              isFavorite // 변경
+                              isFavorite
                                   ? Icons.favorite_rounded
                                   : Icons.favorite_border_rounded,
                               color: Colors.blue,
@@ -159,7 +180,6 @@ class _JobListState extends State<JobList> {
                         ],
                       ),
                     ),
-
                     Container(
                       child: Row(
                         children: [
@@ -177,7 +197,7 @@ class _JobListState extends State<JobList> {
                         ],
                       ),
                     ),
-                    SizedBox(height:3),
+                    SizedBox(height: 3),
                     Container(
                       child: Row(
                         children: [

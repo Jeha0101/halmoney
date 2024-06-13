@@ -8,53 +8,55 @@ class JobSearch extends StatefulWidget {
   const JobSearch({super.key, required this.id});
 
   @override
-  _JobsSearchState createState() => _JobsSearchState();
+  _JobSearchState createState() => _JobSearchState();
 }
 
-class _JobsSearchState extends State<JobSearch> {
+class _JobSearchState extends State<JobSearch> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   List<Map<String, dynamic>> jobs = [];
+  String? userDocId;
   List<String> userLikes = [];
 
   @override
   void initState() {
     super.initState();
-    _fetchJobs();
-    _fetchUserLikes();
+    _fetchJobsAndUserLikes();
   }
 
-  Future<void> _fetchUserLikes() async {
+  Future<void> _fetchJobsAndUserLikes() async {
     try {
-      final QuerySnapshot userQuery = await _firestore
+      // Fetching user document ID
+      final QuerySnapshot resultId = await _firestore
           .collection('user')
           .where('id', isEqualTo: widget.id)
           .get();
+      final List<DocumentSnapshot> documentId = resultId.docs;
 
-      if (userQuery.docs.isNotEmpty) {
-        final String userId = userQuery.docs.first.id;
-        final QuerySnapshot userLikesQuery = await _firestore
-            .collection('user')
-            .doc(userId)
-            .collection('users_like')
-            .get();
-
-        setState(() {
-          userLikes = userLikesQuery.docs.map((doc) => doc['num'].toString()).toList();
-        });
-        print(userLikes);
+      if (documentId.isNotEmpty) {
+        userDocId = documentId.first.id;
+      } else {
+        print("JobSearch user not found");
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("공고페이지에서 사용자가 확인되지 않았습니다.")),
+        );
+        return;
       }
-    } catch (error) {
-      print("Failed to fetch user likes: $error");
-    }
-  }
 
-  Future<void> _fetchJobs() async {
-    try {
-      final QuerySnapshot result = await _firestore.collection('jobs').get();
-      final List<DocumentSnapshot> documents = result.docs;
+      // Fetching user likes
+      final QuerySnapshot userLikesQuery = await _firestore
+          .collection('user')
+          .doc(userDocId)
+          .collection('users_like')
+          .get();
+
+      userLikes = userLikesQuery.docs.map((doc) => doc['num'].toString()).toList();
+
+      // Fetching job information
+      final QuerySnapshot jobResult = await _firestore.collection('jobs').get();
+      final List<DocumentSnapshot> jobDocuments = jobResult.docs;
 
       setState(() {
-        jobs = documents.map((doc) {
+        jobs = jobDocuments.map((doc) {
           final data = doc.data() as Map<String, dynamic>;
           return {
             'num': data['num'] ?? 0,
@@ -64,14 +66,14 @@ class _JobsSearchState extends State<JobSearch> {
             'career': data['career'] ?? 'No Career',
             'detail': data['detail'] ?? 'No detail',
             'workweek': data['work_time_week'] ?? 'No work Week',
-            'isLiked': userLikes.contains(data['num'].toString()) ?? false
+            'isLiked': userLikes.contains(data['num'].toString()),
           };
         }).toList();
       });
     } catch (error) {
-      print("Failed to fetch jobs: $error");
+      print("Failed to fetch jobs and user likes: $error");
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Failed to fetch jobs: $error")),
+        SnackBar(content: Text("Failed to fetch jobs and user likes: $error")),
       );
     }
   }
@@ -126,25 +128,26 @@ class _JobsSearchState extends State<JobSearch> {
           body: jobs.isEmpty
               ? const Center(child: CircularProgressIndicator())
               : ListView.builder(
-            itemCount: jobs.length,
-            itemBuilder: (context, index) {
-              final job = jobs[index];
-              return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: JobList(
-                    id: widget.id,
-                    num: job['num'],
-                    title: job['title'],
-                    address: job['address'],
-                    wage: job['wage'],
-                    career: job['career'],
-                    detail: job['detail'],
-                    workweek: job['workweek'],
-                    isLiked: job['isLiked']
+                  itemCount: jobs.length,
+                  itemBuilder: (context, index) {
+                    final job = jobs[index];
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: JobList(
+                        id: widget.id,
+                        num: job['num'],
+                        title: job['title'],
+                        address: job['address'],
+                        wage: job['wage'],
+                        career: job['career'],
+                        detail: job['detail'],
+                        workweek: job['workweek'],
+                        isLiked: job['isLiked'],
+                        userDocId: userDocId ?? '',
+                      ),
+                    );
+                  },
                 ),
-              );
-            },
-          ),
         ),
       ),
     );

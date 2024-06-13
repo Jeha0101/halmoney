@@ -84,4 +84,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'halmoney20-398d5.appspot.com',
     measurementId: 'G-XV6HG5Y36J',
   );
+
 }
