@@ -1,15 +1,19 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:halmoney/Community_pages/Community_detail_page.dart';
+import 'package:intl/intl.dart';
 
 class Community_widget extends StatefulWidget {
   final String id;
   final String title;
   final String contents;
+  final Timestamp timestamp;
 
   const Community_widget({
     required this.id,
     required this.title,
     required this.contents,
+    required this.timestamp,
     Key? key,
   }) : super(key: key);
 
@@ -22,6 +26,12 @@ class _CommunityState extends State<Community_widget> {
 
 
   Widget build(BuildContext context) {
+
+    // Timestamp를 DateTime으로 변환
+    DateTime date = widget.timestamp.toDate();
+    // 원하는 형식으로 변환
+    String formattedDate = DateFormat('yyyy-MM-dd HH:mm').format(date);
+
     return ElevatedButton(
       onPressed: () {
         Navigator.push(
@@ -87,8 +97,8 @@ class _CommunityState extends State<Community_widget> {
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: const Text(
-                    '댓글  개',
+                  child: Text(
+                    formattedDate,
                     style: TextStyle(
                       fontSize: 15,
                       color: Colors.black,
