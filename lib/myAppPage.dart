@@ -23,7 +23,7 @@ class MyAppState extends State<MyAppPage>{
     _navIndex = [
       MyHomePage(id: widget.id),
       JobSearch(id: widget.id),
-      const Communitypage(),
+      Communitypage(id: widget.id),
       MyPageScreen(id: widget.id),
     ];
   }
