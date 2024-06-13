@@ -5,7 +5,7 @@ import 'package:halmoney/AI_pages/AI_select_cond_page.dart';
 import 'package:halmoney/screens/map/mapPage.dart';
 
 
-import '../../pages/select_skill_page.dart';
+import '../resume/select_skill_page.dart';
 
 class MyHomePage extends StatelessWidget{
   final String id;
@@ -95,7 +95,7 @@ class MyHomePage extends StatelessWidget{
                         onTap: (){
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const SelectSkillPage()),
+                            MaterialPageRoute(builder: (context) => SelectSkillPage(id: id)),
                           );
                         },
                         child: Container(

@@ -1,15 +1,56 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:halmoney/pages/select_skill_page.dart';
-import 'package:halmoney/screens/resume/resumeCreate.dart';
-import 'package:halmoney/screens/resume/resumeEdit.dart';
+import 'package:halmoney/screens/resume/resumeManage.dart';
 import 'package:halmoney/screens/scrap/scrap.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class MyPageScreen extends StatelessWidget {
+class MyPageScreen extends StatefulWidget {
   final String id;
-  //final bool isLoggedIn;
 
+  //final bool isLoggedIn;
   const MyPageScreen({super.key, required this.id});
+
+  @override
+  _MyPageScreen createState() => _MyPageScreen();
+}
+
+class _MyPageScreen extends State<MyPageScreen>{
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  String name ='';
+
+  @override
+  void initState(){
+    super.initState();
+    _fetchResumeData();
+  }
+
+  Future<void> _fetchResumeData() async {
+    try {
+      final QuerySnapshot result = await _firestore
+          .collection('user')
+          .where('id', isEqualTo: widget.id)
+          .get();
+
+      final List<DocumentSnapshot> documents = result.docs;
+
+      if (documents.isNotEmpty) {
+        final String docId = documents.first.id;
+
+        final DocumentSnapshot ds =
+        await _firestore.collection('user').doc(docId).get();
+
+        final data = ds.data() as Map<String, dynamic>;
+
+        // Fetching user information
+        name = data['name'];
+      }
+    } catch (error) {
+      print("Failed to fetch resume data: $error");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Failed to fetch resume data: $error")),
+      );
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -33,12 +74,12 @@ class MyPageScreen extends StatelessWidget {
           body: ListView(
             children: [
               const Divider(),
-              const SizedBox(height: 30,),
+              const SizedBox(height: 50,),
               //개인정보란
               Row(
                 children: [
-                  const SizedBox(width: 40,),
-                  Container(
+                  //const SizedBox(width: 50,),
+                  /*Container(
                     height: 75,
                     width: 75,
                     alignment: Alignment.center,
@@ -57,21 +98,21 @@ class MyPageScreen extends StatelessWidget {
                       Icons.person_outline,
                       size: 60,
                     ),
-                  ),
-                  const SizedBox(width: 20,),
-                  const Text(
-                    '홍길동',
+                  ),*/
+                  const SizedBox(width: 30,),
+                  Text(
+                    '$name님 안녕하세요',
                     style: TextStyle(
                       fontSize: 25,
                     ),
                   ),
-                  const Icon(
+                  /*const Icon(
                     Icons.keyboard_arrow_right,
                     size: 40,
-                  ),
+                  ),*/
                 ],
               ),
-              const SizedBox(height: 30,),
+              const SizedBox(height: 60,),
               //마이페이지 메뉴
               GridView.count(
                 shrinkWrap: true,
@@ -84,7 +125,7 @@ class MyPageScreen extends StatelessWidget {
                     onTap: (){
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ResumeCreate()),//(id: id)),
+                        MaterialPageRoute(builder: (context) => ResumeManage(id: widget.id))
                       );
                     },
                     child: Container(

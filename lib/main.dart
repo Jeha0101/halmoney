@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:halmoney/AI_pages/AI_select_cond_page.dart';
 import 'package:halmoney/myAppPage.dart';
 import 'package:halmoney/pages/login_page.dart';
-import 'package:halmoney/pages/select_skill_page.dart';
+import 'package:halmoney/screens/resume/select_skill_page.dart';
 import 'package:halmoney/theme.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -42,8 +42,8 @@ class MyApp extends StatelessWidget {
         Locale('ko', ''), //Korean, no country code
       ],
       debugShowCheckedModeBanner:  false,
-      home: MyAppPage(id: id),
-      //home: LoginPage(),
+      //home: MyAppPage(id: id),
+      home: LoginPage(),
 
       /*home: Scaffold(
         appBar: AppBar(

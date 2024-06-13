@@ -1,38 +1,88 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:halmoney/screens/resume/resumeCreate.dart';
+import 'package:halmoney/screens/resume/extra_resume_page.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:convert';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+
+//이력서 데이터 class
+class ResumeItem {
+  late String name;
+  late String gender;
+  late String dob;
+  late String address;
+  late String phone;
+  late List<WorkExperience> workExperiences;
+  late List<String> selectedSkills;
+  late List<String> selectedStrens;
+  late String selfIntroduction;
+  File? image;
+
+  ResumeItem({
+    required this.name,
+    required this.gender,
+    required this.dob,
+    required this.address,
+    required this.phone,
+    required this.workExperiences,
+    required this.selectedSkills,
+    required this.selectedStrens,
+    required this.selfIntroduction,
+    this.image,
+  });
+
+  //이력서 데이터를 Map으로 변환하는 함수
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'gender': gender,
+      'dob': dob,
+      'address': address,
+      'phone': phone,
+      'workExperiences': workExperiences.map((e) => e.toMap()).toList(),
+      'selectedSkills': selectedSkills,
+      'selectedStrens': selectedStrens,
+      'selfIntroduction': selfIntroduction,
+      'image': image?.path, // 이미지 경로를 저장
+    };
+  }
+}
 
 class ResumeEdit extends StatefulWidget {
   final String id;
+  final List<String> selectedSkills;
+  final List<String> selectedStrens;
+  final List<WorkExperience> workExperiences;
 
-  const ResumeEdit({super.key, required this.id});
+  const ResumeEdit({
+    Key? key,
+    required this.id,
+    required this.selectedSkills,
+    required this.selectedStrens,
+    required this.workExperiences,
+  }) : super(key: key);
 
   @override
-  _ResumeEdit createState() => _ResumeEdit();
+  _ResumeEditState createState() => _ResumeEditState();
 }
 
-class _ResumeEdit extends State<ResumeEdit>{
+class _ResumeEditState extends State<ResumeEdit> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  String name = '';
-  String dob = '';
-  String gender = '';
-  String address = '';
-  String phone = '';
-
-  String _response = '';
+  late ResumeItem resumeItem;
+  bool _isLoading = true;
+  final TextEditingController _selfIntroductionController = TextEditingController();
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    userInfo();
+    _fetchResumeData();
   }
 
-  Future<void> userInfo() async{
+  //사용자 정보 불러오기
+  Future<void> _fetchResumeData() async {
     try {
-      //id 일치 여부 확인
       final QuerySnapshot result = await _firestore
           .collection('user')
           .where('id', isEqualTo: widget.id)
@@ -43,36 +93,74 @@ class _ResumeEdit extends State<ResumeEdit>{
       if (documents.isNotEmpty) {
         final String docId = documents.first.id;
 
-        //사용자 정보 가져오기
-        await _firestore
-            .collection('user')
-            .doc(docId)
-            .get().then((DocumentSnapshot ds){
-          final data = ds.data() as Map<String, dynamic>;
-          setState(() {
-            name = data['name'];
-            dob = data['dob'].substring(0,4);
-            gender = data['gender'];
-            address = data['address'];
-            phone = data['phone'];
-          });
+        final DocumentSnapshot ds =
+        await _firestore.collection('user').doc(docId).get();
+
+        final data = ds.data() as Map<String, dynamic>;
+
+        // Fetching user information
+        final String name = data['name'];
+        final String dob = data['dob'].substring(0, 4);
+        final String gender = data['gender'];
+        final String address = data['address'];
+        final String phone = data['phone'];
+
+        // Fetching work experiences
+        List<WorkExperience> workExperiences = [];
+        for (var experience in widget.workExperiences) {
+          workExperiences.add(experience);
+        }
+
+        // Fetching AI response
+        final response = await _fetchGPTResponse(
+          dob: dob,
+          gender: gender,
+          workExperiences: workExperiences,
+          selectedSkills: widget.selectedSkills,
+          selectedStrens: widget.selectedStrens,
+        );
+
+        setState(() {
+          resumeItem = ResumeItem(
+            name: name,
+            gender: gender,
+            dob: dob,
+            address: address,
+            phone: phone,
+            workExperiences: workExperiences,
+            selectedSkills: widget.selectedSkills,
+            selectedStrens: widget.selectedStrens,
+            selfIntroduction: response,
+          );
+          _selfIntroductionController.text = response;
+          _isLoading = false;
         });
       }
-    }catch (error) {
-      print("Failed to bring the user info: $error");
+    } catch (error) {
+      print("Failed to fetch resume data: $error");
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Failed to bring the user info: $error")),
+        SnackBar(content: Text("Failed to fetch resume data: $error")),
       );
     }
   }
 
-  Future<void> _fetchGPTResponse() async {
+  //GPT 자기소개서 작성
+  Future<String> _fetchGPTResponse({
+    required String dob,
+    required String gender,
+    required List<WorkExperience> workExperiences,
+    required List<String> selectedSkills,
+    required List<String> selectedStrens,
+  }) async {
     final apiKey = dotenv.get('GPT_API_KEY');
     const endpoint = 'https://api.openai.com/v1/chat/completions';
     const requestsTimeOut = const Duration(seconds: 60);
-    const prompt = '서울이 어떤 곳인지 설명해줘';
 
-    try{
+    String prompt = '''다음 특징을 갖는 사람의 자기소개서 작성 :
+    성별:$gender, 생년월:$dob, 경력 :$workExperiences, 기술:$selectedSkills, 장점:$selectedStrens;
+    주의 : 성별과 생년월을 언급할 필요는 없다. '안녕하세요', '감사합니다'와 같은 인사와 마무리 인사는 모두 생략한다''';
+
+    try {
       final response = await http.post(
         Uri.parse(endpoint),
         headers: {
@@ -84,148 +172,356 @@ class _ResumeEdit extends State<ResumeEdit>{
           'messages': [
             {'role': 'system', 'content': prompt},
           ],
-          'max_tokens': 200,
+          'max_tokens': 500,
         }),
       );
 
       if (response.statusCode == 200) {
         final responseBody = json.decode(utf8.decode(response.bodyBytes));
 
-        // Check if 'choices' array exists and is not empty
-        if (responseBody.containsKey('choices') && responseBody['choices'] is List && responseBody['choices'].isNotEmpty) {
+        if (responseBody.containsKey('choices') &&
+            responseBody['choices'] is List &&
+            responseBody['choices'].isNotEmpty) {
           final text = responseBody['choices'][0]['message']['content'];
-          setState(() {
-            _response = text;
-          });
+          return text;
         } else {
-          setState(() {
-            _response = 'Failed to fetch response: Invalid response format';
-          });
+          return 'Failed to fetch response: Invalid response format';
         }
       } else {
         print('Error: ${response.statusCode} - ${response.body}');
-        setState(() {
-          _response = 'Failed to fetch response: ${response.statusCode} - ${response.body}';
-        });
+        return 'Failed to fetch response: ${response.statusCode} - ${response.body}';
       }
-    }catch (e){
+    } catch (e) {
       print('Exception: $e');
+      return 'Failed to fetch response: $e';
+    }
+  }
+
+  // 이미지 저장
+  Future<void> _pickImage() async {
+    final pickedFile =
+    await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
       setState(() {
-        _response = 'Failed to fetch response: $e';
+        resumeItem.image = File(pickedFile.path);
       });
     }
   }
 
+  // 이력서 저장
+  Future<void> _saveResume(String title) async {
+    try {
+      final CollectionReference resumesCollection = _firestore
+          .collection('user')
+          .doc(widget.id)
+          .collection('resumes');
+
+      final DocumentReference newResume = resumesCollection.doc();
+
+      await newResume.set({
+        'title': title,
+        'resumeItem': resumeItem.toMap(),
+        'createdAt': FieldValue.serverTimestamp(),
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Resume saved successfully")),
+      );
+    } catch (error) {
+      print("Failed to save resume data: $error");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Failed to save resume data: $error")),
+      );
+    }
+  }
+
+  // 앱 바 뒤로가기 버튼
+  void _goBack() {
+    Navigator.pop(context);
+  }
+
+  //안드로이드 뒤로가기 버튼
+  Future<bool> _onWillPop() async {
+    int count = 0;
+    while (count < 4) {
+      Navigator.of(context).pop();
+      count++;
+    }
+    return true;
+  }
+
+  // 이력서 제목 입력받는 팝업창
+  Future<void> _showSaveDialog() async {
+    TextEditingController _titleController = TextEditingController();
+
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('이력서 제목을 입력하세요'),
+          content: TextField(
+            controller: _titleController,
+            decoration: InputDecoration(
+              hintText: '이력서 제목',
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('취소'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            ElevatedButton(
+              child: Text('확인'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                _saveResume(_titleController.text);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home : SafeArea(
-        top: true,
-        left: false,
-        bottom: true,
-        right: false,
-        child: Scaffold(
-          appBar: AppBar(
-            title : const Text('이력서 작성'),
-            centerTitle: true,
-            backgroundColor: Colors.white,
-          ),
-          body: Padding(
-            padding: const EdgeInsets.only(left : 30.0, right: 30.0),
-            child: ListView(
-              children: [
-                const SizedBox(height: 30,),
-                //개인정보란
-                Row(
-                  children: [
-                    Container(
-                      height: 75,
-                      width: 75,
-                      alignment: Alignment.center,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(color : Colors.grey,
-                            spreadRadius:2.5,
-                            blurRadius: 10.0,
-                            blurStyle: BlurStyle.inner,
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: SafeArea(
+          top: true,
+          left: false,
+          bottom: true,
+          right: false,
+          child: Scaffold(
+            appBar: AppBar(
+              title: const Text('이력서 작성'),
+              centerTitle: true,
+              elevation: 1.0,
+              backgroundColor: Colors.white,
+              leading: IconButton(
+                icon: Icon(Icons.arrow_back),
+                onPressed: _goBack,
+              ),
+            ),
+            body: _isLoading
+                ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(
+                    color: Color(0xff1044FC),
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    'AI 이력서를 생성중입니다',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ],
+              ),
+            )
+                : Padding(
+              padding: const EdgeInsets.only(left: 30.0, right: 30.0),
+              child: ListView(
+                children: [
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  // 개인정보란
+                  Row(
+                    children: [
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      GestureDetector(
+                        onTap: _pickImage,
+                        child: Container(
+                          height: 100,
+                          width: 100,
+                          alignment: Alignment.center,
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey,
+                                spreadRadius: 2.5,
+                                blurRadius: 10.0,
+                                blurStyle: BlurStyle.inner,
+                              ),
+                            ],
+                          ),
+                          child: resumeItem.image == null
+                              ? const Text(
+                            '사진\n등록',
+                            style: TextStyle(fontSize: 15),
+                          )
+                              : ClipOval(
+                            child: Image.file(
+                              resumeItem.image!,
+                              width: 100,
+                              height: 100,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 35,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            resumeItem.name,
+                            style: TextStyle(
+                              fontSize: 25,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
+                          Text(
+                            resumeItem.gender,
+                            style: TextStyle(
+                              fontSize: 15,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
+                          Text(
+                            resumeItem.dob + '년생',
+                            style: TextStyle(
+                              fontSize: 15,
+                            ),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 40,
+                  ),
+                  // 주소, 전화번호란
+                  Row(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '주소',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            '전화번호',
+                            style: TextStyle(fontSize: 18),
                           ),
                         ],
                       ),
-                      child: const Icon(
-                        Icons.person_outline,
-                        size: 60,
+                      SizedBox(
+                        width: 30,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            resumeItem.address,
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            resumeItem.phone,
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Divider(),
+
+                  // 경력란
+                  const SizedBox(height: 10),
+                  const Text(
+                    '경력 사항',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  const SizedBox(height: 10),
+                  Column(
+                    children: resumeItem.workExperiences.map((experience) {
+                      return Container(
+                        margin: const EdgeInsets.symmetric(vertical: 10.0),
+                        padding: const EdgeInsets.all(15.0),
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.grey),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '${experience.place}',
+                              style: TextStyle(fontSize: 18),
+                            ),
+                            SizedBox(height: 5),
+                            Text(
+                              '근무 기간: ${experience.startYear}년 ${experience.startMonth}월 ~ ${experience.endYear}년 ${experience.endMonth}월',
+                              style: TextStyle(fontSize: 14),
+                            ),
+                            SizedBox(height: 5),
+                            Text(
+                              '근무 내용: ${experience.description}',
+                              style: TextStyle(fontSize: 14),
+                            ),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                  Divider(),
+
+                  // 자기소개서
+                  const SizedBox(height: 10),
+                  const Text(
+                    '자기소개서',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  const SizedBox(height: 10),
+                  TextField(
+                    controller: _selfIntroductionController,
+                    maxLines: 10,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: '자기소개서를 입력하세요',
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: _showSaveDialog,
+                    child: const Text('저장하기', style: TextStyle(color: Colors.white)),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(250, 51, 51, 255),
+                      minimumSize: const Size(360, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    const SizedBox(width: 35,),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                       Text(
-                          name,
-                          style: TextStyle(
-                            fontSize: 25,
-                          ),
-                        ),
-                        SizedBox(height: 8,),
-                        Text(
-                          gender,
-                          style: TextStyle(
-                            fontSize: 15,
-                          ),
-                        ),
-                        SizedBox(height: 8,),
-                        Text(
-                          dob+'년생',
-                          style: TextStyle(
-                            fontSize: 15,
-                          ),
-                        )
-                      ],
-                    )
-                  ],
-                ),
-                const SizedBox(height: 40,),
-
-                //주소, 전화번호란
-                Row(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('주소',
-                          style: TextStyle(fontSize: 18),),
-                        SizedBox(height: 10,),
-                        Text('전화번호',
-                          style: TextStyle(fontSize: 18),),
-                      ],
-                    ),
-                    SizedBox(width: 30,),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(address,
-                          style: TextStyle(fontSize: 18),),
-                        SizedBox(height: 10,),
-                        Text(phone,
-                          style: TextStyle(fontSize: 18),),
-                      ],
-                    ),
-                  ],
-                ),
-                Divider(),
-                ElevatedButton(
-                  onPressed: _fetchGPTResponse,
-                  child: Text('Fetch GPT Response'),
-                ),
-                Text(
-                  _response,
-                  textAlign: TextAlign.center,
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),

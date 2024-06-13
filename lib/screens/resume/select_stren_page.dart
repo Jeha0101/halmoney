@@ -1,8 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:halmoney/pages/extra_resume_page.dart';
+import 'package:halmoney/screens/resume/extra_resume_page.dart';
 
-class SelectStrenPage extends StatelessWidget {
-  const SelectStrenPage({super.key});
+class SelectStrenPage extends StatefulWidget {
+  final String id;
+  final List<String> selectedSkills;
+
+  const SelectStrenPage(
+      {super.key, required this.id, required this.selectedSkills});
+
+  @override
+  State<SelectStrenPage> createState() => _SelectStrenPageState();
+}
+
+class _SelectStrenPageState extends State<SelectStrenPage>{
+  final List<String> selectedStrens=[];
+
+  void updateSelectedStrens(List<String> strens){
+    setState(() {
+      selectedStrens.clear();
+      selectedStrens.addAll(strens);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +65,12 @@ class SelectStrenPage extends StatelessWidget {
 
             const SizedBox(height: 30),
 
-            const Expanded(child: StrenChooseButton()),
+            Expanded(
+              child: StrenChooseButton(
+                selectedStrens: selectedStrens,
+                onSelectedStrensChanged: updateSelectedStrens,
+              )
+            ),
 
             const SizedBox(height: 30),
 
@@ -71,7 +94,12 @@ class SelectStrenPage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const ExtraResumePage())
+                    MaterialPageRoute(builder: (context) => ExtraResumePage(
+                      id: widget.id,
+                      selectedSkills: widget.selectedSkills,
+                      selectedStrens: selectedStrens,
+                    )
+                  )
                 );
               },
               child: const Text('다음 페이지로 이동',style: TextStyle(color: Colors.white),),
@@ -86,7 +114,14 @@ class SelectStrenPage extends StatelessWidget {
 }
 
 class StrenChooseButton extends StatefulWidget{
-  const StrenChooseButton({super.key});
+  final List<String> selectedStrens;
+  final ValueChanged<List<String>> onSelectedStrensChanged;
+
+  const StrenChooseButton({
+    super.key,
+    required this.selectedStrens,
+    required this.onSelectedStrensChanged,
+  });
 
   @override
   State<StrenChooseButton> createState() => _StrenChooseButton();
@@ -100,14 +135,12 @@ class _StrenChooseButton extends State<StrenChooseButton>{
   //선택한 스킬을 담을 LIST
   //List<String> skillList = List<String>();
 
-  final List<String> selectedStren=[];
-
   void toggleSkill(String skill){
     setState(() {
-      if(selectedStren.contains(skill)){
-        selectedStren.remove(skill);
+      if(widget.selectedStrens.contains(skill)){
+        widget.selectedStrens.remove(skill);
       }else{
-        selectedStren.add(skill);
+        widget.selectedStrens.add(skill);
       }
     });
   }
@@ -129,7 +162,7 @@ class _StrenChooseButton extends State<StrenChooseButton>{
       itemCount: strength.length,
       itemBuilder: (context, index){
         final skill = strength[index];
-        final isSelected = selectedStren.contains(skill);
+        final isSelected = widget.selectedStrens.contains(skill);
 
         return ButtonTheme(
             minWidth: 100.0,
@@ -149,7 +182,7 @@ class _StrenChooseButton extends State<StrenChooseButton>{
     );
   }
 }
-void main(){
-  runApp(const MaterialApp(home:SelectStrenPage()));
-}
+//void main(){
+ // runApp(const MaterialApp(home:SelectStrenPage()));
+//}
 
