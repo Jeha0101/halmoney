@@ -210,6 +210,7 @@ class _AIRecommPage extends State<AIRecommPage> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => Recruit_main(
+                    id: job['id'],
                     num: job['num'],
                     title: job['title'],
                     address: job['address'],

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:halmoney/screens/resume/resumeEdit.dart';
+import 'package:halmoney/resume2/resumeEdit2.dart';
 
 class ExtraResumePage extends StatefulWidget {
   final String id;
