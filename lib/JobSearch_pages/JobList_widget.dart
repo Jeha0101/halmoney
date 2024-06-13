@@ -111,6 +111,7 @@ class _JobListState extends State<JobList> {
           context,
           MaterialPageRoute(
             builder: (context) => Recruit_main(
+              id: widget.id,
               num: widget.num,
               title: widget.title,
               address: widget.address,

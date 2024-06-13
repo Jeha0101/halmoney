@@ -20,33 +20,48 @@ class _JobSearchState extends State<JobSearch> {
   @override
   void initState() {
     super.initState();
-    _fetchUserLikes();
-    _fetchJobs();
+    _initializeData();
+  }
 
+  Future<void> _initializeData() async {
+    await _fetchUserLikes();
+    await _fetchJobs();
   }
 
   Future<void> _fetchUserLikes() async {
     try {
+      // Fetch the user document based on the provided widget.id
       final QuerySnapshot userQuery = await _firestore
           .collection('user')
           .where('id', isEqualTo: widget.id)
           .get();
 
       if (userQuery.docs.isNotEmpty) {
+        // Assuming there is only one user document matching the id
         final String userId = userQuery.docs.first.id;
+        userDocId = userId;
+
+        // Fetch the user's likes sub-collection
         final QuerySnapshot userLikesQuery = await _firestore
             .collection('user')
             .doc(userId)
             .collection('users_like')
             .get();
 
+        // Extract the 'num' field from each document, if it exists
         setState(() {
-          userLikes = userLikesQuery.docs.map((doc) => doc['num'].toString()).toList();
+          userLikes = userLikesQuery.docs
+              .where((doc) => (doc.data() as Map<String, dynamic>).containsKey('num'))
+              .map((doc) => doc['num'].toString())
+              .toList();
         });
+        print('---------------------------');
         print(userLikes);
+      } else {
+        print("No user found with the provided id.");
       }
     } catch (error) {
-      print("Failed to fetch user likes: $error");
+      print("Failed to fetch user likes!: $error");
     }
   }
 
@@ -66,10 +81,9 @@ class _JobSearchState extends State<JobSearch> {
             'career': data['career'] ?? 'No Career',
             'detail': data['detail'] ?? 'No detail',
             'workweek': data['work_time_week'] ?? 'No work Week',
-            'isLiked': userLikes.contains(data['num'].toString()) ?? false
+            'isLiked': userLikes.contains(data['num'].toString())
           };
         }).toList();
-        print(jobs);
       });
     } catch (error) {
       print("Failed to fetch jobs: $error");
@@ -129,26 +143,26 @@ class _JobSearchState extends State<JobSearch> {
           body: jobs.isEmpty
               ? const Center(child: CircularProgressIndicator())
               : ListView.builder(
-                  itemCount: jobs.length,
-                  itemBuilder: (context, index) {
-                    final job = jobs[index];
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: JobList(
-                        id: widget.id,
-                        num: job['num'],
-                        title: job['title'],
-                        address: job['address'],
-                        wage: job['wage'],
-                        career: job['career'],
-                        detail: job['detail'],
-                        workweek: job['workweek'],
-                        isLiked: job['isLiked'],
-                        userDocId: userDocId ?? '',
-                      ),
-                    );
-                  },
+            itemCount: jobs.length,
+            itemBuilder: (context, index) {
+              final job = jobs[index];
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: JobList(
+                  id: widget.id,
+                  num: job['num'],
+                  title: job['title'],
+                  address: job['address'],
+                  wage: job['wage'],
+                  career: job['career'],
+                  detail: job['detail'],
+                  workweek: job['workweek'],
+                  isLiked: job['isLiked'],
+                  userDocId: userDocId ?? '',
                 ),
+              );
+            },
+          ),
         ),
       ),
     );
