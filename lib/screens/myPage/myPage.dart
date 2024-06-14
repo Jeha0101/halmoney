@@ -7,6 +7,8 @@ import 'package:halmoney/screens/scrap/UserLikes.dart';
 import 'package:halmoney/pages/extra_resume_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../scrap/userViewedJobs.dart';
+
 class MyPageScreen extends StatefulWidget {
   final String id;
   const MyPageScreen({super.key, required this.id});
@@ -63,9 +65,29 @@ class _MyPageScreenState extends State<MyPageScreen> {
         right: false,
         child: Scaffold(
           appBar: AppBar(
-            title: const Text('마이페이지'),
-            centerTitle: true,
             backgroundColor: Colors.white,
+            elevation: 1.0,
+            title: Row(
+              children: [
+                Image.asset(
+                  'assets/images/img_logo.png',
+                  fit: BoxFit.contain,
+                  height: 40,
+                ),
+                Container(
+                  padding: const EdgeInsets.all(10.0),
+                  child: const Text(
+                    '마이페이지',
+                    style: TextStyle(
+                      fontFamily: 'NanumGothicFamily',
+                      fontWeight: FontWeight.w600,
+                      fontSize: 18.0,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
           body: ListView(
             children: [
@@ -214,7 +236,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => UserLikesScreen(id: widget.id)),
+                        MaterialPageRoute(builder: (context) => UserViewedJobsPage(userId: widget.id)),
                       );
                     },
                     child: Container(
@@ -247,82 +269,6 @@ class _MyPageScreenState extends State<MyPageScreen> {
                     ),
                   ),
 
-                  // 내가 쓴 글
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => UserLikesScreen(id: widget.id)),
-                      );
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.only(left: 20),
-                      padding: const EdgeInsets.all(20),
-                      height: 50,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        border: Border(
-                          bottom: BorderSide(color: Colors.grey),
-                          right: BorderSide(color: Colors.grey),
-                        ),
-                      ),
-                      child: const Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.list_alt,
-                            size: 50,
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            '내가 쓴 글',
-                            style: TextStyle(
-                              fontSize: 20,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-
-                  // 내가 작성한 댓글
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => UserLikesScreen(id: widget.id)),
-                      );
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.only(right: 20),
-                      padding: const EdgeInsets.all(20),
-                      height: 50,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        border: Border(
-                          bottom: BorderSide(color: Colors.grey),
-                        ),
-                      ),
-                      child: const Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.insert_comment_outlined,
-                            size: 50,
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            '내가 작성한 댓글',
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
                 ],
               )
             ],

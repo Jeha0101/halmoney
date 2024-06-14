@@ -209,6 +209,7 @@ class _JobListState extends State<JobList> {
                       ),
                     ),
                     SizedBox(height: 3),
+
                     Container(
                       child: Row(
                         children: [

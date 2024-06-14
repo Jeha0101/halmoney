@@ -95,7 +95,6 @@ class _JobSearchState extends State<JobSearch> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

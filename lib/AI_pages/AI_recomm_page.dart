@@ -129,7 +129,6 @@ class _AIRecommPage extends State<AIRecommPage> {
     for (String word in tf.keys) {
       tf[word] = tf[word]! / words.length;
     }
-
     return tf;
   }
 

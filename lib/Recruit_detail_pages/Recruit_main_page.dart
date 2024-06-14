@@ -291,8 +291,7 @@ class Recruit_main extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  onPressed: () {
-                    // 버튼 클릭 시 실행될 로직 추가
+                  onPressed: () {// 버튼 클릭 시 실행될 로직 추가
                   },
                   child: Text(
                     '지원하기',
