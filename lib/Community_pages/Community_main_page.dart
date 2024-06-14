@@ -7,6 +7,7 @@ class Communitypage extends StatefulWidget {
   final String id;
   const Communitypage({super.key, required this.id});
 
+  @override
   _CommunityState createState() => _CommunityState();
 }
 
@@ -14,6 +15,7 @@ class _CommunityState extends State<Communitypage> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   List<Map<String, dynamic>> writings = [];
 
+  @override
   void initState() {
     super.initState();
     _fetchCommunity();

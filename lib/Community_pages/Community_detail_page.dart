@@ -24,17 +24,18 @@ class CommunityCommentSection extends StatefulWidget {
     required this.title,
     required this.contents,
     required this.id,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   @override
   _CommunityCommentSectionState createState() => _CommunityCommentSectionState();
 }
 
 class _CommunityCommentSectionState extends State<CommunityCommentSection> {
   final TextEditingController _commentController = TextEditingController();
-   List<Comment> _comments = [];
+   final List<Comment> _comments = [];
    List<Map<String, dynamic>> comments_= [];
 
+  @override
   void initState() {
     super.initState();
     _fetchComments();
@@ -151,19 +152,19 @@ void _addComment(String author, String content) async {
             final comment = comments_[index];
             return ListTile(
               title: Text(comment['author']??'NO',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 15,
                     color: Colors.black,)),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(comment['content']??'NOOO',
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 18,
                   color: Colors.black,)
                   ),
                   Text(comment['timestamp'],
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 13,
                         color: Color.fromARGB(250, 51, 51, 255))
                   ),
@@ -190,13 +191,15 @@ class CommunityDetail extends StatefulWidget {
     required this.title,
     required this.contents,
     required this.id,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
+  @override
   _CommunityDetailState createState() => _CommunityDetailState();
 }
 
   class _CommunityDetailState extends State<CommunityDetail>{
-    Widget build(BuildContext context) {
+    @override
+  Widget build(BuildContext context) {
       return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
@@ -217,10 +220,10 @@ class CommunityDetail extends StatefulWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                   child: Text(
                     widget.title,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 23,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
@@ -247,10 +250,10 @@ class CommunityDetail extends StatefulWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                           child: Text(
                             widget.contents,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 15,
                               color: Colors.black,
                             ),
