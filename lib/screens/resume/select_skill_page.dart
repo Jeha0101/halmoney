@@ -126,9 +126,8 @@ class SkillChooseButton extends StatefulWidget{
 
 class _SkillChooseButtonState extends State<SkillChooseButton>{
   //출력할 스킬 목록
-  var skills =['IT업무', '학생관리','고객상담','주방보조','빵 포장','식사 지도','사무보조',
-  '사업경영','청소','자격증보유','커피제조','요리','건축/건설','디자인업무','교육','요양/사회복지',
-  '배달/포장','서빙','생산직','용접','기타'];
+  var skills =['IT업무', '요양', '간병', '안내', '청소', '사무', '교사', '주방',
+    '사회복지사', '디자이너', '조리사', '영업', '기획', '환경 미화', '음료 제조', '기타'];
   //선택한 스킬을 담을 LIST
   //List<String> skillList = List<String>();
 

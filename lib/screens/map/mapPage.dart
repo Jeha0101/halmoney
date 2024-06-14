@@ -53,6 +53,7 @@ class MapScreen extends StatelessWidget {
         );
       } else {
         print('매칭된 공고 페이지가 없습니다');
+        _showNoJobsDialog(context);
       }
 
     }catch (error){
@@ -61,9 +62,28 @@ class MapScreen extends StatelessWidget {
         SnackBar(content: Text("Failed to update interest place: $error")),
       );
     }
-
-
   }
+
+  //조건에 맞는 공고 없을 시 팝업
+  void _showNoJobsDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('조건에 맞는 공고가 없습니다!'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('확인'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {

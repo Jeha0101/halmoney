@@ -117,7 +117,7 @@ class Recruit_main extends StatelessWidget {
                           shrinkWrap: true,
                           crossAxisCount: 2, //세로에 들어가는 박스 수
                           crossAxisSpacing: 10, //박스 간 가로 거리
-                          childAspectRatio: 3, //높이설정
+                          childAspectRatio: 2, //높이설정
                           children: [
                             _buildInfoBox('급여', wage),
                             _buildInfoBox('요일', workweek),
@@ -336,6 +336,7 @@ Widget _buildInfoBox(String title, String value) {
           SizedBox(height: 5),
           Text(
             value,
+            textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 13,
               color: Color.fromARGB(250, 65, 51, 255),

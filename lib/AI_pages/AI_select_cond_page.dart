@@ -77,11 +77,12 @@ class _AISelectCondPage extends State<AISelectCondPage> {
           );
         } else {
           print('No matching jobs found');
+          _showNoJobsDialog(context);
         }
 
         print("Interest place updated successfully");
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Interest place updated successfully")),
+          const SnackBar(content: Text("관심 지역이 성공적으로 업데이트 되었습니다.")),
         );
       } else {
         print("User not found");
@@ -96,6 +97,27 @@ class _AISelectCondPage extends State<AISelectCondPage> {
       );
     }
   }
+
+  //조건에 맞는 공고 없을 시 팝업
+  void _showNoJobsDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('조건에 맞는 공고가 없습니다!'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('확인'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -373,23 +395,9 @@ class ChooseJobButton extends StatefulWidget {
 }
 
 class _ChooseJobButton extends State<ChooseJobButton> {
-  var jobs = [
-    '주방',
-    '음료 조리',
-    '바리스타',
-    '안내',
-    '사무',
-    '상담',
-    '회계',
-    '사회복지사',
-    '디자인',
-    '운전',
-    '배달',
-    '청소',
-    '요양',
-    '간호',
-    '교사'
-  ];
+  var jobs = ['음료 조리','요양', '간병', '안내', '청소', '사무', '교사', '주방',
+    '사회복지사', '디자이너', '조리사', '영업', '기획', '환경 미화','운전',
+    'IT','생산','판매','배달','방송','안전'];
 
   void toggleSkill(String job) {
     setState(() {

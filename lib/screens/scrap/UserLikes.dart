@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:halmoney/models/jopOpening.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:halmoney/JobSearch_pages/JobList_widget.dart';
 class UserLikesScreen extends StatefulWidget {
@@ -8,6 +7,7 @@ class UserLikesScreen extends StatefulWidget {
 
   const UserLikesScreen({super.key, required this.id});
 
+  @override
   _UserLikesState createState() => _UserLikesState();
 }
 class _UserLikesState extends State<UserLikesScreen>{
@@ -15,6 +15,7 @@ class _UserLikesState extends State<UserLikesScreen>{
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   List<Map<String, dynamic>> jobs = [];
 
+  @override
   void initState() {
     super.initState();
     _fetchJobs();
@@ -70,6 +71,7 @@ class _UserLikesState extends State<UserLikesScreen>{
 
 
 
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
