@@ -42,7 +42,7 @@ class MapScreen extends StatelessWidget {
         final GuMatch =  middleAdd.isEmpty || address.contains(middleAdd);
         final DongMatch = minorAdd.isEmpty || address.contains(minorAdd);
 
-        return GuMatch && DongMatch;
+        return GuMatch ||  DongMatch;
       }).toList();
 
       print('Filtered jobs count:${filteredJobs.length}');
@@ -136,7 +136,7 @@ class MapScreen extends StatelessWidget {
                       ListView(
                           children: [
                             SizedBox(
-                              height: 180,
+                              height: 200,
                               child:
                               Column(
                                 children: [
