@@ -8,6 +8,8 @@ import 'package:halmoney/pages/extra_resume_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:halmoney/screens/scrap/UserViewdJobs.dart';
 
+import '../scrap/userViewedJobs.dart';
+
 class MyPageScreen extends StatefulWidget {
   final String id;
   const MyPageScreen({super.key, required this.id});

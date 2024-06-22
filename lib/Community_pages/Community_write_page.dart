@@ -30,7 +30,7 @@ class Community_Write extends StatelessWidget {
       } catch (e) {
         // 데이터 추가 중 에러 발생 시 처리
         ScaffoldMessenger.of(_formKey.currentContext!).showSnackBar(
-          SnackBar(content: Text('글 등록에 실패했습니다. 다시 시도해 주세요.')),
+          const SnackBar(content: Text('글 등록에 실패했습니다. 다시 시도해 주세요.')),
         );
         print('Firestore에 데이터 추가 중 에러 발생: $e');
       }

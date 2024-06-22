@@ -118,7 +118,6 @@ class _AISelectCondPage extends State<AISelectCondPage> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

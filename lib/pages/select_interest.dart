@@ -155,7 +155,6 @@ class _InterestButton extends State<InterestButton>{
   //선택한 스킬을 담을 LIST
   //List<String> skillList = List<String>();
 
-
   void toggleInterest(String interest){
     setState(() {
       if(InterestButton.selectedInterests.contains(interest)){

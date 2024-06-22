@@ -296,6 +296,7 @@ class Recruit_main extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
+
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -303,6 +304,7 @@ class Recruit_main extends StatelessWidget {
                         builder: (context) => ResumeManage2(id: id, num:num),
                       ),
                     );
+
 
                   },
                   child: Text(

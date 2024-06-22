@@ -9,13 +9,13 @@ import 'dart:io';
 
 class ExtraResumePage extends StatelessWidget {
   final String id;
-  const ExtraResumePage({Key? key, required this.id}) : super(key: key);
+  const ExtraResumePage({super.key, required this.id});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(250, 51, 51, 255),
+        backgroundColor: const Color.fromARGB(250, 51, 51, 255),
         elevation: 1.0,
         title: Row(
           children: [
@@ -46,7 +46,7 @@ class ExtraResumePage extends StatelessWidget {
           children: [
             Text(
               '$id 님의 이력서를 첨부해주세요!',
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18.0,
                 fontFamily: 'NanumGothic',
                 fontWeight: FontWeight.w600,
@@ -127,8 +127,8 @@ class FilePickerTestState extends State<FilePickerTest> {
       debugPrint('File uploaded successfully! Download URL: $downloadUrl');
 
       // Firestore에 다운로드 URL 저장
-      final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-      final QuerySnapshot result = await _firestore
+      final FirebaseFirestore firestore = FirebaseFirestore.instance;
+      final QuerySnapshot result = await firestore
           .collection('user')
           .where('id', isEqualTo: widget.id)
           .get();
@@ -138,7 +138,7 @@ class FilePickerTestState extends State<FilePickerTest> {
       if (documents.isNotEmpty) {
         final String docId = documents.first.id;
 
-        await _firestore
+        await firestore
             .collection('user')
             .doc(docId)
         .set({'user_resume':downloadUrl});
@@ -263,21 +263,17 @@ class FilePickerTestState extends State<FilePickerTest> {
             if (detail.files.isNotEmpty) {
               String fileName = detail.files.first.name;
               String? filePath = detail.files.first.path;
-              if (filePath != null) {
-                Uint8List? fileBytes = await _getFileBytes(filePath);
-                if (fileBytes != null) {
-                  setState(() {
-                    showFileName = "Now File Name: $fileName";
-                    selectedFileBytes = fileBytes;
-                    selectedFileName = fileName;
-                  });
-                } else {
-                  debugPrint("File bytes are null");
-                }
+              Uint8List? fileBytes = await _getFileBytes(filePath);
+              if (fileBytes != null) {
+                setState(() {
+                  showFileName = "Now File Name: $fileName";
+                  selectedFileBytes = fileBytes;
+                  selectedFileName = fileName;
+                });
               } else {
-                debugPrint("File path is null");
+                debugPrint("File bytes are null");
               }
-            }
+                        }
           },
           onDragEntered: (detail) {
             setState(() {

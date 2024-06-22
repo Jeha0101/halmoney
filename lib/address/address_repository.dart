@@ -1,8 +1,6 @@
 import 'dart:convert';
-import 'package:http/http.dart';
 import 'package:halmoney/address/address_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class AppAddressRepository {
@@ -15,17 +13,17 @@ class AppAddressRepository {
   //AccessToken 받아오기
   Future<String?> getSgisApiAccessToken() async {
     try {
-      final String _key = dotenv.get('ADDRESS_API_KEY');
-      final String _secret = dotenv.get('ADDRESS_API_SECRET');
-      http.Response _response = await http.get(
+      final String key = dotenv.get('ADDRESS_API_KEY');
+      final String secret = dotenv.get('ADDRESS_API_SECRET');
+      http.Response response = await http.get(
         Uri.parse(
-            "https://sgisapi.kostat.go.kr/OpenAPI3/auth/authentication.json?consumer_key=$_key&consumer_secret=$_secret"),
+            "https://sgisapi.kostat.go.kr/OpenAPI3/auth/authentication.json?consumer_key=$key&consumer_secret=$secret"),
       );
-      if (_response.statusCode == 200) {
-        Map<String, dynamic> _body =
-            json.decode(_response.body) as Map<String, dynamic>;
-        String _accessToken = _body["result"]["accessToken"];
-        return _accessToken;
+      if (response.statusCode == 200) {
+        Map<String, dynamic> body =
+        json.decode(response.body) as Map<String, dynamic>;
+        String accessToken = body["result"]["accessToken"];
+        return accessToken;
       } else {
         return null;
       }
@@ -39,21 +37,21 @@ class AppAddressRepository {
     String? code,
   }) async {
     try {
-      String? _code = code == null ? "" : "&cd=$code";
-      http.Response _response = await http.get(Uri.parse(
-          "https://sgisapi.kostat.go.kr/OpenAPI3/addr/stage.json?accessToken=$token$_code"));
-      if (_response.statusCode == 200) {
-        Map<String, dynamic> _body =
-            json.decode(_response.body) as Map<String, dynamic>;
-        List<dynamic> _result = _body["result"];
-        List<AddressDepthServerModel> _model =
-            _result.map((e) => AddressDepthServerModel.fromJson(e)).toList();
+      String? code0 = code == null ? "" : "&cd=$code";
+      http.Response response = await http.get(Uri.parse(
+          "https://sgisapi.kostat.go.kr/OpenAPI3/addr/stage.json?accessToken=$token$code0"));
+      if (response.statusCode == 200) {
+        Map<String, dynamic> body =
+        json.decode(response.body) as Map<String, dynamic>;
+        List<dynamic> result = body["result"];
+        List<AddressDepthServerModel> model =
+        result.map((e) => AddressDepthServerModel.fromJson(e)).toList();
 
         // "서울특별시"와 "경기도"만 필터링
         if (code == null){
-          _model = _model.where((item) => item.name == "서울특별시" || item.name == "경기도").toList();
+          model = model.where((item) => item.name == "서울특별시" || item.name == "경기도").toList();
         }
-        return _model;
+        return model;
       } else {
         return [];
       }
