@@ -125,7 +125,7 @@ class _UserLikesState extends State<UserLikesScreen>{
                   workweek: job['week'],
                   isLiked: job['isLiked'],
                   image_path: job['image_path'],
-                  userDocId: '',
+                  //userDocId: '',
 
                 ),
               );

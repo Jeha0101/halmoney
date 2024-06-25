@@ -59,15 +59,15 @@ class Cond_Search extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => Recruit_main(
-            id: jobData['id'],
-            num: jobData['num'],
-              title: jobData['title'],
-              address: jobData['address'],
-              wage: jobData['wage'],
-              career: jobData['job_name'],
-              detail: jobData['detail'],
-              workweek: jobData['work_time_week'],
-              image_path: jobData['image_path'],
+            id: jobData['id'] ?? 'N/A',
+            num: jobData['num'] ?? 0,
+            title: jobData['title'] ?? 'N/A',
+            address: jobData['address'] ?? 'N/A',
+            wage: jobData['wage'] ?? 'N/A',
+            career: jobData['job_name'] ?? 'N/A',
+            detail: jobData['detail'] ?? 'N/A',
+            workweek: jobData['work_time_week'] ?? 'N/A',
+            image_path: jobData['image_path'] ?? 'N/A',
               //userId: widget.id,
           )),
         );
@@ -91,7 +91,7 @@ class Cond_Search extends StatelessWidget {
               child: Column(
                 children: [
                   Image.asset(
-                    "assets/images/songpa.png",
+                    jobData['image_path'],
                     width: 90,
                     height: 90,
                   )

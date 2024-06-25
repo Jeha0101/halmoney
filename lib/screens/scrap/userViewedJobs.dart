@@ -129,7 +129,7 @@ class _UserViewedJobsPageState extends State<UserViewedJobsPage> {
                   workweek: job['week'],
                   isLiked: job['isLiked'],
                   image_path: job['image_path'],
-                  userDocId: '', // Can be updated if needed
+                  //userDocId: '', // Can be updated if needed
                 ),
               );
             },

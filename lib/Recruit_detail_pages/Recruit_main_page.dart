@@ -103,7 +103,7 @@ class Recruit_main extends StatelessWidget {
                             ClipRRect(
                                 borderRadius: BorderRadius.circular(5),
                                 child: Image.asset(
-                                  'assets/images/songpa.png',
+                                  image_path,
                                   height: 185,
                                   width: 350,
                                   fit: BoxFit.cover,
@@ -236,18 +236,24 @@ class Recruit_main extends StatelessWidget {
                                 fontSize: 15,
                                 color: Colors.black54,
                               ),
+
                             ),
 
                             SizedBox(width: 25),
 
-                            Text(
-                              career,
-                              style: TextStyle(
-                                fontSize: 15,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500,
+                            Container(
+                              width : 270,
+                              child : Text(
+                                overflow: TextOverflow.ellipsis,
+                                career,
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
                             ),
+
                           ],
                         ),
 
