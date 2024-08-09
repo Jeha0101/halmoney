@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:halmoney/JobSearch_pages/JobList_widget.dart';
 import 'package:halmoney/screens/home/home.dart';
 import 'package:halmoney/myAppPage.dart';
+import 'package:intl/intl.dart';
 
 class JobSearch extends StatefulWidget {
   final String id;
@@ -75,6 +76,14 @@ class _JobSearchState extends State<JobSearch> {
       setState(() {
         jobs = documents.map((doc) {
           final data = doc.data() as Map<String, dynamic>;
+
+          // Convert the Timestamp to a DateTime object and then to a formatted string
+          String endDayStr = 'No end_day';
+          if (data['end_day'] != null) {
+            DateTime endDay = (data['end_day'] as Timestamp).toDate();
+            endDayStr = DateFormat('yyyy-MM-dd').format(endDay); // Format the DateTime
+          }
+
           return {
             'num': data['num'] ?? 0,
             'title': data['title'] ?? 'No Title.',
@@ -83,11 +92,11 @@ class _JobSearchState extends State<JobSearch> {
             'career': data['career'] ?? 'No Career',
             'detail': data['detail'] ?? 'No detail',
             'workweek': data['work_time_week'] ?? 'No work Week',
-            'image_path': data['image_path']??'No_path',
-            'isLiked': userLikes.contains(data['num'].toString())
+            'image_path': data['image_path'] ?? 'No_path',
+            'isLiked': userLikes.contains(data['num'].toString()),
+            'end_day': endDayStr,
           };
         }).toList();
-        print(jobs);
       });
     } catch (error) {
       print("Failed to fetch jobs: $error");
@@ -96,6 +105,7 @@ class _JobSearchState extends State<JobSearch> {
       );
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -146,6 +156,7 @@ class _JobSearchState extends State<JobSearch> {
                   workweek: job['workweek'],
                   image_path: job['image_path'],
                   isLiked: job['isLiked'],
+                  endday: job['end_day'],
                 ),
               );
             },

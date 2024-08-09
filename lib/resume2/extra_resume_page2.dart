@@ -3,11 +3,12 @@ import 'package:halmoney/resume2/resumeEdit2.dart';
 
 class ExtraResumePage extends StatefulWidget {
   final String id;
+  final String title;
   final List<String> selectedSkills;
   final List<String> selectedStrens;
 
   const ExtraResumePage(
-      {super.key, required this.id, required this.selectedSkills, required this.selectedStrens});
+      {super.key, required this.id, required this.selectedSkills, required this.selectedStrens, required this.title});
 
   @override
   State<ExtraResumePage> createState() => _ExtraResumePageState();
@@ -161,6 +162,7 @@ class _ExtraResumePageState extends State<ExtraResumePage> {
                   MaterialPageRoute(
                     builder: (context) => ResumeEdit(
                       id: widget.id,
+                      title: widget.title,
                       selectedSkills: widget.selectedSkills,
                       selectedStrens: widget.selectedStrens,
                       workExperiences: workExperiences,
