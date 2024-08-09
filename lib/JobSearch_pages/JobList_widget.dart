@@ -14,6 +14,7 @@ class JobList extends StatefulWidget {
   final bool isLiked;
   final String userDocId;
   final String image_path;
+  final String endday;
 
   const JobList({
     required this.id,
@@ -27,6 +28,7 @@ class JobList extends StatefulWidget {
     required this.isLiked,
     required this.userDocId,
     required this.image_path,
+    required this.endday,
     Key? key,
   }) : super(key: key);
 
@@ -129,6 +131,7 @@ class _JobListState extends State<JobList> {
               detail: widget.detail,
               workweek: widget.workweek,
               image_path: widget.image_path,
+              endday: widget.endday,
             ),
           ),
         );

@@ -1,15 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:halmoney/screens/resume/select_skill_page.dart';
+import 'package:halmoney/resume2/select_skill_page2.dart';
 import 'package:halmoney/resume2/resumeView2.dart';
 
 class ResumeManage2 extends StatefulWidget {
   final String id;
   final int num;
+  final String title;
 
   ResumeManage2({
     required this.id,
     required this.num,
+    required this.title,
     Key? key,
   }): super(key: key);
 
@@ -101,7 +103,7 @@ class _ResumeManageState extends State<ResumeManage2> {
                 onTap: () async{
                   final result = await Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => SelectSkillPage(id: widget.id)),
+                    MaterialPageRoute(builder: (context) => SelectSkillPage(id: widget.id, title: widget.title)),
                   );
                   if (result ==true){
                     _fetchResumes();

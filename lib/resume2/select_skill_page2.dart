@@ -3,7 +3,13 @@ import 'package:halmoney/resume2/select_stren_page2.dart';
 
 class SelectSkillPage extends StatefulWidget {
   final String id;
-  const SelectSkillPage({super.key, required this.id});
+  final String title;
+
+  SelectSkillPage({
+    required this.id,
+    required this.title,
+    Key? key,
+  }): super(key: key);
 
   @override
   State<SelectSkillPage> createState() => _SelectSkillPageState();
@@ -94,6 +100,7 @@ class _SelectSkillPageState extends State<SelectSkillPage>{
                       MaterialPageRoute(
                         builder: (context) => SelectStrenPage(
                           id : widget.id,
+                          title:widget.title,
                           selectedSkills: selectedSkills
                         ),
                       )

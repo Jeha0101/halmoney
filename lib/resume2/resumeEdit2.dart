@@ -6,6 +6,20 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:convert';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:halmoney/resume2/revisionResume_page.dart';
+// 면접 질문 데이터 class
+class InterviewQuestion {
+  late String question;
+
+  InterviewQuestion({required this.question});
+
+  // 면접 질문 데이터를 Map으로 변환하는 함수
+  Map<String, dynamic> toMap() {
+    return {
+      'question': question,
+    };
+  }
+}
 
 //이력서 데이터 class
 class ResumeItem {
@@ -52,6 +66,7 @@ class ResumeItem {
 
 class ResumeEdit extends StatefulWidget {
   final String id;
+  final String title;
   final List<String> selectedSkills;
   final List<String> selectedStrens;
   final List<WorkExperience> workExperiences;
@@ -59,6 +74,7 @@ class ResumeEdit extends StatefulWidget {
   const ResumeEdit({
     Key? key,
     required this.id,
+    required this.title,
     required this.selectedSkills,
     required this.selectedStrens,
     required this.workExperiences,
@@ -73,6 +89,7 @@ class _ResumeEditState extends State<ResumeEdit> {
   late ResumeItem resumeItem;
   bool _isLoading = true;
   final TextEditingController _selfIntroductionController = TextEditingController();
+  List<InterviewQuestion> interviewQuestions = [];
 
   @override
   void initState() {
@@ -120,6 +137,7 @@ class _ResumeEditState extends State<ResumeEdit> {
           selectedStrens: widget.selectedStrens,
         );
 
+
         setState(() {
           resumeItem = ResumeItem(
             name: name,
@@ -135,6 +153,14 @@ class _ResumeEditState extends State<ResumeEdit> {
           _selfIntroductionController.text = response;
           _isLoading = false;
         });
+
+        // Fetch interview questions after fetching resume data
+        await _fetchGPTInterviewQuestions(
+          dob: dob,
+          title: widget.title,
+          selectedSkills: widget.selectedSkills,
+          selectedStrens: widget.selectedStrens,
+        );
       }
     } catch (error) {
       print("Failed to fetch resume data: $error");
@@ -234,7 +260,67 @@ class _ResumeEditState extends State<ResumeEdit> {
       );
     }
   }
+  //////////////////////////////////
 
+  // GPT 면접 질문 생성
+  Future<void> _fetchGPTInterviewQuestions({
+    required String dob,
+    required String title,
+    required List<String> selectedSkills,
+    required List<String> selectedStrens
+}) async {
+    final apiKey = dotenv.get('GPT_API_KEY');
+    const endpoint = 'https://api.openai.com/v1/chat/completions';
+    const requestsTimeOut = const Duration(seconds: 60);
+
+
+
+    String prompt = '''다음 특징을 갖는 사람의 면접 질문 작성 :
+    생년월일:$dob, 경력 :${resumeItem.workExperiences}, 기술:${selectedSkills}, 장점:$selectedStrens, 지원 직업:$title;
+    질문은 총 10개로 각 질문 끝에 물음표를 붙인다. 질문은 상세하고 명확하게 작성한다.''';
+
+    try {
+      final response = await http.post(
+        Uri.parse(endpoint),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $apiKey',
+        },
+        body: json.encode({
+          'model': 'gpt-3.5-turbo',
+          'messages': [
+            {'role': 'system', 'content': prompt},
+          ],
+          'max_tokens': 500,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final responseBody = json.decode(utf8.decode(response.bodyBytes));
+
+        if (responseBody.containsKey('choices') &&
+            responseBody['choices'] is List &&
+            responseBody['choices'].isNotEmpty) {
+          final text = responseBody['choices'][0]['message']['content'];
+          List<String> questions = text.split('\n');
+          setState(() {
+            interviewQuestions = questions.map((q) => InterviewQuestion(question: q)).toList();
+          });
+          for (var question in interviewQuestions) {
+            print(question.question);
+          }
+
+        } else {
+          print('Failed to fetch response: Invalid response format');
+        }
+      } else {
+        print('Error: ${response.statusCode} - ${response.body}');
+      }
+    } catch (e) {
+      print('Exception: $e');
+    }
+  }
+//////////////////////////////////////////////////////////
   // 앱 바 뒤로가기 버튼
   void _goBack() {
     Navigator.pop(context);
@@ -508,18 +594,61 @@ class _ResumeEditState extends State<ResumeEdit> {
                       hintText: '자기소개서를 입력하세요',
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 10),
+
                   ElevatedButton(
                     onPressed: _showSaveDialog,
                     child: const Text('저장하기', style: TextStyle(color: Colors.white)),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color.fromARGB(250, 51, 51, 255),
-                      minimumSize: const Size(360, 50),
+                      minimumSize: const Size(150, 50),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
                   ),
+                  SizedBox(height: 20,),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SelfIntroductionRevisionPage(
+                            existingIntroduction: resumeItem.selfIntroduction,
+                          ),
+                        ),
+                      );
+                    },
+                    child: const Text('수정하기', style: TextStyle(color: Colors.white)),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(250, 51, 51, 255),
+                      minimumSize: const Size(150, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20,),
+                  const Text('면접 질문',
+                    style: TextStyle(fontSize: 18),),
+                  const SizedBox(height: 10),
+                  ...interviewQuestions.map((question){
+                    return Container(
+                      margin: const EdgeInsets.symmetric(vertical: 5.0 ),
+                      padding: const EdgeInsets.all(10.0),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color:Colors.grey),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Text(
+                        question.question,
+                        style: TextStyle(fontSize:16),
+                      ),
+                    );
+                  }).toList(),
+                  const SizedBox(height: 20),
                 ],
               ),
             ),
