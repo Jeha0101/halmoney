@@ -72,8 +72,8 @@ class _AISelectCondPage extends State<AISelectCondPage> {
         print('Filtered jobs count:${filteredJobs.length}');
         if(filteredJobs.isNotEmpty){
           Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => CondSearchResultPage(jobs: filteredJobs))
+              context,
+              MaterialPageRoute(builder: (context) => CondSearchResultPage(jobs: filteredJobs))
           );
         } else {
           print('No matching jobs found');
@@ -271,7 +271,7 @@ class ChooseTimeButton extends StatefulWidget {
 
 class _ChooseTimeButton extends State<ChooseTimeButton> {
   var workdays = ['주6일', '주5일', '주4일', '주3일', '주2일', '주1일',
-  '월~일', '월~토', '월~금', '주말(토,일)', '기타'];
+    '월~일', '월~토', '월~금', '주말(토,일)', '기타'];
 
 
   void toggleSkill(String time) {
@@ -584,3 +584,4 @@ class _DropdownButtonExampleState extends State<DropdownButtonExample> {
         ));
   }
 }
+

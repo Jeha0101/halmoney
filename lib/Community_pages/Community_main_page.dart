@@ -73,10 +73,15 @@ class _CommunityState extends State<Communitypage> {
                itemCount: writings.length,
                itemBuilder:(context,index){
                  final writing = writings[index];
-                 return Community_widget(id: widget.id,
-                     title: writing['title'],
-                     contents: writing['contents'],
+                 return Column(
+                   children: [
+                   Community_widget(id: widget.id,
+                   title: writing['title'],
+                   contents: writing['contents'],
                    timestamp: writing['timestamp'],
+                 ),
+                     SizedBox(height:10)
+                   ],
                  );
                },
              ),

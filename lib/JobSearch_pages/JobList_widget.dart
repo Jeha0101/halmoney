@@ -12,7 +12,7 @@ class JobList extends StatefulWidget {
   final String detail;
   final String workweek;
   final bool isLiked;
-  //final String userDocId;
+  final String userDocId;
   final String image_path;
 
   const JobList({
@@ -25,7 +25,7 @@ class JobList extends StatefulWidget {
     required this.detail,
     required this.workweek,
     required this.isLiked,
-    //required this.userDocId,
+    required this.userDocId,
     required this.image_path,
     Key? key,
   }) : super(key: key);
@@ -152,7 +152,7 @@ class _JobListState extends State<JobList> {
                 child: Column(
                   children: [
                     Image.asset(
-                      widget.image_path,
+                      "assets/images/songpa.png",
                       width: 90,
                       height: 90,
                     )

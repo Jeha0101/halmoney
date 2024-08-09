@@ -141,7 +141,7 @@ class _JobSearchState extends State<JobSearch> {
                   workweek: job['workweek'],
                   image_path: job['image_path'],
                   isLiked: job['isLiked'],
-                  //userDocId: userDocId ?? '',
+                  userDocId: userDocId ?? '',
                 ),
               );
             },

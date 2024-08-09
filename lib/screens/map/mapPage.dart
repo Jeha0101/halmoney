@@ -42,7 +42,7 @@ class MapScreen extends StatelessWidget {
         final GuMatch =  middleAdd.isEmpty || address.contains(middleAdd);
         final DongMatch = minorAdd.isEmpty || address.contains(minorAdd);
 
-        return GuMatch || DongMatch;
+        return GuMatch ||  DongMatch;
       }).toList();
 
       print('Filtered jobs count:${filteredJobs.length}');

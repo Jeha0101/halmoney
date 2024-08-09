@@ -6,6 +6,7 @@ import 'package:halmoney/screens/resume/select_skill_page.dart';
 import 'package:halmoney/screens/scrap/UserLikes.dart';
 import 'package:halmoney/pages/extra_resume_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:halmoney/screens/scrap/UserViewdJobs.dart';
 
 import '../scrap/userViewedJobs.dart';
 
@@ -156,10 +157,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
                   // 지원현황
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => UserLikesScreen(id: widget.id)),
-                      );
+
                     },
                     child: Container(
                       margin: const EdgeInsets.only(right: 20),
@@ -172,20 +170,14 @@ class _MyPageScreenState extends State<MyPageScreen> {
                           top: BorderSide(color: Colors.grey),
                         ),
                       ),
-                      child: const Column(
+                      child:  Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Icon(
-                            Icons.recent_actors_outlined,
-                            size: 50,
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            '지원현황',
-                            style: TextStyle(
-                              fontSize: 20,
-                            ),
+                          Image.asset(
+                            'assets/images/img_logo.png',
+                            fit: BoxFit.contain,
+                            height: 100,
                           ),
                         ],
                       ),

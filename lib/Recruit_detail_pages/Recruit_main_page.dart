@@ -4,7 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:halmoney/resume2/select_skill_page2.dart';
+import 'package:halmoney/resume2/resumeManage2.dart';
 
 class Recruit_main extends StatelessWidget {
   final String id;
@@ -114,14 +114,14 @@ class Recruit_main extends StatelessWidget {
                         SizedBox(height: 20),
 
                         GridView.count(
-                          shrinkWrap: true,
-                          crossAxisCount: 2, //세로에 들어가는 박스 수
-                          crossAxisSpacing: 10, //박스 간 가로 거리
-                          childAspectRatio: 2, //높이설정
-                          children: [
-                            _buildInfoBox('급여', wage),
-                            _buildInfoBox('요일', workweek),
-                          ]
+                            shrinkWrap: true,
+                            crossAxisCount: 2, //세로에 들어가는 박스 수
+                            crossAxisSpacing: 10, //박스 간 가로 거리
+                            childAspectRatio: 2, //높이설정
+                            children: [
+                              _buildInfoBox('급여', wage),
+                              _buildInfoBox('요일', workweek),
+                            ]
                         ),
                         SizedBox(height: 20),
                         Divider(thickness: 1, height: 1, color: Colors.grey,),
@@ -139,6 +139,7 @@ class Recruit_main extends StatelessWidget {
 
                         Text(
                           address,
+
                           style: TextStyle(
                             fontSize: 15,
                             color: Colors.black,
@@ -274,8 +275,8 @@ class Recruit_main extends StatelessWidget {
                         Text(
                           detail,
                           style: TextStyle(
-                            height: 1.8,
-                            fontSize: 15
+                              height: 1.8,
+                              fontSize: 15
                           ),
                         ),
 
@@ -297,7 +298,16 @@ class Recruit_main extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  onPressed: () {// 버튼 클릭 시 실행될 로직 추가
+
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ResumeManage2(id: id, num:num),
+                      ),
+                    );
+
+
                   },
                   child: Text(
                     '지원하기',

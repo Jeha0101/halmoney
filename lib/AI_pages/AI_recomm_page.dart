@@ -218,26 +218,26 @@ class _AIRecommPage extends State<AIRecommPage> {
       }*/
 
     List<String> jobDescriptions = allJobs.map<String>((jobDoc) {
-        final job = jobDoc.data() as Map<String, dynamic>;
-        return '${job['title'] ?? ''} ${job['detail'] ?? ''}';
-      }).toList();
+      final job = jobDoc.data() as Map<String, dynamic>;
+      return '${job['title'] ?? ''} ${job['detail'] ?? ''}';
+    }).toList();
 
     List<Map<String, dynamic>> recommendations = [];
 
     Map<String, double> userProfileTFIDF = computeTFIDF(userProfileStr, jobDescriptions + [userProfileStr]);
 
     for (int i = 0; i < allJobs.length; i++) {
-        final jobDoc = allJobs[i];
-        final job = jobDoc.data() as Map<String, dynamic>;
-        String jobDesc = '${job['title'] ?? ''} ${job['detail'] ?? ''}';
-        Map<String, double> jobTFIDF = computeTFIDF(jobDesc, jobDescriptions + [userProfileStr]);
+      final jobDoc = allJobs[i];
+      final job = jobDoc.data() as Map<String, dynamic>;
+      String jobDesc = '${job['title'] ?? ''} ${job['detail'] ?? ''}';
+      Map<String, double> jobTFIDF = computeTFIDF(jobDesc, jobDescriptions + [userProfileStr]);
 
-        double similarityScore = cosineSimilarity(userProfileTFIDF, jobTFIDF);
-        if (job['address'].contains(interestPlace)) {
-          similarityScore += 0.3; // 관심 지역에 일치하는 경우 점수를 약간 증가시킴
-        }
+      double similarityScore = cosineSimilarity(userProfileTFIDF, jobTFIDF);
+      if (job['address'].contains(interestPlace)) {
+        similarityScore += 0.3; // 관심 지역에 일치하는 경우 점수를 약간 증가시킴
+      }
 
-        job['similarity_score'] = similarityScore;
+      job['similarity_score'] = similarityScore;
       recommendations.add({
         'job': jobDoc,
         'similarity_score': similarityScore
@@ -304,3 +304,4 @@ class _AIRecommPage extends State<AIRecommPage> {
     );
   }
 }
+
