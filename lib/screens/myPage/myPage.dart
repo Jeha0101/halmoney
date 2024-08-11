@@ -6,7 +6,7 @@ import 'package:halmoney/screens/resume/select_skill_page.dart';
 import 'package:halmoney/screens/scrap/UserLikes.dart';
 import 'package:halmoney/pages/extra_resume_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:halmoney/screens/scrap/UserViewdJobs.dart';
+import 'package:halmoney/screens/scrap/userViewedJobs.dart';
 
 import '../scrap/userViewedJobs.dart';
 
