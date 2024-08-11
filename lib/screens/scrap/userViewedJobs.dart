@@ -130,7 +130,6 @@ class _UserViewedJobsPageState extends State<UserViewedJobsPage> {
                   isLiked: job['isLiked'],
                   image_path: job['image_path'],
                   endday:job['end_day']
-                ),
               );
             },
           ),
