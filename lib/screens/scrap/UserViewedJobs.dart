@@ -117,19 +117,20 @@ class _UserViewedJobsPageState extends State<UserViewedJobsPage> {
             itemBuilder: (context, index) {
               final job = jobs[index];
               return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: JobList(
-                  id: widget.userId,
-                  num: job['num'],
-                  title: job['title'],
-                  address: job['address'],
-                  wage: job['wage'],
-                  career: job['career'],
-                  detail: job['detail'],
-                  workweek: job['week'],
-                  isLiked: job['isLiked'],
-                  image_path: job['image_path'],
-                  endday:job['end_day']
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: JobList(
+              id: widget.userId,
+              num: job['num'],
+              title: job['title'],
+              address: job['address'],
+              wage: job['wage'],
+              career: job['career'],
+              detail: job['detail'],
+              workweek: job['week'],
+              isLiked: job['isLiked'],
+              image_path: job['image_path'],
+              endday:job['end_day']
+              ),
               );
             },
           ),
