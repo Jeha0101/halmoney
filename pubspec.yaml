@@ -54,6 +54,8 @@ dependencies:
   url_launcher: ^6.3.0
 
   flutter_dotenv: ^5.1.0
+  textfield_tags: ^3.0.1
+  flutter_tags: ^1.0.0-nullsafety.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

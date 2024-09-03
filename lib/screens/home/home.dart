@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:halmoney/AI_pages/AI_recomm_page.dart';
 import 'package:halmoney/AI_pages/AI_select_cond_page.dart';
 import 'package:halmoney/screens/map/mapPage.dart';
+import 'package:halmoney/screens/resume/step1_hello.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../resume/select_skill_page.dart';
 
@@ -103,7 +104,7 @@ class MyHomePage extends StatelessWidget{
                         onTap: (){
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => SelectSkillPage(id: id)),
+                            MaterialPageRoute(builder: (context) => StepHelloPage(id: id)),
                           );
                         },
                         child: Container(
