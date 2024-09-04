@@ -49,7 +49,7 @@ class _UserLikesState extends State<UserLikesScreen>{
 
               'title': data['title'] ?? 'No Title.',
               'address': data['address']?? 'No address',
-              'career': data['career']?? 'No Career',
+              'career.dart': data['career.dart']?? 'No Career',
               'wage': data['wage']?? 'No wage',
               'week': data['week']?? 'No week',
               'detail': data['detail']?? 'No detail',
@@ -120,7 +120,7 @@ class _UserLikesState extends State<UserLikesScreen>{
                   title: job['title'],
                   address: job['address'],
                   wage: job['wage'],
-                  career: job['career'],
+                  career: job['career.dart'],
                   detail: job['detail'],
                   workweek: job['week'],
                   isLiked: job['isLiked'],

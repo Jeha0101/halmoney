@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:halmoney/screens/resume/step4_career.dart';
+import 'package:halmoney/screens/resume/userInput.dart';
 
 class StepStrenPage extends StatefulWidget {
-  final String id;
-  final List<String> selectedFields;
+  final UserInput userInput;
 
-  const StepStrenPage({super.key, required this.id, required this.selectedFields});
+  StepStrenPage({
+    super.key,
+    required this.userInput,
+  });
 
   @override
   State<StepStrenPage> createState() => _StepStrenPageState();
@@ -46,9 +50,9 @@ class _StepStrenPageState extends State<StepStrenPage> {
           ],
         ),
       ),
-      body:Padding(
+      body: Padding(
         padding: const EdgeInsets.only(
-            left: 25.0, right: 30.0, top: 25.0, bottom: 15.0),
+            left: 25.0, right: 25.0, top: 25.0, bottom: 15.0),
         child: Column(
           children: [
             // 페이지 이동 영역
@@ -79,10 +83,13 @@ class _StepStrenPageState extends State<StepStrenPage> {
                 //다음 페이지로 이동
                 GestureDetector(
                   onTap: () {
-                    /*Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => nextPage(id: id)), // 다음 페이지 호출 영역
-                );*/
+                    widget.userInput.editSelectedStrens(selectedStrens);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              StepCareerPage(userInput: widget.userInput)),
+                    );
                   },
                   child: const Row(
                     children: [

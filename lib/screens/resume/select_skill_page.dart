@@ -1,3 +1,4 @@
+/*
 import 'package:flutter/material.dart';
 import 'package:halmoney/screens/resume/select_stren_page.dart';
 
@@ -181,4 +182,4 @@ class _SkillChooseButtonState extends State<SkillChooseButton>{
 //void main(){
 //  runApp(const MaterialApp(home:SelectSkillPage()));
 //}
-
+*/

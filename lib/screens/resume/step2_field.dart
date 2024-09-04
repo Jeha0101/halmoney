@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:halmoney/screens/resume/step3_stren.dart';
+import 'package:halmoney/screens/resume/userInput.dart';
 
 class StepFieldPage extends StatefulWidget {
-  final String id;
+  final UserInput userInput;
 
-  const StepFieldPage({super.key, required this.id});
+  StepFieldPage({
+    super.key,
+    required this.userInput,
+  });
 
   @override
   State<StepFieldPage> createState() => _StepFieldPageState();
@@ -79,11 +83,12 @@ class _StepFieldPageState extends State<StepFieldPage> {
                 // 다음 페이지로 이동
                 GestureDetector(
                   onTap: () {
+                    widget.userInput.editSelectedFields(selectedFields);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => StepStrenPage(
-                              id: widget.id, selectedFields: selectedFields)),
+                          builder: (context) =>
+                              StepStrenPage(userInput: widget.userInput)),
                     );
                   },
                   child: const Row(

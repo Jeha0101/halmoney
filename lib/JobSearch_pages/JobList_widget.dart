@@ -64,7 +64,7 @@ class _JobListState extends State<JobList> {
           'title': widget.title,
           'address': widget.address,
           'wage': widget.wage,
-          'career': widget.career,
+          'career.dart': widget.career,
           'detail': widget.detail,
           'week': widget.workweek,
           'image_path':widget.image_path,
