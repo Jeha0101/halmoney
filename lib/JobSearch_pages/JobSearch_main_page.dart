@@ -84,7 +84,7 @@ class _JobSearchState extends State<JobSearch> {
             'detail': data['detail'] ?? 'No detail',
             'workweek': data['work_time_week'] ?? 'No work Week',
             'image_path': data['image_path']??'No_path',
-            'isLiked': userLikes.contains(data['num'].toString())
+            'isLiked': userLikes.contains(data['num'].toString()),
           };
         }).toList();
         print(jobs);
