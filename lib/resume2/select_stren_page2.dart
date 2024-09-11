@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:halmoney/screens/resume/extra_resume_page.dart';
+import 'package:halmoney/resume2/extra_resume_page2.dart';
 
 class SelectStrenPage extends StatefulWidget {
   final String id;
+  final String title;
   final List<String> selectedSkills;
 
-  const SelectStrenPage(
-      {super.key, required this.id, required this.selectedSkills});
+  SelectStrenPage({
+    required this.id,
+    required this.title,
+    required this.selectedSkills,
+    Key? key,
+  }): super(key: key);
 
   @override
   State<SelectStrenPage> createState() => _SelectStrenPageState();
@@ -96,6 +101,7 @@ class _SelectStrenPageState extends State<SelectStrenPage>{
                     context,
                     MaterialPageRoute(builder: (context) => ExtraResumePage(
                       id: widget.id,
+                      title: widget.title,
                       selectedSkills: widget.selectedSkills,
                       selectedStrens: selectedStrens,
                     )

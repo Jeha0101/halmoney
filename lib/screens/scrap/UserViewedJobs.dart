@@ -63,7 +63,7 @@ class _UserViewedJobsPageState extends State<UserViewedJobsPage> {
               'num': data['num'] ?? 0,
               'title': data['title'] ?? 'No Title.',
               'address': data['address'] ?? 'No address',
-              'career': data['career'] ?? 'No Career',
+              'career.dart': data['career.dart'] ?? 'No Career',
               'wage': data['wage'] ?? 'No wage',
               'week': data['work_time_week'] ?? 'No week',
               'detail': data['detail'] ?? 'No detail',
@@ -117,19 +117,20 @@ class _UserViewedJobsPageState extends State<UserViewedJobsPage> {
             itemBuilder: (context, index) {
               final job = jobs[index];
               return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: JobList(
-                  id: widget.userId,
-                  num: job['num'],
-                  title: job['title'],
-                  address: job['address'],
-                  wage: job['wage'],
-                  career: job['career'],
-                  detail: job['detail'],
-                  workweek: job['week'],
-                  isLiked: job['isLiked'],
-                  image_path: job['image_path'],
-                ),
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: JobList(
+              id: widget.userId,
+              num: job['num'],
+              title: job['title'],
+              address: job['address'],
+              wage: job['wage'],
+              career: job['career.dart'],
+              detail: job['detail'],
+              workweek: job['week'],
+              isLiked: job['isLiked'],
+              image_path: job['image_path'],
+              endday:job['end_day']
+              ),
               );
             },
           ),
