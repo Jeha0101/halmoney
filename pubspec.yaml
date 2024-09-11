@@ -50,8 +50,12 @@ dependencies:
   flutter_bloc: ^8.1.5
   firebase_storage: ^11.7.6
   cloud_firestore: ^4.17.4
-  flutter_dotenv: ^5.1.0
+  image_picker: ^1.1.2
+  url_launcher: ^6.3.0
 
+  flutter_dotenv: ^5.1.0
+  textfield_tags: ^3.0.1
+  flutter_tags: ^1.0.0-nullsafety.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -79,6 +83,7 @@ flutter:
     - assets/images/img_logo.png
     - assets/images/img_kakao.png
     - assets/images/
+    - assets/images/mainImages/
     - assets/font/
     - assets/
     - .env

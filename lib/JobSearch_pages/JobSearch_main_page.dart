@@ -2,23 +2,72 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:halmoney/JobSearch_pages/JobList_widget.dart';
+import 'package:halmoney/screens/home/home.dart';
+import 'package:halmoney/myAppPage.dart';
+import 'package:intl/intl.dart';
 
 class JobSearch extends StatefulWidget {
-  const JobSearch({super.key});
+  final String id;
+  const JobSearch({super.key, required this.id});
 
   @override
-  _JobsSearchState createState() => _JobsSearchState();
+  _JobSearchState createState() => _JobSearchState();
 }
 
-class _JobsSearchState extends State<JobSearch> {
+class _JobSearchState extends State<JobSearch> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   List<Map<String, dynamic>> jobs = [];
+  String? userDocId;
+  List<String> userLikes = [];
 
   @override
   void initState() {
     super.initState();
-    _fetchJobs();
+    _initializeData();
   }
+
+  Future<void> _initializeData() async {
+    await _fetchUserLikes();
+    await _fetchJobs();
+  }
+
+  Future<void> _fetchUserLikes() async {
+    try {
+      // Fetch the user document based on the provided widget.id
+      final QuerySnapshot userQuery = await _firestore
+          .collection('user')
+          .where('id', isEqualTo: widget.id)
+          .get();
+
+      if (userQuery.docs.isNotEmpty) {
+        // Assuming there is only one user document matching the id
+        final String userId = userQuery.docs.first.id;
+        userDocId = userId;
+
+        // Fetch the user's likes sub-collection
+        final QuerySnapshot userLikesQuery = await _firestore
+            .collection('user')
+            .doc(userId)
+            .collection('users_like')
+            .get();
+
+        // Extract the 'num' field from each document, if it exists
+        setState(() {
+          userLikes = userLikesQuery.docs
+              .where((doc) => (doc.data() as Map<String, dynamic>).containsKey('num'))
+              .map((doc) => doc['num'].toString())
+              .toList();
+        });
+        print('---------------------------');
+        print(userLikes);
+      } else {
+        print("No user found with the provided id.");
+      }
+    } catch (error) {
+      print("Failed to fetch user likes!: $error");
+    }
+  }
+
   Future<void> _fetchJobs() async {
     try {
       final QuerySnapshot result = await _firestore.collection('jobs').get();
@@ -27,15 +76,25 @@ class _JobsSearchState extends State<JobSearch> {
       setState(() {
         jobs = documents.map((doc) {
           final data = doc.data() as Map<String, dynamic>;
-          // null 값을 처리하는 부분
-          return {
-            'title': data['title'] ?? 'No Title.',
-            'address': data['address']??'No address',
-            'wage':data['wage']??'No Wage',
-            'career': data['career']??'No Career',
-            'detail': data['detail']?? 'No detail',
-            'workweek': data['work_time_week']??'No work Week'
 
+          // Convert the Timestamp to a DateTime object and then to a formatted string
+          String endDayStr = 'No end_day';
+          if (data['end_day'] != null) {
+            DateTime endDay = (data['end_day'] as Timestamp).toDate();
+            endDayStr = DateFormat('yyyy-MM-dd').format(endDay); // Format the DateTime
+          }
+
+          return {
+            'num': data['num'] ?? 0,
+            'title': data['title'] ?? 'No Title.',
+            'address': data['address'] ?? 'No address',
+            'wage': data['wage'] ?? 'No Wage',
+            'career.dart': data['career.dart'] ?? 'No Career',
+            'detail': data['detail'] ?? 'No detail',
+            'workweek': data['work_time_week'] ?? 'No work Week',
+            'image_path': data['image_path'] ?? 'No_path',
+            'isLiked': userLikes.contains(data['num'].toString()),
+            'end_day': endDayStr,
           };
         }).toList();
       });
@@ -46,7 +105,6 @@ class _JobsSearchState extends State<JobSearch> {
       );
     }
   }
-  // Firestore에서 jobs 컬렉션의 데이터를 가져오기
 
 
   @override
@@ -67,10 +125,13 @@ class _JobsSearchState extends State<JobSearch> {
           appBar: AppBar(
             title: const Text('공고리스트'),
             centerTitle: true,
-            backgroundColor: Color.fromARGB(250, 51, 51, 255),
+            backgroundColor: const Color.fromARGB(250, 51, 51, 255),
             leading: IconButton(
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyAppPage(id: widget.id)),
+                );
               },
               icon: const Icon(Icons.arrow_back_ios_rounded),
               color: Colors.grey,
@@ -85,20 +146,24 @@ class _JobsSearchState extends State<JobSearch> {
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: JobList(
+                  id: widget.id,
+                  num: job['num'],
                   title: job['title'],
                   address: job['address'],
                   wage: job['wage'],
-                  career: job['career'],
+                  career: job['career.dart'],
                   detail: job['detail'],
                   workweek: job['workweek'],
-
+                  image_path: job['image_path'],
+                  isLiked: job['isLiked'],
+                  endday: job['end_day'],
                 ),
               );
             },
           ),
-
         ),
       ),
     );
   }
 }
+

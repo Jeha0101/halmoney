@@ -1,230 +1,387 @@
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:halmoney/resume2/resumeManage2.dart';
 
 class Recruit_main extends StatelessWidget {
+  final String id;
+  final int num;
   final String title;
   final String address;
   final String wage;
   final String career;
   final String detail;
   final String workweek;
+  final String image_path;
+  final String endday;
 
   Recruit_main({
+    required this.id,
+    required this.num,
     required this.title,
     required this.address,
     required this.wage,
     required this.career,
     required this.detail,
     required this.workweek,
+    required this.image_path,
+    required this.endday,
     Key? key,
   }): super(key: key);
+
+
+
   @override
   Widget build(BuildContext context) {
+    //wage split하기
+    List<String> wageParts = wage.split('/');
+    String payment = wageParts[0].trim();
+    String amount = wageParts.length > 1 ? wageParts[1].trim(): '';
+
     return MaterialApp(
-      title: 'Pomodoro Timer APP',
+      debugShowCheckedModeBanner: false,
+
       home: Scaffold(
           appBar: AppBar(
-            title : const Text('공고리스트'),
-            centerTitle: true,
-            backgroundColor: Color.fromARGB(250, 51, 51, 255),
-            leading: IconButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              icon: Icon(Icons.arrow_back_ios_rounded,),
-              color: Colors.grey,
+            backgroundColor: Colors.white,
+            elevation: 5.0,
+            title: Row(
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  icon: const Icon(Icons.arrow_back_ios_rounded),
+                  color: Colors.grey,
+                ),
+                Image.asset(
+                  'assets/images/img_logo.png',
+                  fit: BoxFit.contain,
+                  height: 40,
+                ),
+                Container(
+                  padding: const EdgeInsets.all(10.0),
+                  child: const Text(
+                    '채용정보',
+                    style: TextStyle(
+                      fontFamily: 'NanumGothicFamily',
+                      fontWeight: FontWeight.w600,
+                      fontSize: 18.0,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
-          body: SingleChildScrollView(
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children:<Widget>[
-                  SizedBox(height:10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      SizedBox(width:33),
-                      Expanded(child:
-                      Text(title,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),))
-                    ],
-                  ),
-                  SizedBox(height:10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(17),
-                        child: Image.asset(
-                          'assets/images/songpa.png',
-                          height: 175,
-                          width: 335,
-                          fit: BoxFit.cover,
-                        )
-
-
-                      )
-
-                    ],
-
-                  ),
-                  SizedBox(height: 13),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 342,
-                        height: 150,
-                        decoration: BoxDecoration(
-                          border: Border(
-                            top: BorderSide(
-                              color: Color.fromARGB(250, 51, 51, 255), // 테두리 색상
-                              width: 1,
-
-                            ),
-                            bottom: BorderSide(
-                              color: Color.fromARGB(250, 51, 51, 255), // 테두리 색상
-                              width: 1, // 테두리 너비
-                            ),
-                          ),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+          body: Stack(
+            children: [
+              SingleChildScrollView(
+                child: Padding(
+                  padding : const EdgeInsets.only(left:30.0, right: 25.0, top: 30.0),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children:<Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Row(
-                              children: [
-                                SizedBox(width:25),
-                                Text('근무지',
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),),
-                                SizedBox(width: 25),
-                                Expanded(child: Text(address,
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),),
-                                )
-                              ],
-                            ),
-                            SizedBox(height:10),
-                            Row(
-                              children: [
-                                SizedBox(width:8),
-
-                                Text('급여방식',
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),),
-                                SizedBox(width: 25),
-                                Text(wage)
-                              ],
-                            ),
-                            SizedBox(height:10),
-                            Row(
-                              children: [
-                                SizedBox(width:5),
-                                Text('근무 방식',
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),),
-                                SizedBox(width: 25),
-                                Text(workweek),
-
-
-                              ],
-                            ),
-                            SizedBox(height:10),
-                            Row(
-                              children: [
-                                SizedBox(width:5),
-                                Text('경력 유무',
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),),
-                                SizedBox(width: 25),
-                                Text(career)
-                              ],
-                            ),
-
+                            Expanded(child:
+                            Text(title,
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),))
                           ],
                         ),
-                      )
-                    ],
-                  ),
-                  SizedBox(height:15),
-                  Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          SizedBox(width:25),
-                          Text('상세정보',style: TextStyle(
-                            fontSize: 16,
+                        SizedBox(height:20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            ClipRRect(
+                                borderRadius: BorderRadius.circular(5),
+                                child: Image.asset(
+                                  image_path,
+                                  height: 185,
+                                  width: 350,
+                                  fit: BoxFit.cover,
+                                )
+                            )
+                          ],
+                        ),
+                        SizedBox(height: 20),
+
+                        GridView.count(
+                            shrinkWrap: true,
+                            crossAxisCount: 2, //세로에 들어가는 박스 수
+                            crossAxisSpacing: 10, //박스 간 가로 거리
+                            childAspectRatio: 2, //높이설정
+                            children: [
+                              _buildInfoBox('급여', wage),
+                              _buildInfoBox('요일', workweek),
+                            ]
+                        ),
+                        SizedBox(height: 20),
+                        Divider(thickness: 1, height: 1, color: Colors.grey,),
+                        SizedBox(height: 20),
+
+                        Text(
+                          '근무지역',
+                          style: TextStyle(
+                            fontSize: 20,
                             fontWeight: FontWeight.bold,
                             color: Colors.black,
-                          ),),
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      Column(
-                        children: [
-                          Container(
-                              width: 342,
-                              height: 180,
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  right: BorderSide(
-                                    color: Color.fromARGB(250, 51, 51, 255), // 테두리 색상
-                                    width: 1,
+                          ),
+                        ),
+                        SizedBox(height: 12),
 
-                                  ),
-                                  left: BorderSide(
-                                    color: Color.fromARGB(250, 51, 51, 255), // 테두리 색상
-                                    width: 1, // 테두리 너비
-                                  ),
+                        Text(
+                          address,
+
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w300,
+                          ),
+                        ),
+
+                        SizedBox(height: 40),
+                        Divider(thickness: 1, height: 1, color: Colors.grey,),
+                        SizedBox(height: 20),
+
+                        Text(
+                          '근무조건',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                        SizedBox(height: 20),
+
+                        Row(
+                          children: [
+                            Text(
+                              '급여',
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.black54,
+                              ),
+                            ),
+
+                            SizedBox(width: 52),
+
+                            Container(
+                              width: 40,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Color.fromARGB(250, 51, 51, 255), width: 1),
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.white60,
+                              ),
+                              child: Text(
+                                payment,
+                                style: TextStyle(
+                                  color: Color.fromARGB(250, 51, 51, 255),
                                 ),
                               ),
-                              child:SingleChildScrollView(
-                                child:Column(
-                                  children: [
-                                    Text(
-                                     detail,
+                            ),
 
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.black,
-                                      ),)
-                                  ],
+                            SizedBox(width: 10),
+
+                            Text(
+                              amount,
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        SizedBox(height: 15),
+
+                        Row(
+                          children: [
+                            Text(
+                              '근무요일',
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.black54,
+                              ),
+                            ),
+
+                            SizedBox(width: 25),
+
+                            Text(
+                              workweek,
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        SizedBox(height: 15),
+
+                        Row(
+                          children: [
+                            Text(
+                              '경력유무',
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.black54,
+                              ),
+                            ),
+
+                            SizedBox(width: 25),
+
+                            Container(
+                              width : 270,
+                              child : Text(
+                                overflow: TextOverflow.ellipsis,
+                                career,
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500,
                                 ),
-                              )
-                          )
-                        ],
-                      )
+                              ),
+                            ),
+                          ],
+                        ),
 
-                    ],
-                  )
-                ]
-            ),
+                        SizedBox(height: 40),
+                        Divider(thickness: 1, height: 1, color: Colors.grey,),
+                        SizedBox(height: 20),
+
+                        Text(
+                          '상세요강',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                        SizedBox(height: 20),
+
+                        Text(
+                          detail,
+                          style: TextStyle(
+                              height: 1.8,
+                              fontSize: 15
+                          ),
+                        ),
+                        SizedBox(height: 40),
+                        Divider(thickness: 1, height: 1, color: Colors.grey,),
+                        SizedBox(height: 20),
+
+                        Text(
+                          '마감일',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                        SizedBox(height: 20),
+
+                        Text(
+                          endday,
+                          style: TextStyle(
+                              height: 1.8,
+                              fontSize: 20,
+                            color: Colors.blueAccent,
+                          ),
+                        ),
+
+
+                        SizedBox(height: 100),
+
+                      ]
+                  ),
+                ),
+              ),
+              Positioned(
+                bottom: 0,
+                right: 15,
+
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromARGB(250, 51, 51, 255), // 버튼의 배경색을 파란색으로 설정
+                    padding: EdgeInsets.symmetric(horizontal: 160, vertical: 13),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ResumeManage2(id: id, num:num, title:title),
+                      ),
+                    );
+
+
+                  },
+                  child: Text(
+                    '지원하기',
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           )
+
       ),
 
     );
   }
+}
+
+Widget _buildInfoBox(String title, String value) {
+  return SizedBox(
+    height: 80,
+    child: Container(
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey, width: 1),
+        borderRadius: BorderRadius.circular(10),
+        color: Colors.white60,
+      ),
+      padding: EdgeInsets.all(5),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+          SizedBox(height: 5),
+          Text(
+            value,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 13,
+              color: Color.fromARGB(250, 65, 51, 255),
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
 }

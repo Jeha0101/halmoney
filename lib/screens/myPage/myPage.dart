@@ -1,91 +1,127 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:halmoney/screens/resume/resumeCreate.dart';
-import 'package:halmoney/screens/scrap/scrap.dart';
+import 'package:halmoney/screens/resume/resumeManage.dart';
+import 'package:halmoney/screens/resume/select_skill_page.dart';
+//import 'package:halmoney/screens/resume/resumeCreate.dart';
+import 'package:halmoney/screens/scrap/UserLikes.dart';
+import 'package:halmoney/pages/extra_resume_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:halmoney/screens/scrap/UserViewedJobs.dart';
 
-class MyPageScreen extends StatelessWidget {
-  const MyPageScreen({super.key,});
+class MyPageScreen extends StatefulWidget {
+  final String id;
+  const MyPageScreen({super.key, required this.id});
+
+  @override
+  _MyPageScreenState createState() => _MyPageScreenState();
+}
+
+class _MyPageScreenState extends State<MyPageScreen> {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  String name = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserData();
+  }
+
+  Future<void> _fetchUserData() async {
+    try {
+      final QuerySnapshot result = await _firestore
+          .collection('user')
+          .where('id', isEqualTo: widget.id)
+          .get();
+
+      final List<DocumentSnapshot> documents = result.docs;
+
+      if (documents.isNotEmpty) {
+        final String docId = documents.first.id;
+        final DocumentSnapshot ds = await _firestore.collection('user').doc(docId).get();
+        final data = ds.data() as Map<String, dynamic>;
+
+        setState(() {
+          name = data['name'] ?? '';
+        });
+      }
+    } catch (error) {
+      print("Failed to fetch user data: $error");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Failed to fetch user data: $error")),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        textTheme: GoogleFonts.notoSansKrTextTheme(
-          Theme.of(context).textTheme,
-        ),
-      ),
-
-      home : SafeArea(
+      theme: ThemeData(fontFamily: 'NanumGothicBold'),
+      home: SafeArea(
         top: true,
         left: false,
         bottom: true,
         right: false,
         child: Scaffold(
           appBar: AppBar(
-            title : const Text('마이페이지'),
-            centerTitle: true,
             backgroundColor: Colors.white,
+            elevation: 1.0,
+            title: Row(
+              children: [
+                Image.asset(
+                  'assets/images/img_logo.png',
+                  fit: BoxFit.contain,
+                  height: 40,
+                ),
+                Container(
+                  padding: const EdgeInsets.all(10.0),
+                  child: const Text(
+                    '마이페이지',
+                    style: TextStyle(
+                      fontFamily: 'NanumGothicFamily',
+                      fontWeight: FontWeight.w600,
+                      fontSize: 18.0,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
           body: ListView(
             children: [
               const Divider(),
-              const SizedBox(height: 30,),
-              //개인정보란
+              const SizedBox(height: 50),
+              // 개인정보란
               Row(
                 children: [
-                  const SizedBox(width: 40,),
-                  Container(
-                    height: 75,
-                    width: 75,
-                    alignment: Alignment.center,
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                      BoxShadow(color : Colors.grey,
-                        spreadRadius:2.5,
-                        blurRadius: 10.0,
-                        blurStyle: BlurStyle.inner,
-                      ),
-                    ],
-                    ),
-                    child: const Icon(
-                      Icons.person_outline,
-                      size: 60,
-                    ),
-                  ),
-                  const SizedBox(width: 20,),
-                  const Text(
-                    '홍길동',
+                  const SizedBox(width: 30),
+                  Text(
+                    '$name 님 안녕하세요',
                     style: TextStyle(
                       fontSize: 25,
                     ),
                   ),
-                  const Icon(
-                    Icons.keyboard_arrow_right,
-                    size: 40,
-                  ),
                 ],
               ),
-              const SizedBox(height: 30,),
-              //마이페이지 메뉴
+              const SizedBox(height: 60),
+              // 마이페이지 메뉴
               GridView.count(
                 shrinkWrap: true,
                 primary: false,
                 crossAxisCount: 2,
-                  childAspectRatio: 4/3 ,
+                childAspectRatio: 4 / 3,
                 children: <Widget>[
-                  //이력서 관리
+                  // 이력서 관리
                   GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ResumeCreate()),
+                        MaterialPageRoute(builder: (context) => ResumeManage(id: widget.id)),
                       );
                     },
                     child: Container(
-                      margin: const EdgeInsets.only(left:20),
+                      margin: const EdgeInsets.only(left: 20),
                       padding: const EdgeInsets.all(20),
                       height: 50,
                       decoration: const BoxDecoration(
@@ -104,7 +140,7 @@ class MyPageScreen extends StatelessWidget {
                             Icons.edit_note,
                             size: 50,
                           ),
-                          SizedBox(height: 10,),
+                          SizedBox(height: 10),
                           Text(
                             '이력서 관리',
                             style: TextStyle(
@@ -116,16 +152,13 @@ class MyPageScreen extends StatelessWidget {
                     ),
                   ),
 
-                  //지원현황
+                  // 지원현황
                   GestureDetector(
-                    onTap: (){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const MyScrapScreen()),
-                      );
+                    onTap: () {
+
                     },
                     child: Container(
-                      margin: const EdgeInsets.only(right:20),
+                      margin: const EdgeInsets.only(right: 20),
                       padding: const EdgeInsets.all(20),
                       height: 50,
                       decoration: const BoxDecoration(
@@ -135,36 +168,30 @@ class MyPageScreen extends StatelessWidget {
                           top: BorderSide(color: Colors.grey),
                         ),
                       ),
-                      child: const Column(
+                      child:  Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Icon(
-                            Icons.recent_actors_outlined,
-                            size: 50,
-                          ),
-                          SizedBox(height: 10,),
-                          Text(
-                            '지원현황',
-                            style: TextStyle(
-                              fontSize: 20,
-                            ),
+                          Image.asset(
+                            'assets/images/img_logo.png',
+                            fit: BoxFit.contain,
+                            height: 100,
                           ),
                         ],
                       ),
                     ),
                   ),
 
-                  //찜 목록
+                  // 찜 목록
                   GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const MyScrapScreen()),
+                        MaterialPageRoute(builder: (context) => UserLikesScreen(id: widget.id)),
                       );
                     },
                     child: Container(
-                      margin: const EdgeInsets.only(left:20),
+                      margin: const EdgeInsets.only(left: 20),
                       padding: const EdgeInsets.all(20),
                       height: 50,
                       decoration: const BoxDecoration(
@@ -182,7 +209,7 @@ class MyPageScreen extends StatelessWidget {
                             Icons.favorite_border_rounded,
                             size: 50,
                           ),
-                          SizedBox(height: 10,),
+                          SizedBox(height: 10),
                           Text(
                             '찜 목록',
                             style: TextStyle(
@@ -194,16 +221,16 @@ class MyPageScreen extends StatelessWidget {
                     ),
                   ),
 
-                  //최근 본 공고
+                  // 최근 본 공고
                   GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const MyScrapScreen()),
+                        MaterialPageRoute(builder: (context) => UserViewedJobsPage(userId: widget.id)),
                       );
                     },
                     child: Container(
-                      margin: const EdgeInsets.only(right:20),
+                      margin: const EdgeInsets.only(right: 20),
                       padding: const EdgeInsets.all(20),
                       height: 50,
                       decoration: const BoxDecoration(
@@ -220,7 +247,7 @@ class MyPageScreen extends StatelessWidget {
                             Icons.access_time,
                             size: 50,
                           ),
-                          SizedBox(height: 10,),
+                          SizedBox(height: 10),
                           Text(
                             '최근 본 공고',
                             style: TextStyle(
@@ -232,82 +259,6 @@ class MyPageScreen extends StatelessWidget {
                     ),
                   ),
 
-                  //내가 쓴 글
-                  GestureDetector(
-                    onTap: (){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const MyScrapScreen()),
-                      );
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.only(left:20),
-                      padding: const EdgeInsets.all(20),
-                      height: 50,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        border: Border(
-                          bottom: BorderSide(color: Colors.grey),
-                          right: BorderSide(color: Colors.grey),
-                        ),
-                      ),
-                      child: const Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.list_alt,
-                            size: 50,
-                          ),
-                          SizedBox(height: 10,),
-                          Text(
-                            '내가 쓴 글',
-                            style: TextStyle(
-                              fontSize: 20,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-
-                  //내가 작성한 댓글
-                  GestureDetector(
-                    onTap: (){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const MyScrapScreen()),
-                      );
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.only(right:20),
-                      padding: const EdgeInsets.all(20),
-                      height: 50,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        border: Border(
-                          bottom: BorderSide(color: Colors.grey),
-                        ),
-                      ),
-                      child: const Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.insert_comment_outlined,
-                            size: 50,
-                          ),
-                          SizedBox(height: 10,),
-                          Text(
-                            '내가 작성한 댓글',
-                            style: TextStyle(
-                              fontSize: 20,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
                 ],
               )
             ],

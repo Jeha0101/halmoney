@@ -5,7 +5,8 @@ import 'package:halmoney/Community_pages/Community_main_page.dart';
 import 'package:halmoney/JobSearch_pages/JobSearch_main_page.dart';
 
 class MyAppPage extends StatefulWidget{
-  const MyAppPage({super.key});
+  final String id;
+  const MyAppPage({super.key, required this.id});
 
   @override
   State<MyAppPage> createState() => MyAppState();
@@ -14,12 +15,24 @@ class MyAppPage extends StatefulWidget{
 class MyAppState extends State<MyAppPage>{
   int _selectedIndex = 0;
 
-  final List<Widget> _navIndex = [
+  late final List<Widget> _navIndex;
+
+  @override
+  void initState(){
+    super.initState();
+    _navIndex = [
+      MyHomePage(id: widget.id),
+      JobSearch(id: widget.id),
+      Communitypage(id: widget.id),
+      MyPageScreen(id: widget.id),
+    ];
+  }
+  /*final List<Widget> _navIndex = [
     const MyHomePage(),
     const JobSearch(),
     const Communitypage(),
     const MyPageScreen(),
-  ];
+  ];*/
 
   void _onNavTapped(int index) {
     setState(() {

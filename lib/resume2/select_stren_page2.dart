@@ -1,8 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:halmoney/pages/extra_resume_page.dart';
+import 'package:halmoney/resume2/extra_resume_page2.dart';
 
-class SelectStrenPage extends StatelessWidget {
-  const SelectStrenPage({super.key});
+class SelectStrenPage extends StatefulWidget {
+  final String id;
+  final String title;
+  final List<String> selectedSkills;
+
+  SelectStrenPage({
+    required this.id,
+    required this.title,
+    required this.selectedSkills,
+    Key? key,
+  }): super(key: key);
+
+  @override
+  State<SelectStrenPage> createState() => _SelectStrenPageState();
+}
+
+class _SelectStrenPageState extends State<SelectStrenPage>{
+  final List<String> selectedStrens=[];
+
+  void updateSelectedStrens(List<String> strens){
+    setState(() {
+      selectedStrens.clear();
+      selectedStrens.addAll(strens);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,13 +70,18 @@ class SelectStrenPage extends StatelessWidget {
 
             const SizedBox(height: 30),
 
-            const Expanded(child: StrenChooseButton()),
+            Expanded(
+                child: StrenChooseButton(
+                  selectedStrens: selectedStrens,
+                  onSelectedStrensChanged: updateSelectedStrens,
+                )
+            ),
 
             const SizedBox(height: 30),
 
             const TextField(
               decoration: InputDecoration(
-                  labelText: '기타 장점을 작성해주세요'
+                  labelText: '기타 장점을 작성해주세요!'
               ),
             ),
 
@@ -71,7 +99,13 @@ class SelectStrenPage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const ExtraResumePage())
+                    MaterialPageRoute(builder: (context) => ExtraResumePage(
+                      id: widget.id,
+                      title: widget.title,
+                      selectedSkills: widget.selectedSkills,
+                      selectedStrens: selectedStrens,
+                    )
+                    )
                 );
               },
               child: const Text('다음 페이지로 이동',style: TextStyle(color: Colors.white),),
@@ -86,7 +120,14 @@ class SelectStrenPage extends StatelessWidget {
 }
 
 class StrenChooseButton extends StatefulWidget{
-  const StrenChooseButton({super.key});
+  final List<String> selectedStrens;
+  final ValueChanged<List<String>> onSelectedStrensChanged;
+
+  const StrenChooseButton({
+    super.key,
+    required this.selectedStrens,
+    required this.onSelectedStrensChanged,
+  });
 
   @override
   State<StrenChooseButton> createState() => _StrenChooseButton();
@@ -95,19 +136,17 @@ class StrenChooseButton extends StatefulWidget{
 class _StrenChooseButton extends State<StrenChooseButton>{
   //출력할 스킬 목록
   var strength =['빠른 손','대처능력','성실함','사교성','포용성','의사소통',
-  '꼼꼼함','정확성','전문성','문제해결','행동력','책임감','판단력',
-  '창의력','습득력','도전정신','결정력','신중함','자제력','이해심','리더십'];
+    '꼼꼼함','정확성','전문성','문제해결','행동력','책임감','판단력',
+    '창의력','습득력','도전정신','결정력','신중함','자제력','이해심','리더십'];
   //선택한 스킬을 담을 LIST
   //List<String> skillList = List<String>();
 
-  final List<String> selectedStren=[];
-
   void toggleSkill(String skill){
     setState(() {
-      if(selectedStren.contains(skill)){
-        selectedStren.remove(skill);
+      if(widget.selectedStrens.contains(skill)){
+        widget.selectedStrens.remove(skill);
       }else{
-        selectedStren.add(skill);
+        widget.selectedStrens.add(skill);
       }
     });
   }
@@ -129,7 +168,7 @@ class _StrenChooseButton extends State<StrenChooseButton>{
       itemCount: strength.length,
       itemBuilder: (context, index){
         final skill = strength[index];
-        final isSelected = selectedStren.contains(skill);
+        final isSelected = widget.selectedStrens.contains(skill);
 
         return ButtonTheme(
             minWidth: 100.0,
@@ -149,7 +188,6 @@ class _StrenChooseButton extends State<StrenChooseButton>{
     );
   }
 }
-void main(){
-  runApp(const MaterialApp(home:SelectStrenPage()));
-}
-
+//void main(){
+// runApp(const MaterialApp(home:SelectStrenPage()));
+//}
