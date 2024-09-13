@@ -97,6 +97,7 @@ class _JobSearchState extends State<JobSearch> {
             'end_day': endDayStr,
           };
         }).toList();
+        print(jobs);
       });
     } catch (error) {
       print("Failed to fetch jobs: $error");
@@ -151,7 +152,7 @@ class _JobSearchState extends State<JobSearch> {
                   title: job['title'],
                   address: job['address'],
                   wage: job['wage'],
-                  career: job['career.dart'],
+                  career: job['career'],
                   detail: job['detail'],
                   workweek: job['workweek'],
                   image_path: job['image_path'],
