@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:halmoney/myAppPage.dart';
-import 'package:halmoney/pages/agreement_page.dart';
+import 'package:halmoney/signup_pages/agreement_page.dart';
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 

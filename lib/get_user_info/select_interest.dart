@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:halmoney/pages/select_place.dart';
+import 'package:halmoney/get_user_info/select_place.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 

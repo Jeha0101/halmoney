@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:halmoney/pages/signup_pg_two.dart';
+import 'package:halmoney/signup_pages/signup_pg_two.dart';
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:halmoney/pages/select_interest.dart';
+import 'package:halmoney/get_user_info/select_interest.dart';
 
 final TextEditingController genderController = TextEditingController();
 final TextEditingController dobController = TextEditingController();
