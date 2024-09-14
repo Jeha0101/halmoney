@@ -18,6 +18,7 @@ class StepCareerPage extends StatefulWidget {
 class _StepCareerPageState extends State<StepCareerPage> {
   List<Career> careers = [];
 
+  //경력 추가하기
   void addCareer() {
     showDialog(
       context: context,
@@ -33,6 +34,7 @@ class _StepCareerPageState extends State<StepCareerPage> {
     );
   }
 
+  //경력 수정하기
   void editCareer(int index) {
     showDialog(
       context: context,
@@ -49,20 +51,20 @@ class _StepCareerPageState extends State<StepCareerPage> {
     );
   }
 
+  //경력 제거하기
   void removeCareer(int index) {
     setState(() {
       careers.removeAt(index);
     });
   }
 
+  //경력 입력시 공란 여부 확인
   bool areAllFieldsFilled() {
     for (var career in careers) {
-      if (career.startYear.isEmpty ||
-          career.startMonth.isEmpty ||
-          career.endYear.isEmpty ||
-          career.endMonth.isEmpty ||
-          career.place.isEmpty ||
-          career.description.isEmpty) {
+      if (career.workDuration.isEmpty ||
+          career.workUnit.isEmpty ||
+          career.workPlace.isEmpty ||
+          career.workDescription.isEmpty) {
         return false;
       }
     }
@@ -255,7 +257,7 @@ class CareerDisplay extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                career.place,
+                career.workPlace,
                 style: const TextStyle(fontSize: 18),
               ),
               Row(
@@ -296,12 +298,12 @@ class CareerDisplay extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '${career.startYear}년 ${career.startMonth}월 ~ ${career.endYear}년 ${career.endMonth}월',
+                    '${career.workDuration}년 ${career.workUnit}개월',
                     style: const TextStyle(fontSize: 14),
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    career.description,
+                    career.workDescription,
                     style: const TextStyle(fontSize: 14),
                   ),
                 ],
@@ -329,17 +331,10 @@ class CareerDialog extends StatefulWidget {
 }
 
 class _CareerDialogState extends State<CareerDialog> {
-  final List<String> years =
-      List<String>.generate(60, (i) => (1965 + i).toString());
-  final List<String> months =
-      List<String>.generate(12, (i) => (i + 1).toString());
-
-  late TextEditingController startYearController;
-  late TextEditingController startMonthController;
-  late TextEditingController endYearController;
-  late TextEditingController endMonthController;
-  late TextEditingController placeController;
-  late TextEditingController descriptionController;
+  TextEditingController workDurationController = TextEditingController();
+  TextEditingController workUnitController = TextEditingController();
+  TextEditingController workPlaceController = TextEditingController();
+  TextEditingController workDescriptionController = TextEditingController();
 
   bool isSaveEnabled = false;
 
@@ -347,162 +342,125 @@ class _CareerDialogState extends State<CareerDialog> {
   void initState() {
     super.initState();
 
-    final career = widget.career ?? Career();
-    startYearController = TextEditingController(text: career.startYear);
-    startMonthController = TextEditingController(text: career.startMonth);
-    endYearController = TextEditingController(text: career.endYear);
-    endMonthController = TextEditingController(text: career.endMonth);
-    placeController = TextEditingController(text: career.place);
-    descriptionController = TextEditingController(text: career.description);
-
-    startYearController.addListener(_checkIfAllFieldsFilled);
-    startMonthController.addListener(_checkIfAllFieldsFilled);
-    endYearController.addListener(_checkIfAllFieldsFilled);
-    endMonthController.addListener(_checkIfAllFieldsFilled);
-    placeController.addListener(_checkIfAllFieldsFilled);
-    descriptionController.addListener(_checkIfAllFieldsFilled);
+    if (widget.career != null) {
+      workDurationController.text = widget.career!.workDuration;
+      workUnitController.text = widget.career!.workUnit;
+      workPlaceController.text = widget.career!.workPlace;
+      workDescriptionController.text = widget.career!.workDescription;
+    }
   }
 
   @override
   void dispose() {
-    startYearController.dispose();
-    startMonthController.dispose();
-    endYearController.dispose();
-    endMonthController.dispose();
-    placeController.dispose();
-    descriptionController.dispose();
+    workDurationController.dispose();
+    workUnitController.dispose();
+    workPlaceController.dispose();
+    workDescriptionController.dispose();
     super.dispose();
   }
 
-  void _checkIfAllFieldsFilled() {
-    setState(() {
-      isSaveEnabled = startYearController.text.isNotEmpty &&
-          startMonthController.text.isNotEmpty &&
-          endYearController.text.isNotEmpty &&
-          endMonthController.text.isNotEmpty &&
-          placeController.text.isNotEmpty &&
-          descriptionController.text.isNotEmpty;
-    });
-  }
-
-  List<String> _getFilteredYears({String? startYear, String? endYear}) {
-    // 시작 날짜를 선택한 경우 종료 날짜는 시작 날짜 이후로만 선택 가능
-    if (startYear != null && startYear.isNotEmpty) {
-      return years
-          .where((year) => int.parse(year) >= int.parse(startYear))
-          .toList();
-    }
-    // 종료 날짜를 선택한 경우 시작 날짜는 종료 날짜 이전으로만 선택 가능
-    if (endYear != null && endYear.isNotEmpty) {
-      return years
-          .where((year) => int.parse(year) <= int.parse(endYear))
-          .toList();
-    }
-    return years;
-  }
-
-  List<String> _getFilteredMonths() {
-    // 시작년도와 종료년도가 같은 경우에만 월을 제한
-    if (startYearController.text.isNotEmpty &&
-        endYearController.text.isNotEmpty &&
-        startYearController.text == endYearController.text) {
-      int startMonthValue =
-          int.tryParse(startMonthController.text) ?? 1; // 시작 월이 없으면 1월로 가정
-      // 시작 월과 같거나 이후의 월만 선택 가능
-      return months
-          .where((month) => int.parse(month) >= startMonthValue)
-          .toList();
-    }
-    return months; // 년도가 다르면 모든 월이 선택 가능
-  }
+  // void _checkIfAllFieldsFilled() {
+  //   setState(() {
+  //     isSaveEnabled = workDurationController.text.isNotEmpty &&
+  //         workUnitController.text.isNotEmpty &&
+  //         workPlaceController.text.isNotEmpty &&
+  //         workDescriptionController.text.isNotEmpty;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('경력 추가'),
+      title: const Text('경력'),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            DropdownButtonFormField<String>(
-              decoration: const InputDecoration(labelText: '근무 시작 (년)'),
-              value: startYearController.text.isNotEmpty
-                  ? startYearController.text
-                  : null,
-              items: _getFilteredYears(endYear: endYearController.text)
-                  .map((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-              onChanged: (newValue) {
-                setState(() {
-                  startYearController.text = newValue ?? '';
-                });
-              },
+            Text("근무기간"),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                SizedBox(
+                  width: 70,
+                  child: TextField(
+                    decoration: InputDecoration(labelText: '기간'),
+                    keyboardType: TextInputType.number,
+                    controller: workDurationController,
+                  ),
+                ),
+                // Container(
+                //   width: 70,
+                //   child: DropdownButtonFormField<String>(
+                //     decoration: const InputDecoration(labelText: ''),
+                //     value: workYearsController.text.isNotEmpty
+                //         ? workYearsController.text
+                //         : null,
+                //     items: years.map((String value) {
+                //       return DropdownMenuItem<String>(
+                //         value: value,
+                //         child: Text(value),
+                //       );
+                //     }).toList(),
+                //     onChanged: (newValue) {
+                //       setState(() {
+                //         workYearsController.text = newValue ?? '';
+                //       });
+                //     },
+                //   ),
+                // ),
+
+                SizedBox(
+                  width: 70,
+                  child: DropdownButtonFormField<String>(
+                    decoration: const InputDecoration(labelText: '단위'),
+                    value: workUnitController.text.isNotEmpty ? workUnitController.text : null,
+                    items: ['주', '개월', '년'].map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                    onChanged: (newValue) {
+                      setState(() {
+                        workUnitController.text = newValue ?? '';
+                      });
+                    },
+                  ),
+                ),
+
+                // Text("년"),
+                // Container(
+                //     width: 70,
+                //     child: DropdownButtonFormField<String>(
+                //       decoration: const InputDecoration(labelText: ''),
+                //       value: workMonthsController.text.isNotEmpty
+                //           ? workMonthsController.text
+                //           : null,
+                //       items: months.map((String value) {
+                //         return DropdownMenuItem<String>(
+                //           value: value,
+                //           child: Text(value),
+                //         );
+                //       }).toList(),
+                //       onChanged: (newValue) {
+                //         setState(() {
+                //           workMonthsController.text = newValue ?? '';
+                //         });
+                //       },
+                //     ),
+                // ),
+                // Text("개월"),
+              ],
             ),
-            DropdownButtonFormField<String>(
-              decoration: const InputDecoration(labelText: '근무 시작 (월)'),
-              value: startMonthController.text.isNotEmpty
-                  ? startMonthController.text
-                  : null,
-              items: months.map((String value) {
-                // 월 필터링 필요 없음
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-              onChanged: (newValue) {
-                setState(() {
-                  startMonthController.text = newValue ?? '';
-                });
-              },
-            ),
-            DropdownButtonFormField<String>(
-              decoration: const InputDecoration(labelText: '근무 종료 (년)'),
-              value: endYearController.text.isNotEmpty
-                  ? endYearController.text
-                  : null,
-              items: _getFilteredYears(startYear: startYearController.text)
-                  .map((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-              onChanged: (newValue) {
-                setState(() {
-                  endYearController.text = newValue ?? '';
-                });
-              },
-            ),
-            DropdownButtonFormField<String>(
-              decoration: const InputDecoration(labelText: '근무 종료 (월)'),
-              value: endMonthController.text.isNotEmpty
-                  ? endMonthController.text
-                  : null,
-              items: _getFilteredMonths().map((String value) {
-                // 수정된 부분
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-              onChanged: (newValue) {
-                setState(() {
-                  endMonthController.text = newValue ?? '';
-                });
-              },
-            ),
+
             TextField(
               decoration: const InputDecoration(labelText: '근무지'),
-              controller: placeController,
+              controller: workPlaceController,
             ),
             TextField(
               decoration: const InputDecoration(labelText: '근무 내용'),
-              controller: descriptionController,
+              controller: workDescriptionController,
             ),
           ],
         ),
@@ -518,12 +476,10 @@ class _CareerDialogState extends State<CareerDialog> {
           onPressed: isSaveEnabled
               ? () {
                   final newExperience = Career()
-                    ..startYear = startYearController.text
-                    ..startMonth = startMonthController.text
-                    ..endYear = endYearController.text
-                    ..endMonth = endMonthController.text
-                    ..place = placeController.text
-                    ..description = descriptionController.text;
+                    ..workDuration = workDurationController.text
+                    ..workUnit = workUnitController.text
+                    ..workPlace = workPlaceController.text
+                    ..workDescription = workDescriptionController.text;
                   widget.onSave(newExperience);
                   Navigator.of(context).pop();
                 }
@@ -534,218 +490,3 @@ class _CareerDialogState extends State<CareerDialog> {
     );
   }
 }
-
-/*
-import 'package:flutter/material.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:desktop_drop/desktop_drop.dart';
-import 'dart:typed_data';
-
-import 'package:halmoney/screens/resume/resumeEdit2.dart';
-
-class ExtraResumePage extends StatelessWidget {
-  final String id;
-  final List<String> selectedSkills;
-  final List<String> selectedStrens;
-
-  const ExtraResumePage({super.key, required this.id, required this.selectedSkills, required this.selectedStrens});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 1.0,
-          title: Row(
-            //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Image.asset(
-                'assets/images/img_logo.png',
-                fit: BoxFit.contain,
-                height: 40,
-              ),
-              Container(
-                  padding: const EdgeInsets.all(8.0),
-                  child: const Text(
-                    '할MONEY',
-                    style : TextStyle(
-                      fontFamily: 'NanumGothicFamily',
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18.0,
-                      color: Colors.black,
-                      //Color.fromARGB(250, 51, 51, 255),
-                    ),)
-              ),
-            ],
-          ),
-        ),
-        body: Padding (
-            padding: const EdgeInsets.only(left: 35.0, right: 35.0, top:50.0),
-            child: Column(
-              //왼쪽 맞춤 정렬
-              crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    '추가할 이력사항이 있다면 첨부해주세요!',
-                    style: TextStyle(
-                        fontSize: 18.0,
-                        fontFamily: 'NanumGothic',
-                        fontWeight: FontWeight.w600),
-                  ),
-
-                  const SizedBox(height: 30),
-
-                  Container(child: const FilePickerTest()),
-
-                  const SizedBox(height: 50),
-
-                  const Text(
-                    '추가하고 싶은 내용이 있다면 작성해주세요!',
-                    style: TextStyle(
-                        fontSize: 18.0,
-                        fontFamily: 'NanumGothic',
-                        fontWeight: FontWeight.w600),
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  Container(child: const TextField(
-                    decoration: InputDecoration(
-                        labelText: '(선택사항)'
-                    ),
-                  ),
-                  ),
-
-                  const SizedBox(height: 70),
-
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      //backgroundColor: _buttonActive ? const Color.fromARGB(250, 51, 51, 255) : Colors.grey,
-                        backgroundColor: const Color.fromARGB(250, 51, 51, 255),
-                        minimumSize: const Size(360,50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        )
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => ResumeEdit(id: id))
-                      );
-                    },
-                    child: const Text('AI로 이력서 만들기',style: TextStyle(color: Colors.white),),
-                  ),
-                ]
-            )
-        )
-    );
-  }
-}
-
-class FilePickerTest extends StatefulWidget{
-  const FilePickerTest({super.key});
-
-  @override
-  FilePickerTestState createState() => FilePickerTestState();
-}
-
-class FilePickerTestState extends State<FilePickerTest> {
-  //final List<XFile> _list = [];
-
-  String showFileName = "";
-  bool _dragging = false;
-
-  Color defaultColor = Colors.black38;
-  Color uploadingColor = Colors.blue[100]!;
-
-  Container makeFilePicker(){
-    Color color = _dragging ? uploadingColor : defaultColor;
-    return Container(
-      height: 200,
-      width: 340,
-      decoration: BoxDecoration(
-        border: Border.all(width: 5, color: color,),
-        borderRadius: const BorderRadius.all(Radius.circular(20)),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          //drag and drop 부분
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text("드래그하여 파일 업로드\n", style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 20))
-            ],
-          ),
-          //picker 부분
-          InkWell(
-            onTap: () async {
-              FilePickerResult? result = await FilePicker.platform.pickFiles(
-                type: FileType.custom,
-                allowedExtensions: ['pdf', 'png', 'jpg', 'csv'],
-              );
-              if( result != null && result.files.isNotEmpty ){
-                String fileName = result.files.first.name;
-                Uint8List fileBytes = result.files.first.bytes!;
-                debugPrint(fileName);
-                setState(() {
-                  showFileName = "Now File Name: $fileName";
-                });
-                /*
-                do jobs
-                 */
-              }
-            },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text("or ", style: TextStyle(fontWeight: FontWeight.bold,color:defaultColor, fontSize:20 ),),
-                Text("파일을 찾아 업로드하기", style: TextStyle(fontWeight: FontWeight.bold, color: defaultColor, fontSize: 20,),),
-                Icon(Icons.upload_rounded, color: defaultColor,),
-              ],
-            ),
-          ),
-          Text("(*.pdf/png/jpg/csv)", style: TextStyle(color: defaultColor,),),
-          const SizedBox(height: 10,),
-          Text(showFileName, style: TextStyle(color: defaultColor,),),
-        ],
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    //makeFilePicker -> makedropzone
-    return DropTarget(
-      onDragDone: (detail) async {
-        debugPrint('onDragDone');
-        if (detail.files.isNotEmpty) {
-          String fileName = detail.files.first.name;
-          Uint8List fileBytes = await detail.files.first.readAsBytes();
-          debugPrint(fileName);
-          setState(() {
-            showFileName = "Now File Name: $fileName";
-          });
-        }
-      },
-      onDragEntered: (detail){
-        setState(() {
-          debugPrint('onDragEntered');
-          _dragging=true;
-        });
-      },
-      onDragExited: (detail){
-        debugPrint('onDragExited');
-        setState(() {
-          _dragging=false;
-        });
-      },
-      child: makeFilePicker(),
-    );
-  }
-}
-*/

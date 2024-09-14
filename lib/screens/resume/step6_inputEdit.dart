@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:halmoney/screens/resume/userInput.dart';
 import 'package:halmoney/screens/resume/career.dart';
