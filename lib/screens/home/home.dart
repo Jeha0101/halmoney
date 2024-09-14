@@ -5,7 +5,6 @@ import 'package:halmoney/AI_pages/AI_select_cond_page.dart';
 import 'package:halmoney/screens/map/mapPage.dart';
 import 'package:halmoney/screens/resume/step1_hello.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../resume/select_skill_page.dart';
 
 class MyHomePage extends StatelessWidget{
   final String id;
