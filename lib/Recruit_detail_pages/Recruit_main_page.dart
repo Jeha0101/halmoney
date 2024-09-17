@@ -239,6 +239,7 @@ class Recruit_main extends StatelessWidget {
                                 fontSize: 15,
                                 color: Colors.black54,
                               ),
+
                             ),
 
                             SizedBox(width: 25),
@@ -255,6 +256,7 @@ class Recruit_main extends StatelessWidget {
                                 ),
                               ),
                             ),
+
                           ],
                         ),
 
@@ -296,8 +298,8 @@ class Recruit_main extends StatelessWidget {
                         Text(
                           endday,
                           style: TextStyle(
-                              height: 1.8,
-                              fontSize: 20,
+                            height: 1.8,
+                            fontSize: 20,
                             color: Colors.blueAccent,
                           ),
                         ),

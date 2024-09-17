@@ -46,7 +46,6 @@ class _UserLikesState extends State<UserLikesScreen>{
             final data = doc.data() as Map<String, dynamic>;
             return {
               'num': data['num'] ?? 0,
-
               'title': data['title'] ?? 'No Title.',
               'address': data['address']?? 'No address',
               'career.dart': data['career.dart']?? 'No Career',
@@ -125,7 +124,7 @@ class _UserLikesState extends State<UserLikesScreen>{
                   workweek: job['week'],
                   isLiked: job['isLiked'],
                   image_path: job['image_path'],
-                  endday: job['end_day'],
+                    endday:job['end_day']
 
                 ),
               );

@@ -67,7 +67,6 @@ class _JobListState extends State<JobList> {
           'career.dart': widget.career,
           'detail': widget.detail,
           'week': widget.workweek,
-          'image_path':widget.image_path,
         });
       } else {
         final QuerySnapshot favoriteResult = await _firestore
@@ -129,8 +128,8 @@ class _JobListState extends State<JobList> {
               career: widget.career,
               detail: widget.detail,
               workweek: widget.workweek,
+              endday:widget.endday,
               image_path: widget.image_path,
-              endday: widget.endday,
             ),
           ),
         );
@@ -154,7 +153,7 @@ class _JobListState extends State<JobList> {
                 child: Column(
                   children: [
                     Image.asset(
-                      widget.image_path,
+                      "assets/images/songpa.png",
                       width: 90,
                       height: 90,
                     )

@@ -89,12 +89,12 @@ class _JobSearchState extends State<JobSearch> {
             'title': data['title'] ?? 'No Title.',
             'address': data['address'] ?? 'No address',
             'wage': data['wage'] ?? 'No Wage',
-            'career.dart': data['career.dart'] ?? 'No Career',
+            'career': data['career'] ?? 'No Career',
             'detail': data['detail'] ?? 'No detail',
             'workweek': data['work_time_week'] ?? 'No work Week',
             'image_path': data['image_path'] ?? 'No_path',
             'isLiked': userLikes.contains(data['num'].toString()),
-            'end_day': endDayStr,
+            'endday': endDayStr,
           };
         }).toList();
         print(jobs);
@@ -157,7 +157,7 @@ class _JobSearchState extends State<JobSearch> {
                   workweek: job['workweek'],
                   image_path: job['image_path'],
                   isLiked: job['isLiked'],
-                  endday: job['end_day'],
+                  endday:job['end_day'],
                 ),
               );
             },
