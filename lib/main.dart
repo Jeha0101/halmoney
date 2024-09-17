@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:halmoney/pages/login_page.dart';
+import 'package:halmoney/screens/myPage/myPage.dart';
 import 'package:halmoney/theme.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
       ],
       debugShowCheckedModeBanner:  false,
 
-      home: LoginPage(),
+      home: MyPageScreen(id: 'sunjae'),
 
       // home: const SignupPgOne(),
       // initialRoute: "/login",
