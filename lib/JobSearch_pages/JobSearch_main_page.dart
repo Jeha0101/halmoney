@@ -97,7 +97,7 @@ class _JobSearchState extends State<JobSearch> {
             'endday': endDayStr,
           };
         }).toList();
-        print(jobs);
+        print('공고들 $jobs');
       });
     } catch (error) {
       print("Failed to fetch jobs: $error");
@@ -139,7 +139,7 @@ class _JobSearchState extends State<JobSearch> {
             ),
           ),
           body: jobs.isEmpty
-              ? const Center(child: CircularProgressIndicator())
+              ? const  Center(child: Text('No jobs available'))
               : ListView.builder(
             itemCount: jobs.length,
             itemBuilder: (context, index) {
