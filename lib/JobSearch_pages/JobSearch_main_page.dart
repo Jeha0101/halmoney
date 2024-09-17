@@ -94,10 +94,10 @@ class _JobSearchState extends State<JobSearch> {
             'workweek': data['work_time_week'] ?? 'No work Week',
             'image_path': data['image_path'] ?? 'No_path',
             'isLiked': userLikes.contains(data['num'].toString()),
-            'endday': endDayStr,
+            'end_day': endDayStr,
           };
         }).toList();
-        print('공고들 $jobs');
+        print('공고들! $jobs');
       });
     } catch (error) {
       print("Failed to fetch jobs: $error");
@@ -157,7 +157,7 @@ class _JobSearchState extends State<JobSearch> {
                   workweek: job['workweek'],
                   image_path: job['image_path'],
                   isLiked: job['isLiked'],
-                  endday:job['end_day'],
+                 endday: job['end_day'],
                 ),
               );
             },
@@ -167,4 +167,3 @@ class _JobSearchState extends State<JobSearch> {
     );
   }
 }
-

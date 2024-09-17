@@ -64,7 +64,7 @@ class _JobListState extends State<JobList> {
           'title': widget.title,
           'address': widget.address,
           'wage': widget.wage,
-          'career.dart': widget.career,
+          'career': widget.career,
           'detail': widget.detail,
           'week': widget.workweek,
         });
@@ -153,7 +153,7 @@ class _JobListState extends State<JobList> {
                 child: Column(
                   children: [
                     Image.asset(
-                      "assets/images/songpa.png",
+                     widget.image_path,
                       width: 90,
                       height: 90,
                     )
