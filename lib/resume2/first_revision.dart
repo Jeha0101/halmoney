@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:halmoney/resume2/introduction_service.dart';
 import 'package:halmoney/resume2/second_revision.dart';
 
+
 class FirstParagraphPage extends StatefulWidget {
   final String firstParagraph;
   final String secondParagraph;
@@ -58,6 +59,7 @@ class _FirstParagraphPageState extends State<FirstParagraphPage> {
       context,
       MaterialPageRoute(
         builder: (context) => SecondParagraphPage(
+          firstParagraph: revisedFirstParagraph.isNotEmpty?revisedFirstParagraph:widget.firstParagraph,
           secondParagraph: widget.secondParagraph,
           thirdParagraph: widget.thirdParagraph,
         ),
@@ -99,7 +101,7 @@ class _FirstParagraphPageState extends State<FirstParagraphPage> {
             Expanded(
               child: SingleChildScrollView(
                 child: Text(
-                  revisedFirstParagraph.isNotEmpty
+                  revisedFirstParagraph!=widget.firstParagraph
                       ? revisedFirstParagraph
                       : '아직 수정된 문단이 없습니다.',
                   style: const TextStyle(fontSize: 16),

@@ -3,11 +3,13 @@ import 'introduction_service.dart';
 import 'third_revision.dart';
 
 class SecondParagraphPage extends StatefulWidget {
+  final String firstParagraph;
   final String secondParagraph;
   final String thirdParagraph;
 
   const SecondParagraphPage({
     Key? key,
+    required this.firstParagraph,
     required this.secondParagraph,
     required this.thirdParagraph,
   }) : super(key: key);
@@ -56,6 +58,8 @@ class _SecondParagraphPageState extends State<SecondParagraphPage> {
       context,
       MaterialPageRoute(
         builder: (context) => ThirdParagraphPage(
+          firstParagraph: widget.firstParagraph,
+          secondParagraph: revisedSecondParagraph.isNotEmpty?revisedSecondParagraph:widget.secondParagraph,
           thirdParagraph: widget.thirdParagraph,
         ),
       ),
@@ -93,7 +97,7 @@ class _SecondParagraphPageState extends State<SecondParagraphPage> {
             Expanded(
               child: SingleChildScrollView(
                 child: Text(
-                  revisedSecondParagraph.isNotEmpty
+                  revisedSecondParagraph != widget.secondParagraph
                       ? revisedSecondParagraph
                       : '아직 수정된 문단이 없습니다.',
                   style: const TextStyle(fontSize: 16),
