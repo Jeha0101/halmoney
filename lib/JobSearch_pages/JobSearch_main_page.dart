@@ -89,7 +89,7 @@ class _JobSearchState extends State<JobSearch> {
             'title': data['title'] ?? 'No Title.',
             'address': data['address'] ?? 'No address',
             'wage': data['wage'] ?? 'No Wage',
-            'career.dart': data['career.dart'] ?? 'No Career',
+            'career': data['career'] ?? 'No Career',
             'detail': data['detail'] ?? 'No detail',
             'workweek': data['work_time_week'] ?? 'No work Week',
             'image_path': data['image_path'] ?? 'No_path',
@@ -97,7 +97,7 @@ class _JobSearchState extends State<JobSearch> {
             'end_day': endDayStr,
           };
         }).toList();
-        print(jobs);
+        print('공고들 $jobs');
       });
     } catch (error) {
       print("Failed to fetch jobs: $error");
@@ -139,7 +139,7 @@ class _JobSearchState extends State<JobSearch> {
             ),
           ),
           body: jobs.isEmpty
-              ? const Center(child: CircularProgressIndicator())
+              ? const  Center(child: Text('No jobs available'))
               : ListView.builder(
             itemCount: jobs.length,
             itemBuilder: (context, index) {
