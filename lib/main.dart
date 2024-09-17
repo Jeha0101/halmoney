@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:halmoney/pages/login_page.dart';
+import 'package:halmoney/pages/search_engine.dart';
 import 'package:halmoney/screens/myPage/myPage.dart';
 import 'package:halmoney/screens/resume/step1_hello.dart';
 import 'package:halmoney/theme.dart';
@@ -41,7 +42,7 @@ class MyApp extends StatelessWidget {
       ],
       debugShowCheckedModeBanner:  false,
 
-      
+
       home: LoginPage(),
       // 아래는 테스트용으로 원하는 페이지 연결용
       // git에 올릴때 반드시 수정
