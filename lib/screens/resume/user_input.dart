@@ -1,13 +1,13 @@
-import 'package:halmoney/screens/resume/career.dart';
+import 'package:halmoney/get_user_info/career.dart';
 
-class UserInput {
+class UserInfo {
   String userId = '';
   List<String> selectedFields = [];
   List<String> selectedStrens = [];
   List<Career> careers = [];
   int quantity = 0;
 
-  UserInput(String id) {
+  UserInfo(String id) {
     userId = id;
     selectedFields = [];
     selectedStrens = [];

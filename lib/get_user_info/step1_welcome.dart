@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:halmoney/screens/resume/step2_field.dart';
 import 'package:halmoney/get_user_info/user_Info.dart';
+import 'package:halmoney/get_user_info/step2_user_career.dart';
 
-class StepHelloPage extends StatefulWidget {
+class StepWelcome extends StatefulWidget {
   final String id;
 
-  const StepHelloPage({super.key, required this.id});
+  const StepWelcome({super.key, required this.id});
 
   @override
-  State<StepHelloPage> createState() => _StepHelloPageState();
+  State<StepWelcome> createState() => _StepWelcomeState();
 }
 
-class _StepHelloPageState extends State<StepHelloPage> {
+class _StepWelcomeState extends State<StepWelcome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,15 +50,15 @@ class _StepHelloPageState extends State<StepHelloPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                //step2페이지로 이동
+                //경력 입력 페이지로 이동
                 GestureDetector(
                   onTap: () {
-                    UserInfo userInput = new UserInfo(widget.id);
+                    UserInfo userInfo = new UserInfo(widget.id);
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => StepFieldPage(
-                            userInput: userInput,
+                          builder: (context) => StepUserCareer(
+                            userInfo: userInfo,
                           ),
                         ));
                   },
@@ -86,7 +86,9 @@ class _StepHelloPageState extends State<StepHelloPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
-                    '안녕하세요\n\n자기소개서 작성을 위해\n몇 가지 질문을 드릴게요\n\n준비되셨다면\n시작하기 버튼을 눌러주세요',
+                    '회원 가입을 축하드립니다.',
+                    //추후 문구 수정 필요
+                    //애니메이션 효과 추가
                     style: TextStyle(
                       fontFamily: 'NanumGothicFamily',
                       fontWeight: FontWeight.w500,

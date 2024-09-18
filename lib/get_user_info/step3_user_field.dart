@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:halmoney/screens/resume/step3_stren.dart';
 import 'package:halmoney/get_user_info/user_Info.dart';
 
-class StepFieldPage extends StatefulWidget {
-  final UserInfo userInput;
+class StepUserField extends StatefulWidget {
+  final UserInfo userInfo;
 
-  StepFieldPage({
+  StepUserField({
     super.key,
-    required this.userInput,
+    required this.userInfo,
   });
 
   @override
-  State<StepFieldPage> createState() => _StepFieldPageState();
+  State<StepUserField> createState() => _StepUserFieldState();
 }
 
-class _StepFieldPageState extends State<StepFieldPage> {
+class _StepUserFieldState extends State<StepUserField> {
   List<String> selectedFields = [];
 
   void updateSelectedFields(List<String> fields) {
@@ -83,13 +82,13 @@ class _StepFieldPageState extends State<StepFieldPage> {
                 // 다음 페이지로 이동
                 GestureDetector(
                   onTap: () {
-                    widget.userInput.editSelectedFields(selectedFields);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              StepStrenPage(userInput: widget.userInput)),
-                    );
+                    // widget.userInput.editSelectedFields(selectedFields);
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //       builder: (context) =>
+                    //           StepStrenPage(userInput: widget.userInput)),
+                    // );
                   },
                   child: const Row(
                     children: [
@@ -121,7 +120,7 @@ class _StepFieldPageState extends State<StepFieldPage> {
                     const Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text('어떤 직무에\n지원하고자 하시나요?',
+                        Text('어떤 일을 하고 싶은가요?',
                             style: TextStyle(
                               fontFamily: 'NanumGothicFamily',
                               fontWeight: FontWeight.w500,

@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:convert';
 import 'package:halmoney/screens/resume/resumeManage.dart';
-import 'package:halmoney/screens/resume/career.dart';
+import 'package:halmoney/get_user_info/career.dart';
 
 //이력서 데이터
 class ResumeItem {

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:halmoney/screens/resume/step5_quantity.dart';
-import 'package:halmoney/screens/resume/career.dart';
-import 'package:halmoney/screens/resume/userInput.dart';
+import 'package:halmoney/get_user_info/career.dart';
+import 'package:halmoney/get_user_info/user_Info.dart';
 
 class StepCareerPage extends StatefulWidget {
-  final UserInput userInput;
+  final UserInfo userInput;
 
   StepCareerPage({
     super.key,
