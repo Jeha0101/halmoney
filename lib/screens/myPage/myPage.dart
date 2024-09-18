@@ -7,8 +7,7 @@ import 'package:halmoney/screens/scrap/UserLikes.dart';
 import 'package:halmoney/pages/extra_resume_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-
-import '../scrap/UserViewedJobs.dart';
+import 'package:halmoney/screens/scrap/UserViewedJobs.dart';
 
 class MyPageScreen extends StatefulWidget {
   final String id;

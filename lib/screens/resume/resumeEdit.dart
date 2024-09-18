@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:halmoney/screens/resume/extra_resume_page.dart';
+import 'package:halmoney/screens/resume/step4_career.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:convert';
 import 'package:halmoney/screens/resume/resumeManage.dart';
+import 'package:halmoney/screens/resume/career.dart';
 
 //이력서 데이터
 class ResumeItem {
@@ -13,7 +14,7 @@ class ResumeItem {
   late String dob;
   late String address;
   late String phone;
-  late List<WorkExperience> workExperiences;
+  late List<Career> workExperiences;
   late List<String> selectedSkills;
   late List<String> selectedStrens;
   late String selfIntroduction;
@@ -49,7 +50,7 @@ class ResumeEdit extends StatefulWidget {
   final String id;
   final List<String> selectedSkills;
   final List<String> selectedStrens;
-  final List<WorkExperience> workExperiences;
+  final List<Career> workExperiences;
 
   const ResumeEdit({
     Key? key,
@@ -102,7 +103,7 @@ class _ResumeEditState extends State<ResumeEdit> {
         final String phone = data['phone'];
 
         // Fetching work experiences
-        List<WorkExperience> workExperiences = [];
+        List<Career> workExperiences = [];
         for (var experience in widget.workExperiences) {
           workExperiences.add(experience);
         }
@@ -144,7 +145,7 @@ class _ResumeEditState extends State<ResumeEdit> {
   Future<String> _fetchGPTResponse({
     required String dob,
     required String gender,
-    required List<WorkExperience> workExperiences,
+    required List<Career> workExperiences,
     required List<String> selectedSkills,
     required List<String> selectedStrens,
   }) async {

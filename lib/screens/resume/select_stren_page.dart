@@ -1,5 +1,6 @@
+/*
 import 'package:flutter/material.dart';
-import 'package:halmoney/screens/resume/extra_resume_page.dart';
+import 'package:halmoney/screens/resume/step4_career.dart';
 
 class SelectStrenPage extends StatefulWidget {
   final String id;
@@ -94,9 +95,9 @@ class _SelectStrenPageState extends State<SelectStrenPage>{
               onPressed: () {
                 Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => ExtraResumePage(
+                    MaterialPageRoute(builder: (context) => StepCareerPage(
                       id: widget.id,
-                      selectedSkills: widget.selectedSkills,
+                      selectedFields: widget.selectedSkills,
                       selectedStrens: selectedStrens,
                     )
                     )
@@ -185,3 +186,4 @@ class _StrenChooseButton extends State<StrenChooseButton>{
 //void main(){
 // runApp(const MaterialApp(home:SelectStrenPage()));
 //}
+*/

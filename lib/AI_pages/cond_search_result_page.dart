@@ -85,6 +85,7 @@ class Cond_Search extends StatelessWidget {
               detail: jobData['detail'] ?? '',
               workweek: jobData['work_week'] ?? '',
               image_path: jobData['image_path'] ?? '',
+              endday: jobData['endday'] ?? '',
               //userId: widget.id,
             ),
           ),

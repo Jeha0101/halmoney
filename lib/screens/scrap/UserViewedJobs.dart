@@ -68,6 +68,7 @@ class _UserViewedJobsPageState extends State<UserViewedJobsPage> {
               'week': data['work_time_week'] ?? 'No week',
               'detail': data['detail'] ?? 'No detail',
               'image_path': data['image_path'] ?? 'No path',
+              'end_day':data['end_day']??'No end day',
               'isLiked': false, // Default value, can be updated if needed
             };
           }).toList();
@@ -129,6 +130,7 @@ class _UserViewedJobsPageState extends State<UserViewedJobsPage> {
                   workweek: job['week'],
                   isLiked: job['isLiked'],
                   image_path: job['image_path'],
+                  endday:job['end_day']
                 ),
               );
             },

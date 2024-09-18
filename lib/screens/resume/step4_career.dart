@@ -1,29 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:halmoney/screens/resume/resumeEdit.dart';
+import 'package:halmoney/screens/resume/step5_quantity.dart';
+import 'package:halmoney/screens/resume/career.dart';
+import 'package:halmoney/screens/resume/userInput.dart';
 
-class ExtraResumePage extends StatefulWidget {
-  final String id;
-  final List<String> selectedSkills;
-  final List<String> selectedStrens;
+class StepCareerPage extends StatefulWidget {
+  final UserInput userInput;
 
-  const ExtraResumePage(
-      {super.key, required this.id, required this.selectedSkills, required this.selectedStrens});
+  StepCareerPage({
+    super.key,
+    required this.userInput,
+  });
 
   @override
-  State<ExtraResumePage> createState() => _ExtraResumePageState();
+  State<StepCareerPage> createState() => _StepCareerPageState();
 }
 
-class _ExtraResumePageState extends State<ExtraResumePage> {
-  List<WorkExperience> workExperiences = [];
+class _StepCareerPageState extends State<StepCareerPage> {
+  List<Career> careers = [];
 
-  void addWorkExperience() {
+  void addCareer() {
     showDialog(
       context: context,
       builder: (context) {
-        return WorkExperienceDialog(
-          onSave: (newExperience) {
+        return CareerDialog(
+          onSave: (newCareer) {
             setState(() {
-              workExperiences.add(newExperience);
+              careers.add(newCareer);
             });
           },
         );
@@ -31,15 +33,15 @@ class _ExtraResumePageState extends State<ExtraResumePage> {
     );
   }
 
-  void editWorkExperience(int index) {
+  void editCareer(int index) {
     showDialog(
       context: context,
       builder: (context) {
-        return WorkExperienceDialog(
-          experience: workExperiences[index],
-          onSave: (updatedExperience) {
+        return CareerDialog(
+          career: careers[index],
+          onSave: (updatedCareer) {
             setState(() {
-              workExperiences[index] = updatedExperience;
+              careers[index] = updatedCareer;
             });
           },
         );
@@ -47,20 +49,20 @@ class _ExtraResumePageState extends State<ExtraResumePage> {
     );
   }
 
-  void removeWorkExperience(int index) {
+  void removeCareer(int index) {
     setState(() {
-      workExperiences.removeAt(index);
+      careers.removeAt(index);
     });
   }
 
   bool areAllFieldsFilled() {
-    for (var experience in workExperiences) {
-      if (experience.startYear.isEmpty ||
-          experience.startMonth.isEmpty ||
-          experience.endYear.isEmpty ||
-          experience.endMonth.isEmpty ||
-          experience.place.isEmpty ||
-          experience.description.isEmpty) {
+    for (var career in careers) {
+      if (career.startYear.isEmpty ||
+          career.startMonth.isEmpty ||
+          career.endYear.isEmpty ||
+          career.endMonth.isEmpty ||
+          career.place.isEmpty ||
+          career.description.isEmpty) {
         return false;
       }
     }
@@ -96,28 +98,89 @@ class _ExtraResumePageState extends State<ExtraResumePage> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(left: 25.0, right: 30.0, top: 50.0),
+        padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
         child: Column(
           children: [
-            const Text(
-              '이력사항을 입력해주세요!',
-              style: TextStyle(
-                fontSize: 18.0,
-                fontFamily: 'NanumGothic',
-                fontWeight: FontWeight.w600,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // 이전 페이지로 이동
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Row(
+                    children: [
+                      Icon(
+                        Icons.chevron_left,
+                        size: 30,
+                      ),
+                      Text('이전',
+                          style: TextStyle(
+                            fontFamily: 'NanumGothicFamily',
+                            fontSize: 20.0,
+                            color: Colors.black,
+                          )),
+                    ],
+                  ),
+                ),
+
+                //다음 페이지로 이동
+                GestureDetector(
+                  onTap: () {
+                    widget.userInput.editCareers(careers);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              StepQuantityPage(userInput: widget.userInput)),
+                    );
+                  },
+                  child: const Row(
+                    children: [
+                      Text('다음',
+                          style: TextStyle(
+                            fontFamily: 'NanumGothicFamily',
+                            fontSize: 20.0,
+                            color: Colors.black,
+                          )),
+                      Icon(
+                        Icons.chevron_right,
+                        size: 30,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 15),
+            const SizedBox(
+              height: 25,
+            ),
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text('이력사항을 입력해주세요!',
+                    style: TextStyle(
+                      fontFamily: 'NanumGothicFamily',
+                      fontWeight: FontWeight.w500,
+                      fontSize: 28.0,
+                      color: Colors.black,
+                    )),
+              ],
+            ),
+            const SizedBox(
+              height: 25,
+            ),
             Expanded(
               child: ListView.builder(
-                itemCount: workExperiences.length + 1,
+                itemCount: careers.length + 1,
                 itemBuilder: (context, index) {
-                  if (index == workExperiences.length) {
+                  if (index == careers.length) {
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 10.0),
                       child: Center(
                         child: GestureDetector(
-                          onTap: addWorkExperience,
+                          onTap: addCareer,
                           child: Container(
                             height: 80,
                             width: double.infinity,
@@ -132,7 +195,8 @@ class _ExtraResumePageState extends State<ExtraResumePage> {
                               children: [
                                 Icon(Icons.add, color: Colors.blue),
                                 SizedBox(width: 10),
-                                Text('경력 추가', style: TextStyle(color: Colors.blue)),
+                                Text('경력 추가',
+                                    style: TextStyle(color: Colors.blue)),
                               ],
                             ),
                           ),
@@ -142,41 +206,15 @@ class _ExtraResumePageState extends State<ExtraResumePage> {
                   } else {
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 10.0),
-                      child: WorkExperienceDisplay(
-                        experience: workExperiences[index],
-                        onEdit: () => editWorkExperience(index),
-                        onRemove: () => removeWorkExperience(index),
+                      child: CareerDisplay(
+                        career: careers[index],
+                        onEdit: () => editCareer(index),
+                        onRemove: () => removeCareer(index),
                       ),
                     );
                   }
                 },
               ),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: areAllFieldsFilled()
-                  ? () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ResumeEdit(
-                      id: widget.id,
-                      selectedSkills: widget.selectedSkills,
-                      selectedStrens: widget.selectedStrens,
-                      workExperiences: workExperiences,
-                    ),
-                  ),
-                );
-              }
-                  : null,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: areAllFieldsFilled() ? const Color.fromARGB(250, 51, 51, 255) : Colors.grey,
-                minimumSize: const Size(360, 50),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-              child: const Text('다음 페이지로 이동', style: TextStyle(color: Colors.white)),
             ),
           ],
         ),
@@ -185,34 +223,14 @@ class _ExtraResumePageState extends State<ExtraResumePage> {
   }
 }
 
-class WorkExperience {
-  String startYear = '';
-  String startMonth = '';
-  String endYear = '';
-  String endMonth = '';
-  String place = '';
-  String description = '';
-
-  Map<String, dynamic> toMap() {
-    return {
-      'place': place,
-      'startYear': startYear,
-      'startMonth': startMonth,
-      'endYear': endYear,
-      'endMonth': endMonth,
-      'description': description,
-    };
-  }
-}
-
-class WorkExperienceDisplay extends StatelessWidget {
-  final WorkExperience experience;
+class CareerDisplay extends StatelessWidget {
+  final Career career;
   final VoidCallback onEdit;
   final VoidCallback onRemove;
 
-  const WorkExperienceDisplay({
+  const CareerDisplay({
     super.key,
-    required this.experience,
+    required this.career,
     required this.onEdit,
     required this.onRemove,
   });
@@ -221,7 +239,8 @@ class WorkExperienceDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(top: 15.0),
-      padding: const EdgeInsets.only(top: 5.0, bottom: 20.0, left: 20, right: 10),
+      padding:
+          const EdgeInsets.only(top: 5.0, bottom: 20.0, left: 20, right: 10),
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(color: Colors.grey),
@@ -236,7 +255,7 @@ class WorkExperienceDisplay extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                experience.place,
+                career.place,
                 style: const TextStyle(fontSize: 18),
               ),
               Row(
@@ -244,11 +263,13 @@ class WorkExperienceDisplay extends StatelessWidget {
                 children: [
                   TextButton(
                     onPressed: onEdit,
-                    child: const Text('편집', style: TextStyle(color: Colors.blue)),
+                    child:
+                        const Text('편집', style: TextStyle(color: Colors.blue)),
                   ),
                   TextButton(
                     onPressed: onRemove,
-                    child: const Text('삭제', style: TextStyle(color: Colors.red)),
+                    child:
+                        const Text('삭제', style: TextStyle(color: Colors.red)),
                   ),
                 ],
               ),
@@ -275,42 +296,43 @@ class WorkExperienceDisplay extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '${experience.startYear}년 ${experience.startMonth}월 ~ ${experience.endYear}년 ${experience.endMonth}월',
+                    '${career.startYear}년 ${career.startMonth}월 ~ ${career.endYear}년 ${career.endMonth}월',
                     style: const TextStyle(fontSize: 14),
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    experience.description,
+                    career.description,
                     style: const TextStyle(fontSize: 14),
                   ),
                 ],
               ),
             ],
           )
-
         ],
       ),
     );
   }
 }
 
-class WorkExperienceDialog extends StatefulWidget {
-  final WorkExperience? experience;
-  final void Function(WorkExperience) onSave;
+class CareerDialog extends StatefulWidget {
+  final Career? career;
+  final void Function(Career) onSave;
 
-  const WorkExperienceDialog({
+  const CareerDialog({
     super.key,
-    this.experience,
+    this.career,
     required this.onSave,
   });
 
   @override
-  _WorkExperienceDialogState createState() => _WorkExperienceDialogState();
+  _CareerDialogState createState() => _CareerDialogState();
 }
 
-class _WorkExperienceDialogState extends State<WorkExperienceDialog> {
-  final List<String> years = List<String>.generate(60, (i) => (1965 + i).toString());
-  final List<String> months = List<String>.generate(12, (i) => (i + 1).toString());
+class _CareerDialogState extends State<CareerDialog> {
+  final List<String> years =
+      List<String>.generate(60, (i) => (1965 + i).toString());
+  final List<String> months =
+      List<String>.generate(12, (i) => (i + 1).toString());
 
   late TextEditingController startYearController;
   late TextEditingController startMonthController;
@@ -325,13 +347,13 @@ class _WorkExperienceDialogState extends State<WorkExperienceDialog> {
   void initState() {
     super.initState();
 
-    final experience = widget.experience ?? WorkExperience();
-    startYearController = TextEditingController(text: experience.startYear);
-    startMonthController = TextEditingController(text: experience.startMonth);
-    endYearController = TextEditingController(text: experience.endYear);
-    endMonthController = TextEditingController(text: experience.endMonth);
-    placeController = TextEditingController(text: experience.place);
-    descriptionController = TextEditingController(text: experience.description);
+    final career = widget.career ?? Career();
+    startYearController = TextEditingController(text: career.startYear);
+    startMonthController = TextEditingController(text: career.startMonth);
+    endYearController = TextEditingController(text: career.endYear);
+    endMonthController = TextEditingController(text: career.endMonth);
+    placeController = TextEditingController(text: career.place);
+    descriptionController = TextEditingController(text: career.description);
 
     startYearController.addListener(_checkIfAllFieldsFilled);
     startMonthController.addListener(_checkIfAllFieldsFilled);
@@ -363,6 +385,37 @@ class _WorkExperienceDialogState extends State<WorkExperienceDialog> {
     });
   }
 
+  List<String> _getFilteredYears({String? startYear, String? endYear}) {
+    // 시작 날짜를 선택한 경우 종료 날짜는 시작 날짜 이후로만 선택 가능
+    if (startYear != null && startYear.isNotEmpty) {
+      return years
+          .where((year) => int.parse(year) >= int.parse(startYear))
+          .toList();
+    }
+    // 종료 날짜를 선택한 경우 시작 날짜는 종료 날짜 이전으로만 선택 가능
+    if (endYear != null && endYear.isNotEmpty) {
+      return years
+          .where((year) => int.parse(year) <= int.parse(endYear))
+          .toList();
+    }
+    return years;
+  }
+
+  List<String> _getFilteredMonths() {
+    // 시작년도와 종료년도가 같은 경우에만 월을 제한
+    if (startYearController.text.isNotEmpty &&
+        endYearController.text.isNotEmpty &&
+        startYearController.text == endYearController.text) {
+      int startMonthValue =
+          int.tryParse(startMonthController.text) ?? 1; // 시작 월이 없으면 1월로 가정
+      // 시작 월과 같거나 이후의 월만 선택 가능
+      return months
+          .where((month) => int.parse(month) >= startMonthValue)
+          .toList();
+    }
+    return months; // 년도가 다르면 모든 월이 선택 가능
+  }
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -373,54 +426,74 @@ class _WorkExperienceDialogState extends State<WorkExperienceDialog> {
           children: [
             DropdownButtonFormField<String>(
               decoration: const InputDecoration(labelText: '근무 시작 (년)'),
-              value: startYearController.text.isNotEmpty ? startYearController.text : null,
-              items: years.map((String value) {
+              value: startYearController.text.isNotEmpty
+                  ? startYearController.text
+                  : null,
+              items: _getFilteredYears(endYear: endYearController.text)
+                  .map((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
                   child: Text(value),
                 );
               }).toList(),
               onChanged: (newValue) {
-                startYearController.text = newValue ?? '';
+                setState(() {
+                  startYearController.text = newValue ?? '';
+                });
               },
             ),
             DropdownButtonFormField<String>(
               decoration: const InputDecoration(labelText: '근무 시작 (월)'),
-              value: startMonthController.text.isNotEmpty ? startMonthController.text : null,
+              value: startMonthController.text.isNotEmpty
+                  ? startMonthController.text
+                  : null,
               items: months.map((String value) {
+                // 월 필터링 필요 없음
                 return DropdownMenuItem<String>(
                   value: value,
                   child: Text(value),
                 );
               }).toList(),
               onChanged: (newValue) {
-                startMonthController.text = newValue ?? '';
+                setState(() {
+                  startMonthController.text = newValue ?? '';
+                });
               },
             ),
             DropdownButtonFormField<String>(
               decoration: const InputDecoration(labelText: '근무 종료 (년)'),
-              value: endYearController.text.isNotEmpty ? endYearController.text : null,
-              items: years.map((String value) {
+              value: endYearController.text.isNotEmpty
+                  ? endYearController.text
+                  : null,
+              items: _getFilteredYears(startYear: startYearController.text)
+                  .map((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
                   child: Text(value),
                 );
               }).toList(),
               onChanged: (newValue) {
-                endYearController.text = newValue ?? '';
+                setState(() {
+                  endYearController.text = newValue ?? '';
+                });
               },
             ),
             DropdownButtonFormField<String>(
               decoration: const InputDecoration(labelText: '근무 종료 (월)'),
-              value: endMonthController.text.isNotEmpty ? endMonthController.text : null,
-              items: months.map((String value) {
+              value: endMonthController.text.isNotEmpty
+                  ? endMonthController.text
+                  : null,
+              items: _getFilteredMonths().map((String value) {
+                // 수정된 부분
                 return DropdownMenuItem<String>(
                   value: value,
                   child: Text(value),
                 );
               }).toList(),
               onChanged: (newValue) {
-                endMonthController.text = newValue ?? '';
+                setState(() {
+                  endMonthController.text = newValue ?? '';
+                });
               },
             ),
             TextField(
@@ -444,16 +517,16 @@ class _WorkExperienceDialogState extends State<WorkExperienceDialog> {
         TextButton(
           onPressed: isSaveEnabled
               ? () {
-            final newExperience = WorkExperience()
-              ..startYear = startYearController.text
-              ..startMonth = startMonthController.text
-              ..endYear = endYearController.text
-              ..endMonth = endMonthController.text
-              ..place = placeController.text
-              ..description = descriptionController.text;
-            widget.onSave(newExperience);
-            Navigator.of(context).pop();
-          }
+                  final newExperience = Career()
+                    ..startYear = startYearController.text
+                    ..startMonth = startMonthController.text
+                    ..endYear = endYearController.text
+                    ..endMonth = endMonthController.text
+                    ..place = placeController.text
+                    ..description = descriptionController.text;
+                  widget.onSave(newExperience);
+                  Navigator.of(context).pop();
+                }
               : null,
           child: const Text('완료'),
         ),

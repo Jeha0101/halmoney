@@ -8,7 +8,7 @@ import 'package:pdf/pdf.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:flutter/rendering.dart';
-import 'package:printing/printing.dart';
+//import 'package:printing/printing.dart';
 import 'package:permission_handler/permission_handler.dart'; // 권한 요청 패키지
 
 class ResumeView extends StatefulWidget {

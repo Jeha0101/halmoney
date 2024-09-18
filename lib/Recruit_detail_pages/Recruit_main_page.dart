@@ -16,6 +16,7 @@ class Recruit_main extends StatelessWidget {
   final String detail;
   final String workweek;
   final String image_path;
+  final String endday;
 
   Recruit_main({
     required this.id,
@@ -27,6 +28,7 @@ class Recruit_main extends StatelessWidget {
     required this.detail,
     required this.workweek,
     required this.image_path,
+    required this.endday,
     Key? key,
   }): super(key: key);
 
@@ -292,6 +294,15 @@ class Recruit_main extends StatelessWidget {
                           ),
                         ),
                         SizedBox(height: 20),
+
+                        Text(
+                          endday,
+                          style: TextStyle(
+                            height: 1.8,
+                            fontSize: 20,
+                            color: Colors.blueAccent,
+                          ),
+                        ),
 
 
                         SizedBox(height: 100),
