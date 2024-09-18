@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'introduction_service.dart';
+import '../introduction_service.dart';
 import 'final_revision.dart'; // 마무리 페이지로 이동
 
 class ThirdParagraphPage extends StatefulWidget {

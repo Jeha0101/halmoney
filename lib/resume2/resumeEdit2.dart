@@ -1,14 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:halmoney/resume2/extra_resume_page2.dart';
-import 'package:halmoney/resume2/first_revision.dart';
+import 'package:halmoney/resume2/resume_revision/first_revision.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:convert';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:halmoney/resume2/revisionResume_page.dart';
-import 'first_revision.dart';
+import 'resume_revision/first_revision.dart';
 // 면접 질문 데이터 class
 class InterviewQuestion {
   late String question;

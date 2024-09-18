@@ -6,6 +6,7 @@ import 'package:halmoney/screens/map/mapPage.dart';
 import 'package:halmoney/screens/resume/step1_hello.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../resume/select_skill_page.dart';
+import 'package:halmoney/PublicJobs_pages/PublicJobsDescribe.main.dart';
 
 class MyHomePage extends StatelessWidget{
   final String id;
@@ -364,6 +365,77 @@ class MyHomePage extends StatelessWidget{
                     ],
                   )
               ),
+              Padding(
+                  padding: const EdgeInsets.only(left:20.0, right: 20.0,top: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 25,),
+                      // 위젯 설명 텍스트
+                      const Text(
+                        '공공 일자리 지원과정을 확인해보세요!',
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(height: 20,),
+                      // 위젯 내부
+                      GestureDetector(
+                        onTap: (){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => PublicJobsDescribe(id: id)),
+                          );
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(20.0),
+                          height: 100,
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(20),
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color : Colors.grey,
+                                spreadRadius:1.0,
+                                blurRadius: 10.0,
+                                offset: Offset(2,2),
+                                blurStyle: BlurStyle.inner,
+                                // spreadRadius: 0.5,
+                                // blurRadius: 10,
+                                // offset: const Offset(2, 2),
+                              ),
+                            ],
+                          ),
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                '공공 일자리 알리미',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                ),
+                              ),
+                              Spacer(),
+                              Image(
+                                image: AssetImage('assets/images/location.png'),
+                                width: 60,
+                                height: 60,
+                                fit: BoxFit.contain,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20,),
+                    ],
+                  )
+              ),
+
+
             ],
           ),
         ),

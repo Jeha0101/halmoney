@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'introduction_service.dart';
+import '../introduction_service.dart';
 import 'third_revision.dart';
 
 class SecondParagraphPage extends StatefulWidget {
