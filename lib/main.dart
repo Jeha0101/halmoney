@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:halmoney/pages/login_page.dart';
 import 'package:halmoney/pages/search_engine.dart';
+import 'package:halmoney/pages/test_page.dart';
+import 'package:halmoney/screens/resume/select_skill_page.dart';
 import 'package:halmoney/screens/myPage/myPage.dart';
 import 'package:halmoney/theme.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -41,7 +43,7 @@ class MyApp extends StatelessWidget {
       ],
       debugShowCheckedModeBanner:  false,
 
-      home: SearchEngine(),
+      home: SelectSkillPage(id: 'sunjae'),
 
       // home: const SignupPgOne(),
       // initialRoute: "/login",

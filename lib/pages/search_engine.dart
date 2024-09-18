@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
+import 'package:huggingface_dart/huggingface_dart.dart';
 import '../AI_pages/cond_search_result_page.dart';
 
 class SearchEngine extends StatefulWidget {
@@ -16,26 +16,50 @@ class _SearchEngine extends State<SearchEngine> {
   final TextEditingController _controller = TextEditingController();
   List<String> _keywords = [];
 
+  //HuggingFace GLiNER 사용해보기
+  HfInference hfInference = HfInference('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');
+
+  
   // 키워드 추출 함수
   Future<void> _searchKeyWords() async {
-    final response = await http.post(
-      Uri.parse('http://192.168.35.161:5000/extract_keywords'), // Flask 서버의 IP 주소
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'text': _controller.text,
-      }),
-    );
+    try {
+      final response = await http.post(
+        Uri.parse('http://192.168.35.161:5000/nerExtraction'), // Flask 서버의 IP 주소
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, dynamic>{
+          'text': _controller.text,
+          'labels': ['Job', 'Ability'],
+        }),
+      );
 
-    if (response.statusCode == 200) {
-      final List<dynamic> keywords = jsonDecode(response.body);
-      setState(() {
-        _keywords = keywords.map((keyword) => keyword[0] as String).toList();
-      });
-    } else {
-      print('Failed response: ${response.body}');
-      throw Exception('Failed to extract keywords');
+      if (response.statusCode == 200) {
+        final entities = jsonDecode(response.body);
+        setState(() {
+          _keywords.clear();
+
+          if (entities['Job'] != null) {
+            _keywords.addAll(List<String>.from(entities['Job']));
+          }
+          if (entities['Ability'] != null) {
+            _keywords.addAll(List<String>.from(entities['Ability']));
+          }
+          if (entities['WorkPeriod'] != null) {
+            _keywords.addAll(List<String>.from(entities['WorkPeriod']));
+          }
+        });
+        // Debugging 로그
+        print('Keywords: $_keywords');
+      } else {
+        print('Failed to load entities. Status Code: ${response.statusCode}');
+        throw Exception('Failed to load entities');
+      }
+    } catch (e) {
+      print('Error occurred while fetching keywords: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Failed to fetch keywords: $e")),
+      );
     }
   }
 
