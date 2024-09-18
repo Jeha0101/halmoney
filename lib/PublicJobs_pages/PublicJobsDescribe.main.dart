@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:halmoney/JobSearch_pages/JobList_widget.dart';
-import 'package:halmoney/myAppPage.dart';
 import 'package:intl/intl.dart';
+import 'package:halmoney/screens/home/home.dart';
+import 'package:halmoney/myAppPage.dart';
+import 'PublicJobsList_widget.dart';
 
-class JobSearch extends StatefulWidget {
+class PublicJobsDescribe extends StatefulWidget {
   final String id;
-  const JobSearch({super.key, required this.id});
+  const PublicJobsDescribe({super.key, required this.id});
 
   @override
-  _JobSearchState createState() => _JobSearchState();
+  _PublicJobsDescribeState createState() => _PublicJobsDescribeState();
 }
 
-class _JobSearchState extends State<JobSearch> {
+class _PublicJobsDescribeState extends State<PublicJobsDescribe> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   List<Map<String, dynamic>> jobs = [];
   String? userDocId;
@@ -26,50 +27,12 @@ class _JobSearchState extends State<JobSearch> {
   }
 
   Future<void> _initializeData() async {
-    await _fetchUserLikes();
-    await _fetchJobs();
+    await _fetchPublicJobs();
   }
 
-  Future<void> _fetchUserLikes() async {
+  Future<void> _fetchPublicJobs() async {
     try {
-      // Fetch the user document based on the provided widget.id
-      final QuerySnapshot userQuery = await _firestore
-          .collection('user')
-          .where('id', isEqualTo: widget.id)
-          .get();
-
-      if (userQuery.docs.isNotEmpty) {
-        // Assuming there is only one user document matching the id
-        final String userId = userQuery.docs.first.id;
-        userDocId = userId;
-
-        // Fetch the user's likes sub-collection
-        final QuerySnapshot userLikesQuery = await _firestore
-            .collection('user')
-            .doc(userId)
-            .collection('users_like')
-            .get();
-
-        // Extract the 'num' field from each document, if it exists
-        setState(() {
-          userLikes = userLikesQuery.docs
-              .where((doc) => (doc.data() as Map<String, dynamic>).containsKey('num'))
-              .map((doc) => doc['num'].toString())
-              .toList();
-        });
-        print('---------------------------');
-        print(userLikes);
-      } else {
-        print("No user found with the provided id.");
-      }
-    } catch (error) {
-      print("Failed to fetch user likes!: $error");
-    }
-  }
-
-  Future<void> _fetchJobs() async {
-    try {
-      final QuerySnapshot result = await _firestore.collection('jobs').get();
+      final QuerySnapshot result = await _firestore.collection('publicjobs').get();
       final List<DocumentSnapshot> documents = result.docs;
 
       setState(() {
@@ -85,18 +48,22 @@ class _JobSearchState extends State<JobSearch> {
 
           return {
             'num': data['num'] ?? 0,
-            'title': data['title'] ?? 'No Title.',
-            'address': data['address'] ?? 'No address',
-            'wage': data['wage'] ?? 'No Wage',
-            'career': data['career'] ?? 'No Career',
-            'detail': data['detail'] ?? 'No detail',
-            'workweek': data['work_time_week'] ?? 'No work Week',
+            'title': data['jobtitle'] ?? 'No Title.',
+            'company': data['hirecompany'] ?? 'No company',
+            'region': data['hireregion'] ?? 'No address',
+            'type': data['hiretype'] ?? 'No type',
+            'url': data['hireurl'] ?? 'No url',
+            'person': data['applyperson'] ?? 'No person',
+            'person2': data['applyperson2'] ?? 'No person2',
+            'personcareer': data['applypersoncareer'] ?? 'No person career',
+            'personedu': data['applypersonedu'] ?? 'No person edu',
+            'applystep': data['applystep'] ?? 'No apply step',
             'image_path': data['image_path'] ?? 'No_path',
             'isLiked': userLikes.contains(data['num'].toString()),
             'end_day': endDayStr,
           };
         }).toList();
-        print('공고들! $jobs');
+        print('공공일자리 공고들! $jobs');
       });
     } catch (error) {
       print("Failed to fetch jobs: $error");
@@ -105,7 +72,6 @@ class _JobSearchState extends State<JobSearch> {
       );
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -123,7 +89,7 @@ class _JobSearchState extends State<JobSearch> {
         right: false,
         child: Scaffold(
           appBar: AppBar(
-            title: const Text('공고리스트'),
+            title: const Text('공공일자리 리스트'),
             centerTitle: true,
             backgroundColor: const Color.fromARGB(250, 51, 51, 255),
             leading: IconButton(
@@ -138,25 +104,29 @@ class _JobSearchState extends State<JobSearch> {
             ),
           ),
           body: jobs.isEmpty
-              ? const  Center(child: Text('No jobs available'))
+              ? const Center(child: Text('No jobs available'))
               : ListView.builder(
             itemCount: jobs.length,
             itemBuilder: (context, index) {
               final job = jobs[index];
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: JobList(
+                child: PublicJobList(
                   id: widget.id,
                   num: job['num'],
                   title: job['title'],
-                  address: job['address'],
-                  wage: job['wage'],
-                  career: job['career'],
-                  detail: job['detail'],
-                  workweek: job['workweek'],
+                  company: job['company'],
+                  region: job['region'],
+                  type: job['type'],
+                  url: job['url'],
+                  person: job['person'],
+                  person2: job['person2'],
+                  personcareer: job['personcareer'],
+                  personedu: job['personedu'],
+                  applystep: job['applystep'],
                   image_path: job['image_path'],
                   isLiked: job['isLiked'],
-                 endday: job['end_day'],
+                  endday: job['end_day'],
                 ),
               );
             },

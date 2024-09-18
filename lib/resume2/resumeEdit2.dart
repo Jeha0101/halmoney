@@ -1,12 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:halmoney/resume2/extra_resume_page2.dart';
+import 'package:halmoney/resume2/resume_revision/first_revision.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:convert';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:halmoney/resume2/revisionResume_page.dart';
+import 'resume_revision/first_revision.dart';
 // 면접 질문 데이터 class
 class InterviewQuestion {
   late String question;
@@ -155,12 +157,12 @@ class _ResumeEditState extends State<ResumeEdit> {
         });
 
         // Fetch interview questions after fetching resume data
-        await _fetchGPTInterviewQuestions(
+        /*await _fetchGPTInterviewQuestions(
           dob: dob,
           title: widget.title,
           selectedSkills: widget.selectedSkills,
           selectedStrens: widget.selectedStrens,
-        );
+        ); */
       }
     } catch (error) {
       print("Failed to fetch resume data: $error");
@@ -181,10 +183,26 @@ class _ResumeEditState extends State<ResumeEdit> {
     final apiKey = dotenv.get('GPT_API_KEY');
     const endpoint = 'https://api.openai.com/v1/chat/completions';
     const requestsTimeOut = const Duration(seconds: 60);
+    const supportfield = "보조교사";
+    const certificate ="컴퓨터 활용능력 2급";
+    const experience = "빨간펜 10년 근무, 구몬 15년 근무";
+    const experiencedetail = "빨간펜에서는 방문학습지교사로 일함. 국어, 영어, 한자 같은 과목들을 가르침. 구몬에서는 방문교사로 일하다가 지점 메니저로 승진해서 방문교사들을 관리함";
+    const stren = "의사소통, 책임감, 판단력";
 
-    String prompt = '''다음 특징을 갖는 사람의 자기소개서 작성 :
-    성별:$gender, 생년월:$dob, 경력 :$workExperiences, 기술:$selectedSkills, 장점:$selectedStrens;
-    주의 : 성별과 생년월을 언급할 필요는 없다. '안녕하세요', '감사합니다'와 같은 인사와 마무리 인사는 모두 생략한다''';
+    String prompt = '''중장년층 사용자의 정보를 기반으로 자기소개서를 작성해주는 챗봇입니다. 
+다음 가이드에 따라 각 항목은 간결하게, '안녕하세요'는 빼고, 분량이 넘지 않도록 작성해주세요.
+첫번째 문단 - 150 token 내외
+사용자는 $supportfield 분야에 지원하고자 합니다. 이 분야에 지원하게 된 동기를 작성하세요. 사용자의 경력과 관심사를 바탕으로 자연스럽게 연결해 설명하세요.
+두번째 문단 - 250 token 내외
+사용자의 경력은 다음과 같습니다: $experience. 경력의 세부 사항은 $experiencedetail입니다. 이러한 경력이 어떻게 지원 분야($supportfield)와 연관되어 있는지 작성하고, 해당 분야에서 어떤 기여를 할 수 있을지 설명하세요.
+사용자의 장점은 $stren이며, 자격증은 $certificate입니다. 사용자의 장점과 자격증이 지원 분야에서 어떻게 발휘될 수 있을지 설명하세요. 특히, 이러한 능력이 해당 직무에서 어떤 방식으로 도움이 될지 구체적으로 작성하세요.
+세번째 문단 - 50 token 내외
+지원하는 $supportfield 분야에서 사용자가 이루고자 하는 구체적인 목표와 다짐을 포함하여 작성하세요. 이 목표가 어떻게 조직에 기여할 수 있을지 설명하세요.
+마지막으로 "감사합니다"로 마무리 인사를 추가하세요.
+
+요청된 형식과 분량을  정확히 지켜 작성하세요.''';
+
+    print(prompt);
 
     try {
       final response = await http.post(
@@ -198,7 +216,7 @@ class _ResumeEditState extends State<ResumeEdit> {
           'messages': [
             {'role': 'system', 'content': prompt},
           ],
-          'max_tokens': 500,
+          'max_tokens': 700,
         }),
       );
 
@@ -263,7 +281,7 @@ class _ResumeEditState extends State<ResumeEdit> {
   //////////////////////////////////
 
   // GPT 면접 질문 생성
-  Future<void> _fetchGPTInterviewQuestions({
+ /* Future<void> _fetchGPTInterviewQuestions({
     required String dob,
     required String title,
     required List<String> selectedSkills,
@@ -319,7 +337,7 @@ class _ResumeEditState extends State<ResumeEdit> {
     } catch (e) {
       print('Exception: $e');
     }
-  }
+  } */
 //////////////////////////////////////////////////////////
   // 앱 바 뒤로가기 버튼
   void _goBack() {
@@ -610,11 +628,18 @@ class _ResumeEditState extends State<ResumeEdit> {
                   SizedBox(height: 20,),
                   ElevatedButton(
                     onPressed: () {
+                      List<String> paragraphs = resumeItem.selfIntroduction.split('\n\n');
+                      String firstParagraph = paragraphs.isNotEmpty ? paragraphs[0] : '';
+                      String secondParagraph = paragraphs.length > 1 ? paragraphs[1] : '';
+                      String thirdParagraph = paragraphs.length > 2 ? paragraphs[2] : '';
+
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => SelfIntroductionRevisionPage(
-                            existingIntroduction: resumeItem.selfIntroduction,
+                          builder: (context) =>  FirstParagraphPage(
+                            firstParagraph: firstParagraph,
+                            secondParagraph: secondParagraph,
+                            thirdParagraph: thirdParagraph,
                           ),
                         ),
                       );
@@ -629,7 +654,7 @@ class _ResumeEditState extends State<ResumeEdit> {
                     ),
                   ),
                   SizedBox(height: 20,),
-                  const Text('면접 질문',
+                 /* const Text('면접 질문',
                     style: TextStyle(fontSize: 18),),
                   const SizedBox(height: 10),
                   ...interviewQuestions.map((question){
@@ -647,7 +672,7 @@ class _ResumeEditState extends State<ResumeEdit> {
                         style: TextStyle(fontSize:16),
                       ),
                     );
-                  }).toList(),
+                  }).toList(),*/
                   const SizedBox(height: 20),
                 ],
               ),
