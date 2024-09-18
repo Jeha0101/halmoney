@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:halmoney/resume2/introduction_service.dart';
-import 'package:halmoney/resume2/second_revision.dart';
+import 'package:halmoney/resume2/resume_revision/second_revision.dart';
 
 
 class FirstParagraphPage extends StatefulWidget {
