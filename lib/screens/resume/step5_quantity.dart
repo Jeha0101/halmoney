@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:halmoney/screens/resume/userInput.dart';
+import 'package:halmoney/get_user_info/user_Info.dart';
 import 'package:halmoney/screens/resume/step6_inputEdit.dart';
 
 class StepQuantityPage extends StatefulWidget {
-  final UserInput userInput;
+  final UserInfo userInput;
 
   StepQuantityPage({
     super.key,
@@ -77,14 +77,14 @@ class _StepQuantityPageState extends State<StepQuantityPage> {
                 //다음 페이지로 이동
                 GestureDetector(
                   onTap: () {
-                    widget.userInput.editQuantity(quantity);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => StepInputEditPage(
-                              userInput : widget.userInput
-                          )),
-                    );
+                    // widget.userInput.editQuantity(quantity);
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //       builder: (context) => StepInputEditPage(
+                    //           userInput : widget.userInput
+                    //       )),
+                    // );
                   },
                   child: const Row(
                     children: [

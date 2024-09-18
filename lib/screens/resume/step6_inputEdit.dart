@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:halmoney/screens/resume/userInput.dart';
-import 'package:halmoney/screens/resume/career.dart';
+import 'package:halmoney/get_user_info/user_Info.dart';
+import 'package:halmoney/get_user_info/career.dart';
 import 'package:halmoney/screens/resume/step2_field.dart';
 import 'package:halmoney/screens/resume/step3_stren.dart';
 import 'package:halmoney/screens/resume/step4_career.dart';
 import 'package:halmoney/screens/resume/step5_quantity.dart';
 
 class StepInputEditPage extends StatefulWidget{
-  final UserInput userInput;
+  final UserInfo userInput;
 
   StepInputEditPage({
     super.key,
@@ -29,10 +29,10 @@ class _StepInputEditPageState extends State<StepInputEditPage> {
   void initState() {
     super.initState();
     // userInput으로부터 현재 사용자 입력값 받아오기
-    selectedFields = List.from(widget.userInput.selectedFields);
+    selectedFields = List.from(widget.userInput.preferredFields);
     selectedStrens = List.from(widget.userInput.selectedStrens);
     careers = List.from(widget.userInput.careers);
-    quantity = widget.userInput.quantity;
+    //quantity = widget.userInput.quantity;
   }
 
   void saveChanges() {
@@ -40,7 +40,7 @@ class _StepInputEditPageState extends State<StepInputEditPage> {
     widget.userInput.editSelectedFields(selectedFields);
     widget.userInput.editSelectedStrens(selectedStrens);
     widget.userInput.editCareers(careers);
-    widget.userInput.editQuantity(quantity);
+    //widget.userInput.editQuantity(quantity);
 
     Navigator.pop(context);
   }

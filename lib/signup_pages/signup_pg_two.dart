@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:halmoney/get_user_info/select_interest.dart';
+import 'package:halmoney/get_user_info/step1_welcome.dart';
 
 final TextEditingController genderController = TextEditingController();
 final TextEditingController dobController = TextEditingController();
@@ -176,7 +176,7 @@ class SignupPgTwo extends StatelessWidget {
                     _saveData(context);
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => SelectInterest(id: id)),
+                      MaterialPageRoute(builder: (context) => StepWelcome(id: id)),
                     );
                   },
                   child: const Text('가입완료',style: TextStyle(color: Colors.white),),
