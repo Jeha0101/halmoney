@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:halmoney/get_user_info/user_Info.dart';
+import 'package:halmoney/screens/resume/step7_resumeCreate.dart';
+import 'package:halmoney/screens/resume/user_prompt_factor.dart';
 import 'package:halmoney/screens/resume/step6_inputEdit.dart';
 
 class StepQuantityPage extends StatefulWidget {
-  final UserInfo userInput;
+  final UserInfo userInfo;
+  final UserPromptFactor userPromptFactor;
 
   StepQuantityPage({
     super.key,
-    required this.userInput,
+    required this.userInfo,
+    required this.userPromptFactor,
   });
 
   @override
@@ -77,14 +81,15 @@ class _StepQuantityPageState extends State<StepQuantityPage> {
                 //다음 페이지로 이동
                 GestureDetector(
                   onTap: () {
-                    // widget.userInput.editQuantity(quantity);
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //       builder: (context) => StepInputEditPage(
-                    //           userInput : widget.userInput
-                    //       )),
-                    // );
+                    widget.userPromptFactor.editQuantity(quantity);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => StepResumeCreate(
+                              userInfo : widget.userInfo,
+                              userPromptFactor : widget.userPromptFactor,
+                          )),
+                    );
                   },
                   child: const Row(
                     children: [

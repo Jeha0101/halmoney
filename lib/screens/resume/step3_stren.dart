@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:halmoney/screens/resume/step4_career.dart';
 import 'package:halmoney/get_user_info/user_Info.dart';
+import 'package:halmoney/screens/resume/user_prompt_factor.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class StepStrenPage extends StatefulWidget {
-  final UserInfo userInput;
+  final UserInfo userInfo;
+  final UserPromptFactor userPromptFactor;
 
   StepStrenPage({
     super.key,
-    required this.userInput,
+    required this.userInfo,
+    required this.userPromptFactor,
   });
 
   @override
@@ -36,12 +39,12 @@ class _StepStrenPageState extends State<StepStrenPage> {
     try{
       // selectedFields 리스트에서 직무 카테고리 가져오기
       // 첫 번째 선택된 필드를 직무 카테고리로 사용한다고 가정
-      if (widget.userInput.selectedFields.isEmpty) {
+      if (widget.userPromptFactor.selectedFields.isEmpty) {
         print('직무 카테고리가 선택되지 않았습니다.');
         return;
       }
 
-      String jobCategory = widget.userInput.selectedFields[0]; // 첫 번째 선택된 항목이 직무 카테고리라고 가정
+      String jobCategory = widget.userPromptFactor.selectedFields[0]; // 첫 번째 선택된 항목이 직무 카테고리라고 가정
 
       //Firebase에서 직무에 맞는 자소서 데이터 가져오기
       final jobDoc = await FirebaseFirestore.instance
@@ -109,7 +112,7 @@ class _StepStrenPageState extends State<StepStrenPage> {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, dynamic>{
-          'jobCategory': widget.userInput.selectedFields[0],  // 직무 카테고리 전달
+          'jobCategory': widget.userPromptFactor.selectedFields[0],  // 직무 카테고리 전달
         }),
       );
 
@@ -203,13 +206,14 @@ class _StepStrenPageState extends State<StepStrenPage> {
                 ),
                 GestureDetector(
                   onTap: () {
+                    widget.userPromptFactor.editSelectedStrens(selectedStrens);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => NextPage(
-                          selectedAbilities: selectedStrens,
-                        ),
-                      ),
+                          builder: (context) => StepCareerPage(
+                            userInfo: widget.userInfo,
+                            userPromptFactor: widget.userPromptFactor,
+                          )),
                     );
                   },
                   child: const Row(

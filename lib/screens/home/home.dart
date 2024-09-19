@@ -6,8 +6,8 @@ import 'package:halmoney/pages/search_engine.dart';
 import 'package:halmoney/screens/map/mapPage.dart';
 import 'package:halmoney/screens/resume/step1_hello.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../resume/select_skill_page.dart';
 import 'package:halmoney/PublicJobs_pages/PublicJobsDescribe.main.dart';
+import 'package:halmoney/get_user_info/user_Info.dart';
 
 class MyHomePage extends StatelessWidget{
   final String id;
@@ -104,9 +104,10 @@ class MyHomePage extends StatelessWidget{
                       // 위젯 내부
                       GestureDetector(
                         onTap: (){
+                          UserInfo userInfo = new UserInfo(id);
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => StepHelloPage(id: id)),
+                            MaterialPageRoute(builder: (context) => StepHelloPage(userInfo: userInfo)),
                           );
                         },
                         child: Container(

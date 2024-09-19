@@ -126,7 +126,6 @@ class _StepUserCareerState extends State<StepUserCareer> {
                 // 이전 페이지로 이동
                 GestureDetector(
                   onTap: () {
-                    widget.userInfo.editCareers(careers); // 경력 정보 저장
                     Navigator.pop(context);
                   },
                   child: const Row(
