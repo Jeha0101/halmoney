@@ -39,12 +39,12 @@ class _StepStrenPageState extends State<StepStrenPage> {
     try{
       // selectedFields 리스트에서 직무 카테고리 가져오기
       // 첫 번째 선택된 필드를 직무 카테고리로 사용한다고 가정
-      if (widget.userInput.selectedFields.isEmpty) {
+      if (widget.userPromptFactor.selectedFields.isEmpty) {
         print('직무 카테고리가 선택되지 않았습니다.');
         return;
       }
 
-      String jobCategory = widget.userInput.selectedFields[0]; // 첫 번째 선택된 항목이 직무 카테고리라고 가정
+      String jobCategory = widget.userPromptFactor.selectedFields[0]; // 첫 번째 선택된 항목이 직무 카테고리라고 가정
 
       //Firebase에서 직무에 맞는 자소서 데이터 가져오기
       final jobDoc = await FirebaseFirestore.instance
@@ -112,7 +112,7 @@ class _StepStrenPageState extends State<StepStrenPage> {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, dynamic>{
-          'jobCategory': widget.userInput.selectedFields[0],  // 직무 카테고리 전달
+          'jobCategory': widget.userPromptFactor.selectedFields[0],  // 직무 카테고리 전달
         }),
       );
 
