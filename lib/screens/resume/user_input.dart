@@ -1,13 +1,13 @@
-import 'package:halmoney/screens/resume/career.dart';
+import 'package:halmoney/get_user_info/career.dart';
 
-class UserInput {
+class UserInfo {
   String userId = '';
   List<String> selectedFields = [];
   List<String> selectedStrens = [];
   List<Career> careers = [];
   int quantity = 0;
 
-  UserInput(String id) {
+  UserInfo(String id) {
     userId = id;
     selectedFields = [];
     selectedStrens = [];
@@ -23,7 +23,6 @@ class UserInput {
   void editSelectedFields(List<String> selectedFields) {
     this.selectedFields = selectedFields;
   }
-
   List<String> getSelctedFields() {
     return selectedFields;
   }
@@ -32,7 +31,6 @@ class UserInput {
   void editSelectedStrens(List<String> selectedStrens) {
     this.selectedStrens = selectedStrens;
   }
-
   List<String> getSelctedStrens() {
     return selectedStrens;
   }
@@ -41,7 +39,6 @@ class UserInput {
   void editCareers(List<Career> careers) {
     this.careers = careers;
   }
-
   List<Career> getCareers() {
     return careers;
   }
@@ -50,7 +47,6 @@ class UserInput {
   void editQuantity(int quantity) {
     this.quantity = quantity;
   }
-
   int getQuantity() {
     return quantity;
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:halmoney/pages/signup_pg_two.dart';
+import 'package:halmoney/signup_pages/signup_pg_two.dart';
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 
@@ -202,6 +202,7 @@ class _SignupPageOneState extends State<SignupPageOne> {
             SizedBox(
               height: 45,
               child: TextField(
+                keyboardType: TextInputType.number,
                 controller: _phoneController,
                 style: const TextStyle(fontSize: 15.0, height: 2.0),
                 decoration: const InputDecoration(

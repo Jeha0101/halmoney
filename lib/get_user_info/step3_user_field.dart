@@ -1,20 +1,22 @@
+// 작성자 : 황제하
+
 import 'package:flutter/material.dart';
-import 'package:halmoney/screens/resume/step3_stren.dart';
 import 'package:halmoney/get_user_info/user_Info.dart';
+import 'package:halmoney/myAppPage.dart';
 
-class StepFieldPage extends StatefulWidget {
-  final UserInfo userInput;
+class StepUserField extends StatefulWidget {
+  final UserInfo userInfo;
 
-  StepFieldPage({
+  StepUserField({
     super.key,
-    required this.userInput,
+    required this.userInfo,
   });
 
   @override
-  State<StepFieldPage> createState() => _StepFieldPageState();
+  State<StepUserField> createState() => _StepUserFieldState();
 }
 
-class _StepFieldPageState extends State<StepFieldPage> {
+class _StepUserFieldState extends State<StepUserField> {
   List<String> selectedFields = [];
 
   void updateSelectedFields(List<String> fields) {
@@ -83,12 +85,14 @@ class _StepFieldPageState extends State<StepFieldPage> {
                 // 다음 페이지로 이동
                 GestureDetector(
                   onTap: () {
-                    widget.userInput.editSelectedFields(selectedFields);
+                    widget.userInfo.editSelectedFields(selectedFields);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              StepStrenPage(userInput: widget.userInput)),
+                        //임시 코드
+                        // 우선 홈페이지로 이동
+                        // 나중에 근무 가능 시간 조사 페이지로
+                          builder: (context) =>MyAppPage(id: widget.userInfo.userId)),
                     );
                   },
                   child: const Row(
@@ -121,13 +125,28 @@ class _StepFieldPageState extends State<StepFieldPage> {
                     const Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text('어떤 직무에\n지원하고자 하시나요?',
+                        Text('어떤 일을 하고 싶은가요?',
                             style: TextStyle(
                               fontFamily: 'NanumGothicFamily',
                               fontWeight: FontWeight.w500,
                               fontSize: 28.0,
                               color: Colors.black,
                             )),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Flexible(
+                          child: Text('하고싶은 일을 검색하거나 직접 입력하세요',
+                              style: TextStyle(
+                                fontFamily: 'NanumGothicFamily',
+                                fontWeight: FontWeight.w500,
+                                fontSize: 20.0,
+                                color: Colors.black,
+                              )),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 15),
@@ -164,27 +183,18 @@ class FieldChooseWidget extends StatefulWidget {
 
 class _FieldChooseWidgetState extends State<FieldChooseWidget> {
   List<String> fields = [
-    '개발·데이터',
-    '건축·시설',
-    '고객상담·TM',
-    '고객서비스·리테일',
-    '공공·복지',
-    '교육',
-    '금융·보험',
-    '기획·전략',
+    '외식/음료',
+    '매장관리/판매',
+    '서비스',
+    '사무직',
+    '고객응대',
+    '생산/건설/노무',
+    'IT/기술',
     '디자인',
-    '마케팅·광고·MD',
-    '물류·무역',
-    '미디어·문화·스포츠',
-    '법무·사무·총무',
-    '식음료',
-    '엔지니어링·설계',
-    '영업',
-    '운전·운송·배송',
-    '의료·바이오',
-    '인사·HR',
-    '제조·생산',
-    '회계·세무'
+    '미디어',
+    '운전/배달',
+    '병원/간호/연구',
+    '교육/강사'
   ];
 
   TextEditingController _searchTextEditingController = TextEditingController();
@@ -272,7 +282,7 @@ class _FieldChooseWidgetState extends State<FieldChooseWidget> {
             child: TextField(
               controller: _searchTextEditingController,
               decoration: const InputDecoration.collapsed(
-                hintText: '직무를 검색하거나 추가하세요',
+                hintText: '예시) 교육',
                 hintStyle: TextStyle(color: Colors.grey),
               ),
             ),
@@ -280,13 +290,12 @@ class _FieldChooseWidgetState extends State<FieldChooseWidget> {
           if (_searchText.isNotEmpty)
             GestureDetector(
               onTap: () {
-                if (_filterFields().isEmpty &&
-                    !widget.selectedFields.contains(_searchText)) {
+                if (!widget.selectedFields.contains(_searchText)) {
                   _addNewTag(_searchText);
                   _searchTextEditingController.clear();
                 }
               },
-              child: Icon(Icons.add, color: Colors.grey.shade600),
+              child: Icon(Icons.add, color: Colors.blue.shade600),
             )
           else
             Icon(Icons.search, color: Colors.grey.shade600),

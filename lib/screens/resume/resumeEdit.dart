@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:convert';
 import 'package:halmoney/screens/resume/resumeManage.dart';
-import 'package:halmoney/screens/resume/career.dart';
+import 'package:halmoney/get_user_info/career.dart';
 
 //이력서 데이터
 class ResumeItem {
@@ -454,17 +454,17 @@ class _ResumeEditState extends State<ResumeEdit> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '${experience.place}',
+                            '${experience.workPlace}',
                             style: TextStyle(fontSize: 18),
                           ),
                           SizedBox(height: 5),
                           Text(
-                            '근무 기간   ${experience.startYear}년 ${experience.startMonth}월 ~ ${experience.endYear}년 ${experience.endMonth}월',
+                            '근무 기간   ${experience.workDuration}년 ${experience.workUnit}개월',
                             style: TextStyle(fontSize: 14),
                           ),
                           SizedBox(height: 5),
                           Text(
-                            '근무 내용   ${experience.description}',
+                            '근무 내용   ${experience.workDescription}',
                             style: TextStyle(fontSize: 14),
                           ),
                         ],
