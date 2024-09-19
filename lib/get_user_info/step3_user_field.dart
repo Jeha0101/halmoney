@@ -83,8 +83,6 @@ class _StepUserFieldState extends State<StepUserField> {
                 GestureDetector(
                   onTap: () {
                     widget.userInfo.editSelectedFields(selectedFields);
-                    print(widget.userInfo.selectedFields);
-                    print(widget.userInfo.careers[0].getStringCareer());
                     // Navigator.push(
                     //   context,
                     //   MaterialPageRoute(
@@ -287,8 +285,7 @@ class _FieldChooseWidgetState extends State<FieldChooseWidget> {
           if (_searchText.isNotEmpty)
             GestureDetector(
               onTap: () {
-                if (_filterFields().isEmpty &&
-                    !widget.selectedFields.contains(_searchText)) {
+                if (!widget.selectedFields.contains(_searchText)) {
                   _addNewTag(_searchText);
                   _searchTextEditingController.clear();
                 }
