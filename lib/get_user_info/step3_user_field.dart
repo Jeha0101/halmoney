@@ -1,5 +1,8 @@
+// 작성자 : 황제하
+
 import 'package:flutter/material.dart';
 import 'package:halmoney/get_user_info/user_Info.dart';
+import 'package:halmoney/myAppPage.dart';
 
 class StepUserField extends StatefulWidget {
   final UserInfo userInfo;
@@ -83,12 +86,14 @@ class _StepUserFieldState extends State<StepUserField> {
                 GestureDetector(
                   onTap: () {
                     widget.userInfo.editSelectedFields(selectedFields);
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //       builder: (context) =>
-                    //           StepStrenPage(userInput: widget.userInput)),
-                    // );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        //임시 코드
+                        // 우선 홈페이지로 이동
+                        // 나중에 근무 가능 시간 조사 페이지로
+                          builder: (context) =>MyAppPage(id: widget.userInfo.userId)),
+                    );
                   },
                   child: const Row(
                     children: [

@@ -1,3 +1,5 @@
+// 작성자 : 황제하
+
 class Career {
   String workDuration = '';
   String workUnit = '';
