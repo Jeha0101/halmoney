@@ -59,7 +59,7 @@ dependencies:
   flutter_dotenv: ^5.1.0
   textfield_tags: ^3.0.1
   flutter_tags: ^1.0.0-nullsafety.1
-  win32: ^5.5.2
+  win32: ^5.5.0
   huggingface_dart: ^0.0.2
 
 dev_dependencies:
