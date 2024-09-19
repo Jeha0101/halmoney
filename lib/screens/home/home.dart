@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:halmoney/AI_pages/AI_recomm_page.dart';
 import 'package:halmoney/AI_pages/AI_select_cond_page.dart';
+import 'package:halmoney/pages/search_engine.dart';
 import 'package:halmoney/screens/map/mapPage.dart';
 import 'package:halmoney/screens/resume/step1_hello.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -161,7 +162,7 @@ class MyHomePage extends StatelessWidget{
                       const SizedBox(height: 25,),
                       // 위젯 설명 텍스트
                       const Text(
-                        '  AI 추천 공고를 확인해보세요!',
+                        '  딱맞는 일자리를 확인하세요!',
                         style: TextStyle(
                           fontSize: 17,
                           fontWeight: FontWeight.w600,
@@ -202,7 +203,7 @@ class MyHomePage extends StatelessWidget{
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(
-                                'AI 추천 시스템',
+                                '딱맞는 일자리',
                                 style: TextStyle(
                                   fontSize: 20,
                                 ),
@@ -240,55 +241,103 @@ class MyHomePage extends StatelessWidget{
                       ),
                       const SizedBox(height: 20,),
                       // 위젯 내부
-                      GestureDetector(
-                        onTap: (){
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => AISelectCondPage(id: id)),
-                          );
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(20.0),
-                          height: 100,
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(20),
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color : Colors.grey,
-                                spreadRadius:1.0,
-                                blurRadius: 10.0,
-                                offset: Offset(2,2),
-                                blurStyle: BlurStyle.inner,
-                                // spreadRadius: 0.5,
-                                // blurRadius: 10,
-                                // offset: const Offset(2, 2),
-                              ),
-                            ],
-                          ),
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                '맞춤 검색 공고 보기',
-                                style: TextStyle(
-                                  fontSize: 20,
+                      Row(
+                        children: [
+                          Expanded(
+                              child: GestureDetector(
+                                onTap: (){
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => SearchEngine()),
+                                  );
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.all(20.0),
+                                  height: 100,
+                                  decoration: const BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(20),
+                                    ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color : Colors.grey,
+                                        spreadRadius:1.0,
+                                        blurRadius: 10.0,
+                                        offset: Offset(2,2),
+                                        blurStyle: BlurStyle.inner,
+                                        // spreadRadius: 0.5,
+                                        // blurRadius: 10,
+                                        // offset: const Offset(2, 2),
+                                      ),
+                                    ],
+                                  ),
+                                  child: const Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        '문장으로 검색',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                      Spacer(),
+                                    ],
+                                  ),
                                 ),
                               ),
-                              Spacer(),
-                              Image(
-                                image: AssetImage('assets/images/ai.png'),
-                                width: 70,
-                                height: 70,
-                                fit: BoxFit.contain,
-                              ),
-                            ],
                           ),
-                        ),
+                          SizedBox(width:5),
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: (){
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => AISelectCondPage(id: id)),
+                                );
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(20.0),
+                                height: 100,
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(20),
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color : Colors.grey,
+                                      spreadRadius:1.0,
+                                      blurRadius: 10.0,
+                                      offset: Offset(2,2),
+                                      blurStyle: BlurStyle.inner,
+                                      // spreadRadius: 0.5,
+                                      // blurRadius: 10,
+                                      // offset: const Offset(2, 2),
+                                    ),
+                                  ],
+                                ),
+                                child: const Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      '버튼으로 검색',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                    Spacer(),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
+
+
                       const SizedBox(height: 20,),
                     ],
                   )

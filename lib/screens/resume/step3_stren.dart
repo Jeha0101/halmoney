@@ -62,7 +62,7 @@ class _StepStrenPageState extends State<StepStrenPage> {
       // 각 커버레터 텍스트에 대해 Flask 서버에 NER 요청
       for (String coverLetterText in coverLetterTexts) {
         final response = await http.post(
-          Uri.parse('http://172.20.3.47:5000/ability_extraction'),
+          Uri.parse('http://192.168.25.180:5000/ability_extraction'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           },
@@ -104,7 +104,7 @@ class _StepStrenPageState extends State<StepStrenPage> {
   Future<void> _finalizeAbilities() async {
     try{
       final response = await http.post(
-        Uri.parse('http://172.20.3.47:5000/finalize_abilities'),  // flask 서버의 finalizeAbilities 엔드포인트 호출
+        Uri.parse('http://192.168.25.180:5000/finalize_abilities'),  // flask 서버의 finalizeAbilities 엔드포인트 호출
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
