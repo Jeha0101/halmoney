@@ -29,7 +29,7 @@ class _StepInputEditPageState extends State<StepInputEditPage> {
   void initState() {
     super.initState();
     // userInput으로부터 현재 사용자 입력값 받아오기
-    selectedFields = List.from(widget.userInput.preferredFields);
+    selectedFields = List.from(widget.userInput.selectedFields);
     selectedStrens = List.from(widget.userInput.selectedStrens);
     careers = List.from(widget.userInput.careers);
     //quantity = widget.userInput.quantity;

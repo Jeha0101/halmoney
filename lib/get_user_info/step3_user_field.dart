@@ -82,7 +82,9 @@ class _StepUserFieldState extends State<StepUserField> {
                 // 다음 페이지로 이동
                 GestureDetector(
                   onTap: () {
-                    // widget.userInput.editSelectedFields(selectedFields);
+                    widget.userInfo.editSelectedFields(selectedFields);
+                    print(widget.userInfo.selectedFields);
+                    print(widget.userInfo.careers[0].getStringCareer());
                     // Navigator.push(
                     //   context,
                     //   MaterialPageRoute(
@@ -127,6 +129,21 @@ class _StepUserFieldState extends State<StepUserField> {
                               fontSize: 28.0,
                               color: Colors.black,
                             )),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Flexible(
+                          child: Text('하고싶은 일을 검색하거나 직접 입력하세요',
+                              style: TextStyle(
+                                fontFamily: 'NanumGothicFamily',
+                                fontWeight: FontWeight.w500,
+                                fontSize: 20.0,
+                                color: Colors.black,
+                              )),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 15),
@@ -262,7 +279,7 @@ class _FieldChooseWidgetState extends State<FieldChooseWidget> {
             child: TextField(
               controller: _searchTextEditingController,
               decoration: const InputDecoration.collapsed(
-                hintText: '직무를 검색하거나 추가하세요',
+                hintText: '예시) 교육',
                 hintStyle: TextStyle(color: Colors.grey),
               ),
             ),
@@ -276,7 +293,7 @@ class _FieldChooseWidgetState extends State<FieldChooseWidget> {
                   _searchTextEditingController.clear();
                 }
               },
-              child: Icon(Icons.add, color: Colors.grey.shade600),
+              child: Icon(Icons.add, color: Colors.blue.shade600),
             )
           else
             Icon(Icons.search, color: Colors.grey.shade600),

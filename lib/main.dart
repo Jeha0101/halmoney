@@ -44,32 +44,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner:  false,
 
 
-      home: LoginPage(),
+      //home: LoginPage(),
       // 아래는 테스트용으로 원하는 페이지 연결용
       // git에 올릴때 반드시 수정
-      // home: StepWelcome(id: "silver"),
+      home: StepWelcome(id: "silver1234"),
 
-      // home: const SignupPgOne(),
-      // initialRoute: "/login",
-      // routes: {
-      //   "/login" : (context) => LoginPage(),
-      //   "/signup" : (context) => SignupPage()
-      // },
-      /*home: Scaffold(
-        appBar: AppBar(
-          title: Text('할MONEY'),
-
-        ),
-        body: Center(
-          child: Text(
-            '할MONEY',
-            style: TextStyle(
-              fontSize: 50,
-              color: Colors.indigo,
-            ),
-          )
-        ),
-      ),*/
     );
   }
 }

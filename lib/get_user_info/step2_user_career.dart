@@ -17,7 +17,7 @@ class StepUserCareer extends StatefulWidget {
 
 class _StepUserCareerState extends State<StepUserCareer> {
   List<Career> careers = [];
-  List<TextEditingController> userInputControllers = [];
+  List<Map<String, TextEditingController>> userInputControllers = [];
   bool isEditing = false; // 편집 모드 여부
   int? editingIndex; // 편집 중인 경력의 인덱스
   Career? originalCareer; // 취소 시 복원할 원래 경력 정보
@@ -26,7 +26,10 @@ class _StepUserCareerState extends State<StepUserCareer> {
   void addCareer() {
     setState(() {
       careers.insert(0, Career());
-      userInputControllers.insert(0, TextEditingController());
+      userInputControllers.insert(0, {
+        'place': TextEditingController(),
+        'duration' : TextEditingController(),
+      });
       isEditing = true;
       editingIndex = 0;
     });
@@ -60,7 +63,8 @@ class _StepUserCareerState extends State<StepUserCareer> {
       } else if (originalCareer != null && editingIndex != null) {
         // 기존 경력 수정 중에 취소한 경우, 원본 경력으로 복원
         careers[editingIndex!] = originalCareer!;
-        userInputControllers[editingIndex!].text = originalCareer!.workDuration;
+        userInputControllers[editingIndex!]['place']?.text = originalCareer!.workPlace;
+        userInputControllers[editingIndex!]['duration']?.text = originalCareer!.workDuration;
       }
       isEditing = false;
       editingIndex = null;
@@ -246,7 +250,8 @@ class _StepUserCareerState extends State<StepUserCareer> {
                           }
                         });
                       },
-                      userInputController: userInputControllers[index],
+                      workPlaceController: userInputControllers[index]['place']!,
+                      workDurationController: userInputControllers[index]['duration']!,
                     ),
                   );
                 },
@@ -267,7 +272,8 @@ class CareerDisplay extends StatelessWidget {
   final VoidCallback onEdit;
   final VoidCallback onRemove;
   final void Function(String field, String value) onFieldChange;
-  final TextEditingController userInputController;
+  final TextEditingController workPlaceController;
+  final TextEditingController workDurationController;
 
   const CareerDisplay({
     super.key,
@@ -278,7 +284,8 @@ class CareerDisplay extends StatelessWidget {
     required this.onEdit,
     required this.onRemove,
     required this.onFieldChange,
-    required this.userInputController,
+    required this.workPlaceController,
+    required this.workDurationController,
   });
 
   @override
@@ -301,27 +308,36 @@ class CareerDisplay extends StatelessWidget {
             GridView.count(
               shrinkWrap: true,
               primary: false,
-              //padding: const EdgeInsets.all(10),
               crossAxisCount: 2,
               childAspectRatio: 3 / 1,
               children: <Widget>[
                 Container(
                   padding: const EdgeInsets.all(10),
-                  child: Text("근무한 곳", style: const TextStyle(fontSize: 20)),
+                  child: const Text("근무한 곳", style: TextStyle(fontSize: 20)),
                 ),
                 Container(
                   padding: const EdgeInsets.all(10),
-                  child: Text(
+                  child: const Text(
                     "근무한 기간",
-                    style: const TextStyle(fontSize: 20),
+                    style: TextStyle(fontSize: 20),
                   ),
                 ),
                 Container(
                   padding: const EdgeInsets.all(10),
                   child: TextField(
-                    onChanged: (value) => onFieldChange('place', value),
-                    controller: TextEditingController(text: career.workPlace),
-                    decoration: InputDecoration(
+                    onChanged: (value){
+                      final newText = value;
+                      final cursorPosition = workPlaceController.selection.baseOffset;
+
+                      workPlaceController.value = workPlaceController.value.copyWith(
+                        text: newText,
+                        selection: TextSelection.collapsed(offset: cursorPosition),
+                      );
+
+                      onFieldChange('place', newText);
+                    },
+                    controller: workPlaceController,
+                    decoration: const InputDecoration(
                       hintText: '(예시) 좋은기업',
                     ),
                   ),
@@ -336,7 +352,7 @@ class CareerDisplay extends StatelessWidget {
                           keyboardType: TextInputType.number,
                           onChanged: (value) =>
                               onFieldChange('duration', value),
-                          controller: userInputController,
+                          controller: workDurationController,
                         ),
                       ),
                       const SizedBox(width: 10),
@@ -407,7 +423,6 @@ class CareerDisplay extends StatelessWidget {
             GridView.count(
               shrinkWrap: true,
               primary: false,
-              //padding: const EdgeInsets.all(10),
               crossAxisCount: 2,
               childAspectRatio: 3 / 1,
               children: <Widget>[
@@ -422,6 +437,8 @@ class CareerDisplay extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(10),
                   child: Text(
+                    softWrap: true,
+                    overflow: TextOverflow.ellipsis,
                     career.workPlace,
                     style: const TextStyle(fontSize: 20),
                   ),

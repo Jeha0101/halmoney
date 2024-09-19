@@ -9,7 +9,7 @@ class UserInfo {
   late String userDob;
   late String userAddress;
   List<Career> careers=[];
-  List<String> preferredFields=[];
+  List<String> selectedFields=[];
   List<String> preferredWorkTime=[];
   List<String> preferredWorkPlace=[];
   List<String> selectedStrens=[];
@@ -59,17 +59,17 @@ class UserInfo {
 
   // 지원 분야 메소드
   void editSelectedFields(List<String> selectedFields) {
-    this.preferredFields = selectedFields;
+    this.selectedFields = selectedFields;
   }
-  List<String> getSelctedFields() {
-    return preferredFields;
+  List<String> getSelectedFields() {
+    return selectedFields;
   }
 
   // 역량 메소드
   void editSelectedStrens(List<String> selectedStrens) {
     this.selectedStrens = selectedStrens;
   }
-  List<String> getSelctedStrens() {
+  List<String> getSelectedStrens() {
     return selectedStrens;
   }
 
