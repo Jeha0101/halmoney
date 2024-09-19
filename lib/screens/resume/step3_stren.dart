@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:halmoney/screens/resume/step4_career.dart';
 import 'package:halmoney/get_user_info/user_Info.dart';
+import 'package:halmoney/screens/resume/user_prompt_factor.dart';
 
 class StepStrenPage extends StatefulWidget {
-  final UserInfo userInput;
+  final UserInfo userInfo;
+  final UserPromptFactor userPromptFactor;
 
   StepStrenPage({
     super.key,
-    required this.userInput,
+    required this.userInfo,
+    required this.userPromptFactor,
   });
 
   @override
@@ -83,12 +86,14 @@ class _StepStrenPageState extends State<StepStrenPage> {
                 //다음 페이지로 이동
                 GestureDetector(
                   onTap: () {
-                    widget.userInput.editSelectedStrens(selectedStrens);
+                    widget.userPromptFactor.editSelectedStrens(selectedStrens);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              StepCareerPage(userInput: widget.userInput)),
+                          builder: (context) => StepCareerPage(
+                            userInfo: widget.userInfo,
+                            userPromptFactor: widget.userPromptFactor,
+                          )),
                     );
                   },
                   child: const Row(

@@ -91,15 +91,15 @@ class _ResumeManageState extends State<ResumeManage> {
             children: [
               Divider(),
               GestureDetector(
-                onTap: () async{
-                  final result = await Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => StepHelloPage(id: widget.id)),
-                  );
-                  if (result ==true){
-                    _fetchResumes();
-                  }
-                },
+                // onTap: () async{
+                //   final result = await Navigator.push(
+                //     context,
+                //     MaterialPageRoute(builder: (context) => StepHelloPage(id: widget.id)),
+                //   );
+                //   if (result ==true){
+                //     _fetchResumes();
+                //   }
+                // },
                 child: Container(
                   margin: const EdgeInsets.all(15.0),
                   padding: const EdgeInsets.all(18.0),

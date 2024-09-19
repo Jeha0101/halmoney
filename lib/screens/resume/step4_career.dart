@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:halmoney/screens/resume/step5_quantity.dart';
 import 'package:halmoney/get_user_info/career.dart';
 import 'package:halmoney/get_user_info/user_Info.dart';
+import 'package:halmoney/screens/resume/user_prompt_factor.dart';
 
 class StepCareerPage extends StatefulWidget {
-  final UserInfo userInput;
+  final UserInfo userInfo;
+  final UserPromptFactor userPromptFactor;
 
   StepCareerPage({
     super.key,
-    required this.userInput,
+    required this.userInfo,
+    required this.userPromptFactor,
   });
 
   @override
@@ -16,59 +19,82 @@ class StepCareerPage extends StatefulWidget {
 }
 
 class _StepCareerPageState extends State<StepCareerPage> {
-  List<Career> careers = [];
+  late List<Career> careers;
+  List<Map<String, TextEditingController>> userInputControllers = [];
+  bool isEditing = false; // 편집 모드 여부
+  int? editingIndex; // 편집 중인 경력의 인덱스
+  Career? originalCareer; // 취소 시 복원할 원래 경력 정보
+
+  @override
+  void initState() {
+    super.initState();
+    careers = widget.userPromptFactor.getCareers();
+  }
 
   //경력 추가하기
   void addCareer() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return CareerDialog(
-          onSave: (newCareer) {
-            setState(() {
-              careers.add(newCareer);
-            });
-          },
-        );
-      },
-    );
+    setState(() {
+      careers.insert(0, Career());
+      userInputControllers.insert(0, {
+        'place': TextEditingController(),
+        'duration' : TextEditingController(),
+      });
+      isEditing = true;
+      editingIndex = 0;
+    });
   }
 
   //경력 수정하기
   void editCareer(int index) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return CareerDialog(
-          career: careers[index],
-          onSave: (updatedCareer) {
-            setState(() {
-              careers[index] = updatedCareer;
-            });
-          },
-        );
-      },
-    );
+    setState(() {
+      isEditing = true;
+      editingIndex = index;
+      originalCareer = careers[index].clone();
+    });
+  }
+
+  //경력 수정 완료하기
+  void completeEdit() {
+    setState(() {
+      isEditing = false;
+      editingIndex = null;
+      originalCareer = null;
+    });
+  }
+
+  // 경력 수정 취소하기
+  void cancelEdit() {
+    setState(() {
+      if (editingIndex == 0 && originalCareer == null) {
+        // 새로운 경력 작성 중에 취소한 경우, 해당 경력 삭제
+        careers.removeAt(0);
+        userInputControllers.removeAt(0);
+      } else if (originalCareer != null && editingIndex != null) {
+        // 기존 경력 수정 중에 취소한 경우, 원본 경력으로 복원
+        careers[editingIndex!] = originalCareer!;
+        userInputControllers[editingIndex!]['place']?.text = originalCareer!.workPlace;
+        userInputControllers[editingIndex!]['duration']?.text = originalCareer!.workDuration;
+      }
+      isEditing = false;
+      editingIndex = null;
+      originalCareer = null;
+    });
   }
 
   //경력 제거하기
   void removeCareer(int index) {
     setState(() {
       careers.removeAt(index);
+      userInputControllers.removeAt(index);
     });
   }
 
   //경력 입력시 공란 여부 확인
-  bool areAllFieldsFilled() {
-    for (var career in careers) {
-      if (career.workDuration.isEmpty ||
-          career.workUnit.isEmpty ||
-          career.workPlace.isEmpty ||
-          career.workDescription.isEmpty) {
-        return false;
-      }
-    }
-    return true;
+  bool areAllFieldsFilled(int index) {
+    final career = careers[index];
+    return career.workDuration.isNotEmpty &&
+        career.workUnit.isNotEmpty &&
+        career.workPlace.isNotEmpty;
   }
 
   @override
@@ -130,12 +156,14 @@ class _StepCareerPageState extends State<StepCareerPage> {
                 //다음 페이지로 이동
                 GestureDetector(
                   onTap: () {
-                    widget.userInput.editCareers(careers);
+                    widget.userPromptFactor.editCareers(careers);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              StepQuantityPage(userInput: widget.userInput)),
+                          builder: (context) => StepQuantityPage(
+                            userInfo: widget.userInfo,
+                            userPromptFactor: widget.userPromptFactor,
+                          )),
                     );
                   },
                   child: const Row(
@@ -173,48 +201,69 @@ class _StepCareerPageState extends State<StepCareerPage> {
             const SizedBox(
               height: 25,
             ),
+
+            GestureDetector(
+              onTap: isEditing ? null : addCareer,
+              child: Container(
+                height: 80,
+                width: double.infinity,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.add, color: Colors.blue),
+                    SizedBox(width: 10),
+                    Text('경력 추가',
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontSize: 20,
+                          fontFamily: 'NanumGothicFamily',
+                          fontWeight: FontWeight.w500,
+                        )),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+
+            // 경력 표시 영역
             Expanded(
               child: ListView.builder(
-                itemCount: careers.length + 1,
+                itemCount: careers.length,
                 itemBuilder: (context, index) {
-                  if (index == careers.length) {
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 10.0),
-                      child: Center(
-                        child: GestureDetector(
-                          onTap: addCareer,
-                          child: Container(
-                            height: 80,
-                            width: double.infinity,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(color: Colors.grey),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.add, color: Colors.blue),
-                                SizedBox(width: 10),
-                                Text('경력 추가',
-                                    style: TextStyle(color: Colors.blue)),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  } else {
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 10.0),
-                      child: CareerDisplay(
-                        career: careers[index],
-                        onEdit: () => editCareer(index),
-                        onRemove: () => removeCareer(index),
-                      ),
-                    );
-                  }
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 10.0),
+                    child: CareerDisplay(
+                      career: careers[index],
+                      isEditing: isEditing && editingIndex == index,
+                      onSave: areAllFieldsFilled(index)
+                          ? () {
+                        completeEdit();
+                      }
+                          : null,
+                      onCancel: cancelEdit,
+                      onEdit: () => editCareer(index),
+                      onRemove: () => removeCareer(index),
+                      onFieldChange: (String field, String value) {
+                        setState(() {
+                          if (field == 'duration') {
+                            careers[index].workDuration = value;
+                          } else if (field == 'unit') {
+                            careers[index].workUnit = value;
+                          } else if (field == 'place') {
+                            careers[index].workPlace = value;
+                          }
+                        });
+                      },
+                      workPlaceController: userInputControllers[index]['place']!,
+                      workDurationController: userInputControllers[index]['duration']!,
+                    ),
+                  );
                 },
               ),
             ),
@@ -227,266 +276,229 @@ class _StepCareerPageState extends State<StepCareerPage> {
 
 class CareerDisplay extends StatelessWidget {
   final Career career;
+  final bool isEditing;
+  final VoidCallback? onSave;
+  final VoidCallback? onCancel;
   final VoidCallback onEdit;
   final VoidCallback onRemove;
+  final void Function(String field, String value) onFieldChange;
+  final TextEditingController workPlaceController;
+  final TextEditingController workDurationController;
 
   const CareerDisplay({
     super.key,
     required this.career,
+    required this.isEditing,
+    required this.onSave,
+    required this.onCancel,
     required this.onEdit,
     required this.onRemove,
+    required this.onFieldChange,
+    required this.workPlaceController,
+    required this.workDurationController,
   });
 
   @override
   Widget build(BuildContext context) {
+    if (career.workUnit.isEmpty) {
+      career.workUnit = '년';
+    }
     return Container(
-      margin: const EdgeInsets.only(top: 15.0),
-      padding:
-          const EdgeInsets.only(top: 5.0, bottom: 20.0, left: 20, right: 10),
+      margin: const EdgeInsets.only(top: 5.0),
+      padding: const EdgeInsets.all(15.0),
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(color: Colors.grey),
-        borderRadius: const BorderRadius.all(
-          Radius.circular(20),
-        ),
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                career.workPlace,
-                style: const TextStyle(fontSize: 18),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  TextButton(
-                    onPressed: onEdit,
-                    child:
-                        const Text('편집', style: TextStyle(color: Colors.blue)),
+          if (isEditing) ...[
+            GridView.count(
+              shrinkWrap: true,
+              primary: false,
+              crossAxisCount: 2,
+              childAspectRatio: 3 / 1,
+              children: <Widget>[
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  child: const Text("근무한 곳", style: TextStyle(fontSize: 20)),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  child: const Text(
+                    "근무한 기간",
+                    style: TextStyle(fontSize: 20),
                   ),
-                  TextButton(
-                    onPressed: onRemove,
-                    child:
-                        const Text('삭제', style: TextStyle(color: Colors.red)),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          Row(
-            children: [
-              const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '근무 기간     ',
-                    style: TextStyle(fontSize: 14),
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    '근무 내용      ',
-                    style: TextStyle(fontSize: 14),
-                  ),
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '${career.workDuration}년 ${career.workUnit}개월',
-                    style: const TextStyle(fontSize: 14),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    career.workDescription,
-                    style: const TextStyle(fontSize: 14),
-                  ),
-                ],
-              ),
-            ],
-          )
-        ],
-      ),
-    );
-  }
-}
-
-class CareerDialog extends StatefulWidget {
-  final Career? career;
-  final void Function(Career) onSave;
-
-  const CareerDialog({
-    super.key,
-    this.career,
-    required this.onSave,
-  });
-
-  @override
-  _CareerDialogState createState() => _CareerDialogState();
-}
-
-class _CareerDialogState extends State<CareerDialog> {
-  TextEditingController workDurationController = TextEditingController();
-  TextEditingController workUnitController = TextEditingController();
-  TextEditingController workPlaceController = TextEditingController();
-  TextEditingController workDescriptionController = TextEditingController();
-
-  bool isSaveEnabled = false;
-
-  @override
-  void initState() {
-    super.initState();
-
-    if (widget.career != null) {
-      workDurationController.text = widget.career!.workDuration;
-      workUnitController.text = widget.career!.workUnit;
-      workPlaceController.text = widget.career!.workPlace;
-      workDescriptionController.text = widget.career!.workDescription;
-    }
-  }
-
-  @override
-  void dispose() {
-    workDurationController.dispose();
-    workUnitController.dispose();
-    workPlaceController.dispose();
-    workDescriptionController.dispose();
-    super.dispose();
-  }
-
-  // void _checkIfAllFieldsFilled() {
-  //   setState(() {
-  //     isSaveEnabled = workDurationController.text.isNotEmpty &&
-  //         workUnitController.text.isNotEmpty &&
-  //         workPlaceController.text.isNotEmpty &&
-  //         workDescriptionController.text.isNotEmpty;
-  //   });
-  // }
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: const Text('경력'),
-      content: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("근무기간"),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                SizedBox(
-                  width: 70,
+                ),
+                Container(
+                  padding: const EdgeInsets.all(10),
                   child: TextField(
-                    decoration: InputDecoration(labelText: '기간'),
-                    keyboardType: TextInputType.number,
-                    controller: workDurationController,
-                  ),
-                ),
-                // Container(
-                //   width: 70,
-                //   child: DropdownButtonFormField<String>(
-                //     decoration: const InputDecoration(labelText: ''),
-                //     value: workYearsController.text.isNotEmpty
-                //         ? workYearsController.text
-                //         : null,
-                //     items: years.map((String value) {
-                //       return DropdownMenuItem<String>(
-                //         value: value,
-                //         child: Text(value),
-                //       );
-                //     }).toList(),
-                //     onChanged: (newValue) {
-                //       setState(() {
-                //         workYearsController.text = newValue ?? '';
-                //       });
-                //     },
-                //   ),
-                // ),
+                    onChanged: (value){
+                      final newText = value;
+                      final cursorPosition = workPlaceController.selection.baseOffset;
 
-                SizedBox(
-                  width: 70,
-                  child: DropdownButtonFormField<String>(
-                    decoration: const InputDecoration(labelText: '단위'),
-                    value: workUnitController.text.isNotEmpty ? workUnitController.text : null,
-                    items: ['주', '개월', '년'].map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
+                      workPlaceController.value = workPlaceController.value.copyWith(
+                        text: newText,
+                        selection: TextSelection.collapsed(offset: cursorPosition),
                       );
-                    }).toList(),
-                    onChanged: (newValue) {
-                      setState(() {
-                        workUnitController.text = newValue ?? '';
-                      });
+
+                      onFieldChange('place', newText);
                     },
+                    controller: workPlaceController,
+                    decoration: const InputDecoration(
+                      hintText: '(예시) 좋은기업',
+                    ),
                   ),
                 ),
-
-                // Text("년"),
-                // Container(
-                //     width: 70,
-                //     child: DropdownButtonFormField<String>(
-                //       decoration: const InputDecoration(labelText: ''),
-                //       value: workMonthsController.text.isNotEmpty
-                //           ? workMonthsController.text
-                //           : null,
-                //       items: months.map((String value) {
-                //         return DropdownMenuItem<String>(
-                //           value: value,
-                //           child: Text(value),
-                //         );
-                //       }).toList(),
-                //       onChanged: (newValue) {
-                //         setState(() {
-                //           workMonthsController.text = newValue ?? '';
-                //         });
-                //       },
-                //     ),
-                // ),
-                // Text("개월"),
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: 50,
+                        child: TextField(
+                          keyboardType: TextInputType.number,
+                          onChanged: (value) =>
+                              onFieldChange('duration', value),
+                          controller: workDurationController,
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      DropdownButton<String>(
+                        value:
+                        career.workUnit.isNotEmpty ? career.workUnit : '년',
+                        items: ['주', '개월', '년'].map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (newValue) {
+                          if (newValue != null) {
+                            onFieldChange('unit', newValue);
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      TextButton(
+                        onPressed: onCancel, // 취소 버튼 동작
+                        style: ButtonStyle(
+                          backgroundColor:
+                          MaterialStateProperty.all(Colors.red),
+                        ),
+                        child: const Text('취소',
+                            style:
+                            TextStyle(color: Colors.white, fontSize: 20)),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        onPressed: onSave, // 완료 버튼 동작
+                        style: ButtonStyle(
+                          backgroundColor:
+                          MaterialStateProperty.resolveWith<Color?>(
+                                (Set<MaterialState> states) {
+                              if (onSave != null) {
+                                return Colors.blue; // 활성화 시 파란색
+                              }
+                              return Colors.grey; // 비활성화 시 회색
+                            },
+                          ),
+                        ),
+                        child: const Text('완료',
+                            style:
+                            TextStyle(color: Colors.white, fontSize: 20)),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            )
+          ] else ...[
+            GridView.count(
+              shrinkWrap: true,
+              primary: false,
+              crossAxisCount: 2,
+              childAspectRatio: 3 / 1,
+              children: <Widget>[
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  child: Text("근무한 곳", style: const TextStyle(fontSize: 20)),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  child: Text("근무한 기간", style: const TextStyle(fontSize: 20)),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  child: Text(
+                    softWrap: true,
+                    overflow: TextOverflow.ellipsis,
+                    career.workPlace,
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  child: Text('${career.workDuration} ${career.workUnit}',
+                      style: const TextStyle(fontSize: 20)),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      TextButton(
+                        onPressed: onRemove,
+                        style: ButtonStyle(
+                          backgroundColor:
+                          MaterialStateProperty.all(Colors.red),
+                        ),
+                        child: const Text('삭제',
+                            style:
+                            TextStyle(color: Colors.white, fontSize: 20)),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        onPressed: onEdit,
+                        style: ButtonStyle(
+                          backgroundColor:
+                          MaterialStateProperty.all(Colors.blue),
+                        ),
+                        child: const Text('편집',
+                            style:
+                            TextStyle(color: Colors.white, fontSize: 20)),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
-
-            TextField(
-              decoration: const InputDecoration(labelText: '근무지'),
-              controller: workPlaceController,
-            ),
-            TextField(
-              decoration: const InputDecoration(labelText: '근무 내용'),
-              controller: workDescriptionController,
-            ),
           ],
-        ),
+        ],
       ),
-      actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: const Text('취소'),
-        ),
-        TextButton(
-          onPressed: isSaveEnabled
-              ? () {
-                  final newExperience = Career()
-                    ..workDuration = workDurationController.text
-                    ..workUnit = workUnitController.text
-                    ..workPlace = workPlaceController.text
-                    ..workDescription = workDescriptionController.text;
-                  widget.onSave(newExperience);
-                  Navigator.of(context).pop();
-                }
-              : null,
-          child: const Text('완료'),
-        ),
-      ],
     );
   }
 }

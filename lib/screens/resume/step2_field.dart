@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:halmoney/screens/resume/step3_stren.dart';
 import 'package:halmoney/get_user_info/user_Info.dart';
+import 'package:halmoney/screens/resume/user_prompt_factor.dart';
 
 class StepFieldPage extends StatefulWidget {
-  final UserInfo userInput;
+  final UserInfo userInfo;
+  final UserPromptFactor userPromptFactor;
 
   StepFieldPage({
     super.key,
-    required this.userInput,
+    required this.userInfo,
+    required this.userPromptFactor,
   });
 
   @override
@@ -15,7 +18,13 @@ class StepFieldPage extends StatefulWidget {
 }
 
 class _StepFieldPageState extends State<StepFieldPage> {
-  List<String> selectedFields = [];
+  late List<String> selectedFields;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedFields = widget.userPromptFactor.getSelctedFields();
+  }
 
   void updateSelectedFields(List<String> fields) {
     setState(() {
@@ -83,13 +92,15 @@ class _StepFieldPageState extends State<StepFieldPage> {
                 // 다음 페이지로 이동
                 GestureDetector(
                   onTap: () {
-                    widget.userInput.editSelectedFields(selectedFields);
+                    widget.userPromptFactor.editSelectedFields(selectedFields);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              StepStrenPage(userInput: widget.userInput)),
-                    );
+                          builder: (context) => StepStrenPage(
+                                  userInfo: widget.userInfo,
+                                  userPromptFactor: widget.userPromptFactor,
+                              ),
+                      ));
                   },
                   child: const Row(
                     children: [
@@ -121,13 +132,30 @@ class _StepFieldPageState extends State<StepFieldPage> {
                     const Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text('어떤 직무에\n지원하고자 하시나요?',
-                            style: TextStyle(
-                              fontFamily: 'NanumGothicFamily',
-                              fontWeight: FontWeight.w500,
-                              fontSize: 28.0,
-                              color: Colors.black,
-                            )),
+                        Flexible(
+                          child: Text('어떤 일을 하고 싶은가요?',
+                              style: TextStyle(
+                                fontFamily: 'NanumGothicFamily',
+                                fontWeight: FontWeight.w500,
+                                fontSize: 28.0,
+                                color: Colors.black,
+                              )),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Flexible(
+                          child: Text('하고싶은 일을 검색하거나 직접 입력하세요',
+                              style: TextStyle(
+                                fontFamily: 'NanumGothicFamily',
+                                fontWeight: FontWeight.w500,
+                                fontSize: 20.0,
+                                color: Colors.black,
+                              )),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 15),
@@ -271,8 +299,7 @@ class _FieldChooseWidgetState extends State<FieldChooseWidget> {
           if (_searchText.isNotEmpty)
             GestureDetector(
               onTap: () {
-                if (_filterFields().isEmpty &&
-                    !widget.selectedFields.contains(_searchText)) {
+                if (!widget.selectedFields.contains(_searchText)) {
                   _addNewTag(_searchText);
                   _searchTextEditingController.clear();
                 }

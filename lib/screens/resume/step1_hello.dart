@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:halmoney/screens/resume/step2_field.dart';
 import 'package:halmoney/get_user_info/user_Info.dart';
+import 'package:halmoney/screens/resume/user_prompt_factor.dart';
 
 class StepHelloPage extends StatefulWidget {
-  final String id;
+  final UserInfo userInfo;
 
-  const StepHelloPage({super.key, required this.id});
+  const StepHelloPage({super.key, required this.userInfo});
 
   @override
   State<StepHelloPage> createState() => _StepHelloPageState();
@@ -53,12 +54,15 @@ class _StepHelloPageState extends State<StepHelloPage> {
                 //step2페이지로 이동
                 GestureDetector(
                   onTap: () {
-                    UserInfo userInput = new UserInfo(widget.id);
+                    //프롬프트요소 객체 생성
+                    UserPromptFactor userPromptFactor = new UserPromptFactor(widget.userInfo);
+                    //step2페이지로 이동
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => StepFieldPage(
-                            userInput: userInput,
+                            userInfo: widget.userInfo,
+                            userPromptFactor: userPromptFactor,
                           ),
                         ));
                   },

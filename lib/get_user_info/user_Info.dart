@@ -1,3 +1,6 @@
+// 작성자 : 황제하
+// 사용자 기본 정보를 불러오고 수정하는 클래스
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:halmoney/get_user_info/career.dart';
 
@@ -12,7 +15,6 @@ class UserInfo {
   List<String> selectedFields=[];
   List<String> preferredWorkTime=[];
   List<String> preferredWorkPlace=[];
-  List<String> selectedStrens=[];
 
   UserInfo(String userId) {
     _fetchUserInfo(userId);
@@ -63,14 +65,6 @@ class UserInfo {
   }
   List<String> getSelectedFields() {
     return selectedFields;
-  }
-
-  // 역량 메소드
-  void editSelectedStrens(List<String> selectedStrens) {
-    this.selectedStrens = selectedStrens;
-  }
-  List<String> getSelectedStrens() {
-    return selectedStrens;
   }
 
   // 경력 메소드
