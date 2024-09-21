@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'revisionResume.dart';
 
 class FinalPage extends StatelessWidget {
   final String firstParagraph;
@@ -11,6 +12,23 @@ class FinalPage extends StatelessWidget {
     required this.secondParagraph,
     required this.thirdParagraph,
   }) : super(key: key);
+
+  /*void _goToResumeView(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ResumeView2(
+          id: widget.id, // 필요한 다른 정보들
+          resumeId: widget.resumeId,
+          num: widget.num,
+          // 여기서 전달할 문단 추가
+          firstParagraph: revisedFirstParagraph,
+          secondParagraph: revisedSecondParagraph,
+          thirdParagraph: revisedThirdParagraph,
+        ),
+      ),
+    );
+  } */
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +73,7 @@ class FinalPage extends StatelessWidget {
                   onPressed: () {
                     Navigator.pop(context); // 이전 화면으로 돌아가기
                   },
-                  child: const Text('수정 완료'),
+                  child: const Text('이력서 생성'),
                 ),
               ),
             ],

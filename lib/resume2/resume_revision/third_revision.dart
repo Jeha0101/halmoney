@@ -30,7 +30,7 @@ class _ThirdParagraphPageState extends State<ThirdParagraphPage> {
     revisedThirdParagraph = widget.thirdParagraph;
   }
 
-  Future<void> _editThirdParagraph() async {
+  Future<void> _editThirdParagraph({String tag = ''}) async {
     setState(() {
       _isLoading = true;
     });
@@ -38,7 +38,7 @@ class _ThirdParagraphPageState extends State<ThirdParagraphPage> {
     try {
       final revisedText = await _service.generateRevisedIntroduction(
         revisedThirdParagraph,
-        _modificationController.text,
+        _modificationController.text+' $tag',
       );
       setState(() {
         revisedThirdParagraph = revisedText;
@@ -105,21 +105,72 @@ class _ThirdParagraphPageState extends State<ThirdParagraphPage> {
               ),
             ),
             const SizedBox(height:10),
-            TextField(
-              controller: _modificationController,
-              decoration: const InputDecoration(hintText: '수정 사항을 입력하세요'),
+            Container(
+              height: 120,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // TextField는 위에 배치
+                  TextField(
+                    controller: _modificationController,
+                    decoration: const InputDecoration(hintText: '수정 사항을 입력하세요'),
+                  ),
+                  const SizedBox(height: 10),
+                  SingleChildScrollView(
+                      scrollDirection:Axis.horizontal,
+                      child:Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () => _editThirdParagraph(tag: '간략하게'),
+                            child: const Text('간략하게'),
+                          ),
+                          ElevatedButton(
+                            onPressed: () => _editThirdParagraph(tag: '구체적으로'),
+                            child: const Text('구체적으로'),
+                          ),
+                          ElevatedButton(
+                            onPressed: () => _editThirdParagraph(tag: '자연스럽게'),
+                            child: const Text('자연스럽게'),
+                          ),
+                          ElevatedButton(
+                            onPressed: () => _editThirdParagraph(tag: '공손하게'),
+                            child: const Text('공손하게'),
+                          ),
+                          ElevatedButton(
+                            onPressed: () => _editThirdParagraph(tag: '더 길게'),
+                            child: const Text('더 길게'),
+                          ),
+                          ElevatedButton(
+                            onPressed: () => _editThirdParagraph(tag: '더 짧게'),
+                            child: const Text('더 짧게'),
+                          ),
+                        ],
+                      )
+                  )
+
+                  // 태그 버튼 추가
+                ],
+              ),
             ),
-            const SizedBox(height: 10),
-            _isLoading
-                ? const CircularProgressIndicator()
-                : ElevatedButton(
-              onPressed: _editThirdParagraph,
-              child: const Text('수정하기'),
-            ),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: _goToFinalPage,
-              child: const Text('마무리하기'),
+
+            const SizedBox(height: 20),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _isLoading
+                    ? const CircularProgressIndicator()
+                    : ElevatedButton(
+                  onPressed: _editThirdParagraph,
+                  child: const Text('수정하기'),
+                ),
+                const SizedBox(width: 30),
+                ElevatedButton(
+                  onPressed: _goToFinalPage,
+                  child: const Text('수정 완료'),
+                ),
+              ],
             ),
           ],
         ),

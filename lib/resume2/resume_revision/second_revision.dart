@@ -30,7 +30,7 @@ class _SecondParagraphPageState extends State<SecondParagraphPage> {
     revisedSecondParagraph = widget.secondParagraph;
   }
 
-  Future<void> _editSecondParagraph() async {
+  Future<void> _editSecondParagraph({String tag = ''}) async {
     setState(() {
       _isLoading = true;
     });
@@ -38,7 +38,7 @@ class _SecondParagraphPageState extends State<SecondParagraphPage> {
     try {
       final revisedText = await _service.generateRevisedIntroduction(
        widget.secondParagraph,
-        _modificationController.text,
+        _modificationController.text + '$tag',
       );
       setState(() {
         revisedSecondParagraph = revisedText;
@@ -97,28 +97,79 @@ class _SecondParagraphPageState extends State<SecondParagraphPage> {
             Expanded(
               child: SingleChildScrollView(
                 child: Text(
-                  revisedSecondParagraph != widget.secondParagraph
+                  revisedSecondParagraph.isNotEmpty
                       ? revisedSecondParagraph
-                      : '아직 수정된 문단이 없습니다.',
+                      : '아직 수정된 문단이 없습니다.', // 수정된 문단이 없으면 기본 메시지 출력
                   style: const TextStyle(fontSize: 16),
                 ),
               ),
             ),
-            const SizedBox(height:10),
-            TextField(
-              controller: _modificationController,
-              decoration: const InputDecoration(hintText: '수정 사항을 입력하세요'),
+            Container(
+              height: 120,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // TextField는 위에 배치
+                  TextField(
+                    controller: _modificationController,
+                    decoration: const InputDecoration(hintText: '수정 사항을 입력하세요'),
+                  ),
+                  const SizedBox(height: 10),
+                  SingleChildScrollView(
+                      scrollDirection:Axis.horizontal,
+                      child:Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () => _editSecondParagraph(tag: '간략하게'),
+                            child: const Text('간략하게'),
+                          ),
+                          ElevatedButton(
+                            onPressed: () => _editSecondParagraph(tag: '구체적으로'),
+                            child: const Text('구체적으로'),
+                          ),
+                          ElevatedButton(
+                            onPressed: () => _editSecondParagraph(tag: '자연스럽게'),
+                            child: const Text('자연스럽게'),
+                          ),
+                          ElevatedButton(
+                            onPressed: () => _editSecondParagraph(tag: '공손하게'),
+                            child: const Text('공손하게'),
+                          ),
+                          ElevatedButton(
+                            onPressed: () => _editSecondParagraph(tag: '더 길게'),
+                            child: const Text('더 길게'),
+                          ),
+                          ElevatedButton(
+                            onPressed: () => _editSecondParagraph(tag: '더 짧게'),
+                            child: const Text('더 짧게'),
+                          ),
+                        ],
+                      )
+                  )
+
+                  // 태그 버튼 추가
+                ],
+              ),
             ),
-            const SizedBox(height: 10),
-            _isLoading
-                ? const CircularProgressIndicator()
-                : ElevatedButton(
-              onPressed: _editSecondParagraph,
-              child: const Text('수정하기'),
-            ),
-            ElevatedButton(
-              onPressed: _goToThirdPage,
-              child: const Text('세 번째 문단 수정'),
+
+            const SizedBox(height: 5),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _isLoading
+                    ? const CircularProgressIndicator()
+                    : ElevatedButton(
+                  onPressed: _editSecondParagraph,
+                  child: const Text('수정하기'),
+                ),
+                const SizedBox(width: 30),
+                ElevatedButton(
+                  onPressed: _goToThirdPage,
+                  child: const Text('다음 문단 수정'),
+                ),
+              ],
             ),
           ],
         ),
