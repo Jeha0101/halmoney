@@ -23,8 +23,7 @@ class StepStrenPage extends StatefulWidget {
 
 class _StepStrenPageState extends State<StepStrenPage> {
   List<String> selectedStrens = [];
-  Set<String> abilities = {};
-  List<String> finalAbilities = [];
+  List<String> abilities = [];
 
   final TextEditingController _abilityController = TextEditingController(); // 사용자가 입력할 텍스트 컨트롤러
 
@@ -34,9 +33,9 @@ class _StepStrenPageState extends State<StepStrenPage> {
     _fetchCoverLetterAndExtractAbilities();
   }
 
-  //Firebase에서 자소서 데이터를 가져와 Flask 서버에 요청
+  //Firebase에서 역량 키워드 가져오기
   Future<void> _fetchCoverLetterAndExtractAbilities() async {
-    try{
+    try {
       // selectedFields 리스트에서 직무 카테고리 가져오기
       // 첫 번째 선택된 필드를 직무 카테고리로 사용한다고 가정
       if (widget.userPromptFactor.selectedFields.isEmpty) {
@@ -46,109 +45,41 @@ class _StepStrenPageState extends State<StepStrenPage> {
 
       String jobCategory = widget.userPromptFactor.selectedFields[0]; // 첫 번째 선택된 항목이 직무 카테고리라고 가정
 
-      //Firebase에서 직무에 맞는 자소서 데이터 가져오기
+      // Firebase에서 직무에 맞는 역량 키워드 가져오기
       final jobDoc = await FirebaseFirestore.instance
           .collection('coverLetter')
           .doc(jobCategory)
-          .collection('company')
           .get();
 
-      List<String> coverLetterTexts = [];
+      // jobDoc에서 'Ability' 필드가 있는지 확인
+      if (jobDoc.exists && jobDoc.data()!.containsKey('Ability')) {
+        List<dynamic> abilitiesArray = jobDoc.data()!['Ability'];
 
-      // 각 회사의 a1, a2 필드를 합쳐서 커버레터 텍스트로 사용
-      for (var companyDoc in jobDoc.docs) {
-        String a1 = companyDoc['a1'] ?? '';
-        String a2 = companyDoc.data().containsKey('a2') ? companyDoc['a2'] : '';
-        coverLetterTexts.add('$a1 $a2');
-      }
-
-      // 각 커버레터 텍스트에 대해 Flask 서버에 NER 요청
-      for (String coverLetterText in coverLetterTexts) {
-        final response = await http.post(
-          Uri.parse('http://192.168.25.180:5000/ability_extraction'),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: jsonEncode(<String, dynamic>{
-            'text': coverLetterText,
-            'jobCategory' : jobCategory,
-            'labels': ['Ability','Skill','Competency','Achievement','Specialization','Knowledge'], // Ability만 추출
-          }),
-        );
-
-        if (response.statusCode == 200) {
-          final entities = jsonDecode(response.body);
-          print('Extracted Abilities: $entities'); // 디버깅용 출력
-
-          // 추출된 abilities 리스트에 저장
-          setState(() {
-            for (var entity in entities){
-              if (entity is String) {
-                abilities.add(entity); // 문자열만 추가
-              } else if (entity is Map<String, dynamic>) {
-                if (entity.containsKey('text') && entity['text'] is String) {
-                  abilities.add(entity['text']); // 'text' 필드가 문자열인 경우 추가
-                }
-              }
-            }
-          });
-        } else {
-          print('Failed to extract abilities. Status Code: ${response.statusCode}');
-        }
-      }
-      _finalizeAbilities();
-    }catch(e){
-      print('Error occured: $e');
-    }
-  }
-
-
-  //LLM 필터링
-  Future<void> _finalizeAbilities() async {
-    try{
-      final response = await http.post(
-        Uri.parse('http://192.168.25.180:5000/finalize_abilities'),  // flask 서버의 finalizeAbilities 엔드포인트 호출
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, dynamic>{
-          'jobCategory': widget.userPromptFactor.selectedFields[0],  // 직무 카테고리 전달
-        }),
-      );
-
-      if (response.statusCode == 200) {
-        final result = jsonDecode(response.body);
-        print('Final Abilities: $result');  // 최종 필터링된 키워드 확인
-
-        //필터링된 abilities 리스트 어벧이트
+        // 배열을 문자열 리스트로 변환
         setState(() {
-          finalAbilities = List<String>.from(result);
+          abilities = abilitiesArray.cast<String>().toList(); // 상태에 저장
         });
+
+        print('Abilities: $abilities');
       } else {
-        print('Failed to finalize abilities. Status Code: ${response.statusCode}');
+        print('Ability 필드가 존재하지 않습니다.');
       }
+
     } catch (e) {
-      print('Error occured during finalization: $e');
+      print('Error occurred: $e');
     }
   }
 
-  // 선택된 ability들을 업데이트하는 함수
-  void updateSelectedAbilities(List<String> updatedAbilities) {
-    setState(() {
-      selectedStrens = updatedAbilities;
-    });
-  }
 
   // 사용자가 직접 역량을 추가하는 함수
   void _addCustomAbility() {
     if (_abilityController.text.isNotEmpty) {
       setState(() {
-        finalAbilities.add(_abilityController.text); // 입력한 역량을 리스트에 추가
+        abilities.add(_abilityController.text); // 입력한 역량을 리스트에 추가
         _abilityController.clear(); // 텍스트 필드를 비움
       });
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -268,9 +199,14 @@ class _StepStrenPageState extends State<StepStrenPage> {
             Expanded(
               child: SingleChildScrollView(
                 child: AbilitiesChooseWidget(
-                  abilities: finalAbilities.toList(),
+                  abilities: abilities,
                   selectedAbilities: selectedStrens,
-                  onSelectedAbilitiesChanged: updateSelectedAbilities,
+                  onSelectedAbilitiesChanged: (List<String> updatedSelectedAbilities) {
+                    // 선택한 역량 업데이트
+                    setState(() {
+                      selectedStrens = updatedSelectedAbilities;
+                    });
+                  },
                 ),
               ),
             ),
