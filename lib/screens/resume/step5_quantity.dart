@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:halmoney/get_user_info/user_Info.dart';
+import 'package:halmoney/screens/resume/step7_resumeCreate.dart';
 import 'package:halmoney/screens/resume/user_prompt_factor.dart';
 import 'package:halmoney/screens/resume/step6_inputEdit.dart';
 
@@ -81,13 +82,14 @@ class _StepQuantityPageState extends State<StepQuantityPage> {
                 GestureDetector(
                   onTap: () {
                     widget.userPromptFactor.editQuantity(quantity);
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //       builder: (context) => StepInputEditPage(
-                    //           userInput : widget.userInput
-                    //       )),
-                    // );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => StepResumeCreate(
+                              userInfo : widget.userInfo,
+                              userPromptFactor : widget.userPromptFactor,
+                          )),
+                    );
                   },
                   child: const Row(
                     children: [
@@ -117,7 +119,7 @@ class _StepQuantityPageState extends State<StepQuantityPage> {
                   const Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text('자기소개서의\n분량을 선택해주세요',
+                      Text('자기소개서\n글자 수를 선택해주세요',
                           style: TextStyle(
                             fontFamily: 'NanumGothicFamily',
                             fontWeight: FontWeight.w500,
@@ -126,30 +128,79 @@ class _StepQuantityPageState extends State<StepQuantityPage> {
                           )),
                     ],
                   ),
-                  const SizedBox(height: 70),
-
-                  //분량 선택
-                  DropdownButton<int>(
-                    value: quantity, // 현재 선택된 값
-                    items: List.generate(19, (index) {
-                      int value = 100 + index * 50; // 100자부터 50단위로 1000자까지 생성
-                      return DropdownMenuItem<int>(
-                        value: value,
-                        child: Text('$value자',
-                            style: const TextStyle(
-                              fontFamily: 'NanumGothicFamily',
-                              fontWeight: FontWeight.w500,
-                              fontSize: 28.0,
-                              color: Colors.black,
-                            ),
-                        ), // 드롭다운 메뉴에 표시할 텍스트
-                      );
-                    }),
-                    onChanged: (newValue) {
-                      setState(() {
-                        quantity = newValue ?? 100; // 선택된 값을 int로 저장
-                      });
-                    },
+                  const SizedBox(height: 40),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          minimumSize: Size(200, 80),
+                          backgroundColor: quantity == 150 ? Colors.blue : Colors.grey,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            quantity = 150;
+                          });
+                        },
+                        child: const Text(
+                          '150자',
+                          style: TextStyle(
+                            fontFamily: 'NanumGothicFamily',
+                            //fontWeight: FontWeight.w500,
+                            fontSize: 30.0,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 30,),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          minimumSize: Size(200, 80),
+                          backgroundColor: quantity == 300 ? Colors.blue : Colors.grey,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            quantity = 300;
+                          });
+                        },
+                        child: const Text(
+                          '300자',
+                          style: TextStyle(
+                            fontFamily: 'NanumGothicFamily',
+                            fontWeight: FontWeight.w500,
+                            fontSize: 30.0,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 30,),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          minimumSize: Size(200, 80),
+                          backgroundColor: quantity == 500 ? Colors.blue : Colors.grey,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            quantity = 500;
+                          });
+                        },
+                        child: const Text(
+                          '500자',
+                          style: TextStyle(
+                            fontFamily: 'NanumGothicFamily',
+                            fontWeight: FontWeight.w500,
+                            fontSize: 30.0,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

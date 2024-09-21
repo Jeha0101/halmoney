@@ -24,7 +24,7 @@ class _SearchEngine extends State<SearchEngine> {
   Future<void> _searchKeyWords() async {
     try {
       final response = await http.post(
-        Uri.parse('http://192.168.35.161:5000/nerExtraction'), // Flask 서버의 IP 주소
+        Uri.parse('http://172.20.3.47:5000/nerExtraction'), // Flask 서버의 IP 주소
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

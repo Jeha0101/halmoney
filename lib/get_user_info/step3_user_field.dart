@@ -1,6 +1,7 @@
 // 작성자 : 황제하
 
 import 'package:flutter/material.dart';
+import 'package:halmoney/get_user_info/step4_workhours.dart';
 import 'package:halmoney/get_user_info/user_Info.dart';
 import 'package:halmoney/myAppPage.dart';
 
@@ -92,7 +93,7 @@ class _StepUserFieldState extends State<StepUserField> {
                         //임시 코드
                         // 우선 홈페이지로 이동
                         // 나중에 근무 가능 시간 조사 페이지로
-                          builder: (context) =>MyAppPage(id: widget.userInfo.userId)),
+                          builder: (context) =>StepWorkHours(userInfo: widget.userInfo)),
                     );
                   },
                   child: const Row(
