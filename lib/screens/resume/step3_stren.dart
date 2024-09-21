@@ -55,7 +55,7 @@ class _StepStrenPageState extends State<StepStrenPage> {
       if (jobDoc.exists && jobDoc.data()!.containsKey('Ability')) {
         List<dynamic> abilitiesArray = jobDoc.data()!['Ability'];
 
-        // 배열을 문자열 리스트로 변환
+        // 배열을 문자열 리스트로 변환 [실시간]
         setState(() {
           abilities = abilitiesArray.cast<String>().toList(); // 상태에 저장
         });
