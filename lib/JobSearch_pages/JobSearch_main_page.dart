@@ -94,6 +94,7 @@ class _JobSearchState extends State<JobSearch> {
             'image_path': data['image_path'] ?? 'No_path',
             'isLiked': userLikes.contains(data['num'].toString()),
             'end_day': endDayStr,
+            'manager_call': data['manager_call'] ?? 'No call Number'
           };
         }).toList();
         print('공고들! $jobs');
@@ -157,6 +158,7 @@ class _JobSearchState extends State<JobSearch> {
                   image_path: job['image_path'],
                   isLiked: job['isLiked'],
                  endday: job['end_day'],
+                  manager_call : job['manager_call'] ?? 'No Call Number',
                 ),
               );
             },

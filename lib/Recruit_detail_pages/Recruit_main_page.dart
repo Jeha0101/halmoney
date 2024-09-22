@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:halmoney/resume2/resumeManage2.dart';
+import 'Recurit_CallButton.dart';
 
 class Recruit_main extends StatelessWidget {
   final String id;
@@ -17,6 +18,7 @@ class Recruit_main extends StatelessWidget {
   final String workweek;
   final String image_path;
   final String endday;
+  final String manager_call;
 
   Recruit_main({
     required this.id,
@@ -29,6 +31,7 @@ class Recruit_main extends StatelessWidget {
     required this.workweek,
     required this.image_path,
     required this.endday,
+    required this.manager_call,
     Key? key,
   }): super(key: key);
 
@@ -313,36 +316,55 @@ class Recruit_main extends StatelessWidget {
               ),
               Positioned(
                 bottom: 0,
-                right: 15,
+                right:0 ,
+                left: 0,
+                child:Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 150,
+                      height: 50,
+                      child:
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color.fromARGB(250, 51, 51, 255), // 버튼의 배경색을 파란색으로 설정
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
 
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromARGB(250, 51, 51, 255), // 버튼의 배경색을 파란색으로 설정
-                    padding: EdgeInsets.symmetric(horizontal: 160, vertical: 13),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ResumeManage2(id: id, num:num, title:title),
+                            ),
+                          );
 
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ResumeManage2(id: id, num:num, title:title),
+
+                        },
+                        child: Text(
+                          '지원하기',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
-                    );
-
-
-                  },
-                  child: Text(
-                    '지원하기',
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.white,
                     ),
-                  ),
-                ),
-              ),
+                    SizedBox(width: 20),
+                    Container(
+                      width: 150,
+                      height: 50,
+                      child:
+                      CallButton(callnumber: manager_call)
+                    ),
+                  ],
+                )
+              )
+
+
             ],
           )
 

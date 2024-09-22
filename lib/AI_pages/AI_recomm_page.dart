@@ -255,7 +255,6 @@ class _AIRecommPage extends State<AIRecommPage> {
     for (var recommendation in topRecommendations) {
       final job = recommendation['job'] as DocumentSnapshot;
       final jobData = job.data() as Map<String, dynamic>;
-      print("Job: ${jobData['title']}, Similarity Score: ${recommendation['similarity_score']}");
     }
 
     setState(() {

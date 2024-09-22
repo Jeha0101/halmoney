@@ -4,6 +4,8 @@ import 'package:halmoney/pages/login_page.dart';
 import 'package:halmoney/pages/search_engine.dart';
 import 'package:halmoney/screens/myPage/myPage.dart';
 import 'package:halmoney/screens/resume/step1_hello.dart';
+import 'package:halmoney/screens/home/home.dart';
+import 'myAppPage.dart';
 import 'package:halmoney/theme.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -44,7 +46,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner:  false,
 
 
-      home: LoginPage(),
+      home: MyAppPage(id: "silver1234"),
       // 아래는 테스트용으로 원하는 페이지 연결용
       // git에 올릴때 반드시 수정
       // home: StepWelcome(id: "silver1234"),
