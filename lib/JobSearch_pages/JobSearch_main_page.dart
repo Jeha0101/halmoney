@@ -5,6 +5,8 @@ import 'package:halmoney/JobSearch_pages/JobList_widget.dart';
 import 'package:halmoney/myAppPage.dart';
 import 'package:intl/intl.dart';
 
+import '../get_user_info/user_Info.dart';
+
 class JobSearch extends StatefulWidget {
   final String id;
   const JobSearch({super.key, required this.id});
@@ -128,10 +130,11 @@ class _JobSearchState extends State<JobSearch> {
             centerTitle: true,
             backgroundColor: const Color.fromARGB(250, 51, 51, 255),
             leading: IconButton(
-              onPressed: () {
+              onPressed: () async {
+                UserInfo userInfo = await UserInfo.create(widget.id);
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => MyAppPage(id: widget.id)),
+                  MaterialPageRoute(builder: (context) => MyAppPage(userInfo: userInfo)),
                 );
               },
               icon: const Icon(Icons.arrow_back_ios_rounded),

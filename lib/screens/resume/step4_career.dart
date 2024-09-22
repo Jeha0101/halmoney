@@ -29,6 +29,14 @@ class _StepCareerPageState extends State<StepCareerPage> {
   void initState() {
     super.initState();
     careers = widget.userPromptFactor.getCareers();
+
+    userInputControllers = List.generate(careers.length, (index)
+    {
+      return {
+        'place': TextEditingController(text: careers[index].workPlace),
+        'duration': TextEditingController(text: careers[index].workDuration),
+      };
+    });
   }
 
   //경력 추가하기

@@ -11,8 +11,12 @@ class UserPromptFactor {
   List<String> selectedStrens = [];
   int quantity = 0;
 
-  UserPromptFactor(UserInfo userInfo) {
-    _fetchUserPromptFactor(userInfo);
+  UserPromptFactor._create(this.userInfo);
+
+  static Future<UserPromptFactor> create(UserInfo userInfo) async{
+    UserPromptFactor userPromptFactor = UserPromptFactor._create(userInfo);
+    await userPromptFactor._fetchUserPromptFactor(userInfo);
+    return userPromptFactor;
   }
 
   Future<void> _fetchUserPromptFactor(UserInfo userInfo) async {

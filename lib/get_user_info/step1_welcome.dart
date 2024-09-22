@@ -56,8 +56,8 @@ class _StepWelcomeState extends State<StepWelcome> {
               children: [
                 //경력 입력 페이지로 이동
                 GestureDetector(
-                  onTap: () {
-                    UserInfo userInfo = new UserInfo(widget.id);
+                  onTap: () async {
+                    UserInfo userInfo = await UserInfo.create(widget.id);
                     Navigator.push(
                         context,
                         MaterialPageRoute(
