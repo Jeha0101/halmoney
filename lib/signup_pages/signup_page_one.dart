@@ -58,6 +58,7 @@ class _SignupPageOneState extends State<SignupPageOne> {
     final bytes = utf8.encode(password);
     final hashedPassword = sha256.convert(bytes).toString();
 
+
     try {
       final QuerySnapshot result = await FirebaseFirestore.instance
           .collection('user')

@@ -10,8 +10,8 @@ import 'package:halmoney/PublicJobs_pages/PublicJobsDescribe.main.dart';
 import 'package:halmoney/get_user_info/user_Info.dart';
 
 class MyHomePage extends StatelessWidget{
-  final String id;
-  const MyHomePage({super.key, required this.id});
+  final UserInfo userInfo;
+  const MyHomePage({super.key, required this.userInfo});
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +19,7 @@ class MyHomePage extends StatelessWidget{
       "assets/images/50plus.png",
       "assets/images/worknet.png",
     ];
+    userInfo.printUserInfo();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -103,8 +104,7 @@ class MyHomePage extends StatelessWidget{
                       const SizedBox(height: 20,),
                       // 위젯 내부
                       GestureDetector(
-                        onTap: (){
-                          UserInfo userInfo = new UserInfo(id);
+                        onTap: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => StepHelloPage(userInfo: userInfo)),
@@ -175,7 +175,7 @@ class MyHomePage extends StatelessWidget{
                         onTap: (){
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => AIRecommPage(id: id)),
+                            MaterialPageRoute(builder: (context) => AIRecommPage(id: userInfo.userId)),
                           );
                         },
                         child: Container(
@@ -295,7 +295,7 @@ class MyHomePage extends StatelessWidget{
                               onTap: (){
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => AISelectCondPage(id: id)),
+                                  MaterialPageRoute(builder: (context) => AISelectCondPage(id: userInfo.userId)),
                                 );
                               },
                               child: Container(
@@ -435,7 +435,7 @@ class MyHomePage extends StatelessWidget{
                         onTap: (){
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => PublicJobsDescribe(id: id)),
+                            MaterialPageRoute(builder: (context) => PublicJobsDescribe(id: userInfo.userId)),
                           );
                         },
                         child: Container(

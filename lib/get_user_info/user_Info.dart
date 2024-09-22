@@ -9,15 +9,19 @@ class UserInfo {
   late String userId;
   late String userPhone;
   late String userGender;
-  late String userDob;
+  late String userAgeGroup;
   late String userAddress;
   late List<Career> careers;
   late List<String> selectedFields;
   late List<String> preferredWorkTime;
   late List<String> preferredWorkPlace;
 
-  UserInfo(String userId) {
-    _fetchUserInfo(userId);
+  UserInfo._create(this.userId);
+
+  static Future<UserInfo> create(String userId) async{
+    UserInfo userInfo = UserInfo._create(userId);
+    await userInfo._fetchUserInfo(userId);
+    return userInfo;
   }
 
   //사용자 기본 정보 불러오기
@@ -40,10 +44,10 @@ class UserInfo {
 
         userName = data['name'] ?? '';
         this.userId = userId;
-        userPhone = data['userPhone'] ?? '';
-        userGender = data['userGender'] ?? '';
-        userDob = data['userDob'] ?? '';
-        userAddress = data['userAddress'] ?? '';
+        userPhone = data['phone'] ?? '';
+        userGender = data['gender'] ?? '';
+        userAgeGroup = data['ageGroup'] ?? '';
+        userAddress = data['address'] ?? '';
         selectedFields = data['selectedFields'] != null ? List<String>.from(data['selectedFields']) : []; //수정한 부분
         preferredWorkTime = data['preferredWorkTime'] != null ? List<String>.from(data['preferredWorkTime']) : []; //수정한 부분
         preferredWorkPlace = data['preferredWorkPlace'] != null ? List<String>.from(data['preferredWorkPlace']) : []; //수정한 부분
@@ -70,10 +74,10 @@ class UserInfo {
           .doc(userId)
           .update({
         'name': userName,
-        'userPhone': userPhone,
-        'userGender': userGender,
-        'userDob': userDob,
-        'userAddress': userAddress,
+        'phone': userPhone,
+        'gender': userGender,
+        'ageGroup': userAgeGroup,
+        'address': userAddress,
         'careers': careers.map((career) => career.toMap()).toList(),
         'selectedFields': selectedFields,
         'preferredWorkTime': preferredWorkTime,
@@ -109,5 +113,14 @@ class UserInfo {
   }
   List<Career> getCareers() {
     return careers;
+  }
+
+  //userInfo 디버깅
+  void printUserInfo(){
+    print("사용자 이름 : $userName");
+    print("사용자 번호 : $userPhone");
+    print("사용자 성별 : $userGender");
+    print("사용자 나이 : $userAgeGroup");
+    print("사용자 주소 : $userAddress");
   }
 }

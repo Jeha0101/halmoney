@@ -21,7 +21,7 @@ class _SelectPlaceState extends State<SelectPlace> {
   void initState() {
     super.initState();
     originalAddress = widget.userInfo.userAddress;
-    print(originalAddress);
+    print('주소소소'+originalAddress);
     //_fetchUserAddress();
   }
 
@@ -254,7 +254,7 @@ class _SelectPlaceState extends State<SelectPlace> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => MyAppPage(id: widget.userInfo.userId)),
+                              builder: (context) => MyAppPage(userInfo: widget.userInfo)),
                       );
                     },
                     child: const Text(
