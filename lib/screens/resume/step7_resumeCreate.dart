@@ -10,7 +10,6 @@ import 'package:halmoney/get_user_info/user_Info.dart';
 import 'package:halmoney/screens/resume/user_prompt_factor.dart';
 import 'package:halmoney/resume2/resume_revision/first_revision.dart';
 import 'package:halmoney/screens/resume/resume_JobsList/recommendation_page.dart';
-import 'package:halmoney/screens/resume/resume_JobsList/fetchRecommendations.dart';
 
 class StepResumeCreate extends StatefulWidget {
   final UserInfo userInfo;
@@ -45,39 +44,8 @@ class _StepResumeCreateState extends State<StepResumeCreate> {
     super.initState();
     _fetchResumeData();
     createSelfIntroduction();
-    _fetchUserData();
+    //_fetchUserData();
   }
-
-  Future<void> _fetchRecommendedJobs() async {
-    if (userData == null || !userData!.containsKey('address')) {
-      print('사용자 관심 지역 정보를 가져오지 못했습니다.');
-      return;
-    }
-
-    setState(() {
-      _isLoading = true; // 로딩 상태 설정
-    });
-
-    // userData에서 관심 지역 가져오기
-    String interestPlace = userData!['address'] ??
-        ''; // Firestore에서 가져온 사용자 관심 지역
-
-    print('관심 지역: $interestPlace');
-    print('관심 분야: ${widget.userPromptFactor.selectedFields}');
-
-    // 관심 지역과 관심 분야를 사용해 추천 직업 가져오기
-    recommendedJobs = await fetchRecommendations(
-      interestPlace: interestPlace, // 관심 지역
-      interestWork: widget.userPromptFactor.selectedFields, // 관심 분야
-    );
-
-    print('추천 직업들: $recommendedJobs');
-
-    setState(() {
-      _isLoading = false; // 로딩 완료
-    });
-  }
-
   //사용자 정보 불러오기
   Future<void> _fetchResumeData() async {
     try {
@@ -115,32 +83,6 @@ class _StepResumeCreateState extends State<StepResumeCreate> {
       _selfIntroductionController.text = secondResponse;
       _isLoading = false;
     });
-  }
-
-  //db에서 사용자 정보 가져오기
-  Future<void> _fetchUserData() async {
-    try {
-      // Firestore에서 userId와 일치하는 문서 가져오기
-      final QuerySnapshot userQuery = await FirebaseFirestore.instance
-          .collection('user')
-          .where(
-          'id', isEqualTo: widget.userInfo.userId) // widget.userInfo.userId 사용
-          .get();
-
-      if (userQuery.docs.isNotEmpty) {
-        // 해당하는 유저 데이터가 있을 경우 첫 번째 문서 가져오기
-        final DocumentSnapshot userDoc = userQuery.docs.first;
-
-        setState(() {
-          userData = userDoc.data() as Map<String, dynamic>;
-        });
-        _fetchRecommendedJobs();
-      } else {
-        print("해당 userId로 일치하는 유저가 없습니다.");
-      }
-    } catch (error) {
-      print("유저 정보를 가져오는 데 실패했습니다: $error");
-    }
   }
 
   //GPT 첫번째 자기소개서 작성 함수
@@ -327,9 +269,8 @@ class _StepResumeCreateState extends State<StepResumeCreate> {
                   ),
 
                   //다음 페이지로 이동
-                  ElevatedButton(
-                    onPressed: () {
-                      // widget.userPromptFactor.editQuantity(quantity);
+                  GestureDetector(
+                    onTap: () {
                        Navigator.push(
                          context,
                         MaterialPageRoute(
@@ -341,7 +282,7 @@ class _StepResumeCreateState extends State<StepResumeCreate> {
                     },
                     child: const Row(
                       children: [
-                        Text('다음',
+                        Text('완료하기',
                             style: TextStyle(
                               fontFamily: 'NanumGothicFamily',
                               fontSize: 20.0,
@@ -358,17 +299,11 @@ class _StepResumeCreateState extends State<StepResumeCreate> {
               ),
 
               const SizedBox(
-                height: 20,
+                height: 10,
               ),
-
-              Text(
-                'AI가 $userName님의 자기소개서를 완성했습니다',
-                style: TextStyle(fontSize: 28),
-              ),
-              SizedBox(height: 15,),
               const Text(
-                '자기소개서를 직접 수정하거나 아래의 버튼을 눌러서 자기소개서를 수정해보세요!',
-                style: TextStyle(fontSize: 20),
+                '자기소개서를 직접 수정하거나\n아래의 버튼을 눌러서\n자기소개서를 수정해보세요!',
+                style: TextStyle(fontSize: 25),
               ),
               SizedBox(height: 15,),
               Row(
@@ -428,7 +363,7 @@ class _StepResumeCreateState extends State<StepResumeCreate> {
               TextField(
                 controller: _selfIntroductionController,
                 maxLines: 25,
-                style: TextStyle(fontSize: 18, color: Colors.black), // 폰트 사이즈 및 색상 변경
+                style: TextStyle(fontSize: 20, color: Colors.black), // 폰트 사이즈 및 색상 변경
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.black), // 테두리 색상 변경
