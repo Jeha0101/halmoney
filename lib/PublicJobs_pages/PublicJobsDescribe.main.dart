@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:halmoney/screens/home/home.dart';
 import 'package:halmoney/myAppPage.dart';
+import '../get_user_info/user_Info.dart';
 import 'PublicJobsList_widget.dart';
 
 class PublicJobsDescribe extends StatefulWidget {
@@ -93,10 +94,11 @@ class _PublicJobsDescribeState extends State<PublicJobsDescribe> {
             centerTitle: true,
             backgroundColor: const Color.fromARGB(250, 51, 51, 255),
             leading: IconButton(
-              onPressed: () {
+              onPressed: () async{
+                UserInfo userInfo = await UserInfo.create(widget.id);
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => MyAppPage(id: widget.id)),
+                  MaterialPageRoute(builder: (context) => MyAppPage(userInfo: userInfo)),
                 );
               },
               icon: const Icon(Icons.arrow_back_ios_rounded),
