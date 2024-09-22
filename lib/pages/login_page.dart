@@ -5,7 +5,6 @@ import 'package:halmoney/myAppPage.dart';
 import 'package:halmoney/signup_pages/agreement_page.dart';
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
-
 import '../get_user_info/user_Info.dart';
 
 final storage = FirebaseStorage.instance;

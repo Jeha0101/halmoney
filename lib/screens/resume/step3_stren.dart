@@ -3,9 +3,6 @@ import 'package:halmoney/screens/resume/step4_career.dart';
 import 'package:halmoney/get_user_info/user_Info.dart';
 import 'package:halmoney/screens/resume/user_prompt_factor.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class StepStrenPage extends StatefulWidget {
   final UserInfo userInfo;
@@ -182,7 +179,7 @@ class _StepStrenPageState extends State<StepStrenPage> {
                   child: TextField(
                     controller: _abilityController,
                     decoration: const InputDecoration(
-                      hintText: '직접 역량을 입력하세요',
+                      hintText: '역량을 검색하거나 선택하세요',
                     ),
                   ),
                 ),
