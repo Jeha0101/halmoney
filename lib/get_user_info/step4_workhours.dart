@@ -1,6 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:halmoney/get_user_info/step5_select_place.dart';
 import 'package:halmoney/get_user_info/user_Info.dart';
 import 'package:halmoney/myAppPage.dart';
 
@@ -85,10 +86,7 @@ class _StepWorkHoursState extends State<StepWorkHours>{
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        //임시 코드
-                        // 우선 홈페이지로 이동
-                        // 나중에 근무 가능 시간 조사 페이지로
-                          builder: (context) =>MyAppPage(id: widget.userInfo.userId)),
+                          builder: (context) =>SelectPlace(userInfo: widget.userInfo)),
                     );
                   },
                   child: const Row(

@@ -34,7 +34,7 @@ class UserInfo {
         final String docId = documents.first.id;
 
         final DocumentSnapshot ds =
-        await FirebaseFirestore.instance.collection('user').doc(docId).get();
+            await FirebaseFirestore.instance.collection('user').doc(docId).get();
 
         final data = ds.data() as Map<String, dynamic>;
 
@@ -44,17 +44,46 @@ class UserInfo {
         userGender = data['userGender'] ?? '';
         userDob = data['userDob'] ?? '';
         userAddress = data['userAddress'] ?? '';
-        careers = data['careers'] ?? [];  //careers는 스트링이 아니라서 불러오는 다른 방법이 필요함
-        selectedFields = data['selectedFields'] ?? [];
-        preferredWorkTime = data['preferredWorkTime'] ?? [];
-        preferredWorkPlace = data ['preferredWorkPlace'] ?? [];
+        selectedFields = data['selectedFields'] != null ? List<String>.from(data['selectedFields']) : []; //수정한 부분
+        preferredWorkTime = data['preferredWorkTime'] != null ? List<String>.from(data['preferredWorkTime']) : []; //수정한 부분
+        preferredWorkPlace = data['preferredWorkPlace'] != null ? List<String>.from(data['preferredWorkPlace']) : []; //수정한 부분
+
+        if (data['careers'] != null && data['careers'] is List) {
+          careers = (data['careers'] as List)
+              .map((careerData) => Career.fromMap(careerData as Map<String, dynamic>))
+              .toList();
+        } else {
+          careers = [];
+        }
+
       }
     } catch (error) {
       print('Failed to fetch user info: $error');
     }
   }
 
-
+  // 사용자 정보 업데이트 메소드
+  Future<void> updateUserInfo() async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('user')
+          .doc(userId)
+          .update({
+        'name': userName,
+        'userPhone': userPhone,
+        'userGender': userGender,
+        'userDob': userDob,
+        'userAddress': userAddress,
+        'careers': careers.map((career) => career.toMap()).toList(),
+        'selectedFields': selectedFields,
+        'preferredWorkTime': preferredWorkTime,
+        'preferredWorkPlace': preferredWorkPlace,
+      });
+      print('User info updated successfully.');
+    } catch (error) {
+      print('Failed to update user info: $error');
+    }
+  }
 
   String getId() {
     return userId;

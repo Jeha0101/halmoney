@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:halmoney/get_user_info/user_Info.dart';
 import 'package:halmoney/myAppPage.dart';
 
 class SelectPlace extends StatefulWidget {
-  final String id;
-  const SelectPlace({super.key, required this.id});
+  final UserInfo userInfo;
+  const SelectPlace({super.key, required this.userInfo});
 
   @override
   _SelectPlaceState createState() => _SelectPlaceState();
@@ -27,7 +28,7 @@ class _SelectPlaceState extends State<SelectPlace> {
     try {
       final QuerySnapshot result = await _firestore
           .collection('user')
-          .where('id', isEqualTo: widget.id)
+          .where('id', isEqualTo: widget.userInfo.userId)
           .get();
 
       final List<DocumentSnapshot> documents = result.docs;
@@ -65,7 +66,7 @@ class _SelectPlaceState extends State<SelectPlace> {
     try {
       final QuerySnapshot result = await _firestore
           .collection('user')
-          .where('id', isEqualTo: widget.id)
+          .where('id', isEqualTo: widget.userInfo.userId)
           .get();
 
       final List<DocumentSnapshot> documents = result.docs;
@@ -247,9 +248,11 @@ class _SelectPlaceState extends State<SelectPlace> {
                     ),
                     onPressed: () {
                       _onSaveButtonPressed();
+                      widget.userInfo;
                       Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => MyAppPage(id: widget.id))
+                          MaterialPageRoute(
+                              builder: (context) => MyAppPage(id: widget.userInfo.userId)),
                       );
                     },
                     child: const Text(

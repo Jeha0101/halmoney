@@ -4,27 +4,25 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:halmoney/get_user_info/step1_welcome.dart';
 
 final TextEditingController genderController = TextEditingController();
-final TextEditingController dobController = TextEditingController();
+final TextEditingController ageGroupController = TextEditingController();
 final TextEditingController addressController = TextEditingController();
 
 class SignupPgTwo extends StatelessWidget {
   final String id; //전달받은 id를 저장할 변수
   const SignupPgTwo({super.key, required this.id});
 
-  //const SignupPgOne({super.key});
-
-  void _onYearChanged(int year) {
-    dobController.text = year.toString();
-    print(year.toString());
+  void _onAgeGroupSelected(String ageGroup) { // 수정된 코드
+    ageGroupController.text = ageGroup;  // 선택된 연령대 저장
+    print(ageGroup);
   }
 
   void _saveData(BuildContext context) async {
     final gender = genderController.text;
-    final dob = dobController.text;
+    final ageGroup = ageGroupController.text;
     final address = addressController.text;
 
     // Debugging: Print the collected data
-    print("Gender: $gender, DOB: $dob, Address: $address");
+    print("Gender: $gender, AgeGroup: $ageGroup, Address: $address");
 
     try {
       final QuerySnapshot result = await FirebaseFirestore.instance
@@ -39,7 +37,7 @@ class SignupPgTwo extends StatelessWidget {
 
         await FirebaseFirestore.instance.collection('user').doc(docId).update({
           'gender': gender,
-          'dob': dob,
+          'ageGroup': ageGroup,
           'address': address,
         });
 
@@ -98,7 +96,8 @@ class SignupPgTwo extends StatelessWidget {
                       text: '여성',
                       onPressed: () {
                         genderController.text = '여성';
-                      }),
+                      },
+                  ),
                   ButtonData(
                       text: '남성',
                       onPressed: () {
@@ -111,7 +110,7 @@ class SignupPgTwo extends StatelessWidget {
             const SizedBox(height: 35),
 
             //생년월일
-            const Text('태어난 년도',
+            const Text('나이',
                 style: TextStyle(
                     fontSize: 18.0,
                     color: Colors.black87,
@@ -120,25 +119,35 @@ class SignupPgTwo extends StatelessWidget {
 
             const SizedBox(height: 20),
 
-            SizedBox(
-              width: 400,
-              height: 100,
-              child: CupertinoPicker(
-                // 수정한 부분
-                itemExtent: 80, // 수정한 부분
-                onSelectedItemChanged: (int index) {
-                  _onYearChanged(1940 + index); // 수정한 부분
-                },
-                children: List<Widget>.generate(
-                  DateTime.now().year - 1920 + 1,
-                  (index) => Center(
-                    child: Text(
-                      (1920 + index).toString(),
-                      style: const TextStyle(fontSize: 22),
-                    ),
-                  ),
-                ),
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children:[
+                Expanded(
+                    child: MyButtonList(
+                      buttons: [
+                        ButtonData(
+                            text: '40대',
+                            onPressed: () {
+                              ageGroupController.text = '40대';
+                            }),
+                        ButtonData(
+                            text: '50대',
+                            onPressed: () {
+                              ageGroupController.text = '40대';
+                            }),
+                        ButtonData(
+                            text: '60대',
+                            onPressed: () {
+                              ageGroupController.text = '40대';
+                            }),
+                        ButtonData(
+                            text: '70대',
+                            onPressed: () {
+                              ageGroupController.text = '40대';
+                            }),
+                      ],
+                    ))
+              ],
             ),
 
             const SizedBox(height: 35),
@@ -262,7 +271,7 @@ class MyWidget extends StatelessWidget {
             backgroundColor: isFavourte
                 ? const Color.fromARGB(250, 51, 51, 255)
                 : Colors.grey,
-            minimumSize: const Size(160, 45),
+            minimumSize: const Size(80, 45),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12))),
         onPressed: onPressed,
@@ -409,13 +418,6 @@ class _DropdownButtonExampleState extends State<DropdownButtonExample> {
                       }).toList(),
               ),
             ),
-
-            //SizedBox(height:20),
-            // Text(
-            //   '당신이 선택한 주소는: ',
-            //   style: TextStyle(fontWeight: FontWeight.bold),
-            // ),
-            // Text('$selectedSido $selectedGugun')
           ],
         ));
   }
