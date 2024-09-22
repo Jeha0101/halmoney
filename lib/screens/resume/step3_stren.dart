@@ -19,10 +19,8 @@ class StepStrenPage extends StatefulWidget {
 }
 
 class _StepStrenPageState extends State<StepStrenPage> {
-  List<String> selectedStrens = [];
+  List<String> selectedAbilities = [];
   List<String> abilities = [];
-
-  final TextEditingController _abilityController = TextEditingController(); // 사용자가 입력할 텍스트 컨트롤러
 
   @override
   void initState(){
@@ -67,15 +65,10 @@ class _StepStrenPageState extends State<StepStrenPage> {
     }
   }
 
-
-  // 사용자가 직접 역량을 추가하는 함수
-  void _addCustomAbility() {
-    if (_abilityController.text.isNotEmpty) {
-      setState(() {
-        abilities.add(_abilityController.text); // 입력한 역량을 리스트에 추가
-        _abilityController.clear(); // 텍스트 필드를 비움
-      });
-    }
+  void updateSelecdtedAbilities(List<String> abilities){
+    setState(() {
+      selectedAbilities = abilities;
+    });
   }
 
   @override
@@ -108,113 +101,85 @@ class _StepStrenPageState extends State<StepStrenPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(25.0),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Row(
-                    children: [
-                      Icon(
-                        Icons.chevron_left,
-                        size: 30,
-                      ),
-                      Text('이전',
-                          style: TextStyle(
-                            fontFamily: 'NanumGothicFamily',
-                            fontSize: 20.0,
-                            color: Colors.black,
-                          )),
-                    ],
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    widget.userPromptFactor.editSelectedStrens(selectedStrens);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => StepCareerPage(
-                            userInfo: widget.userInfo,
-                            userPromptFactor: widget.userPromptFactor,
-                          )),
-                    );
-                  },
-                  child: const Row(
-                    children: [
-                      Text('다음',
-                          style: TextStyle(
-                            fontFamily: 'NanumGothicFamily',
-                            fontSize: 20.0,
-                            color: Colors.black,
-                          )),
-                      Icon(
-                        Icons.chevron_right,
-                        size: 30,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              '자신의 장점은 무엇이라고 생각하나요?',
-              style: TextStyle(
-                fontFamily: 'NanumGothicFamily',
-                fontWeight: FontWeight.w500,
-                fontSize: 28.0,
-                color: Colors.black,
-              ),
-            ),
-            const SizedBox(height: 15),
-            // 역량 입력 필드와 추가 버튼
-            Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _abilityController,
-                    decoration: const InputDecoration(
-                      hintText: '역량을 검색하거나 선택하세요',
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Row(
+                      children: [
+                        Icon(
+                          Icons.chevron_left,
+                          size: 30,
+                        ),
+                        Text('이전',
+                            style: TextStyle(
+                              fontFamily: 'NanumGothicFamily',
+                              fontSize: 20.0,
+                              color: Colors.black,
+                            )),
+                      ],
                     ),
                   ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.add),
-                  onPressed: _addCustomAbility, // 버튼 클릭 시 직접 입력한 역량 추가
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 15),
-
-
-            Expanded(
-              child: SingleChildScrollView(
-                child: AbilitiesChooseWidget(
-                  abilities: abilities,
-                  selectedAbilities: selectedStrens,
-                  onSelectedAbilitiesChanged: (List<String> updatedSelectedAbilities) {
-                    // 선택한 역량 업데이트
-                    setState(() {
-                      selectedStrens = updatedSelectedAbilities;
-                    });
-                  },
+                  GestureDetector(
+                    onTap: () {
+                      widget.userPromptFactor.editSelectedStrens(selectedAbilities);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => StepCareerPage(
+                              userInfo: widget.userInfo,
+                              userPromptFactor: widget.userPromptFactor,
+                            )),
+                      );
+                    },
+                    child: const Row(
+                      children: [
+                        Text('다음',
+                            style: TextStyle(
+                              fontFamily: 'NanumGothicFamily',
+                              fontSize: 20.0,
+                              color: Colors.black,
+                            )),
+                        Icon(
+                          Icons.chevron_right,
+                          size: 30,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                '자신의 장점은 무엇이라고 생각하나요?',
+                style: TextStyle(
+                  fontFamily: 'NanumGothicFamily',
+                  fontWeight: FontWeight.w500,
+                  fontSize: 28.0,
+                  color: Colors.black,
                 ),
               ),
-            ),
-          ],
+              const SizedBox(height: 15),
+              AbilitiesChooseWidget(
+                  abilities: abilities,
+                  selectedAbilities: selectedAbilities,
+                  onSelectedAbilitiesChanged: updateSelecdtedAbilities,
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
-class AbilitiesChooseWidget extends StatelessWidget {
+class AbilitiesChooseWidget extends StatefulWidget {
   final List<String> abilities;
   final List<String> selectedAbilities;
   final ValueChanged<List<String>> onSelectedAbilitiesChanged;
@@ -227,48 +192,147 @@ class AbilitiesChooseWidget extends StatelessWidget {
   });
 
   @override
+  State<AbilitiesChooseWidget> createState() => _AbilitiesChooseWidgetState();
+}
+
+class _AbilitiesChooseWidgetState extends State<AbilitiesChooseWidget>{
+  TextEditingController _searchTextEditingController = TextEditingController();
+
+  String get _searchText => _searchTextEditingController.text.trim();
+
+  @override
+  void initState(){
+    super.initState();
+    _searchTextEditingController.addListener((){
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose(){
+    _searchTextEditingController.dispose();
+    super.dispose();
+  }
+
+  List<String> _filterAbilities() {
+    if (_searchText.isEmpty) return widget.abilities;
+
+    return widget.abilities
+        .where(
+            (ability) => ability.toLowerCase().contains(_searchText.toLowerCase()))
+        .toList();
+  }
+
+  void _addNewTage(String tag){
+    setState(() {
+      widget.abilities.add(tag);
+      widget.selectedAbilities.add(tag);
+    });
+    widget.onSelectedAbilitiesChanged(widget.selectedAbilities);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Wrap(
-          spacing: 8.0,
-          runSpacing: 8.0,
-          children: abilities.map((ability) {
-            final isSelected = selectedAbilities.contains(ability);
-            return GestureDetector(
-              onTap: () {
-                List<String> updatedAbilities = List.from(selectedAbilities); // 기존 선택된 항목 복사
-                if (isSelected) {
-                  updatedAbilities.remove(ability); // 선택 해제
-                } else {
-                  updatedAbilities.add(ability); //선택 추가
-                }
-                onSelectedAbilitiesChanged(updatedAbilities); // 변경된 리스트 전달
-              },
-              child: Chip(
-                label: Text(ability),
-                backgroundColor: isSelected ? Colors.blue : Colors.grey.shade300,
-              ),
-            );
-          }).toList(),
+        _buildSelectedTags(),
+        const SizedBox(height: 20),
+        _buildSearchField(),
+        const SizedBox(height: 20),
+        SizedBox(
+          height: 350,
+          child: _buildTags(),
         ),
       ],
     );
   }
-}
 
-class NextPage extends StatelessWidget {
-  final List<String> selectedAbilities;
+  Widget _buildSelectedTags() {
+    return Wrap(
+      spacing: 8.0,
+      runSpacing: 8.0,
+      children: widget.selectedAbilities.map((field) {
+        return Chip(
+          label: Text(
+            field,
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: Colors.blue,
+          deleteIcon: Icon(Icons.close, color: Colors.white),
+          onDeleted: () {
+            setState(() {
+              widget.selectedAbilities.remove(field);
+            });
+            widget.onSelectedAbilitiesChanged(widget.selectedAbilities);
+          },
+        );
+      }).toList(),
+    );
+  }
 
-  const NextPage({super.key, required this.selectedAbilities});
+  Widget _buildSearchField() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey.shade400),
+        borderRadius: BorderRadius.circular(5.0),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              controller: _searchTextEditingController,
+              decoration: const InputDecoration.collapsed(
+                hintText: '역량을 검색하거나 선택하세요',
+                hintStyle: TextStyle(color: Colors.grey),
+              ),
+            ),
+          ),
+          if (_searchText.isNotEmpty)
+            GestureDetector(
+              onTap: () {
+                if (!widget.selectedAbilities.contains(_searchText)) {
+                  _addNewTage(_searchText);
+                  _searchTextEditingController.clear();
+                }
+              },
+              child: Icon(Icons.add, color: Colors.grey.shade600),
+            )
+          else
+            Icon(Icons.search, color: Colors.grey.shade600),
+        ],
+      ),
+    );
+  }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Next Page')),
-      body: Center(
-        child: Text('Selected Abilities: ${selectedAbilities.join(", ")}'),
+  Widget _buildTags() {
+    return SingleChildScrollView(
+      child: Wrap(
+        spacing: 8.0,
+        runSpacing: 8.0,
+        children: _filterAbilities().map((field) {
+          final isSelected = widget.selectedAbilities.contains(field);
+          return GestureDetector(
+            onTap: () {
+              setState(() {
+                if (isSelected) {
+                  widget.selectedAbilities.remove(field);
+                } else {
+                  widget.selectedAbilities.add(field);
+                }
+              });
+              widget.onSelectedAbilitiesChanged(widget.selectedAbilities);
+            },
+            child: Chip(
+              label: Text(
+                field,
+                style: TextStyle(color: Colors.black),
+              ),
+              backgroundColor: Colors.grey.shade300,
+            ),
+          );
+        }).toList(),
       ),
     );
   }
