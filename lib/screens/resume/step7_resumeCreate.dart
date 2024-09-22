@@ -1,12 +1,15 @@
 // 작성자 : 황제하
 // 생성일 : 2024-09-19
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:convert';
 import 'package:halmoney/get_user_info/user_Info.dart';
 import 'package:halmoney/screens/resume/user_prompt_factor.dart';
+import 'package:halmoney/screens/resume/resume_JobsList/recommen_component.dart';
+import 'package:halmoney/screens/resume/resume_JobsList/fetchRecommendations.dart';
 
 class StepResumeCreate extends StatefulWidget {
   final UserInfo userInfo;
@@ -27,8 +30,10 @@ class _StepResumeCreateState extends State<StepResumeCreate> {
   late String careers;
   late List<String> selectedStrens;
   late int quantity;
+  Map<String, dynamic>? userData;
 
   bool _isLoading = true;
+  List<DocumentSnapshot> recommendedJobs = [];
   final TextEditingController _selfIntroductionController =
   TextEditingController();
 
@@ -36,6 +41,36 @@ class _StepResumeCreateState extends State<StepResumeCreate> {
   void initState() {
     super.initState();
     _fetchResumeData();
+    _fetchUserData();
+  }
+
+  Future<void> _fetchRecommendedJobs() async {
+    if (userData == null || !userData!.containsKey('address')) {
+      print('사용자 관심 지역 정보를 가져오지 못했습니다.');
+      return;
+    }
+
+    setState(() {
+      _isLoading = true; // 로딩 상태 설정
+    });
+
+    // userData에서 관심 지역 가져오기
+    String interestPlace = userData!['address'] ?? ''; // Firestore에서 가져온 사용자 관심 지역
+
+    print('관심 지역: $interestPlace');
+    print('관심 분야: ${widget.userPromptFactor.selectedFields}');
+
+    // 관심 지역과 관심 분야를 사용해 추천 직업 가져오기
+    recommendedJobs = await fetchRecommendations(
+      interestPlace: interestPlace, // 관심 지역
+      interestWork: widget.userPromptFactor.selectedFields, // 관심 분야
+    );
+
+    print('추천 직업들: $recommendedJobs');
+
+    setState(() {
+      _isLoading = false; // 로딩 완료
+    });
   }
 
   //사용자 정보 불러오기
@@ -45,6 +80,7 @@ class _StepResumeCreateState extends State<StepResumeCreate> {
       careers = widget.userPromptFactor.getCareersString();
       selectedStrens = widget.userPromptFactor.selectedStrens;
       quantity = widget.userPromptFactor.quantity;
+
 
       //GPT 첫번째 자기소개서 작성
       final firstResponse = await _fetchGPTResponse(
@@ -68,6 +104,30 @@ class _StepResumeCreateState extends State<StepResumeCreate> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Failed to fetch resume data: $error")),
       );
+    }
+  }
+  //db에서 사용자 정보 가져오기
+  Future<void> _fetchUserData() async {
+    try {
+      // Firestore에서 userId와 일치하는 문서 가져오기
+      final QuerySnapshot userQuery = await FirebaseFirestore.instance
+          .collection('user')
+          .where('id', isEqualTo: widget.userInfo.userId) // widget.userInfo.userId 사용
+          .get();
+
+      if (userQuery.docs.isNotEmpty) {
+        // 해당하는 유저 데이터가 있을 경우 첫 번째 문서 가져오기
+        final DocumentSnapshot userDoc = userQuery.docs.first;
+
+        setState(() {
+          userData = userDoc.data() as Map<String, dynamic>;
+        });
+        _fetchRecommendedJobs();
+      } else {
+        print("해당 userId로 일치하는 유저가 없습니다.");
+      }
+    } catch (error) {
+      print("유저 정보를 가져오는 데 실패했습니다: $error");
     }
   }
 
@@ -122,7 +182,8 @@ class _StepResumeCreateState extends State<StepResumeCreate> {
           'max_tokens': maxTokens,
         }),
       );
-      print("prompt :$prompt");
+      //print("prompt :$prompt");
+      print("사용자 정보: $selectedFields, $careers");
 
       if (firstResponse.statusCode == 200) {
         final responseBody = json.decode(utf8.decode(firstResponse.bodyBytes));
@@ -226,18 +287,39 @@ class _StepResumeCreateState extends State<StepResumeCreate> {
             child: ListView(
               children: [
                 const Text(
+                  '내지역',
+                  style: TextStyle(fontSize: 18),
+                ),
+                Text(
+                  userData!['address'],
+                  style: TextStyle(fontSize: 18),
+                ),
+                const Text(
                   '자기소개서',
                   style: TextStyle(fontSize: 18),
                 ),
                 const SizedBox(height: 10),
-                TextField(
-                  controller: _selfIntroductionController,
-                  maxLines: 30,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: '자기소개서를 입력하세요',
+                Container(
+                  height: 400,
+                  child:  TextField(
+                    controller: _selfIntroductionController,
+                    maxLines: 30,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: '자기소개서를 입력하세요',
+                    ),
                   ),
                 ),
+                SizedBox(height:10),
+
+                Text('이력서 기반 추천 공고',
+                style: const TextStyle(
+                  fontSize:18,
+                )),
+                SizedBox(height: 10),
+                Container(
+                  child: Recommen_Component(jobs: recommendedJobs),
+                )
               ],
             ),
           ),

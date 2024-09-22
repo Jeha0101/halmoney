@@ -2,39 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:halmoney/Recruit_detail_pages/Recruit_main_page.dart';
 
-class CondSearchResultPage extends StatelessWidget {
+class Recommen_Component extends StatelessWidget {
   final List<DocumentSnapshot> jobs;
-  const CondSearchResultPage({super.key, required this.jobs});
+  const Recommen_Component({super.key, required this.jobs});
 
   @override
   Widget build(BuildContext context) {
     print('CondSearchResultPage ${jobs.length} jobs');
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color.fromARGB(250, 51, 51, 255),
-        elevation: 1.0,
-        title: Row(
-          children: [
-            Image.asset(
-              'assets/images/img_logo.png',
-              fit: BoxFit.contain,
-              height: 40,
-            ),
-            Container(
-              padding: const EdgeInsets.all(8.0),
-              child: const Text(
-                '할MONEY',
-                style: TextStyle(
-                  fontFamily: 'NanumGothicFamily',
-                  fontWeight: FontWeight.w600,
-                  fontSize: 18.0,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),

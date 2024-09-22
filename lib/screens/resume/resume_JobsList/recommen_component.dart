@@ -1,47 +1,28 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:halmoney/Recruit_detail_pages/Recruit_main_page.dart';
+import 'package:halmoney/JobSearch_pages/JobList_widget.dart';
 
-class CondSearchResultPage extends StatelessWidget {
+import '../../../Recruit_detail_pages/Recruit_main_page.dart';
+
+class Recommen_Component extends StatelessWidget {
   final List<DocumentSnapshot> jobs;
-  const CondSearchResultPage({super.key, required this.jobs});
+
+  const Recommen_Component({super.key, required this.jobs});
 
   @override
   Widget build(BuildContext context) {
-    print('CondSearchResultPage ${jobs.length} jobs');
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color.fromARGB(250, 51, 51, 255),
-        elevation: 1.0,
-        title: Row(
-          children: [
-            Image.asset(
-              'assets/images/img_logo.png',
-              fit: BoxFit.contain,
-              height: 40,
-            ),
-            Container(
-              padding: const EdgeInsets.all(8.0),
-              child: const Text(
-                '할MONEY',
-                style: TextStyle(
-                  fontFamily: 'NanumGothicFamily',
-                  fontWeight: FontWeight.w600,
-                  fontSize: 18.0,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: jobs.map((job) => Cond_Search(job: job)).toList(),
-          ),
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+        child: Column(
+          children: jobs.map((job){
+            return Column(
+              children: [
+                Cond_Search(job: job),
+                const SizedBox(height: 10,)
+              ],
+            );
+          }).toList(),
         ),
       ),
     );
@@ -76,17 +57,17 @@ class Cond_Search extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => Recruit_main(
-              id: jobData['id'] ?? 'No',
-              num: jobData['num'] ?? 'No',
-              title: jobData['title'] ?? 'NO',
-              address: address,
-              wage: wage,
-              career: jobData['job_name'] ?? '',
-              detail: jobData['detail'] ?? '',
-              workweek: jobData['work_week'] ?? '',
-              image_path: jobData['image_path'] ?? '',
-              endday: jobData['endday'] ?? '',
-              manager_call: jobData['manager_call']??''
+                id: jobData['id'] ?? 'No',
+                num: jobData['num'] ?? 'No',
+                title: jobData['title'] ?? 'NO',
+                address: address,
+                wage: wage,
+                career: jobData['job_name'] ?? '',
+                detail: jobData['detail'] ?? '',
+                workweek: jobData['work_week'] ?? '',
+                image_path: jobData['image_path'] ?? '',
+                endday: jobData['endday'] ?? '',
+                manager_call: jobData['manager_call']??''
               //userId: widget.id,
             ),
           ),
@@ -99,21 +80,19 @@ class Cond_Search extends StatelessWidget {
           borderRadius: BorderRadius.circular(8.0),
         ),
       ),
-      child: SizedBox(
-        width: 370,
-        height: 100,
+      child: Container(
+        height: 80,
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const SizedBox(width: 10),
             SizedBox(
-              width: 100,
-              height: 100,
               child: Column(
                 children: [
                   Image.asset(
                     jobData['image_path'],
                     width: 90,
-                    height: 90,
+                    height: 80,
                   )
                 ],
               ),
@@ -123,7 +102,7 @@ class Cond_Search extends StatelessWidget {
               width: 200,
               height: 80,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
                     child: Row(
@@ -132,7 +111,7 @@ class Cond_Search extends StatelessWidget {
                           child: Text(
                             jobName,
                             style: const TextStyle(
-                              fontSize: 18,
+                              fontSize: 15,
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
                             ),
@@ -150,7 +129,7 @@ class Cond_Search extends StatelessWidget {
                           child: Text(
                             address,
                             style: const TextStyle(
-                              fontSize: 13,
+                              fontSize: 10,
                               fontWeight: FontWeight.w500,
                               color: Color.fromARGB(250, 69, 99, 255),
                             ),
@@ -169,7 +148,7 @@ class Cond_Search extends StatelessWidget {
                           child: Text(
                             wage,
                             style: const TextStyle(
-                              fontSize: 13,
+                              fontSize: 10,
                               fontWeight: FontWeight.normal,
                               color: Colors.black,
                             ),
