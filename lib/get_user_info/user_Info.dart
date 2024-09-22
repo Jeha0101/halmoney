@@ -91,6 +91,9 @@ class UserInfo {
   String getUserName() {
     return userName;
   }
+  String getUserAddress(){
+    return userAddress;
+  }
 
   // 지원 분야 메소드
   void editSelectedFields(List<String> selectedFields) {
