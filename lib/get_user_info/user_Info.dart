@@ -11,10 +11,10 @@ class UserInfo {
   late String userGender;
   late String userDob;
   late String userAddress;
-  List<Career> careers=[];
-  List<String> selectedFields=[];
-  List<String> preferredWorkTime=[];
-  List<String> preferredWorkPlace=[];
+  late List<Career> careers;
+  late List<String> selectedFields;
+  late List<String> preferredWorkTime;
+  late List<String> preferredWorkPlace;
 
   UserInfo(String userId) {
     _fetchUserInfo(userId);
@@ -44,6 +44,10 @@ class UserInfo {
         userGender = data['userGender'] ?? '';
         userDob = data['userDob'] ?? '';
         userAddress = data['userAddress'] ?? '';
+        careers = data['careers'] ?? [];  //careers는 스트링이 아니라서 불러오는 다른 방법이 필요함
+        selectedFields = data['selectedFields'] ?? [];
+        preferredWorkTime = data['preferredWorkTime'] ?? [];
+        preferredWorkPlace = data ['preferredWorkPlace'] ?? [];
       }
     } catch (error) {
       print('Failed to fetch user info: $error');

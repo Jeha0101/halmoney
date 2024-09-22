@@ -1,4 +1,5 @@
 // 작성자 : 황제하
+// 하나의 경력에 대한 정보를 저장하는 클래스
 
 class Career {
   String workDuration = '';
