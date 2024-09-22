@@ -7,6 +7,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:convert';
 import 'package:halmoney/get_user_info/user_Info.dart';
 import 'package:halmoney/screens/resume/user_prompt_factor.dart';
+import 'package:halmoney/resume2/resume_revision/first_revision.dart';
 
 class StepResumeCreate extends StatefulWidget {
   final UserInfo userInfo;
@@ -27,6 +28,8 @@ class _StepResumeCreateState extends State<StepResumeCreate> {
   late String careers;
   late List<String> selectedStrens;
   late int quantity;
+  late String selfIntroduction;
+  late String userName;
 
   bool _isLoading = true;
   final TextEditingController _selfIntroductionController =
@@ -36,6 +39,7 @@ class _StepResumeCreateState extends State<StepResumeCreate> {
   void initState() {
     super.initState();
     _fetchResumeData();
+    createSelfIntroduction();
   }
 
   //사용자 정보 불러오기
@@ -45,30 +49,35 @@ class _StepResumeCreateState extends State<StepResumeCreate> {
       careers = widget.userPromptFactor.getCareersString();
       selectedStrens = widget.userPromptFactor.selectedStrens;
       quantity = widget.userPromptFactor.quantity;
-
-      //GPT 첫번째 자기소개서 작성
-      final firstResponse = await _fetchGPTResponse(
-        selectedFields: selectedFields,
-        careers:  careers,
-        selectedStrens: selectedStrens,
-        quantity: quantity,
-      );
-
-      //GPT 두번째 자기소개서 작성
-      final secondResponse= await _recreateGPTResponse(
-        firstResponse: firstResponse,
-      );
-
-      setState(() {
-        _selfIntroductionController.text = secondResponse;
-        _isLoading = false;
-      });
+      userName = widget.userInfo.userName;
     } catch (error) {
       print("Failed to fetch resume data: $error");
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Failed to fetch resume data: $error")),
       );
     }
+  }
+
+  // 자기소개서 생성 함수
+  void createSelfIntroduction() async {
+    //GPT 첫번째 자기소개서 작성 함수 호출
+    final firstResponse = await _fetchGPTResponse(
+      selectedFields: selectedFields,
+      careers:  careers,
+      selectedStrens: selectedStrens,
+      quantity: quantity,
+    );
+
+    //GPT 두번째 자기소개서 작성 함수 호출
+    final secondResponse= await _recreateGPTResponse(
+      firstResponse: firstResponse,
+    );
+
+    setState(() {
+      selfIntroduction = secondResponse;
+      _selfIntroductionController.text = secondResponse;
+      _isLoading = false;
+    });
   }
 
   //GPT 첫번째 자기소개서 작성 함수
@@ -199,6 +208,7 @@ class _StepResumeCreateState extends State<StepResumeCreate> {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
+          backgroundColor: Colors.white,
           appBar: AppBar(
             title: const Text('AI 자기소개서'),
             centerTitle: true,
@@ -215,27 +225,153 @@ class _StepResumeCreateState extends State<StepResumeCreate> {
                 ),
                 SizedBox(height: 20),
                 Text(
-                  'AI 자기소개서를 생성중입니다',
-                  style: TextStyle(fontSize: 16),
+                  'AI가 자기소개서를\n자동생성중입니다',
+                  style: TextStyle(fontSize: 25),
                 ),
               ],
             ),
           )
               : Padding(
-            padding: const EdgeInsets.only(left: 30.0, right: 30.0),
+            padding: const EdgeInsets.all(25.0),
             child: ListView(
               children: [
-                const Text(
-                  '자기소개서',
-                  style: TextStyle(fontSize: 18),
+                // 페이지 이동 영역
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // 이전 페이지로 이동
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Row(
+                        children: [
+                          Icon(
+                            Icons.chevron_left,
+                            size: 30,
+                          ),
+                          Text('이전',
+                              style: TextStyle(
+                                fontFamily: 'NanumGothicFamily',
+                                fontSize: 20.0,
+                                color: Colors.black,
+                              )),
+                        ],
+                      ),
+                    ),
+
+                    //다음 페이지로 이동
+                    GestureDetector(
+                      onTap: () {
+                        // widget.userPromptFactor.editQuantity(quantity);
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //       builder: (context) => StepResumeCreate(
+                        //         userInfo : widget.userInfo,
+                        //         userPromptFactor : widget.userPromptFactor,
+                        //       )),
+                        // );
+                      },
+                      child: const Row(
+                        children: [
+                          Text('다음',
+                              style: TextStyle(
+                                fontFamily: 'NanumGothicFamily',
+                                fontSize: 20.0,
+                                color: Colors.black,
+                              )),
+                          Icon(
+                            Icons.chevron_right,
+                            size: 30,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 10),
+
+                const SizedBox(
+                  height: 20,
+                ),
+
+                Text(
+                  'AI가 $userName님의 자기소개서를 완성했습니다',
+                  style: TextStyle(fontSize: 28),
+                ),
+                SizedBox(height: 15,),
+                const Text(
+                  '자기소개서를 직접 수정하거나 아래의 버튼을 눌러서 자기소개서를 수정해보세요!',
+                  style: TextStyle(fontSize: 20),
+                ),
+                SizedBox(height: 15,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    ElevatedButton(
+                        onPressed: (){
+                          setState(() {
+                            _isLoading = true;
+                          });
+                          createSelfIntroduction();
+                        },
+                        child: const Text(
+                            "다시 만들기",
+                            style: TextStyle(color: Colors.white, fontSize: 20)),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color.fromARGB(250, 51, 51, 255),
+                          minimumSize: const Size(150, 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        List<String> paragraphs = selfIntroduction.split('\n\n');
+                        String firstParagraph = paragraphs.isNotEmpty ? paragraphs[0] : '';
+                        String secondParagraph = paragraphs.length > 1 ? paragraphs[1] : '';
+                        String thirdParagraph = paragraphs.length > 2 ? paragraphs[2] : '';
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>  FirstParagraphPage(
+                              firstParagraph: firstParagraph,
+                              secondParagraph: secondParagraph,
+                              thirdParagraph: thirdParagraph,
+                            ),
+                          ),
+                        );
+                      },
+                      child: const Text(
+                          'AI와 수정하기',
+                          style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromARGB(250, 51, 51, 255),
+                        minimumSize: const Size(150, 50),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
                 TextField(
                   controller: _selfIntroductionController,
-                  maxLines: 30,
+                  maxLines: 25,
+                  style: TextStyle(fontSize: 18, color: Colors.black), // 폰트 사이즈 및 색상 변경
                   decoration: InputDecoration(
-                    border: OutlineInputBorder(),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black), // 테두리 색상 변경
+                    ),
                     hintText: '자기소개서를 입력하세요',
+                    hintStyle: TextStyle(color: Colors.grey), // 힌트 텍스트 색상 변경
+                    filled: true,
+                    fillColor: Colors.white, // 배경 색상 변경
+                    contentPadding: EdgeInsets.all(16.0), // 패딩 조정
                   ),
                 ),
               ],
