@@ -6,14 +6,14 @@ class PublicJobsData {
 
   Future<List<Map<String, dynamic>>> fetchPublicJobs() async {
     try {
-      QuerySnapshot snapshot = await _firestore.collection('public_jobs').get();
+      QuerySnapshot snapshot = await _firestore.collection('publicjobs').get();
       List<Map<String, dynamic>> jobs = snapshot.docs.map((doc) {
         return {
-          'title': doc['title'],
-          'company': doc['company'],
-          'region': doc['region'],
+          'title': doc['jobtitle'],
+          'company': doc['hirecompany'],
+          'region': doc['hireregion'],
           'image_path': doc['image_path'],
-          'endday': doc['endday'],
+          'endday': doc['end_day'],
         };
       }).toList();
       return jobs;

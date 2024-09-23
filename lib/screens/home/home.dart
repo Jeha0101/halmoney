@@ -1,10 +1,12 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:halmoney/AI_pages/AI_recomm_page.dart';
 import 'package:halmoney/AI_pages/AI_select_cond_page.dart';
 import 'package:halmoney/pages/search_engine.dart';
 import 'package:halmoney/screens/map/mapPage.dart';
 import 'package:halmoney/screens/resume/step1_hello.dart';
+import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:halmoney/PublicJobs_pages/PublicJobsDescribe.main.dart';
 import 'package:halmoney/get_user_info/user_Info.dart';
@@ -48,11 +50,13 @@ class _MyHomePageState extends State<MyHomePage> {
       publicJobs = fetchedJobs;
       isLoading = false;
     });
+    print('update publicjobs list: $publicJobs');
   }
 
 
   @override
   Widget build(BuildContext context) {
+    print("Public Jobs length: ${publicJobs.length}");
     List<String> mainUrls = [
       "assets/images/homeimages/public_work_page.png",
       "assets/images/homeimages/recommendation_page.png",
@@ -404,68 +408,58 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  const Text(
-                    '공공 일자리',
-                    style: TextStyle(
-                      fontSize: 23,
-                      fontWeight: FontWeight.w600,
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        '공공 일자리',
+                        style: TextStyle(
+                          fontSize: 23,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: (){
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context)=> PublicJobsDescribe(id: widget.id))
+                          );
+                        },
+                        child: Text('전체보기'),
+                      )
+                    ],
                   ),
                   const SizedBox(
                     height: 20,
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                PublicJobsDescribe(id: widget.id)),
-                      );
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(20.0),
-                      height: 100,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(20),
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey,
-                            spreadRadius: 1.0,
-                            blurRadius: 10.0,
-                            offset: Offset(2, 2),
-                            blurStyle: BlurStyle.inner,
-                          ),
-                        ],
-                      ),
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            '공공 일자리 알리미',
-                            style: TextStyle(
-                              fontSize: 20,
-                            ),
-                          ),
-                          Spacer(),
-                          Image(
-                            image: AssetImage('assets/images/location.png'),
-                            width: 60,
-                            height: 60,
-                            fit: BoxFit.contain,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
+                  isLoading
+                      ? const Center(child: CircularProgressIndicator())
+                      : Container(
+                      height: 240,
+                      child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: publicJobs.length,
+                          itemBuilder:(context, index){
+                            final job = publicJobs[index];
+
+                            Timestamp? endTimestamp = job['endday'] as Timestamp?;
+                            String formattedEndDate = endTimestamp != null
+                                ? DateFormat('yyyy-MM-dd').format(endTimestamp.toDate())
+                                : '상시모집';
+
+                            return Padding(
+                                padding: const EdgeInsets.only(right:16.0),
+                                child: JobCard(
+                                    image : job['image_path'] ?? 'assets/images/img_logo.png',
+                                    title : job['title'] ?? '할MONEY',
+                                    description: job['company'] ?? '할MONEY',
+                                    region : job['region'] ?? '미정',
+                                    endday: formattedEndDate,
+                                )
+                            );
+                          }
+                      )
+                  )
                 ],
               ),
             ),
@@ -630,6 +624,83 @@ class _MyHomePageState extends State<MyHomePage> {
 
           ]),
         ),
+      ),
+    );
+  }
+}
+
+class JobCard extends StatelessWidget{
+  final String image;
+  final String title;
+  final String description;
+  final String region;
+  final String endday;
+
+  const JobCard({
+    required this.image,
+    required this.title,
+    required this.description,
+    required this.region,
+    required this.endday,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 10),
+      width: 200,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 1,
+            blurRadius: 5,
+            offset: Offset(0, 3), // Shadow position
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(10),
+              topRight: Radius.circular(10),
+            ),
+            child: Image.asset(image, height: 100,),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+
+                Text(
+                  title,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis
+                ),
+                SizedBox(height: 4),
+                Text(
+                  description, // Could be company or another field
+                  style: TextStyle(fontSize: 16),
+                ),
+                SizedBox(height: 4),
+                Text(
+                  '지역: $region',
+                  style: TextStyle(fontSize: 15, color: Colors.grey),
+                ),
+                SizedBox(height: 4),
+                Text(
+                  '마감일: $endday',
+                  style: TextStyle(fontSize: 15, color: Colors.blue),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
