@@ -9,7 +9,7 @@ class QuestionGeneratorService {
     final apiKey = dotenv.get('GPT_API_KEY');
     const endpoint = 'https://api.openai.com/v1/chat/completions';
 
-
+    
     String prompt = '''다음 주어진 텍스트에서 **채용절차**만을 단계별로 추출해 주세요. 각 단계를 간단히 표현으로 리스트로 정리해 주세요.
       
       채용절차:

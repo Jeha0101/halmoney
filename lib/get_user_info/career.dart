@@ -1,6 +1,3 @@
-// 작성자 : 황제하
-// 하나의 경력에 대한 정보를 저장하는 클래스
-
 class Career {
   String workDuration = '';
   String workUnit = '';
@@ -33,9 +30,9 @@ class Career {
 
   Career clone() {
     return Career()
-      ..workDuration = this.workDuration
-      ..workUnit = this.workUnit
-      ..workPlace = this.workPlace
-      ..workDescription = this.workDescription;
+      ..workDuration = workDuration
+      ..workUnit = workUnit
+      ..workPlace = workPlace
+      ..workDescription = workDescription;
   }
 }

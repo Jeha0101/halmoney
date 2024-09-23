@@ -90,6 +90,9 @@ class _StepUserFieldState extends State<StepUserField> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
+                        //임시 코드
+                        // 우선 홈페이지로 이동
+                        // 나중에 근무 가능 시간 조사 페이지로
                           builder: (context) =>StepWorkHours(userInfo: widget.userInfo)),
                     );
                   },

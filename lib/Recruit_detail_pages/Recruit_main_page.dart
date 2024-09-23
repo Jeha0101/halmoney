@@ -50,7 +50,7 @@ class Recruit_main extends StatelessWidget {
       home: Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.white,
-
+            elevation: 5.0,
             title: Row(
               children: [
                 IconButton(
