@@ -8,7 +8,7 @@ class StepCareerPage extends StatefulWidget {
   final UserInfo userInfo;
   final UserPromptFactor userPromptFactor;
 
-  StepCareerPage({
+  const StepCareerPage({
     super.key,
     required this.userInfo,
     required this.userPromptFactor,
@@ -464,11 +464,11 @@ class CareerDisplay extends StatelessWidget {
               children: <Widget>[
                 Container(
                   padding: const EdgeInsets.all(10),
-                  child: Text("근무한 곳", style: const TextStyle(fontSize: 20)),
+                  child: const Text("근무한 곳", style: TextStyle(fontSize: 20)),
                 ),
                 Container(
                   padding: const EdgeInsets.all(10),
-                  child: Text("근무한 기간", style: const TextStyle(fontSize: 20)),
+                  child: const Text("근무한 기간", style: TextStyle(fontSize: 20)),
                 ),
                 Container(
                   padding: const EdgeInsets.all(10),

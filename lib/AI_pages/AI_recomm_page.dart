@@ -80,7 +80,7 @@ class _AIRecommPage extends State<AIRecommPage> {
             .get();
         setState(() {
           viewedJobs = viewedJobsSnapshot.docs.map((doc) {
-            final data = doc.data() as Map<String, dynamic>;
+            final data = doc.data();
             return {
               'job_title': data['job_title'],
               'viewed_at': data['viewed_at']

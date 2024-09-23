@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'revisionResume.dart';
 
 class FinalPage extends StatelessWidget {
   final String firstParagraph;
@@ -7,11 +6,11 @@ class FinalPage extends StatelessWidget {
   final String thirdParagraph;
 
   const FinalPage({
-    Key? key,
+    super.key,
     required this.firstParagraph,
     required this.secondParagraph,
     required this.thirdParagraph,
-  }) : super(key: key);
+  });
 
   /*void _goToResumeView(BuildContext context) {
     Navigator.push(

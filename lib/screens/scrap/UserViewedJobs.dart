@@ -42,7 +42,7 @@ class _UserViewedJobsPageState extends State<UserViewedJobsPage> {
             .get();
 
         final List<String> viewedJobTitles = viewedJobsSnapshot.docs.map((doc) {
-          final data = doc.data() as Map<String, dynamic>;
+          final data = doc.data();
           return data['job_title'] as String;
         }).toList();
 

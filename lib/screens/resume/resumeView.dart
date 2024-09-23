@@ -3,8 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'dart:ui' as ui;
 import 'dart:io';
-import 'dart:typed_data';
-import 'package:pdf/pdf.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:flutter/rendering.dart';
@@ -15,8 +13,7 @@ class ResumeView extends StatefulWidget {
   final String id;
   final String resumeId;
 
-  const ResumeView({Key? key, required this.id, required this.resumeId})
-      : super(key: key);
+  const ResumeView({super.key, required this.id, required this.resumeId});
 
   @override
   _ResumeViewState createState() => _ResumeViewState();
@@ -25,7 +22,7 @@ class ResumeView extends StatefulWidget {
 class _ResumeViewState extends State<ResumeView> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   Map<String, dynamic>? _resumeData;
-  GlobalKey _repaintBoundaryKey = GlobalKey();
+  final GlobalKey _repaintBoundaryKey = GlobalKey();
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -116,7 +113,7 @@ class _ResumeViewState extends State<ResumeView> {
       var status = await Permission.storage.request();
       if (!status.isGranted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('저장소 접근 권한이 필요합니다.')),
+          const SnackBar(content: Text('저장소 접근 권한이 필요합니다.')),
         );
         return;
       }
@@ -135,7 +132,7 @@ class _ResumeViewState extends State<ResumeView> {
       if (byteData == null){
         throw Exception('이미지 데이터를 변환할 수 없습니다');
       }
-      final imageBytes = byteData!.buffer.asUint8List();
+      final imageBytes = byteData.buffer.asUint8List();
 
       // pdf 생성
       final pdf = pw.Document();
@@ -188,7 +185,7 @@ class _ResumeViewState extends State<ResumeView> {
         ),
       ),
       body: _resumeData == null
-          ? Center(child: Text("이력서를 불러오는 중입니다."))
+          ? const Center(child: Text("이력서를 불러오는 중입니다."))
           : Padding(
         padding: const EdgeInsets.all(30.0),
         child: SingleChildScrollView(
@@ -198,12 +195,12 @@ class _ResumeViewState extends State<ResumeView> {
             key: _repaintBoundaryKey,
             child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
               Row(
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     width: 5,
                   ),
                   Column(
@@ -211,29 +208,29 @@ class _ResumeViewState extends State<ResumeView> {
                     children: [
                       Text(
                         _resumeData!['resumeItem']['name'] ?? '이름 없음',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 25,
                         ),
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       Text(
                         '${_resumeData!['resumeItem']['gender'] ?? '성별 없음'}',
-                        style: TextStyle(fontSize: 15),
+                        style: const TextStyle(fontSize: 15),
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       Text(
                         '${_resumeData!['resumeItem']['dob']}년생',
-                        style: TextStyle(fontSize: 15),
+                        style: const TextStyle(fontSize: 15),
                       ),
                     ],
                   ),
                 ],
               ),
-              SizedBox(height: 40),
+              const SizedBox(height: 40),
               //주소, 전화번호란
               Row(
                 children: [
-                  Column(
+                  const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
@@ -249,7 +246,7 @@ class _ResumeViewState extends State<ResumeView> {
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 30,
                   ),
                   Column(
@@ -257,22 +254,22 @@ class _ResumeViewState extends State<ResumeView> {
                     children: [
                       Text(
                         '${_resumeData!['resumeItem']['address']}',
-                        style: TextStyle(fontSize: 18),
+                        style: const TextStyle(fontSize: 18),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Text(
                         '${_resumeData!['resumeItem']['phone']}',
-                        style: TextStyle(fontSize: 18),
+                        style: const TextStyle(fontSize: 18),
                       ),
                     ],
                   ),
                 ],
               ),
-              SizedBox(height: 10),
-              Divider(),
-              SizedBox(
+              const SizedBox(height: 10),
+              const Divider(),
+              const SizedBox(
                 height: 10,
               ),
               //경력란
@@ -298,23 +295,23 @@ class _ResumeViewState extends State<ResumeView> {
                     children: [
                       Text(
                         '${experience['place']}',
-                        style: TextStyle(fontSize: 18),
+                        style: const TextStyle(fontSize: 18),
                       ),
-                      SizedBox(height: 5),
+                      const SizedBox(height: 5),
                       Text(
                         '근무 기간   ${experience['startYear']}년 ${experience['startMonth']}월 ~ ${experience['endYear']}년 ${experience['endMonth']}월',
-                        style: TextStyle(fontSize: 14),
+                        style: const TextStyle(fontSize: 14),
                       ),
-                      SizedBox(height: 5),
+                      const SizedBox(height: 5),
                       Text(
                         '근무 내용   ${experience['description']}',
-                        style: TextStyle(fontSize: 14),
+                        style: const TextStyle(fontSize: 14),
                       ),
                     ],
                   ),
                 );
-              }).toList(),
-              Divider(),
+              }),
+              const Divider(),
 
               //자기소개서
               const SizedBox(height: 10),
@@ -333,7 +330,7 @@ class _ResumeViewState extends State<ResumeView> {
                 child: Text(
                   _resumeData!['resumeItem']['selfIntroduction'] ??
                       '자기소개 없음',
-                  style: TextStyle(fontSize: 15),
+                  style: const TextStyle(fontSize: 15),
                 ),
               ),
             ],
@@ -353,20 +350,20 @@ class _ResumeViewState extends State<ResumeView> {
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
-                        title: Text('삭제 확인'),
-                        content: Text('해당 이력서를 삭제하시겠습니까?'),
+                        title: const Text('삭제 확인'),
+                        content: const Text('해당 이력서를 삭제하시겠습니까?'),
                         actions: [
                           TextButton(
                             onPressed: () {
                               Navigator.of(context).pop(false);
                             },
-                            child: Text('취소'),
+                            child: const Text('취소'),
                           ),
                           TextButton(
                             onPressed: () {
                               Navigator.of(context).pop(true);
                             },
-                            child: Text('확인'),
+                            child: const Text('확인'),
                           ),
                         ],
                       );
@@ -377,48 +374,48 @@ class _ResumeViewState extends State<ResumeView> {
                   }
                 },
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 51, 51, 255)),
-                  padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.symmetric(vertical: 15.0)),
+                  backgroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 51, 51, 255)),
+                  padding: MaterialStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.symmetric(vertical: 15.0)),
                 ),
-                child: Text(
+                child: const Text(
                   '삭제하기',
                   style: TextStyle(fontSize: 16,color: Colors.white),
                 ),
               ),
             ),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             Expanded(
               child: ElevatedButton(
                 onPressed: () {
                   _copyTextToClipboard();
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
+                    const SnackBar(
                       content: Text('텍스트가 복사되었습니다'),
                       duration: Duration(seconds: 2),
                     ),
                   );
                 },
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 51, 51, 255)),
-                  padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.symmetric(vertical: 15.0)),
+                  backgroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 51, 51, 255)),
+                  padding: MaterialStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.symmetric(vertical: 15.0)),
                 ),
-                child: Text(
+                child: const Text(
                   '텍스트 복사하기',
                   style: TextStyle(fontSize: 16, color: Colors.white),
                 ),
               ),
             ),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             Expanded(
               child : ElevatedButton(
                 onPressed: (){
                   _captureAndSaveAsPdf();
                 },
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 51, 51, 255)),
-                  padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.symmetric(vertical: 15.0)),
+                  backgroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 51, 51, 255)),
+                  padding: MaterialStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.symmetric(vertical: 15.0)),
                 ),
-                child: Text(
+                child: const Text(
                   'PDF로 저장',
                   style: TextStyle(fontSize: 16, color: Colors.white),
                 ),

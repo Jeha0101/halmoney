@@ -33,9 +33,9 @@ class Career {
 
   Career clone() {
     return Career()
-      ..workDuration = this.workDuration
-      ..workUnit = this.workUnit
-      ..workPlace = this.workPlace
-      ..workDescription = this.workDescription;
+      ..workDuration = workDuration
+      ..workUnit = workUnit
+      ..workPlace = workPlace
+      ..workDescription = workDescription;
   }
 }

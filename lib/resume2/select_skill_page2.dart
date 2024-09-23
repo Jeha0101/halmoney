@@ -5,11 +5,11 @@ class SelectSkillPage extends StatefulWidget {
   final String id;
   final String title;
 
-  SelectSkillPage({
+  const SelectSkillPage({
     required this.id,
     required this.title,
-    Key? key,
-  }): super(key: key);
+    super.key,
+  });
 
   @override
   State<SelectSkillPage> createState() => _SelectSkillPageState();

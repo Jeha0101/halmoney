@@ -3,12 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:halmoney/get_user_info/step4_workhours.dart';
 import 'package:halmoney/get_user_info/user_Info.dart';
-import 'package:halmoney/myAppPage.dart';
 
 class StepUserField extends StatefulWidget {
   final UserInfo userInfo;
 
-  StepUserField({
+  const StepUserField({
     super.key,
     required this.userInfo,
   });
@@ -195,7 +194,7 @@ class _FieldChooseWidgetState extends State<FieldChooseWidget> {
     '교육/강사'
   ];
 
-  TextEditingController _searchTextEditingController = TextEditingController();
+  final TextEditingController _searchTextEditingController = TextEditingController();
 
   String get _searchText => _searchTextEditingController.text.trim();
 
@@ -252,10 +251,10 @@ class _FieldChooseWidgetState extends State<FieldChooseWidget> {
         return Chip(
           label: Text(
             field,
-            style: TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.white),
           ),
           backgroundColor: Colors.blue,
-          deleteIcon: Icon(Icons.close, color: Colors.white),
+          deleteIcon: const Icon(Icons.close, color: Colors.white),
           onDeleted: () {
             setState(() {
               widget.selectedFields.remove(field);
@@ -269,7 +268,7 @@ class _FieldChooseWidgetState extends State<FieldChooseWidget> {
 
   Widget _buildSearchField() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey.shade400),
         borderRadius: BorderRadius.circular(5.0),
@@ -322,7 +321,7 @@ class _FieldChooseWidgetState extends State<FieldChooseWidget> {
           child: Chip(
             label: Text(
               field,
-              style: TextStyle(color: Colors.black),
+              style: const TextStyle(color: Colors.black),
             ),
             backgroundColor: Colors.grey.shade300,
           ),

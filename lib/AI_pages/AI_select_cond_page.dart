@@ -104,13 +104,13 @@ class _AISelectCondPage extends State<AISelectCondPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('조건에 맞는 공고가 없습니다!'),
+          title: const Text('조건에 맞는 공고가 없습니다!'),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('확인'),
+              child: const Text('확인'),
             ),
           ],
         );
