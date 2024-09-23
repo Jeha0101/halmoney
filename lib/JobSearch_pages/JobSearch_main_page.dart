@@ -160,7 +160,7 @@ class _JobSearchState extends State<JobSearch> {
                   workweek: job['workweek'],
                   image_path: job['image_path'],
                   isLiked: job['isLiked'],
-                 endday: job['end_day'],
+                  endday: job['end_day'],
                   manager_call : job['manager_call'] ?? 'No Call Number',
                 ),
               );

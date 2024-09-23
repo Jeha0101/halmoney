@@ -471,7 +471,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
             // 맞춤 검색
             Padding(
-              padding: const EdgeInsets.only(left: 25.0, right: 20.0, top: 40),
+              padding: const EdgeInsets.only(left: 25.0, right: 20.0, top: 40, bottom:40),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -555,8 +555,9 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
 
             // 지역 검색 위젯
-            Padding(
-              padding: const EdgeInsets.only(left: 25.0, right: 20.0, top: 40),
+            Container(
+              padding: const EdgeInsets.only(left: 25.0, right: 20.0, top: 10, bottom: 40),
+              //color: Color.fromARGB(80, 211, 211, 211),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -573,52 +574,68 @@ class _MyHomePageState extends State<MyHomePage> {
                   const SizedBox(
                     height: 20,
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const MapScreen()),
-                      );
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(20.0),
-                      height: 100,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(20),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      MapScreen()),
+                            );
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              const Image(
+                                image: AssetImage('assets/images/location.png'),
+                                width: 60,
+                                height: 60,
+                                fit: BoxFit.contain,
+                              ),
+                              const SizedBox(width: 30),
+                              Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(height:20),
+                                    const Text(
+                                      '어느 곳에서 일하고 싶으신가요?\n'
+                                          '원하는 지역을 골라보세요!',
+                                      style: TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 20),
+                                    Container(
+                                      padding: const EdgeInsets.all(10),
+                                      width: 230,
+                                      height: 50,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(25.0),
+                                        border: Border.all(
+                                          color: const Color.fromARGB(250, 51, 51, 255),
+                                        ),
+                                      ),
+                                      child: const Center(
+                                        child: Text(
+                                          '지역 검색하기',
+                                          style: TextStyle(
+                                              color: Color.fromARGB(250, 51, 51, 255),
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      ),
+                                    ),
+                                  ]),
+                            ],
+                          ),
                         ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey,
-                            spreadRadius: 1.0,
-                            blurRadius: 10.0,
-                            offset: Offset(2, 2),
-                            blurStyle: BlurStyle.inner,
-                          ),
-                        ],
                       ),
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            '지역 검색',
-                            style: TextStyle(
-                              fontSize: 20,
-                            ),
-                          ),
-                          Spacer(),
-                          Image(
-                            image: AssetImage('assets/images/location.png'),
-                            width: 60,
-                            height: 60,
-                            fit: BoxFit.contain,
-                          ),
-                        ],
-                      ),
-                    ),
+                    ],
                   ),
                   const SizedBox(height: 20),
                 ],

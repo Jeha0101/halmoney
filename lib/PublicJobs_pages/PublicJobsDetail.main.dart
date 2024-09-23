@@ -34,7 +34,6 @@ class PublicJobsDetail extends StatelessWidget {
 
   Future<void> _launchURL() async {
     if (await canLaunch(url)) {
-      print('imagep$image_path');
       await launch(url);
     } else {
       throw 'Could not launch $url';
@@ -82,7 +81,8 @@ class PublicJobsDetail extends StatelessWidget {
           children: [
             SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.only(left: 30.0, right: 25.0, top: 30.0),
+                padding:
+                    const EdgeInsets.only(left: 30.0, right: 25.0, top: 30.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -185,7 +185,8 @@ class PublicJobsDetail extends StatelessWidget {
                         const SizedBox(width: 25),
                         Expanded(
                           child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,  // Enable horizontal scrolling
+                            scrollDirection: Axis.horizontal,
+                            // Enable horizontal scrolling
                             child: Text(
                               title,
                               style: const TextStyle(
@@ -241,6 +242,7 @@ class PublicJobsDetail extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height:10.0),
+
                         Text(
                           person,
                           style: const TextStyle(
@@ -259,6 +261,7 @@ class PublicJobsDetail extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height:10.0),
+
                         Text(
                           person2,
                           style: const TextStyle(
@@ -277,6 +280,7 @@ class PublicJobsDetail extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height:10.0),
+
                         Text(
                           personcareer,
                           style: const TextStyle(
@@ -294,7 +298,9 @@ class PublicJobsDetail extends StatelessWidget {
                             fontWeight: FontWeight.w600,
                           ),
                         ),
+
                         const SizedBox(height:10.0),
+
                         Text(
                           personedu,
                           style: const TextStyle(
@@ -317,7 +323,8 @@ class PublicJobsDetail extends StatelessWidget {
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color.fromARGB(250, 51, 51, 255),
-                      padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 13),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 50, vertical: 13),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -335,7 +342,8 @@ class PublicJobsDetail extends StatelessWidget {
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color.fromARGB(255, 100, 100, 255),
-                      padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 13),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 50, vertical: 13),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -349,8 +357,9 @@ class PublicJobsDetail extends StatelessWidget {
                             title: title,
                             region: region,
                             career: personcareer,
-                            requirementsText: person,
-                            applystep: applystep,// Text for question generation
+                            requirementsText:
+                                person, // Text for question generation
+                            applystep: applystep,
                           ),
                         ),
                       );
