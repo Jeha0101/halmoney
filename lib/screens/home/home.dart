@@ -7,25 +7,22 @@ import 'package:halmoney/pages/search_engine.dart';
 import 'package:halmoney/screens/map/mapPage.dart';
 import 'package:halmoney/screens/resume/step1_hello.dart';
 import 'package:intl/intl.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:halmoney/PublicJobs_pages/PublicJobsDescribe.main.dart';
 import 'package:halmoney/get_user_info/user_Info.dart';
-import 'package:halmoney/PublicJobs_pages/PublicJobsData.dart';
 import 'dart:core';
-
+import 'package:halmoney/PublicJobs_pages/PublicJobsData.dart';
 import '../../PublicJobs_pages/PublicJobsDetail.main.dart';
 
 class MyHomePage extends StatefulWidget {
-  final String id;
+  final UserInfo userInfo;
 
-  const MyHomePage({super.key, required this.id});
+  const MyHomePage({super.key, required this.userInfo});
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  UserInfo? userInfo;
   PublicJobsData publicJobsData = PublicJobsData();
   List<Map<String, dynamic>> publicJobs = [];
   bool isLoading = true;
@@ -33,17 +30,17 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    _fetchUserInfo();
+    //_fetchUserInfo();
     _fetchJobs();
   }
 
-  //사용자 정보 불러오기
-  Future<void> _fetchUserInfo() async {
-    UserInfo fetchedUserInfo = UserInfo(widget.id);
-    setState(() {
-      userInfo = fetchedUserInfo;
-    });
-  }
+  // //사용자 정보 불러오기
+  // Future<void> _fetchUserInfo() async {
+  //   UserInfo fetchedUserInfo = await UserInfo.create(widget.id);
+  //   setState(() {
+  //     userInfo = fetchedUserInfo;
+  //   });
+  // }
 
   //공공일자리 데이터 불러오기
   Future<void> _fetchJobs() async {
@@ -119,20 +116,18 @@ class _MyHomePageState extends State<MyHomePage> {
                   onTap: () {
                     String imageUrl = mainUrls[itemIndex];
                     if ( imageUrl== "assets/images/homeimages/resume_create_page.png") {
-                      UserInfo userInfo = UserInfo(widget.id);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                StepHelloPage(userInfo: userInfo)),
+                                StepHelloPage(userInfo: widget.userInfo)),
                       );
                     } else if (imageUrl =="assets/images/homeimages/recommendation_page.png") {
-                      UserInfo userInfo = UserInfo(widget.id);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                AIRecommPage(id: widget.id)),
+                                AIRecommPage(id: widget.userInfo.userId)),
                       );
                     } else if (imageUrl == "assets/images/homeimages/search_engine_page.png") {
                       Navigator.push(
@@ -141,12 +136,11 @@ class _MyHomePageState extends State<MyHomePage> {
                             builder: (context) => const SearchEngine()),
                       );
                     } else if (imageUrl == "assets/images/homeimages/public_work_page.png") {
-                      UserInfo userInfo = UserInfo(widget.id);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                StepHelloPage(userInfo: userInfo)),
+                                StepHelloPage(userInfo: widget.userInfo)),
                       );
                     }
                   },
@@ -254,11 +248,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      UserInfo userInfo = UserInfo(widget.id);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => StepHelloPage(userInfo: userInfo)),
+                            builder: (context) => StepHelloPage(userInfo: widget.userInfo)),
                       );
                     },
                     child: Container(
@@ -338,8 +331,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     height: 25,
                   ),
                   Text(
-                    userInfo != null && userInfo!.userName.isNotEmpty
-                        ? '${userInfo?.getUserName()}님에게 딱맞는 일자리'
+                    widget.userInfo != null && widget.userInfo!.userName.isNotEmpty
+                        ? '${widget.userInfo?.getUserName()}님에게 딱맞는 일자리'
                         : '사용자 정보를 불러오는 중...',
                     style: const TextStyle(
                       fontSize: 23,
@@ -355,7 +348,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                AIRecommPage(id: widget.id)),
+                                AIRecommPage(id: widget.userInfo.userId)),
                       );
                     },
                     child: Container(
@@ -425,7 +418,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         onPressed: (){
                           Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context)=> PublicJobsDescribe(id: widget.id))
+                              MaterialPageRoute(builder: (context)=> PublicJobsDescribe(id: widget.userInfo.userId))
                           );
                         },
                         child: Text('전체보기', style: TextStyle(color:Colors.black, fontSize: 17),),
@@ -458,7 +451,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   description: job['company'] ?? '할MONEY',
                                   region : job['region'] ?? '미정',
                                   endday: formattedEndDate,
-                                  id : widget.id,
+                                  id : widget.userInfo.userId,
                                   url: job['url'] ?? '없음',
                                   person: job['person'] ?? '미정',
                                   person2: job['person2'] ?? '미정',
@@ -501,7 +494,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      AISelectCondPage(id: widget.id)),
+                                      AISelectCondPage(id: widget.userInfo.userId)),
                             );
                           },
                           child: Row(
@@ -562,8 +555,9 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
 
             // 지역 검색 위젯
-            Padding(
-              padding: const EdgeInsets.only(left: 25.0, right: 20.0, top: 40),
+            Container(
+              padding: const EdgeInsets.only(left: 25.0, right: 20.0, top: 10, bottom: 40),
+              color: Color.fromARGB(80, 211, 211, 211),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -580,52 +574,68 @@ class _MyHomePageState extends State<MyHomePage> {
                   const SizedBox(
                     height: 20,
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const MapScreen()),
-                      );
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(20.0),
-                      height: 100,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(20),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      MapScreen()),
+                            );
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              const Image(
+                                image: AssetImage('assets/images/location.png'),
+                                width: 60,
+                                height: 60,
+                                fit: BoxFit.contain,
+                              ),
+                              const SizedBox(width: 30),
+                              Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(height:20),
+                                    const Text(
+                                      '어느 곳에서 일하고 싶으신가요?\n'
+                                          '원하는 지역을 골라보세요!',
+                                      style: TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 20),
+                                    Container(
+                                      padding: const EdgeInsets.all(10),
+                                      width: 230,
+                                      height: 50,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(25.0),
+                                        border: Border.all(
+                                          color: const Color.fromARGB(250, 51, 51, 255),
+                                        ),
+                                      ),
+                                      child: const Center(
+                                        child: Text(
+                                          '지역 검색하기',
+                                          style: TextStyle(
+                                              color: Color.fromARGB(250, 51, 51, 255),
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      ),
+                                    ),
+                                  ]),
+                            ],
+                          ),
                         ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey,
-                            spreadRadius: 1.0,
-                            blurRadius: 10.0,
-                            offset: Offset(2, 2),
-                            blurStyle: BlurStyle.inner,
-                          ),
-                        ],
                       ),
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            '지역 검색',
-                            style: TextStyle(
-                              fontSize: 20,
-                            ),
-                          ),
-                          Spacer(),
-                          Image(
-                            image: AssetImage('assets/images/location.png'),
-                            width: 60,
-                            height: 60,
-                            fit: BoxFit.contain,
-                          ),
-                        ],
-                      ),
-                    ),
+                    ],
                   ),
                   const SizedBox(height: 20),
                 ],
@@ -672,32 +682,32 @@ class JobCard extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () {
-          print('Navigating to details with:');
-          print('person: $person, person2: $person2, personcareer: $personcareer, personedu: $personedu');
+      onTap: () {
+        print('Navigating to details with:');
+        print('person: $person, person2: $person2, personcareer: $personcareer, personedu: $personedu');
 
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => PublicJobsDetail(
-                id: id,
-                title: title,
-                company: description,
-                region: region,
-                url: url,
-                person: person,
-                person2: person2,
-                personcareer: personcareer,
-                personedu: personedu,
-                applystep: applystep,
-                image_path: image,
-                endday: endday,
-              ),
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PublicJobsDetail(
+              id: id,
+              title: title,
+              company: description,
+              region: region,
+              url: url,
+              person: person,
+              person2: person2,
+              personcareer: personcareer,
+              personedu: personedu,
+              applystep: applystep,
+              image_path: image,
+              endday: endday,
             ),
-          );
-        },
+          ),
+        );
+      },
 
-        child: Container(
+      child: Container(
         margin: const EdgeInsets.only(bottom: 15),
         width: 250,
         decoration: BoxDecoration(

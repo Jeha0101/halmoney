@@ -90,10 +90,7 @@ class _PublicJobsDescribeState extends State<PublicJobsDescribe> {
             backgroundColor: const Color.fromARGB(250, 51, 51, 255),
             leading: IconButton(
               onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => MyAppPage(id: widget.id)),
-                );
+                Navigator.pop(context);
               },
               icon: const Icon(Icons.arrow_back_ios_rounded),
               color: Colors.grey,
