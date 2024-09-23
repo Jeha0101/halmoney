@@ -7,7 +7,6 @@ import 'package:halmoney/pages/search_engine.dart';
 import 'package:halmoney/screens/map/mapPage.dart';
 import 'package:halmoney/screens/resume/step1_hello.dart';
 import 'package:intl/intl.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:halmoney/PublicJobs_pages/PublicJobsDescribe.main.dart';
 import 'package:halmoney/get_user_info/user_Info.dart';
 import 'package:halmoney/PublicJobs_pages/PublicJobsData.dart';
@@ -16,16 +15,15 @@ import 'dart:core';
 import '../../PublicJobs_pages/PublicJobsDetail.main.dart';
 
 class MyHomePage extends StatefulWidget {
-  final String id;
+  final UserInfo userInfo;
 
-  const MyHomePage({super.key, required this.id});
+  const MyHomePage({super.key, required this.userInfo});
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  UserInfo? userInfo;
   PublicJobsData publicJobsData = PublicJobsData();
   List<Map<String, dynamic>> publicJobs = [];
   bool isLoading = true;
@@ -33,17 +31,17 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    _fetchUserInfo();
+    //_fetchUserInfo();
     _fetchJobs();
   }
 
-  //사용자 정보 불러오기
-  Future<void> _fetchUserInfo() async {
-    UserInfo fetchedUserInfo = UserInfo(widget.id);
-    setState(() {
-      userInfo = fetchedUserInfo;
-    });
-  }
+  // //사용자 정보 불러오기
+  // Future<void> _fetchUserInfo() async {
+  //   UserInfo fetchedUserInfo = await UserInfo.create(widget.id);
+  //   setState(() {
+  //     userInfo = fetchedUserInfo;
+  //   });
+  // }
 
   //공공일자리 데이터 불러오기
   Future<void> _fetchJobs() async {
@@ -119,20 +117,18 @@ class _MyHomePageState extends State<MyHomePage> {
                   onTap: () {
                     String imageUrl = mainUrls[itemIndex];
                     if ( imageUrl== "assets/images/homeimages/resume_create_page.png") {
-                      UserInfo userInfo = UserInfo(widget.id);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                StepHelloPage(userInfo: userInfo)),
+                                StepHelloPage(userInfo: widget.userInfo)),
                       );
                     } else if (imageUrl =="assets/images/homeimages/recommendation_page.png") {
-                      UserInfo userInfo = UserInfo(widget.id);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                AIRecommPage(id: widget.id)),
+                                AIRecommPage(id: widget.userInfo.userId)),
                       );
                     } else if (imageUrl == "assets/images/homeimages/search_engine_page.png") {
                       Navigator.push(
@@ -141,12 +137,11 @@ class _MyHomePageState extends State<MyHomePage> {
                             builder: (context) => const SearchEngine()),
                       );
                     } else if (imageUrl == "assets/images/homeimages/public_work_page.png") {
-                      UserInfo userInfo = UserInfo(widget.id);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                StepHelloPage(userInfo: userInfo)),
+                                StepHelloPage(userInfo: widget.userInfo)),
                       );
                     }
                   },
@@ -254,11 +249,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      UserInfo userInfo = UserInfo(widget.id);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => StepHelloPage(userInfo: userInfo)),
+                            builder: (context) => StepHelloPage(userInfo: widget.userInfo)),
                       );
                     },
                     child: Container(
@@ -338,8 +332,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     height: 25,
                   ),
                   Text(
-                    userInfo != null && userInfo!.userName.isNotEmpty
-                        ? '${userInfo?.getUserName()}님에게 딱맞는 일자리'
+                    widget.userInfo != null && widget.userInfo!.userName.isNotEmpty
+                        ? '${widget.userInfo?.getUserName()}님에게 딱맞는 일자리'
                         : '사용자 정보를 불러오는 중...',
                     style: const TextStyle(
                       fontSize: 23,
@@ -355,7 +349,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                AIRecommPage(id: widget.id)),
+                                AIRecommPage(id: widget.userInfo.userId)),
                       );
                     },
                     child: Container(
@@ -425,7 +419,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         onPressed: (){
                           Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context)=> PublicJobsDescribe(id: widget.id))
+                              MaterialPageRoute(builder: (context)=> PublicJobsDescribe(id: widget.userInfo.userId))
                           );
                         },
                         child: Text('전체보기', style: TextStyle(color:Colors.black, fontSize: 17),),
@@ -458,7 +452,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   description: job['company'] ?? '할MONEY',
                                   region : job['region'] ?? '미정',
                                   endday: formattedEndDate,
-                                  id : widget.id,
+                                  id : widget.userInfo.userId,
                                   url: job['url'] ?? '없음',
                                   person: job['person'] ?? '미정',
                                   person2: job['person2'] ?? '미정',
@@ -501,7 +495,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      AISelectCondPage(id: widget.id)),
+                                      AISelectCondPage(id: widget.userInfo.userId)),
                             );
                           },
                           child: Row(
