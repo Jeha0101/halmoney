@@ -1,6 +1,11 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:halmoney/resume2/resumeManage2.dart';
+import 'Recurit_CallButton.dart';
 
 class Recruit_main extends StatelessWidget {
   final String id;
@@ -13,8 +18,9 @@ class Recruit_main extends StatelessWidget {
   final String workweek;
   final String image_path;
   final String endday;
+  final String manager_call;
 
-  const Recruit_main({
+  Recruit_main({
     required this.id,
     required this.num,
     required this.title,
@@ -25,8 +31,9 @@ class Recruit_main extends StatelessWidget {
     required this.workweek,
     required this.image_path,
     required this.endday,
-    super.key,
-  });
+    required this.manager_call,
+    Key? key,
+  }): super(key: key);
 
 
 
@@ -87,14 +94,14 @@ class Recruit_main extends StatelessWidget {
                           children: [
                             Expanded(child:
                             Text(title,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black,
                               ),))
                           ],
                         ),
-                        const SizedBox(height:20),
+                        SizedBox(height:20),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -109,7 +116,7 @@ class Recruit_main extends StatelessWidget {
                             )
                           ],
                         ),
-                        const SizedBox(height: 20),
+                        SizedBox(height: 20),
 
                         GridView.count(
                             shrinkWrap: true,
@@ -121,11 +128,11 @@ class Recruit_main extends StatelessWidget {
                               _buildInfoBox('요일', workweek),
                             ]
                         ),
-                        const SizedBox(height: 20),
-                        const Divider(thickness: 1, height: 1, color: Colors.grey,),
-                        const SizedBox(height: 20),
+                        SizedBox(height: 20),
+                        Divider(thickness: 1, height: 1, color: Colors.grey,),
+                        SizedBox(height: 20),
 
-                        const Text(
+                        Text(
                           '근무지역',
                           style: TextStyle(
                             fontSize: 20,
@@ -133,23 +140,23 @@ class Recruit_main extends StatelessWidget {
                             color: Colors.black,
                           ),
                         ),
-                        const SizedBox(height: 12),
+                        SizedBox(height: 12),
 
                         Text(
                           address,
 
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 15,
                             color: Colors.black,
                             fontWeight: FontWeight.w300,
                           ),
                         ),
 
-                        const SizedBox(height: 40),
-                        const Divider(thickness: 1, height: 1, color: Colors.grey,),
-                        const SizedBox(height: 20),
+                        SizedBox(height: 40),
+                        Divider(thickness: 1, height: 1, color: Colors.grey,),
+                        SizedBox(height: 20),
 
-                        const Text(
+                        Text(
                           '근무조건',
                           style: TextStyle(
                             fontSize: 20,
@@ -157,11 +164,11 @@ class Recruit_main extends StatelessWidget {
                             color: Colors.black,
                           ),
                         ),
-                        const SizedBox(height: 20),
+                        SizedBox(height: 20),
 
                         Row(
                           children: [
-                            const Text(
+                            Text(
                               '급여',
                               style: TextStyle(
                                 fontSize: 15,
@@ -169,29 +176,29 @@ class Recruit_main extends StatelessWidget {
                               ),
                             ),
 
-                            const SizedBox(width: 52),
+                            SizedBox(width: 52),
 
                             Container(
                               width: 40,
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
-                                border: Border.all(color: const Color.fromARGB(250, 51, 51, 255), width: 1),
+                                border: Border.all(color: Color.fromARGB(250, 51, 51, 255), width: 1),
                                 borderRadius: BorderRadius.circular(10),
                                 color: Colors.white60,
                               ),
                               child: Text(
                                 payment,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   color: Color.fromARGB(250, 51, 51, 255),
                                 ),
                               ),
                             ),
 
-                            const SizedBox(width: 10),
+                            SizedBox(width: 10),
 
                             Text(
                               amount,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 15,
                                 color: Colors.black,
                                 fontWeight: FontWeight.w500,
@@ -200,11 +207,11 @@ class Recruit_main extends StatelessWidget {
                           ],
                         ),
 
-                        const SizedBox(height: 15),
+                        SizedBox(height: 15),
 
                         Row(
                           children: [
-                            const Text(
+                            Text(
                               '근무요일',
                               style: TextStyle(
                                 fontSize: 15,
@@ -212,11 +219,11 @@ class Recruit_main extends StatelessWidget {
                               ),
                             ),
 
-                            const SizedBox(width: 25),
+                            SizedBox(width: 25),
 
                             Text(
                               workweek,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 15,
                                 color: Colors.black,
                                 fontWeight: FontWeight.w500,
@@ -225,11 +232,11 @@ class Recruit_main extends StatelessWidget {
                           ],
                         ),
 
-                        const SizedBox(height: 15),
+                        SizedBox(height: 15),
 
                         Row(
                           children: [
-                            const Text(
+                            Text(
                               '경력유무',
                               style: TextStyle(
                                 fontSize: 15,
@@ -238,14 +245,14 @@ class Recruit_main extends StatelessWidget {
 
                             ),
 
-                            const SizedBox(width: 25),
+                            SizedBox(width: 25),
 
-                            SizedBox(
+                            Container(
                               width : 270,
                               child : Text(
                                 overflow: TextOverflow.ellipsis,
                                 career,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 15,
                                   color: Colors.black,
                                   fontWeight: FontWeight.w500,
@@ -256,11 +263,11 @@ class Recruit_main extends StatelessWidget {
                           ],
                         ),
 
-                        const SizedBox(height: 40),
-                        const Divider(thickness: 1, height: 1, color: Colors.grey,),
-                        const SizedBox(height: 20),
+                        SizedBox(height: 40),
+                        Divider(thickness: 1, height: 1, color: Colors.grey,),
+                        SizedBox(height: 20),
 
-                        const Text(
+                        Text(
                           '상세요강',
                           style: TextStyle(
                             fontSize: 20,
@@ -268,20 +275,20 @@ class Recruit_main extends StatelessWidget {
                             color: Colors.black,
                           ),
                         ),
-                        const SizedBox(height: 20),
+                        SizedBox(height: 20),
 
                         Text(
                           detail,
-                          style: const TextStyle(
+                          style: TextStyle(
                               height: 1.8,
                               fontSize: 15
                           ),
                         ),
-                        const SizedBox(height: 40),
-                        const Divider(thickness: 1, height: 1, color: Colors.grey,),
-                        const SizedBox(height: 20),
+                        SizedBox(height: 40),
+                        Divider(thickness: 1, height: 1, color: Colors.grey,),
+                        SizedBox(height: 20),
 
-                        const Text(
+                        Text(
                           '마감일',
                           style: TextStyle(
                             fontSize: 20,
@@ -289,11 +296,11 @@ class Recruit_main extends StatelessWidget {
                             color: Colors.black,
                           ),
                         ),
-                        const SizedBox(height: 20),
+                        SizedBox(height: 20),
 
                         Text(
                           endday,
-                          style: const TextStyle(
+                          style: TextStyle(
                             height: 1.8,
                             fontSize: 20,
                             color: Colors.blueAccent,
@@ -301,7 +308,7 @@ class Recruit_main extends StatelessWidget {
                         ),
 
 
-                        const SizedBox(height: 100),
+                        SizedBox(height: 100),
 
                       ]
                   ),
@@ -309,36 +316,55 @@ class Recruit_main extends StatelessWidget {
               ),
               Positioned(
                 bottom: 0,
-                right: 15,
+                right:0 ,
+                left: 0,
+                child:Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 150,
+                      height: 50,
+                      child:
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color.fromARGB(250, 51, 51, 255), // 버튼의 배경색을 파란색으로 설정
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
 
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(250, 51, 51, 255), // 버튼의 배경색을 파란색으로 설정
-                    padding: const EdgeInsets.symmetric(horizontal: 160, vertical: 13),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ResumeManage2(id: id, num:num, title:title),
+                            ),
+                          );
 
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ResumeManage2(id: id, num:num, title:title),
+
+                        },
+                        child: Text(
+                          '지원하기',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
-                    );
-
-
-                  },
-                  child: const Text(
-                    '지원하기',
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.white,
                     ),
-                  ),
-                ),
-              ),
+                    SizedBox(width: 20),
+                    Container(
+                      width: 150,
+                      height: 50,
+                      child:
+                      CallButton(callnumber: manager_call)
+                    ),
+                  ],
+                )
+              )
+
+
             ],
           )
 
@@ -357,23 +383,23 @@ Widget _buildInfoBox(String title, String value) {
         borderRadius: BorderRadius.circular(10),
         color: Colors.white60,
       ),
-      padding: const EdgeInsets.all(5),
+      padding: EdgeInsets.all(5),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
             title,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 13,
               fontWeight: FontWeight.bold,
               color: Colors.black,
             ),
           ),
-          const SizedBox(height: 5),
+          SizedBox(height: 5),
           Text(
             value,
             textAlign: TextAlign.center,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 13,
               color: Color.fromARGB(250, 65, 51, 255),
             ),

@@ -3,33 +3,75 @@ import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:halmoney/get_user_info/step1_welcome.dart';
 
-final TextEditingController genderController = TextEditingController();
-final TextEditingController dobController = TextEditingController();
-final TextEditingController addressController = TextEditingController();
+class SignupPgTwoStepper extends StatefulWidget {
+  final String id; // 전달받은 id를 저장할 변수
 
-class SignupPgTwo extends StatelessWidget {
-  final String id; //전달받은 id를 저장할 변수
-  const SignupPgTwo({super.key, required this.id});
+  const SignupPgTwoStepper({super.key, required this.id});
 
-  //const SignupPgOne({super.key});
+  @override
+  _SignupPgTwoStepperState createState() => _SignupPgTwoStepperState();
+}
 
-  void _onYearChanged(int year) {
-    dobController.text = year.toString();
-    print(year.toString());
+class _SignupPgTwoStepperState extends State<SignupPgTwoStepper> {
+  int _currentStep = 0;
+  final TextEditingController genderController = TextEditingController();
+  final TextEditingController ageGroupController = TextEditingController();
+  final TextEditingController addressController = TextEditingController();
+  String _errorMessage = '';
+
+  // Stepper가 이동할 때 호출되는 함수
+  void _continue() {
+    setState(() {
+      _errorMessage = '';
+    });
+
+    if (_currentStep == 0 && genderController.text.isEmpty) {
+      setState(() {
+        _errorMessage = '성별을 선택해주세요.';
+      });
+      return;
+    }
+
+    if (_currentStep == 1 && ageGroupController.text.isEmpty) {
+      setState(() {
+        _errorMessage = '연령대를 선택해주세요.';
+      });
+      return;
+    }
+
+    if (_currentStep == 2 && addressController.text.isEmpty) {
+      setState(() {
+        _errorMessage = '주소를 선택해주세요.';
+      });
+      return;
+    }
+
+    setState(() {
+      if (_currentStep < 2) {
+        _currentStep++;
+      } else {
+        _saveData(context);
+      }
+    });
+  }
+
+  void _cancel() {
+    setState(() {
+      if (_currentStep > 0) {
+        _currentStep--;
+      }
+    });
   }
 
   void _saveData(BuildContext context) async {
     final gender = genderController.text;
-    final dob = dobController.text;
+    final ageGroup = ageGroupController.text;
     final address = addressController.text;
-
-    // Debugging: Print the collected data
-    print("Gender: $gender, DOB: $dob, Address: $address");
 
     try {
       final QuerySnapshot result = await FirebaseFirestore.instance
           .collection('user')
-          .where('id', isEqualTo: id)
+          .where('id', isEqualTo: widget.id)
           .get();
 
       final List<DocumentSnapshot> documents = result.docs;
@@ -39,26 +81,25 @@ class SignupPgTwo extends StatelessWidget {
 
         await FirebaseFirestore.instance.collection('user').doc(docId).update({
           'gender': gender,
-          'dob': dob,
+          'ageGroup': ageGroup,
           'address': address,
         });
 
-        print("User updated successfully");
-
-        // Show success message
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("User updated successfully")),
         );
+
+        // 완료 후 다음 화면으로 이동
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => StepWelcome(id: widget.id)),
+        );
       } else {
-        print("User not found");
-        // Show error message
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("User not found")),
         );
       }
     } catch (error) {
-      print("Failed to update user: $error");
-      // Show error message
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Failed to update user: $error")),
       );
@@ -68,125 +109,97 @@ class SignupPgTwo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.only(left: 30.0, right: 30.0, top: 80.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text('본인의 정보를 입력해주세요.',
-                style: TextStyle(
-                    fontSize: 23.0,
-                    fontFamily: 'NanumGothic',
-                    fontWeight: FontWeight.w600)),
-
-            const SizedBox(height: 30),
-
-            const Text('성별',
-                style: TextStyle(
-                    fontSize: 18.0,
-                    color: Colors.black87,
-                    fontFamily: 'NanumGothic',
-                    fontWeight: FontWeight.w600)),
-
-            const SizedBox(height: 20),
-
-            Row(children: [
-              Expanded(
-                  child: MyButtonList(
-                buttons: [
-                  ButtonData(
-                      text: '여성',
-                      onPressed: () {
-                        genderController.text = '여성';
-                      }),
-                  ButtonData(
-                      text: '남성',
-                      onPressed: () {
-                        genderController.text = '남성';
-                      }),
-                ],
-              ))
-            ]),
-
-            const SizedBox(height: 35),
-
-            //생년월일
-            const Text('태어난 년도',
-                style: TextStyle(
-                    fontSize: 18.0,
-                    color: Colors.black87,
-                    fontFamily: 'NanumGothic',
-                    fontWeight: FontWeight.w600)),
-
-            const SizedBox(height: 20),
-
-            SizedBox(
-              width: 400,
-              height: 100,
-              child: CupertinoPicker(
-                // 수정한 부분
-                itemExtent: 80, // 수정한 부분
-                onSelectedItemChanged: (int index) {
-                  _onYearChanged(1940 + index); // 수정한 부분
-                },
-                children: List<Widget>.generate(
-                  DateTime.now().year - 1920 + 1,
-                  (index) => Center(
-                    child: Text(
-                      (1920 + index).toString(),
-                      style: const TextStyle(fontSize: 22),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 35),
-
-            //주소
-            const Text('주소',
-                style: TextStyle(
-                    fontSize: 18.0,
-                    color: Colors.black87,
-                    fontFamily: 'NanumGothic',
-                    fontWeight: FontWeight.w600)),
-
-            const SizedBox(height: 20),
-
-            Expanded(
-                child: DropdownButtonExample(
-                    addressController: addressController)),
-
-            const SizedBox(height: 80),
-
-            Expanded(
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    //backgroundColor: _buttonActive ? const Color.fromARGB(250, 51, 51, 255) : Colors.grey,
-                    backgroundColor: const Color.fromARGB(250, 51, 51, 255),
-                    minimumSize: const Size(360, 45),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    )),
-                onPressed: () {
-                  _saveData(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => StepWelcome(id: id)),
-                  );
-                },
-                child: const Text(
-                  '가입완료',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-          ],
+      appBar: AppBar(
+        title: const Text(
+          "회원가입 단계 2",
+          style: TextStyle(color: Colors.black),
         ),
+        backgroundColor: Colors.white,
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: Stepper(
+              type: StepperType.vertical,
+              currentStep: _currentStep,
+              onStepContinue: _continue,
+              onStepCancel: _cancel,
+              steps: _buildSteps(),
+            ),
+          ),
+          if (_errorMessage.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                _errorMessage,
+                style: const TextStyle(color: Colors.red),
+              ),
+            ),
+        ],
       ),
     );
+  }
+
+  List<Step> _buildSteps() {
+    return [
+      Step(
+        title: const Text('성별'),
+        content: MyButtonList(
+          buttons: [
+            ButtonData(
+              text: '여성',
+              onPressed: () {
+                genderController.text = '여성';
+              },
+            ),
+            ButtonData(
+              text: '남성',
+              onPressed: () {
+                genderController.text = '남성';
+              },
+            ),
+          ],
+        ),
+        isActive: _currentStep == 0,
+      ),
+      Step(
+        title: const Text('연령대'),
+        content: MyButtonList(
+          buttons: [
+            ButtonData(
+              text: '40대',
+              onPressed: () {
+                ageGroupController.text = '40대';
+              },
+            ),
+            ButtonData(
+              text: '50대',
+              onPressed: () {
+                ageGroupController.text = '50대';
+              },
+            ),
+            ButtonData(
+              text: '60대',
+              onPressed: () {
+                ageGroupController.text = '60대';
+              },
+            ),
+            ButtonData(
+              text: '70대',
+              onPressed: () {
+                ageGroupController.text = '70대';
+              },
+            ),
+          ],
+        ),
+        isActive: _currentStep == 1,
+      ),
+      Step(
+        title: const Text('주소'),
+        content: DropdownButtonExample(addressController: addressController),
+        isActive: _currentStep == 2,
+      ),
+    ];
   }
 }
 
@@ -262,7 +275,7 @@ class MyWidget extends StatelessWidget {
             backgroundColor: isFavourte
                 ? const Color.fromARGB(250, 51, 51, 255)
                 : Colors.grey,
-            minimumSize: const Size(160, 45),
+            minimumSize: const Size(80, 45),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12))),
         onPressed: onPressed,
@@ -371,7 +384,7 @@ class _DropdownButtonExampleState extends State<DropdownButtonExample> {
                   setState(() {
                     selectedSido = value!;
                     selectedGugun = gugun[0][0];
-                    addressController.text = '$selectedSido, $selectedGugun';
+                    widget.addressController.text = '$selectedSido, $selectedGugun';
                   });
                 },
                 items: cities.map((String value) {
@@ -396,7 +409,7 @@ class _DropdownButtonExampleState extends State<DropdownButtonExample> {
                 onChanged: (value) {
                   setState(() {
                     selectedGugun = value!;
-                    addressController.text = '$selectedSido, $selectedGugun';
+                    widget.addressController.text = '$selectedSido, $selectedGugun';
                   });
                 },
                 items: selectedSido.isEmpty
@@ -409,13 +422,6 @@ class _DropdownButtonExampleState extends State<DropdownButtonExample> {
                       }).toList(),
               ),
             ),
-
-            //SizedBox(height:20),
-            // Text(
-            //   '당신이 선택한 주소는: ',
-            //   style: TextStyle(fontWeight: FontWeight.bold),
-            // ),
-            // Text('$selectedSido $selectedGugun')
           ],
         ));
   }

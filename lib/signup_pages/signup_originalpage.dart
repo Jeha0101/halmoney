@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:halmoney/signup_pages/signup_pg_two.dart';
+import 'package:halmoney/signup_pages/signupStepper_page2.dart';
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 
@@ -58,6 +58,7 @@ class _SignupPageOneState extends State<SignupPageOne> {
     final bytes = utf8.encode(password);
     final hashedPassword = sha256.convert(bytes).toString();
 
+
     try {
       final QuerySnapshot result = await FirebaseFirestore.instance
           .collection('user')
@@ -80,7 +81,7 @@ class _SignupPageOneState extends State<SignupPageOne> {
 
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => SignupPgTwo(id: id)),
+          MaterialPageRoute(builder: (context) => SignupPgTwoStepper(id: id)),
         );
       }
     } catch (e) {

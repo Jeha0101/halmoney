@@ -1,3 +1,7 @@
+// 작성자 : 황제하
+// signup_pages(회원가입)와 연결되는 페이지
+// 회원가입 절차 이후 사용자 정보를 받는 페이지
+
 import 'package:flutter/material.dart';
 import 'package:halmoney/get_user_info/user_Info.dart';
 import 'package:halmoney/get_user_info/step2_user_career.dart';
@@ -52,8 +56,8 @@ class _StepWelcomeState extends State<StepWelcome> {
               children: [
                 //경력 입력 페이지로 이동
                 GestureDetector(
-                  onTap: () {
-                    UserInfo userInfo = UserInfo(widget.id);
+                  onTap: () async {
+                    UserInfo userInfo = await UserInfo.create(widget.id);
                     Navigator.push(
                         context,
                         MaterialPageRoute(

@@ -120,30 +120,312 @@ class _SecondParagraphPageState extends State<SecondParagraphPage> {
                       child:Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          ElevatedButton(
-                            onPressed: () => _editSecondParagraph(tag: '간략하게'),
-                            child: const Text('간략하게'),
-                          ),
-                          ElevatedButton(
-                            onPressed: () => _editSecondParagraph(tag: '구체적으로'),
-                            child: const Text('구체적으로'),
-                          ),
-                          ElevatedButton(
-                            onPressed: () => _editSecondParagraph(tag: '자연스럽게'),
-                            child: const Text('자연스럽게'),
-                          ),
-                          ElevatedButton(
-                            onPressed: () => _editSecondParagraph(tag: '공손하게'),
-                            child: const Text('공손하게'),
-                          ),
-                          ElevatedButton(
-                            onPressed: () => _editSecondParagraph(tag: '더 길게'),
-                            child: const Text('더 길게'),
-                          ),
-                          ElevatedButton(
-                            onPressed: () => _editSecondParagraph(tag: '더 짧게'),
-                            child: const Text('더 짧게'),
-                          ),
+                          Container(
+                              height: 55,
+                              child: Row(
+                                children: [
+                                  ElevatedButton(
+                                    style: ButtonStyle(
+                                      backgroundColor: WidgetStateProperty
+                                          .resolveWith<Color>(
+                                            (Set<WidgetState> states) {
+                                          if (states
+                                              .contains(WidgetState.pressed)) {
+                                            return Colors.blueGrey; // 클릭(pressed) 시 배경색
+                                          }
+                                          return const Color.fromARGB(255, 233, 236, 239); // 기본 배경색
+                                        },
+                                      ),
+                                      elevation: WidgetStateProperty
+                                          .resolveWith<double>(
+                                            (Set<WidgetState> states) {
+                                          if (states
+                                              .contains(WidgetState.pressed)) {
+                                            return 5.0; // 클릭(pressed) 시 그림자 깊이 증가
+                                          }
+                                          return 3.0; // 기본 그림자 깊이
+                                        },
+                                      ),
+                                      padding:
+                                      WidgetStateProperty.all<EdgeInsets>(
+                                        const EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 5),
+                                      ),
+                                      shape: WidgetStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                          borderRadius:
+                                          BorderRadius.circular(8),
+                                        ),
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      // 버튼을 클릭했을 때 동작
+                                      _editSecondParagraph(tag: '간략하게');
+                                    },
+                                    child: const Text('간략하게',
+                                        style: TextStyle(color: Colors.black26,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold)),
+                                  ),
+                                  SizedBox(width: 8),
+                                ],
+                              )),
+                          Container(
+                              height: 55,
+                              child: Row(
+                                children: [
+                                  ElevatedButton(
+                                    style: ButtonStyle(
+                                      backgroundColor: WidgetStateProperty
+                                          .resolveWith<Color>(
+                                            (Set<WidgetState> states) {
+                                          if (states
+                                              .contains(WidgetState.pressed)) {
+                                            return Colors.blueGrey; // 클릭(pressed) 시 배경색
+                                          }
+                                          return const Color.fromARGB(255, 233, 236, 239); // 기본 배경색
+                                        },
+                                      ),
+                                      elevation: WidgetStateProperty
+                                          .resolveWith<double>(
+                                            (Set<WidgetState> states) {
+                                          if (states
+                                              .contains(WidgetState.pressed)) {
+                                            return 5.0; // 클릭(pressed) 시 그림자 깊이 증가
+                                          }
+                                          return 3.0; // 기본 그림자 깊이
+                                        },
+                                      ),
+                                      padding:
+                                      WidgetStateProperty.all<EdgeInsets>(
+                                        const EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 5),
+                                      ),
+                                      shape: WidgetStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                          borderRadius:
+                                          BorderRadius.circular(8),
+                                        ),
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      // 버튼을 클릭했을 때 동작
+                                      _editSecondParagraph(tag: '구체적으로');
+                                    },
+                                    child: const Text('구체적으로',
+                                        style: TextStyle(color: Colors.black26,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold)),
+                                  ),
+                                  SizedBox(width: 8),
+                                ],
+                              )),
+                          Container(
+                              height: 55,
+                              child: Row(
+                                children: [
+                                  ElevatedButton(
+                                    style: ButtonStyle(
+                                      backgroundColor: WidgetStateProperty
+                                          .resolveWith<Color>(
+                                            (Set<WidgetState> states) {
+                                          if (states
+                                              .contains(WidgetState.pressed)) {
+                                            return Colors.blueGrey; // 클릭(pressed) 시 배경색
+                                          }
+                                          return const Color.fromARGB(255, 233, 236, 239); // 기본 배경색
+                                        },
+                                      ),
+                                      elevation: WidgetStateProperty
+                                          .resolveWith<double>(
+                                            (Set<WidgetState> states) {
+                                          if (states
+                                              .contains(WidgetState.pressed)) {
+                                            return 5.0; // 클릭(pressed) 시 그림자 깊이 증가
+                                          }
+                                          return 3.0; // 기본 그림자 깊이
+                                        },
+                                      ),
+                                      padding:
+                                      WidgetStateProperty.all<EdgeInsets>(
+                                        const EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 5),
+                                      ),
+                                      shape: WidgetStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                          borderRadius:
+                                          BorderRadius.circular(8),
+                                        ),
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      // 버튼을 클릭했을 때 동작
+                                      _editSecondParagraph(tag: '정중하게');
+                                    },
+                                    child: const Text('정중하게',
+                                        style: TextStyle(color: Colors.black26,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold)),
+                                  ),
+                                  SizedBox(width: 8),
+                                ],
+                              )),
+                          Container(
+                              height: 55,
+                              child: Row(
+                                children: [
+                                  ElevatedButton(
+                                    style: ButtonStyle(
+                                      backgroundColor: WidgetStateProperty
+                                          .resolveWith<Color>(
+                                            (Set<WidgetState> states) {
+                                          if (states
+                                              .contains(WidgetState.pressed)) {
+                                            return Colors.blueGrey; // 클릭(pressed) 시 배경색
+                                          }
+                                          return const Color.fromARGB(255, 233, 236, 239); // 기본 배경색
+                                        },
+                                      ),
+                                      elevation: WidgetStateProperty
+                                          .resolveWith<double>(
+                                            (Set<WidgetState> states) {
+                                          if (states
+                                              .contains(WidgetState.pressed)) {
+                                            return 5.0; // 클릭(pressed) 시 그림자 깊이 증가
+                                          }
+                                          return 3.0; // 기본 그림자 깊이
+                                        },
+                                      ),
+                                      padding:
+                                      WidgetStateProperty.all<EdgeInsets>(
+                                        const EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 5),
+                                      ),
+                                      shape: WidgetStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                          borderRadius:
+                                          BorderRadius.circular(8),
+                                        ),
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      // 버튼을 클릭했을 때 동작
+                                      _editSecondParagraph(tag: '자연스럽게');
+                                    },
+                                    child: const Text('자연스럽게',
+                                        style: TextStyle(color: Colors.black26,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold)),
+                                  ),
+                                  SizedBox(width: 8),
+                                ],
+                              )),
+                          Container(
+                              height: 55,
+                              child: Row(
+                                children: [
+                                  ElevatedButton(
+                                    style: ButtonStyle(
+                                      backgroundColor: WidgetStateProperty
+                                          .resolveWith<Color>(
+                                            (Set<WidgetState> states) {
+                                          if (states
+                                              .contains(WidgetState.pressed)) {
+                                            return Colors.blueGrey; // 클릭(pressed) 시 배경색
+                                          }
+                                          return const Color.fromARGB(255, 233, 236, 239); // 기본 배경색
+                                        },
+                                      ),
+                                      elevation: WidgetStateProperty
+                                          .resolveWith<double>(
+                                            (Set<WidgetState> states) {
+                                          if (states
+                                              .contains(WidgetState.pressed)) {
+                                            return 5.0; // 클릭(pressed) 시 그림자 깊이 증가
+                                          }
+                                          return 3.0; // 기본 그림자 깊이
+                                        },
+                                      ),
+                                      padding:
+                                      WidgetStateProperty.all<EdgeInsets>(
+                                        const EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 5),
+                                      ),
+                                      shape: WidgetStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                          borderRadius:
+                                          BorderRadius.circular(8),
+                                        ),
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      // 버튼을 클릭했을 때 동작
+                                      _editSecondParagraph(tag: '더 길게');
+                                    },
+                                    child: const Text('더 길게',
+                                        style: TextStyle(color: Colors.black26,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold)),
+                                  ),
+                                  SizedBox(width: 8),
+                                ],
+                              )),
+                          Container(
+                              height: 55,
+                              child: Row(
+                                children: [
+                                  ElevatedButton(
+                                    style: ButtonStyle(
+                                      backgroundColor: WidgetStateProperty
+                                          .resolveWith<Color>(
+                                            (Set<WidgetState> states) {
+                                          if (states
+                                              .contains(WidgetState.pressed)) {
+                                            return Colors.blueGrey; // 클릭(pressed) 시 배경색
+                                          }
+                                          return const Color.fromARGB(255, 233, 236, 239); // 기본 배경색
+                                        },
+                                      ),
+                                      elevation: WidgetStateProperty
+                                          .resolveWith<double>(
+                                            (Set<WidgetState> states) {
+                                          if (states
+                                              .contains(WidgetState.pressed)) {
+                                            return 5.0; // 클릭(pressed) 시 그림자 깊이 증가
+                                          }
+                                          return 3.0; // 기본 그림자 깊이
+                                        },
+                                      ),
+                                      padding:
+                                      WidgetStateProperty.all<EdgeInsets>(
+                                        const EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 5),
+                                      ),
+                                      shape: WidgetStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                          borderRadius:
+                                          BorderRadius.circular(8),
+                                        ),
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      // 버튼을 클릭했을 때 동작
+                                      _editSecondParagraph(tag: '더 짧게');
+                                    },
+                                    child: const Text('더 짧게',
+                                        style: TextStyle(color: Colors.black26,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold)),
+                                  ),
+                                  SizedBox(width: 8),
+                                ],
+                              )),
                         ],
                       )
                   )

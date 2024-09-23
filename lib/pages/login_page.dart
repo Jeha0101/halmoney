@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:halmoney/myAppPage.dart';
 import 'package:halmoney/signup_pages/agreement_page.dart';
+import 'package:halmoney/signup_pages/signupStepper_page1.dart';
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
+import '../get_user_info/user_Info.dart';
 
 final storage = FirebaseStorage.instance;
 
@@ -33,9 +35,10 @@ class LoginPage extends StatelessWidget{
 
       if(documents.isNotEmpty){
         //로그인 성공
+        UserInfo userInfo = await UserInfo.create(id);
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => MyAppPage(id:id)),
+          MaterialPageRoute(builder: (context) => MyAppPage(userInfo: userInfo)),
         );
       } else {
         //오류 처리
@@ -140,7 +143,7 @@ class LoginPage extends StatelessWidget{
                       onPressed: (){
                         Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const AgreementPage())
+                            MaterialPageRoute(builder: (context) => const SignupStepperOne())
                         );
                       },
                       style: ElevatedButton.styleFrom(
