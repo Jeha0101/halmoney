@@ -136,7 +136,7 @@ class _FirstParagraphPageState extends State<FirstParagraphPage> {
                                     style: ButtonStyle(
                                       backgroundColor: WidgetStateProperty
                                           .resolveWith<Color>(
-                                        (Set<WidgetState> states) {
+                                            (Set<WidgetState> states) {
                                           if (states
                                               .contains(WidgetState.pressed)) {
                                             return Colors.blueGrey; // 클릭(pressed) 시 배경색
@@ -146,7 +146,7 @@ class _FirstParagraphPageState extends State<FirstParagraphPage> {
                                       ),
                                       elevation: WidgetStateProperty
                                           .resolveWith<double>(
-                                        (Set<WidgetState> states) {
+                                            (Set<WidgetState> states) {
                                           if (states
                                               .contains(WidgetState.pressed)) {
                                             return 5.0; // 클릭(pressed) 시 그림자 깊이 증가
@@ -155,7 +155,7 @@ class _FirstParagraphPageState extends State<FirstParagraphPage> {
                                         },
                                       ),
                                       padding:
-                                          WidgetStateProperty.all<EdgeInsets>(
+                                      WidgetStateProperty.all<EdgeInsets>(
                                         const EdgeInsets.symmetric(
                                             horizontal: 10, vertical: 5),
                                       ),
@@ -163,7 +163,7 @@ class _FirstParagraphPageState extends State<FirstParagraphPage> {
                                           RoundedRectangleBorder>(
                                         RoundedRectangleBorder(
                                           borderRadius:
-                                              BorderRadius.circular(8),
+                                          BorderRadius.circular(8),
                                         ),
                                       ),
                                     ),
@@ -172,9 +172,9 @@ class _FirstParagraphPageState extends State<FirstParagraphPage> {
                                       _editFirstParagraph(tag: '간략하게');
                                     },
                                     child: const Text('간략하게',
-                                    style: TextStyle(color: Colors.black26,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold)),
+                                        style: TextStyle(color: Colors.black26,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold)),
                                   ),
                                   SizedBox(width: 8),
                                 ],
@@ -489,38 +489,38 @@ class _FirstParagraphPageState extends State<FirstParagraphPage> {
                 Container(
                   height:50,
                   child:ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor:
-                    WidgetStateProperty.resolveWith<Color>(
-                          (Set<WidgetState> states) {
-                        if (states.contains(WidgetState.pressed)) {
-                          return Colors.blueAccent; // 클릭(pressed) 시 배경색
-                        }
-                        return Colors.blue;
-                      },
-                    ),
-                    elevation: WidgetStateProperty.resolveWith<double>(
-                          (Set<WidgetState> states) {
-                        if (states.contains(WidgetState.pressed)) {
-                          return 10.0; // 클릭(pressed) 시 그림자 깊이 증가
-                        }
-                        return 5.0; // 기본 그림자 깊이
-                      },
-                    ),
-                    padding: WidgetStateProperty.all<EdgeInsets>(
-                      const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 5),
-                    ),
-                    shape:
-                    WidgetStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                    style: ButtonStyle(
+                      backgroundColor:
+                      WidgetStateProperty.resolveWith<Color>(
+                            (Set<WidgetState> states) {
+                          if (states.contains(WidgetState.pressed)) {
+                            return Colors.blueAccent; // 클릭(pressed) 시 배경색
+                          }
+                          return Colors.blue;
+                        },
+                      ),
+                      elevation: WidgetStateProperty.resolveWith<double>(
+                            (Set<WidgetState> states) {
+                          if (states.contains(WidgetState.pressed)) {
+                            return 10.0; // 클릭(pressed) 시 그림자 깊이 증가
+                          }
+                          return 5.0; // 기본 그림자 깊이
+                        },
+                      ),
+                      padding: WidgetStateProperty.all<EdgeInsets>(
+                        const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 5),
+                      ),
+                      shape:
+                      WidgetStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                       ),
                     ),
+                    onPressed: _goToSecondPage,
+                    child: const Text('다음 문단 수정'),
                   ),
-                  onPressed: _goToSecondPage,
-                  child: const Text('다음 문단 수정'),
-                ),
                 )
 
               ],
