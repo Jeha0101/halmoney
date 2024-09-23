@@ -471,7 +471,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
             // 맞춤 검색
             Padding(
-              padding: const EdgeInsets.only(left: 25.0, right: 20.0, top: 40),
+              padding: const EdgeInsets.only(left: 25.0, right: 20.0, top: 40, bottom:40),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -557,7 +557,7 @@ class _MyHomePageState extends State<MyHomePage> {
             // 지역 검색 위젯
             Container(
               padding: const EdgeInsets.only(left: 25.0, right: 20.0, top: 10, bottom: 40),
-              color: Color.fromARGB(80, 211, 211, 211),
+              //color: Color.fromARGB(80, 211, 211, 211),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
