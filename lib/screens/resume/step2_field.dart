@@ -264,7 +264,7 @@ class _FieldChooseWidgetState extends State<FieldChooseWidget> {
         return Chip(
           label: Text(
             field,
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.white, fontSize: 20),
           ),
           backgroundColor: Colors.blue,
           deleteIcon: Icon(Icons.close, color: Colors.white),
@@ -293,7 +293,7 @@ class _FieldChooseWidgetState extends State<FieldChooseWidget> {
               controller: _searchTextEditingController,
               decoration: const InputDecoration.collapsed(
                 hintText: '직무를 검색하거나 추가하세요',
-                hintStyle: TextStyle(color: Colors.grey),
+                hintStyle: TextStyle(color: Colors.grey, fontSize: 20),
               ),
             ),
           ),
@@ -335,7 +335,7 @@ class _FieldChooseWidgetState extends State<FieldChooseWidget> {
               child: Chip(
                 label: Text(
                   field,
-                  style: TextStyle(color: Colors.black),
+                  style: TextStyle(color: Colors.black, fontSize: 20),
                 ),
                 backgroundColor: Colors.grey.shade300,
               ),
