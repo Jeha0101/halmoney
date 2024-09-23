@@ -9,9 +9,16 @@ class PublicJobsData {
       QuerySnapshot snapshot = await _firestore.collection('publicjobs').get();
       List<Map<String, dynamic>> jobs = snapshot.docs.map((doc) {
         return {
+          'id': doc.id,
           'title': doc['jobtitle'],
           'company': doc['hirecompany'],
           'region': doc['hireregion'],
+          'url': doc['hireurl'],
+          'person': doc['applyperson'],
+          'person2': doc['applyperson2'],
+          'personcareer': doc['applypersoncareer'],
+          'personedu': doc['applypersonedu'],
+          'applystep': doc['applystep'],
           'image_path': doc['image_path'],
           'endday': doc['end_day'],
         };

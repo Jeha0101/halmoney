@@ -13,6 +13,8 @@ import 'package:halmoney/get_user_info/user_Info.dart';
 import 'package:halmoney/PublicJobs_pages/PublicJobsData.dart';
 import 'dart:core';
 
+import '../../PublicJobs_pages/PublicJobsDetail.main.dart';
+
 class MyHomePage extends StatefulWidget {
   final String id;
 
@@ -204,7 +206,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             child: Text(
                               '원하는 일자리를 검색해보세요!',
                               style: TextStyle(
-                                fontSize: 15,
+                                fontSize: 17,
                                 fontWeight: FontWeight.w600,
                                 color: Colors.black54,
                               ),
@@ -328,7 +330,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
             // AI 추천 시스템
             Padding(
-              padding: const EdgeInsets.only(left: 25.0, right: 20.0, top: 25),
+              padding: const EdgeInsets.only(left: 25.0, right: 20.0, top: 25, bottom: 50),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -403,8 +405,9 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
 
             //공공일자리
-            Padding(
-              padding: const EdgeInsets.only(left: 25.0, right: 20.0, top: 40),
+            Container(
+              padding: const EdgeInsets.only(left: 25.0, right: 20.0, top: 20, bottom:20),
+              color: Color.fromARGB(80, 211, 211, 211),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -425,7 +428,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               MaterialPageRoute(builder: (context)=> PublicJobsDescribe(id: widget.id))
                           );
                         },
-                        child: Text('전체보기'),
+                        child: Text('전체보기', style: TextStyle(color:Colors.black, fontSize: 17),),
                       )
                     ],
                   ),
@@ -435,7 +438,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   isLoading
                       ? const Center(child: CircularProgressIndicator())
                       : Container(
-                      height: 240,
+                      height: 290,
                       child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: publicJobs.length,
@@ -450,11 +453,19 @@ class _MyHomePageState extends State<MyHomePage> {
                             return Padding(
                                 padding: const EdgeInsets.only(right:16.0),
                                 child: JobCard(
-                                    image : job['image_path'] ?? 'assets/images/img_logo.png',
-                                    title : job['title'] ?? '할MONEY',
-                                    description: job['company'] ?? '할MONEY',
-                                    region : job['region'] ?? '미정',
-                                    endday: formattedEndDate,
+                                  image : job['image_path'] ?? 'assets/images/img_logo.png',
+                                  title : job['title'] ?? '할MONEY',
+                                  description: job['company'] ?? '할MONEY',
+                                  region : job['region'] ?? '미정',
+                                  endday: formattedEndDate,
+                                  id : widget.id,
+                                  url: job['url'] ?? '없음',
+                                  person: job['person'] ?? '미정',
+                                  person2: job['person2'] ?? '미정',
+                                  personcareer: job['personcareer'] ?? '미정',
+                                  personedu: job['personedu'] ?? '미정',
+                                  applystep: job['applystep'] ?? '미정',
+
                                 )
                             );
                           }
@@ -512,7 +523,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       '나는 이런 일을 원해요!\n'
                                           '조건을 정해 일자리를 알아보아요',
                                       style: TextStyle(
-                                        fontSize: 16,
+                                        fontSize: 17,
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),
@@ -635,6 +646,13 @@ class JobCard extends StatelessWidget{
   final String description;
   final String region;
   final String endday;
+  final String url;
+  final String person;
+  final String person2;
+  final String personcareer;
+  final String personedu;
+  final String applystep;
+  final String id;
 
   const JobCard({
     required this.image,
@@ -642,65 +660,98 @@ class JobCard extends StatelessWidget{
     required this.description,
     required this.region,
     required this.endday,
+    required this.url,
+    required this.person,
+    required this.person2,
+    required this.personcareer,
+    required this.personedu,
+    required this.applystep,
+    required this.id,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 10),
-      width: 200,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 1,
-            blurRadius: 5,
-            offset: Offset(0, 3), // Shadow position
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(10),
-              topRight: Radius.circular(10),
-            ),
-            child: Image.asset(image, height: 100,),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+    return GestureDetector(
+        onTap: () {
+          print('Navigating to details with:');
+          print('person: $person, person2: $person2, personcareer: $personcareer, personedu: $personedu');
 
-                Text(
-                  title,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis
-                ),
-                SizedBox(height: 4),
-                Text(
-                  description, // Could be company or another field
-                  style: TextStyle(fontSize: 16),
-                ),
-                SizedBox(height: 4),
-                Text(
-                  '지역: $region',
-                  style: TextStyle(fontSize: 15, color: Colors.grey),
-                ),
-                SizedBox(height: 4),
-                Text(
-                  '마감일: $endday',
-                  style: TextStyle(fontSize: 15, color: Colors.blue),
-                ),
-              ],
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PublicJobsDetail(
+                id: id,
+                title: title,
+                company: description,
+                region: region,
+                url: url,
+                person: person,
+                person2: person2,
+                personcareer: personcareer,
+                personedu: personedu,
+                applystep: applystep,
+                image_path: image,
+                endday: endday,
+              ),
             ),
-          ),
-        ],
+          );
+        },
+
+        child: Container(
+        margin: const EdgeInsets.only(bottom: 15),
+        width: 250,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 1,
+              blurRadius: 5,
+              offset: const Offset(0, 3), // Shadow position
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(10),
+                topRight: Radius.circular(10),
+              ),
+              child: Center(child: Image.asset(image, height: 100)),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(13.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    description, // Could be company or another field
+                    style: const TextStyle(fontSize: 17),
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    '지역: $region',
+                    style: const TextStyle(fontSize: 16, color: Colors.black54),
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    '마감일: $endday',
+                    style: const TextStyle(fontSize: 16, color: Color.fromARGB(250, 51, 51, 255)),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
