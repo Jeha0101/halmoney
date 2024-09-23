@@ -60,116 +60,105 @@ class _StepFieldPageState extends State<StepFieldPage> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(
-            left: 25.0, right: 30.0, top: 25.0, bottom: 15.0),
-        child: Column(
-          children: [
-            // 페이지 이동 영역
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // 이전 페이지로 이동
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Row(
-                    children: [
-                      Icon(
-                        Icons.chevron_left,
-                        size: 30,
-                      ),
-                      Text('이전',
-                          style: TextStyle(
-                            fontFamily: 'NanumGothicFamily',
-                            fontSize: 20.0,
-                            color: Colors.black,
-                          )),
-                    ],
-                  ),
-                ),
-
-                // 다음 페이지로 이동
-                GestureDetector(
-                  onTap: () {
-                    widget.userPromptFactor.editSelectedFields(selectedFields);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => StepStrenPage(
-                                  userInfo: widget.userInfo,
-                                  userPromptFactor: widget.userPromptFactor,
-                              ),
-                      ));
-                  },
-                  child: const Row(
-                    children: [
-                      Text('다음',
-                          style: TextStyle(
-                            fontFamily: 'NanumGothicFamily',
-                            fontSize: 20.0,
-                            color: Colors.black,
-                          )),
-                      Icon(
-                        Icons.chevron_right,
-                        size: 30,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-
-            const SizedBox(
-              height: 20,
-            ),
-
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    // 질문 텍스트 상자
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+        padding: const EdgeInsets.all(25.0),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              // 페이지 이동 영역
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // 이전 페이지로 이동
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Row(
                       children: [
-                        Flexible(
-                          child: Text('어떤 일을 하고 싶은가요?',
-                              style: TextStyle(
-                                fontFamily: 'NanumGothicFamily',
-                                fontWeight: FontWeight.w500,
-                                fontSize: 28.0,
-                                color: Colors.black,
-                              )),
+                        Icon(
+                          Icons.chevron_left,
+                          size: 30,
+                        ),
+                        Text('이전',
+                            style: TextStyle(
+                              fontFamily: 'NanumGothicFamily',
+                              fontSize: 20.0,
+                              color: Colors.black,
+                            )),
+                      ],
+                    ),
+                  ),
+          
+                  // 다음 페이지로 이동
+                  GestureDetector(
+                    onTap: () {
+                      widget.userPromptFactor.editSelectedFields(selectedFields);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => StepStrenPage(
+                                    userInfo: widget.userInfo,
+                                    userPromptFactor: widget.userPromptFactor,
+                                ),
+                        ));
+                    },
+                    child: const Row(
+                      children: [
+                        Text('다음',
+                            style: TextStyle(
+                              fontFamily: 'NanumGothicFamily',
+                              fontSize: 20.0,
+                              color: Colors.black,
+                            )),
+                        Icon(
+                          Icons.chevron_right,
+                          size: 30,
                         ),
                       ],
                     ),
-                    const SizedBox(height: 10),
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Flexible(
-                          child: Text('하고싶은 일을 검색하거나 직접 입력하세요',
-                              style: TextStyle(
-                                fontFamily: 'NanumGothicFamily',
-                                fontWeight: FontWeight.w500,
-                                fontSize: 20.0,
-                                color: Colors.black,
-                              )),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 15),
-
-                    // 직무 선택 영역
-                    FieldChooseWidget(
-                      selectedFields: selectedFields,
-                      onSelectedFieldsChanged: updateSelectedFields,
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ),
-          ],
+          
+              const SizedBox(
+                height: 20,
+              ),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Flexible(
+                    child: Text('어떤 일을 하고 싶은가요?',
+                        style: TextStyle(
+                          fontFamily: 'NanumGothicFamily',
+                          fontWeight: FontWeight.w500,
+                          fontSize: 28.0,
+                          color: Colors.black,
+                        )),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Flexible(
+                    child: Text('하고싶은 일을 검색하거나 직접 입력하세요',
+                        style: TextStyle(
+                          fontFamily: 'NanumGothicFamily',
+                          fontWeight: FontWeight.w500,
+                          fontSize: 20.0,
+                          color: Colors.black,
+                        )),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 15,),
+              FieldChooseWidget(
+                selectedFields: selectedFields,
+                onSelectedFieldsChanged: updateSelectedFields,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -259,7 +248,10 @@ class _FieldChooseWidgetState extends State<FieldChooseWidget> {
         const SizedBox(height: 20),
         _buildSearchField(),
         const SizedBox(height: 20),
-        _buildTags(),
+        SizedBox(
+          height: 350,
+          child: _buildTags(),
+        ),
       ],
     );
   }
@@ -323,31 +315,33 @@ class _FieldChooseWidgetState extends State<FieldChooseWidget> {
   }
 
   Widget _buildTags() {
-    return Wrap(
-      spacing: 8.0,
-      runSpacing: 8.0,
-      children: _filterFields().map((field) {
-        final isSelected = widget.selectedFields.contains(field);
-        return GestureDetector(
-          onTap: () {
-            setState(() {
-              if (isSelected) {
-                widget.selectedFields.remove(field);
-              } else {
-                widget.selectedFields.add(field);
-              }
-            });
-            widget.onSelectedFieldsChanged(widget.selectedFields);
-          },
-          child: Chip(
-            label: Text(
-              field,
-              style: TextStyle(color: Colors.black),
-            ),
-            backgroundColor: Colors.grey.shade300,
-          ),
-        );
-      }).toList(),
+    return SingleChildScrollView(
+        child: Wrap(
+          spacing: 8.0,
+          runSpacing: 8.0,
+          children: _filterFields().map((field) {
+            final isSelected = widget.selectedFields.contains(field);
+            return GestureDetector(
+              onTap: () {
+                setState(() {
+                  if (isSelected) {
+                    widget.selectedFields.remove(field);
+                  } else {
+                    widget.selectedFields.add(field);
+                  }
+                });
+                widget.onSelectedFieldsChanged(widget.selectedFields);
+              },
+              child: Chip(
+                label: Text(
+                  field,
+                  style: TextStyle(color: Colors.black),
+                ),
+                backgroundColor: Colors.grey.shade300,
+              ),
+            );
+          }).toList(),
+        ),
     );
   }
 }
