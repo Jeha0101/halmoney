@@ -6,12 +6,12 @@ class SelectStrenPage extends StatefulWidget {
   final String title;
   final List<String> selectedSkills;
 
-  SelectStrenPage({
+  const SelectStrenPage({
     required this.id,
     required this.title,
     required this.selectedSkills,
-    Key? key,
-  }): super(key: key);
+    super.key,
+  });
 
   @override
   State<SelectStrenPage> createState() => _SelectStrenPageState();

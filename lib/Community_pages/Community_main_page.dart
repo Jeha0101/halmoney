@@ -80,7 +80,7 @@ class _CommunityState extends State<Communitypage> {
                    contents: writing['contents'],
                    timestamp: writing['timestamp'],
                  ),
-                     SizedBox(height:10)
+                     const SizedBox(height:10)
                    ],
                  );
                },

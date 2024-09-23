@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:halmoney/resume2/resumeManage2.dart';
 import 'PublicJobsCheck_page.dart';
 
 class PublicJobsDetail extends StatelessWidget {
@@ -19,7 +18,7 @@ class PublicJobsDetail extends StatelessWidget {
   final String image_path;
   final String endday;
 
-  PublicJobsDetail({
+  const PublicJobsDetail({
     required this.id,
     required this.num,
     required this.title,
@@ -34,8 +33,8 @@ class PublicJobsDetail extends StatelessWidget {
     required this.applystep,
     required this.image_path,
     required this.endday,
-    Key? key,
-  }): super(key: key);
+    super.key,
+  });
 
   Future<void> _launchURL() async {
     if (await canLaunch(url)) {

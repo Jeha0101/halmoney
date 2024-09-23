@@ -35,8 +35,8 @@ class PublicJobList extends StatefulWidget {
     required this.isLiked,
     required this.image_path,
     required this.endday,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   _PublicJobListState createState() => _PublicJobListState();
@@ -136,7 +136,7 @@ class _PublicJobListState extends State<PublicJobList> {
                   ),
                 ),
                 const SizedBox(width: 15),
-                Container(
+                SizedBox(
                   width: 250,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,

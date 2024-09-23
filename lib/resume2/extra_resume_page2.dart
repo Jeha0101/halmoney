@@ -128,7 +128,7 @@ class _ExtraResumePageState extends State<ExtraResumePage> {
                               border: Border.all(color: Colors.grey),
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            child: Row(
+                            child: const Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(Icons.add, color: Colors.blue),
@@ -171,7 +171,6 @@ class _ExtraResumePageState extends State<ExtraResumePage> {
                 );
               }
                   : null,
-              child: const Text('다음 페이지로 이동', style: TextStyle(color: Colors.white)),
               style: ElevatedButton.styleFrom(
                 backgroundColor: areAllFieldsFilled() ? const Color.fromARGB(250, 51, 51, 255) : Colors.grey,
                 minimumSize: const Size(360, 50),
@@ -179,6 +178,7 @@ class _ExtraResumePageState extends State<ExtraResumePage> {
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
+              child: const Text('다음 페이지로 이동', style: TextStyle(color: Colors.white)),
             ),
           ],
         ),
@@ -213,11 +213,11 @@ class WorkExperienceDisplay extends StatelessWidget {
   final VoidCallback onRemove;
 
   const WorkExperienceDisplay({
-    Key? key,
+    super.key,
     required this.experience,
     required this.onEdit,
     required this.onRemove,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -238,8 +238,8 @@ class WorkExperienceDisplay extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                '${experience.place}',
-                style: TextStyle(fontSize: 18),
+                experience.place,
+                style: const TextStyle(fontSize: 18),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -259,14 +259,14 @@ class WorkExperienceDisplay extends StatelessWidget {
           const SizedBox(height: 10),
           Row(
             children: [
-              Column(
+              const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     '근무 기간     ',
                     style: TextStyle(fontSize: 14),
                   ),
-                  const SizedBox(height: 10),
+                  SizedBox(height: 10),
                   Text(
                     '근무 내용      ',
                     style: TextStyle(fontSize: 14),
@@ -278,12 +278,12 @@ class WorkExperienceDisplay extends StatelessWidget {
                 children: [
                   Text(
                     '${experience.startYear}년 ${experience.startMonth}월 ~ ${experience.endYear}년 ${experience.endMonth}월',
-                    style: TextStyle(fontSize: 14),
+                    style: const TextStyle(fontSize: 14),
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    '${experience.description}',
-                    style: TextStyle(fontSize: 14),
+                    experience.description,
+                    style: const TextStyle(fontSize: 14),
                   ),
                 ],
               ),
@@ -301,10 +301,10 @@ class WorkExperienceDialog extends StatefulWidget {
   final void Function(WorkExperience) onSave;
 
   const WorkExperienceDialog({
-    Key? key,
+    super.key,
     this.experience,
     required this.onSave,
-  }) : super(key: key);
+  });
 
   @override
   _WorkExperienceDialogState createState() => _WorkExperienceDialogState();

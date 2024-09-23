@@ -53,7 +53,7 @@ class _StepWelcomeState extends State<StepWelcome> {
                 //경력 입력 페이지로 이동
                 GestureDetector(
                   onTap: () {
-                    UserInfo userInfo = new UserInfo(widget.id);
+                    UserInfo userInfo = UserInfo(widget.id);
                     Navigator.push(
                         context,
                         MaterialPageRoute(

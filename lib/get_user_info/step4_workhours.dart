@@ -1,5 +1,4 @@
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:halmoney/get_user_info/user_Info.dart';
 import 'package:halmoney/myAppPage.dart';
@@ -7,7 +6,7 @@ import 'package:halmoney/myAppPage.dart';
 class StepWorkHours extends StatefulWidget{
   final UserInfo userInfo;
 
-  StepWorkHours({
+  const StepWorkHours({
     super.key,
     required this.userInfo,
   });

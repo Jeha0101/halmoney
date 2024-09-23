@@ -12,7 +12,7 @@ class StepResumeCreate extends StatefulWidget {
   final UserInfo userInfo;
   final UserPromptFactor userPromptFactor;
 
-  StepResumeCreate({
+  const StepResumeCreate({
     super.key,
     required this.userInfo,
     required this.userPromptFactor,
@@ -81,7 +81,7 @@ class _StepResumeCreateState extends State<StepResumeCreate> {
     final apiKey = dotenv.get('GPT_API_KEY');
     const endpoint = 'https://api.openai.com/v1/chat/completions';
     final int maxTokens = quantity;
-    final int quantityTokens = (quantity/2).toInt(); //분량을 2로 나누어서 토큰으로 사용
+    final int quantityTokens = quantity~/2; //분량을 2로 나누어서 토큰으로 사용
     final int firstParagraphTokens = (quantityTokens * 0.3).toInt();
     final int secondParagraphTokens = (quantityTokens * 0.5).toInt();
     final int thirdParagraphTokens = (quantityTokens * 0.2).toInt();
@@ -206,7 +206,7 @@ class _StepResumeCreateState extends State<StepResumeCreate> {
             backgroundColor: Colors.white,
           ),
           body: _isLoading
-              ? Center(
+              ? const Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -233,7 +233,7 @@ class _StepResumeCreateState extends State<StepResumeCreate> {
                 TextField(
                   controller: _selfIntroductionController,
                   maxLines: 30,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: '자기소개서를 입력하세요',
                   ),

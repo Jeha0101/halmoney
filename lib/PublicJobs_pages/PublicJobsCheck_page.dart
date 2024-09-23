@@ -8,14 +8,14 @@ class PublicJobsCheckPage extends StatefulWidget {
   final String career;
   final String requirementsText;
 
-  PublicJobsCheckPage({
+  const PublicJobsCheckPage({
     required this.id,
     required this.title,
     required this.region,
     required this.career,
     required this.requirementsText,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   _PublicJobsCheckPageState createState() => _PublicJobsCheckPageState();
@@ -54,8 +54,8 @@ class _PublicJobsCheckPageState extends State<PublicJobsCheckPage> {
       body: Column(
         children: [
           // Add components before the list
-          Padding(
-            padding: const EdgeInsets.all(16.0),
+          const Padding(
+            padding: EdgeInsets.all(16.0),
             child: Text(
               '아래 자격요건을 확인하고 체크해 보세요!',
               style: TextStyle(
@@ -68,7 +68,7 @@ class _PublicJobsCheckPageState extends State<PublicJobsCheckPage> {
             padding: const EdgeInsets.all(16.0),
             child: Text(
               '지역: ${widget.region}, 경력유무: ${widget.career}',
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 16,
                 color: Colors.black54,
               ),

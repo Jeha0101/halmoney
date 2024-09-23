@@ -27,8 +27,8 @@ class JobList extends StatefulWidget {
     required this.isLiked,
     required this.image_path,
     required this.endday,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   _JobListState createState() => _JobListState();
@@ -146,8 +146,8 @@ class _JobListState extends State<JobList> {
         children: [
           Row(
             children: [
-              SizedBox(width: 10),
-              Container(
+              const SizedBox(width: 10),
+              SizedBox(
                 width: 100,
                 height: 100,
                 child: Column(
@@ -160,8 +160,8 @@ class _JobListState extends State<JobList> {
                   ],
                 ),
               ),
-              SizedBox(width: 15),
-              Container(
+              const SizedBox(width: 15),
+              SizedBox(
                 width: 250,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -172,7 +172,7 @@ class _JobListState extends State<JobList> {
                           Expanded(
                             child: Text(
                               widget.title,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black,
@@ -198,7 +198,7 @@ class _JobListState extends State<JobList> {
                           Expanded(
                             child: Text(
                               widget.address,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.w500,
                                 color: Color.fromARGB(250, 69, 99, 255),
@@ -209,14 +209,14 @@ class _JobListState extends State<JobList> {
                         ],
                       ),
                     ),
-                    SizedBox(height: 3),
+                    const SizedBox(height: 3),
 
                     Container(
                       child: Row(
                         children: [
                           Text(
                             widget.wage,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.normal,
                               color: Colors.black,

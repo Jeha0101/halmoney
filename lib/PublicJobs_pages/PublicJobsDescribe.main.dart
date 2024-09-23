@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:halmoney/screens/home/home.dart';
 import 'package:halmoney/myAppPage.dart';
 import 'PublicJobsList_widget.dart';
 

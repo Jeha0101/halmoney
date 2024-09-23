@@ -60,7 +60,7 @@ class Cond_Search extends StatelessWidget {
     // jobData가 null이면 데이터가 없거나 유효하지 않은 경우입니다.
     if (jobData == null) {
       return Container(
-        child: Text('데이터가 없거나 유효하지 않습니다'),
+        child: const Text('데이터가 없거나 유효하지 않습니다'),
       );
     }
 

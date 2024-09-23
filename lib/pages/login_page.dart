@@ -143,7 +143,6 @@ class LoginPage extends StatelessWidget{
                             MaterialPageRoute(builder: (context) => const AgreementPage())
                         );
                       },
-                      child : Text('회원가입', textAlign: TextAlign.center,),
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.grey,
                           surfaceTintColor: Colors.grey,
@@ -153,6 +152,7 @@ class LoginPage extends StatelessWidget{
                             borderRadius: BorderRadius.circular(12),
                           )
                       ),
+                      child : const Text('회원가입', textAlign: TextAlign.center,),
                     ),
                   ],
                 ),

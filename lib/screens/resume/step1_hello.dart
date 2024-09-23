@@ -55,7 +55,7 @@ class _StepHelloPageState extends State<StepHelloPage> {
                 GestureDetector(
                   onTap: () {
                     //프롬프트요소 객체 생성
-                    UserPromptFactor userPromptFactor = new UserPromptFactor(widget.userInfo);
+                    UserPromptFactor userPromptFactor = UserPromptFactor(widget.userInfo);
                     //step2페이지로 이동
                     Navigator.push(
                         context,

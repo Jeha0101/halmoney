@@ -8,11 +8,11 @@ class ThirdParagraphPage extends StatefulWidget {
   final String thirdParagraph;
 
   const ThirdParagraphPage({
-    Key? key,
+    super.key,
     required this.firstParagraph,
     required this.secondParagraph,
     required this.thirdParagraph,
-  }) : super(key: key);
+  });
 
   @override
   _ThirdParagraphPageState createState() => _ThirdParagraphPageState();
@@ -38,7 +38,7 @@ class _ThirdParagraphPageState extends State<ThirdParagraphPage> {
     try {
       final revisedText = await _service.generateRevisedIntroduction(
         revisedThirdParagraph,
-        _modificationController.text+' $tag',
+        '${_modificationController.text} $tag',
       );
       setState(() {
         revisedThirdParagraph = revisedText;
@@ -105,7 +105,7 @@ class _ThirdParagraphPageState extends State<ThirdParagraphPage> {
               ),
             ),
             const SizedBox(height:10),
-            Container(
+            SizedBox(
               height: 120,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
