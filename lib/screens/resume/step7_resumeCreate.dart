@@ -3,6 +3,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:halmoney/screens/resume/step8_completeResume.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:convert';
@@ -37,15 +38,21 @@ class _StepResumeCreateState extends State<StepResumeCreate> {
   bool _isLoading = true;
   List<DocumentSnapshot> recommendedJobs = [];
   final TextEditingController _selfIntroductionController =
-  TextEditingController();
+      TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _fetchResumeData();
     createSelfIntroduction();
-    //_fetchUserData();
+
+    _selfIntroductionController.addListener(() {
+      setState(() {
+        selfIntroduction = _selfIntroductionController.text;
+      });
+    });
   }
+
   //사용자 정보 불러오기
   Future<void> _fetchResumeData() async {
     try {
@@ -61,7 +68,6 @@ class _StepResumeCreateState extends State<StepResumeCreate> {
       );
     }
   }
-
 
   // 자기소개서 생성 함수
   void createSelfIntroduction() async {
@@ -101,7 +107,8 @@ class _StepResumeCreateState extends State<StepResumeCreate> {
     final int thirdParagraphTokens = (quantityTokens * 0.2).toInt();
 
     String role = '중장년층 사용자의 정보를 기반으로 자기소개서를 작성';
-    String prompt = ''' 다음 가이드에 따라 각 항목은 간결하게, '안녕하세요'는 빼고 작성, 전체 분량($quantityTokens)Tokens을 강력하게 제한함;
+    String prompt =
+        ''' 다음 가이드에 따라 각 항목은 간결하게, '안녕하세요'는 빼고 작성, 전체 분량($quantityTokens)Tokens을 강력하게 제한함;
     첫번째 문단에 포함할 내용 : {
     ($firstParagraphTokens) tokens 내외.
     사용자는 $selectedFields 분야에 지원하고자 합니다.
@@ -152,8 +159,7 @@ class _StepResumeCreateState extends State<StepResumeCreate> {
         }
       } else {
         print('Error: ${firstResponse.statusCode} - ${firstResponse.body}');
-        return 'Failed to fetch response: ${firstResponse
-            .statusCode} - ${firstResponse.body}';
+        return 'Failed to fetch response: ${firstResponse.statusCode} - ${firstResponse.body}';
       }
     } catch (e) {
       print('Exception: $e');
@@ -202,8 +208,7 @@ class _StepResumeCreateState extends State<StepResumeCreate> {
         }
       } else {
         print('Error: ${secondResponse.statusCode} - ${secondResponse.body}');
-        return 'Failed to fetch response: ${secondResponse
-            .statusCode} - ${secondResponse.body}';
+        return 'Failed to fetch response: ${secondResponse.statusCode} - ${secondResponse.body}';
       }
     } catch (e) {
       print('Exception: $e');
@@ -211,173 +216,215 @@ class _StepResumeCreateState extends State<StepResumeCreate> {
     }
   }
 
-  @override@override
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          title: const Text('AI 자기소개서'),
-          centerTitle: true,
-          elevation: 1.0,
+          title: Row(
+            children: [
+              Image.asset(
+                'assets/images/img_logo.png',
+                fit: BoxFit.contain,
+                height: 40,
+              ),
+              Container(
+                  padding: const EdgeInsets.all(8.0),
+                  child: const Text(
+                    '할MONEY',
+                    style: TextStyle(
+                      fontFamily: 'NanumGothicFamily',
+                      fontWeight: FontWeight.w600,
+                      fontSize: 18.0,
+                      color: Colors.black,
+                    ),
+                  )),
+            ],
+          ),
           backgroundColor: Colors.white,
         ),
         body: _isLoading
             ? Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CircularProgressIndicator(
-                color: Color(0xff1044FC),
-              ),
-              SizedBox(height: 20),
-              Text(
-                'AI가 자기소개서를\n자동생성중입니다',
-                style: TextStyle(fontSize: 25),
-              ),
-            ],
-          ),
-        )
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircularProgressIndicator(
+                      color: Color(0xff1044FC),
+                    ),
+                    SizedBox(height: 20),
+                    Text(
+                      'AI가 자기소개서를\n자동생성중입니다',
+                      style: TextStyle(fontSize: 25),
+                    ),
+                  ],
+                ),
+              )
             : Padding(
-          padding: const EdgeInsets.all(25.0),
-          child: ListView(
-            children: [
-              // 페이지 이동 영역
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // 이전 페이지로 이동
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Row(
+                padding: const EdgeInsets.all(25.0),
+                child: ListView(
+                  children: [
+                    // 페이지 이동 영역
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Icon(
-                          Icons.chevron_left,
-                          size: 30,
-                        ),
-                        Text('이전',
-                            style: TextStyle(
-                              fontFamily: 'NanumGothicFamily',
-                              fontSize: 20.0,
-                              color: Colors.black,
-                            )),
-                      ],
-                    ),
-                  ),
-
-                  //다음 페이지로 이동
-                  GestureDetector(
-                    onTap: () {
-                       Navigator.push(
-                         context,
-                        MaterialPageRoute(
-                            builder: (context) => RecommendationPage(
-                              userInfo : widget.userInfo,
-                              userPromptFactor : widget.userPromptFactor,
-                             )),
-                       );
-                    },
-                    child: const Row(
-                      children: [
-                        Text('완료하기',
-                            style: TextStyle(
-                              fontFamily: 'NanumGothicFamily',
-                              fontSize: 20.0,
-                              color: Colors.black,
-                            )),
-                        Icon(
-                          Icons.chevron_right,
-                          size: 30,
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(
-                height: 10,
-              ),
-              const Text(
-                '자기소개서를 직접 수정하거나\n아래의 버튼을 눌러서\n자기소개서를 수정해보세요!',
-                style: TextStyle(fontSize: 25),
-              ),
-              SizedBox(height: 15,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  ElevatedButton(
-                    onPressed: (){
-                      setState(() {
-                        _isLoading = true;
-                      });
-                      createSelfIntroduction();
-                    },
-                    child: const Text(
-                        "다시 만들기",
-                        style: TextStyle(color: Colors.white, fontSize: 20)),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(250, 51, 51, 255),
-                      minimumSize: const Size(150, 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      List<String> paragraphs = selfIntroduction.split('\n\n');
-                      String firstParagraph = paragraphs.isNotEmpty ? paragraphs[0] : '';
-                      String secondParagraph = paragraphs.length > 1 ? paragraphs[1] : '';
-                      String thirdParagraph = paragraphs.length > 2 ? paragraphs[2] : '';
-
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>  FirstParagraphPage(
-                            firstParagraph: firstParagraph,
-                            secondParagraph: secondParagraph,
-                            thirdParagraph: thirdParagraph,
+                        // 이전 페이지로 이동
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Row(
+                            children: [
+                              Icon(
+                                Icons.chevron_left,
+                                size: 30,
+                              ),
+                              Text('이전',
+                                  style: TextStyle(
+                                    fontFamily: 'NanumGothicFamily',
+                                    fontSize: 20.0,
+                                    color: Colors.black,
+                                  )),
+                            ],
                           ),
                         ),
-                      );
-                    },
-                    child: const Text(
-                      'AI와 수정하기',
-                      style: TextStyle(color: Colors.white, fontSize: 20),
+
+                        //다음 페이지로 이동
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                              builder: (context) => StepCompleteResume(
+                              userInfo: widget.userInfo,
+                              userSelfIntroduction: selfIntroduction,))
+
+
+                            // builder: (context) => RecommendationPage(
+                                  //       userInfo: widget.userInfo,
+                                  //       userPromptFactor:
+                                  //           widget.userPromptFactor,
+                                  //     )),
+                            );
+                          },
+                          child: const Row(
+                            children: [
+                              Text('완료하기',
+                                  style: TextStyle(
+                                    fontFamily: 'NanumGothicFamily',
+                                    fontSize: 20.0,
+                                    color: Colors.black,
+                                  )),
+                              Icon(
+                                Icons.chevron_right,
+                                size: 30,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(250, 51, 51, 255),
-                      minimumSize: const Size(150, 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    const Text(
+                        'AI가 작성한 자기소개서입니다.',
+                        style: TextStyle(fontSize: 20)
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    const Text(
+                      '자기소개서를 수정해보세요!',
+                      style: TextStyle(fontSize: 25),
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              _isLoading = true;
+                            });
+                            createSelfIntroduction();
+                          },
+                          child: const Text("다시 만들기",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20)),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                const Color.fromARGB(250, 51, 51, 255),
+                            minimumSize: const Size(150, 50),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            List<String> paragraphs =
+                                selfIntroduction.split('\n\n');
+                            String firstParagraph =
+                                paragraphs.isNotEmpty ? paragraphs[0] : '';
+                            String secondParagraph =
+                                paragraphs.length > 1 ? paragraphs[1] : '';
+                            String thirdParagraph =
+                                paragraphs.length > 2 ? paragraphs[2] : '';
+
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => FirstParagraphPage(
+                                  firstParagraph: firstParagraph,
+                                  secondParagraph: secondParagraph,
+                                  thirdParagraph: thirdParagraph,
+                                ),
+                              ),
+                            );
+                          },
+                          child: const Text(
+                            'AI와 수정하기',
+                            style: TextStyle(color: Colors.white, fontSize: 20),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                const Color.fromARGB(250, 51, 51, 255),
+                            minimumSize: const Size(150, 50),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    TextField(
+                      controller: _selfIntroductionController,
+                      maxLines: 25,
+                      style: TextStyle(fontSize: 20, color: Colors.black),
+                      // 폰트 사이즈 및 색상 변경
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.black), // 테두리 색상 변경
+                        ),
+                        hintText: '자기소개서를 입력하세요',
+                        hintStyle: TextStyle(color: Colors.grey),
+                        // 힌트 텍스트 색상 변경
+                        filled: true,
+                        fillColor: Colors.white,
+                        // 배경 색상 변경
+                        contentPadding: EdgeInsets.all(16.0), // 패딩 조정
                       ),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              TextField(
-                controller: _selfIntroductionController,
-                maxLines: 25,
-                style: TextStyle(fontSize: 20, color: Colors.black), // 폰트 사이즈 및 색상 변경
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black), // 테두리 색상 변경
-                  ),
-                  hintText: '자기소개서를 입력하세요',
-                  hintStyle: TextStyle(color: Colors.grey), // 힌트 텍스트 색상 변경
-                  filled: true,
-                  fillColor: Colors.white, // 배경 색상 변경
-                  contentPadding: EdgeInsets.all(16.0), // 패딩 조정
+                  ],
                 ),
               ),
-            ],
-          ),
-        ),
       ),
     );
   }

@@ -256,7 +256,7 @@ class _AbilitiesChooseWidgetState extends State<AbilitiesChooseWidget>{
         return Chip(
           label: Text(
             field,
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.white, fontSize: 20),
           ),
           backgroundColor: Colors.blue,
           deleteIcon: Icon(Icons.close, color: Colors.white),
@@ -285,7 +285,7 @@ class _AbilitiesChooseWidgetState extends State<AbilitiesChooseWidget>{
               controller: _searchTextEditingController,
               decoration: const InputDecoration.collapsed(
                 hintText: '역량을 검색하거나 선택하세요',
-                hintStyle: TextStyle(color: Colors.grey),
+                hintStyle: TextStyle(color: Colors.grey, fontSize: 20),
               ),
             ),
           ),
@@ -327,7 +327,7 @@ class _AbilitiesChooseWidgetState extends State<AbilitiesChooseWidget>{
             child: Chip(
               label: Text(
                 field,
-                style: TextStyle(color: Colors.black),
+                style: TextStyle(color: Colors.black, fontSize: 20),
               ),
               backgroundColor: Colors.grey.shade300,
             ),
