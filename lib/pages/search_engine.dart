@@ -14,7 +14,7 @@ class SearchEngine extends StatefulWidget {
 
 class _SearchEngine extends State<SearchEngine> {
   final TextEditingController _controller = TextEditingController();
-  final List<String> _keywords = [];
+  List<String> _keywords = [];
 
   //HuggingFace GLiNER 사용해보기
   HfInference hfInference = HfInference('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');
@@ -108,13 +108,13 @@ class _SearchEngine extends State<SearchEngine> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('조건에 맞는 공고가 없습니다!'),
+          title: Text('조건에 맞는 공고가 없습니다!'),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('확인'),
+              child: Text('확인'),
             ),
           ],
         );
@@ -130,7 +130,7 @@ class _SearchEngine extends State<SearchEngine> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               '어떤 일자리를\n원하시나요?',
               style: TextStyle(
                 fontSize: 35.0,
@@ -139,8 +139,8 @@ class _SearchEngine extends State<SearchEngine> {
                 height: 1.8,
               ),
             ),
-            const SizedBox(height: 30.0),
-            const Text(
+            SizedBox(height: 30.0),
+            Text(
               '예시\n'
                   '저는 고등학교에서 국어 교사로 20년간 근무하였습니다. 학생을 교육하는 곳에서 하루에 5시간씩 일하고 싶습니다.',
               style: TextStyle(
@@ -149,9 +149,9 @@ class _SearchEngine extends State<SearchEngine> {
                 color: Colors.black54,
               ),
             ),
-            const SizedBox(height: 30.0),
+            SizedBox(height: 30.0),
             // 추출된 키워드들이 화면에 표시됩니다
-            SizedBox(
+            Container(
               height: 50.0,
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -167,7 +167,7 @@ class _SearchEngine extends State<SearchEngine> {
                 ),
               ),
             ),
-            const SizedBox(height: 20.0),
+            SizedBox(height: 20.0),
             // 텍스트 입력 필드
             SizedBox(
               height: 45,
@@ -179,7 +179,7 @@ class _SearchEngine extends State<SearchEngine> {
                 ),
               ),
             ),
-            const SizedBox(height: 20.0),
+            SizedBox(height: 20.0),
             // 버튼들 (키워드 추출, 일자리 검색)
             Row(
               children: [
@@ -197,7 +197,7 @@ class _SearchEngine extends State<SearchEngine> {
                     style: TextStyle(fontSize: 18.0, color: Colors.white),
                   ),
                 ),
-                const SizedBox(width: 5),
+                SizedBox(width: 5),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(250, 51, 51, 255),

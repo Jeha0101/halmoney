@@ -8,7 +8,7 @@ class StepCareerPage extends StatefulWidget {
   final UserInfo userInfo;
   final UserPromptFactor userPromptFactor;
 
-  const StepCareerPage({
+  StepCareerPage({
     super.key,
     required this.userInfo,
     required this.userPromptFactor,
@@ -194,16 +194,34 @@ class _StepCareerPageState extends State<StepCareerPage> {
             const SizedBox(
               height: 25,
             ),
+
             const Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text('이력사항을 입력해주세요!',
-                    style: TextStyle(
-                      fontFamily: 'NanumGothicFamily',
-                      fontWeight: FontWeight.w500,
-                      fontSize: 28.0,
-                      color: Colors.black,
-                    )),
+                Flexible(
+                  child: Text('경력을 추가하거나 삭제하세요',
+                      style: TextStyle(
+                        fontFamily: 'NanumGothicFamily',
+                        fontWeight: FontWeight.w500,
+                        fontSize: 28.0,
+                        color: Colors.black,
+                      )),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Flexible(
+                  child: Text('아래의 경력은 자기소개서 생성에 활용됩니다',
+                      style: TextStyle(
+                        fontFamily: 'NanumGothicFamily',
+                        fontWeight: FontWeight.w500,
+                        fontSize: 20.0,
+                        color: Colors.black,
+                      )),
+                ),
               ],
             ),
             const SizedBox(
@@ -446,11 +464,11 @@ class CareerDisplay extends StatelessWidget {
               children: <Widget>[
                 Container(
                   padding: const EdgeInsets.all(10),
-                  child: const Text("근무한 곳", style: TextStyle(fontSize: 20)),
+                  child: Text("근무한 곳", style: const TextStyle(fontSize: 20)),
                 ),
                 Container(
                   padding: const EdgeInsets.all(10),
-                  child: const Text("근무한 기간", style: TextStyle(fontSize: 20)),
+                  child: Text("근무한 기간", style: const TextStyle(fontSize: 20)),
                 ),
                 Container(
                   padding: const EdgeInsets.all(10),

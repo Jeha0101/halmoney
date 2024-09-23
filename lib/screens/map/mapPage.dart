@@ -70,13 +70,13 @@ class MapScreen extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('조건에 맞는 공고가 없습니다!'),
+          title: Text('조건에 맞는 공고가 없습니다!'),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('확인'),
+              child: Text('확인'),
             ),
           ],
         );

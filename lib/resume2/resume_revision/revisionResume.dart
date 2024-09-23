@@ -11,14 +11,14 @@ class ResumeView2 extends StatefulWidget {
   final String thirdParagraph;
 
   const ResumeView2({
-    super.key,
+    Key? key,
     required this.id,
     required this.resumeId,
     required this.num,
     required this.firstParagraph,
     required this.secondParagraph,
     required this.thirdParagraph,
-  });
+  }) : super(key: key);
 
   @override
   _ResumeViewState createState() => _ResumeViewState();
@@ -26,7 +26,7 @@ class ResumeView2 extends StatefulWidget {
 class _ResumeViewState extends State<ResumeView2> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   Map<String, dynamic>? _resumeData;
-  final GlobalKey _repaintBoundaryKey = GlobalKey();
+  GlobalKey _repaintBoundaryKey = GlobalKey();
 
   @override
   void initState() {
@@ -108,7 +108,7 @@ class _ResumeViewState extends State<ResumeView2> {
         });
 
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
+          SnackBar(
             content: Text('지원이 완료되었습니다.'),
             duration: Duration(seconds: 2),
           ),
@@ -117,7 +117,7 @@ class _ResumeViewState extends State<ResumeView2> {
     } catch (e) {
       print("Failed to apply for job: $e");
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text('지원에 실패했습니다. 다시 시도해주세요.'),
           duration: Duration(seconds: 2),
         ),
@@ -162,19 +162,19 @@ class _ResumeViewState extends State<ResumeView2> {
         ),
       ),
       body: _resumeData == null
-          ? const Center(child: Text("이력서를 불러오는 중입니다."))
+          ? Center(child: Text("이력서를 불러오는 중입니다."))
           : Padding(
         padding: const EdgeInsets.all(30.0),
         child: RepaintBoundary(
           key: _repaintBoundaryKey,
           child: ListView(
             children: [
-              const SizedBox(
+              SizedBox(
                 height: 5,
               ),
               Row(
                 children: [
-                  const SizedBox(
+                  SizedBox(
                     width: 5,
                   ),
                   Column(
@@ -182,29 +182,29 @@ class _ResumeViewState extends State<ResumeView2> {
                     children: [
                       Text(
                         _resumeData!['resumeItem']['name'] ?? '이름 없음',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 25,
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      SizedBox(height: 8),
                       Text(
                         '${_resumeData!['resumeItem']['gender'] ?? '성별 없음'}',
-                        style: const TextStyle(fontSize: 15),
+                        style: TextStyle(fontSize: 15),
                       ),
-                      const SizedBox(height: 8),
+                      SizedBox(height: 8),
                       Text(
                         '${_resumeData!['resumeItem']['dob']}년생',
-                        style: const TextStyle(fontSize: 15),
+                        style: TextStyle(fontSize: 15),
                       ),
                     ],
                   ),
                 ],
               ),
-              const SizedBox(height: 40),
+              SizedBox(height: 40),
               //주소, 전화번호란
               Row(
                 children: [
-                  const Column(
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
@@ -220,7 +220,7 @@ class _ResumeViewState extends State<ResumeView2> {
                       ),
                     ],
                   ),
-                  const SizedBox(
+                  SizedBox(
                     width: 30,
                   ),
                   Column(
@@ -228,22 +228,22 @@ class _ResumeViewState extends State<ResumeView2> {
                     children: [
                       Text(
                         '${_resumeData!['resumeItem']['address']}',
-                        style: const TextStyle(fontSize: 18),
+                        style: TextStyle(fontSize: 18),
                       ),
-                      const SizedBox(
+                      SizedBox(
                         height: 10,
                       ),
                       Text(
                         '${_resumeData!['resumeItem']['phone']}',
-                        style: const TextStyle(fontSize: 18),
+                        style: TextStyle(fontSize: 18),
                       ),
                     ],
                   ),
                 ],
               ),
-              const SizedBox(height: 10),
-              const Divider(),
-              const SizedBox(
+              SizedBox(height: 10),
+              Divider(),
+              SizedBox(
                 height: 10,
               ),
               //경력란
@@ -269,23 +269,23 @@ class _ResumeViewState extends State<ResumeView2> {
                     children: [
                       Text(
                         '${experience['place']}',
-                        style: const TextStyle(fontSize: 18),
+                        style: TextStyle(fontSize: 18),
                       ),
-                      const SizedBox(height: 5),
+                      SizedBox(height: 5),
                       Text(
                         '근무 기간   ${experience['startYear']}년 ${experience['startMonth']}월 ~ ${experience['endYear']}년 ${experience['endMonth']}월',
-                        style: const TextStyle(fontSize: 14),
+                        style: TextStyle(fontSize: 14),
                       ),
-                      const SizedBox(height: 5),
+                      SizedBox(height: 5),
                       Text(
                         '근무 내용   ${experience['description']}',
-                        style: const TextStyle(fontSize: 14),
+                        style: TextStyle(fontSize: 14),
                       ),
                     ],
                   ),
                 );
-              }),
-              const Divider(),
+              }).toList(),
+              Divider(),
 
               //자기소개서
               const SizedBox(height: 10),
@@ -304,7 +304,7 @@ class _ResumeViewState extends State<ResumeView2> {
                 child: Text(
                   _resumeData!['resumeItem']['selfIntroduction'] ??
                       '자기소개 없음',
-                  style: const TextStyle(fontSize: 15),
+                  style: TextStyle(fontSize: 15),
                 ),
               ),
             ],
@@ -322,32 +322,32 @@ class _ResumeViewState extends State<ResumeView2> {
                   _applyForJob();
                 },
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 51, 51, 255)),
-                  padding: MaterialStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.symmetric(vertical: 15.0)),
+                  backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 51, 51, 255)),
+                  padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.symmetric(vertical: 15.0)),
                 ),
-                child: const Text(
+                child: Text(
                   '지원하기',
                   style: TextStyle(fontSize: 16,color: Colors.white),
                 ),
               ),
             ),
-            const SizedBox(width: 10),
+            SizedBox(width: 10),
             Expanded(
               child: ElevatedButton(
                 onPressed: () {
                   _copyTextToClipboard();
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
+                    SnackBar(
                       content: Text('텍스트가 복사되었습니다'),
                       duration: Duration(seconds: 2),
                     ),
                   );
                 },
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 51, 51, 255)),
-                  padding: MaterialStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.symmetric(vertical: 15.0)),
+                  backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 51, 51, 255)),
+                  padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.symmetric(vertical: 15.0)),
                 ),
-                child: const Text(
+                child: Text(
                   '텍스트 복사하기',
                   style: TextStyle(fontSize: 16, color: Colors.white),
                 ),

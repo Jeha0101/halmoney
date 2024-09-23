@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:halmoney/get_user_info/career.dart';
 
 class UserInfo {
-  late String userName='';
+  late String userName;
   late String userId;
   late String userPhone;
   late String userGender;

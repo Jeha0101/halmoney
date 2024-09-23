@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:halmoney/screens/resume/resumeManage.dart';
+import 'package:halmoney/screens/resume/select_skill_page.dart';
 //import 'package:halmoney/screens/resume/resumeCreate.dart';
 import 'package:halmoney/screens/scrap/UserLikes.dart';
+import 'package:halmoney/pages/extra_resume_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:halmoney/screens/scrap/UserViewedJobs.dart';
@@ -96,7 +99,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
                   const SizedBox(width: 30),
                   Text(
                     '$name 님 안녕하세요',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 25,
                     ),
                   ),

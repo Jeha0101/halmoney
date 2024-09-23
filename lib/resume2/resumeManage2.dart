@@ -8,12 +8,12 @@ class ResumeManage2 extends StatefulWidget {
   final int num;
   final String title;
 
-  const ResumeManage2({
+  ResumeManage2({
     required this.id,
     required this.num,
     required this.title,
-    super.key,
-  });
+    Key? key,
+  }): super(key: key);
 
 
   @override
@@ -95,10 +95,10 @@ class _ResumeManageState extends State<ResumeManage2> {
             ),
           ),
           body: _isLoading
-              ? const Center(child: CircularProgressIndicator())
+              ? Center(child: CircularProgressIndicator())
               : ListView(
             children: [
-              const Divider(),
+              Divider(),
               GestureDetector(
                 onTap: () async{
                   final result = await Navigator.push(
@@ -128,7 +128,7 @@ class _ResumeManageState extends State<ResumeManage2> {
                       ),
                     ],
                   ),
-                  child: const Column(
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text('새 이력서 작성하기',
@@ -181,23 +181,23 @@ class _ResumeManageState extends State<ResumeManage2> {
                       children: [
                         Text(
                           data['title'] ?? 'No Title',
-                          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10),
                         Text(
                           '작성일: ${_formatDate(data['createdAt'])}',
-                          style: const TextStyle(fontSize: 16),
+                          style: TextStyle(fontSize: 16),
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10),
                         Text(
                           _getSelfIntroductionPreview(data['resumeItem']['selfIntroduction'] ?? ''),
-                          style: const TextStyle(fontSize: 16),
+                          style: TextStyle(fontSize: 16),
                         ),
                       ],
                     ),
                   ),
                 );
-              }),
+              }).toList(),
             ],
           ),
         ),

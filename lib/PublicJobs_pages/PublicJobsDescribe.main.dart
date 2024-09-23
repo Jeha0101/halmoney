@@ -1,9 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:halmoney/screens/home/home.dart';
 import 'package:halmoney/myAppPage.dart';
-import 'PublicJobsData.dart';
+import '../get_user_info/user_Info.dart';
+import '../get_user_info/user_Info.dart';
 import 'PublicJobsList_widget.dart';
 
 class PublicJobsDescribe extends StatefulWidget {
@@ -15,8 +17,9 @@ class PublicJobsDescribe extends StatefulWidget {
 }
 
 class _PublicJobsDescribeState extends State<PublicJobsDescribe> {
-  final PublicJobsData _publicJobsData = PublicJobsData();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   List<Map<String, dynamic>> jobs = [];
+  String? userDocId;
   List<String> userLikes = [];
 
   @override
@@ -31,31 +34,34 @@ class _PublicJobsDescribeState extends State<PublicJobsDescribe> {
 
   Future<void> _fetchPublicJobs() async {
     try {
-      final List<Map<String, dynamic>> fetchedJobs = await _publicJobsData.fetchPublicJobs();
+      final QuerySnapshot result = await _firestore.collection('publicjobs').get();
+      final List<DocumentSnapshot> documents = result.docs;
 
       setState(() {
-        jobs = fetchedJobs.map((job) {
+        jobs = documents.map((doc) {
+          final data = doc.data() as Map<String, dynamic>;
+
           // Convert the Timestamp to a DateTime object and then to a formatted string
           String endDayStr = 'No end_day';
-          if (job['endday'] != null) {
-            DateTime endDay = (job['endday'] as Timestamp).toDate();
+          if (data['end_day'] != null) {
+            DateTime endDay = (data['end_day'] as Timestamp).toDate();
             endDayStr = DateFormat('yyyy-MM-dd').format(endDay); // Format the DateTime
           }
 
           return {
-            'num': job['num'] ?? 0,
-            'title': job['title'] ?? 'No Title.',
-            'company': job['company'] ?? 'No company',
-            'region': job['region'] ?? 'No address',
-            'type': job['type'] ?? 'No type',
-            'url': job['url'] ?? 'No url',
-            'person': job['person'] ?? 'No person',
-            'person2': job['person2'] ?? 'No person2',
-            'personcareer': job['personcareer'] ?? 'No person career',
-            'personedu': job['personedu'] ?? 'No person edu',
-            'applystep': job['applystep'] ?? 'No apply step',
-            'image_path': job['image_path'] ?? 'No_path',
-            'isLiked': userLikes.contains(job['num'].toString()),
+            'num': data['num'] ?? 0,
+            'title': data['jobtitle'] ?? 'No Title.',
+            'company': data['hirecompany'] ?? 'No company',
+            'region': data['hireregion'] ?? 'No address',
+            'type': data['hiretype'] ?? 'No type',
+            'url': data['hireurl'] ?? 'No url',
+            'person': data['applyperson'] ?? 'No person',
+            'person2': data['applyperson2'] ?? 'No person2',
+            'personcareer': data['applypersoncareer'] ?? 'No person career',
+            'personedu': data['applypersonedu'] ?? 'No person edu',
+            'applystep': data['applystep'] ?? 'No apply step',
+            'image_path': data['image_path'] ?? 'No_path',
+            'isLiked': userLikes.contains(data['num'].toString()),
             'end_day': endDayStr,
           };
         }).toList();
@@ -85,7 +91,7 @@ class _PublicJobsDescribeState extends State<PublicJobsDescribe> {
         right: false,
         child: Scaffold(
           appBar: AppBar(
-            title: const Text('공공일자리 리스트', style: TextStyle(color: Colors.white),),
+            title: const Text('공공일자리 리스트'),
             centerTitle: true,
             backgroundColor: const Color.fromARGB(250, 51, 51, 255),
             leading: IconButton(
@@ -103,21 +109,23 @@ class _PublicJobsDescribeState extends State<PublicJobsDescribe> {
             itemBuilder: (context, index) {
               final job = jobs[index];
               return Padding(
-                padding: EdgeInsets.all(2.0),
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: PublicJobList(
                   id: widget.id,
-                  title: job['title'] ?? 'No Title',
-                  company: job['company'] ?? 'No Company',
-                  region: job['region'] ?? 'No Region',
-                  url: job['url'] ?? 'No URL',
-                  person: job['person'] ?? 'No Person',
-                  person2: job['person2'] ?? 'No Person2',
-                  personcareer: job['personcareer'] ?? 'No Person Career',
-                  personedu: job['personedu'] ?? 'No Person Education',
-                  applystep: job['applystep'] ?? 'No Apply Step',
-                  image_path: job['image_path'] ?? 'No Image Path',
-                  isLiked: job['isLiked'] ?? false,
-                  endday: job['end_day'] ?? 'No End Day',
+                  num: job['num'],
+                  title: job['title'],
+                  company: job['company'],
+                  region: job['region'],
+                  type: job['type'],
+                  url: job['url'],
+                  person: job['person'],
+                  person2: job['person2'],
+                  personcareer: job['personcareer'],
+                  personedu: job['personedu'],
+                  applystep: job['applystep'],
+                  image_path: job['image_path'],
+                  isLiked: job['isLiked'],
+                  endday: job['end_day'],
                 ),
               );
             },

@@ -6,7 +6,7 @@ import 'package:halmoney/get_user_info/step3_user_field.dart';
 class StepUserCareer extends StatefulWidget {
   final UserInfo userInfo;
 
-  const StepUserCareer({
+  StepUserCareer({
     super.key,
     required this.userInfo,
   });
@@ -427,11 +427,11 @@ class CareerDisplay extends StatelessWidget {
               children: <Widget>[
                 Container(
                   padding: const EdgeInsets.all(10),
-                  child: const Text("근무한 곳", style: TextStyle(fontSize: 20)),
+                  child: Text("근무한 곳", style: const TextStyle(fontSize: 20)),
                 ),
                 Container(
                   padding: const EdgeInsets.all(10),
-                  child: const Text("근무한 기간", style: TextStyle(fontSize: 20)),
+                  child: Text("근무한 기간", style: const TextStyle(fontSize: 20)),
                 ),
                 Container(
                   padding: const EdgeInsets.all(10),

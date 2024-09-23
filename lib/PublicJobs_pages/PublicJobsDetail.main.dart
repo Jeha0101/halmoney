@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:halmoney/resume2/resumeManage2.dart';
 import 'PublicJobsCheck_page.dart';
 
 class PublicJobsDetail extends StatelessWidget {
   final String id;
+  final int num;
   final String title;
   final String company;
   final String region;
+  final String type;
   final String url;
   final String person;
   final String person2;
@@ -16,11 +19,13 @@ class PublicJobsDetail extends StatelessWidget {
   final String image_path;
   final String endday;
 
-  const PublicJobsDetail({
+  PublicJobsDetail({
     required this.id,
+    this.num = 0,
     required this.title,
     required this.company,
     required this.region,
+    this.type = '',
     required this.url,
     required this.person,
     required this.person2,
@@ -29,8 +34,8 @@ class PublicJobsDetail extends StatelessWidget {
     required this.applystep,
     required this.image_path,
     required this.endday,
-    super.key,
-  });
+    Key? key,
+  }): super(key: key);
 
   Future<void> _launchURL() async {
     if (await canLaunch(url)) {
@@ -229,75 +234,11 @@ class PublicJobsDetail extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          '응시자격',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        const SizedBox(height:10.0),
                         Text(
                           person,
                           style: const TextStyle(
-                            fontSize: 16,
-                            color: Colors.black,
-                          ),
-                        ),
-                        const SizedBox(height: 30),
-
-                        const Text(
-                          '결격사유',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        const SizedBox(height:10.0),
-                        Text(
-                          person2,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            color: Colors.black,
-                          ),
-                        ),
-                        const SizedBox(height: 30),
-
-                        const Text(
-                          '경력',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        const SizedBox(height:10.0),
-                        Text(
-                          personcareer,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            color: Colors.black,
-                          ),
-                        ),
-                        const SizedBox(height: 30),
-
-                        const Text(
-                          '학력',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        const SizedBox(height:10.0),
-                        Text(
-                          personedu,
-                          style: const TextStyle(
-                            fontSize: 16,
+                            fontSize: 10,
                             color: Colors.black,
                           ),
                         ),
@@ -348,7 +289,8 @@ class PublicJobsDetail extends StatelessWidget {
                         title: title,
                         region: region,
                         career: personcareer,
-                        requirementsText: person,  // Text for question generation
+                        requirementsText: person,
+                            applystep:applystep,// Text for question generation
                       ),
                       ),
                       );

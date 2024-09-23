@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:intl/intl.dart';
 import 'PublicJobsDetail.main.dart';
-import 'PublicJobsData.dart';
 
-
-class PublicJobList extends StatelessWidget {
+class PublicJobList extends StatefulWidget {
   final String id;
+  final int num;
   final String title;
   final String company;
   final String region;
+  final String type;
   final String url;
   final String person;
   final String person2;
@@ -22,9 +21,11 @@ class PublicJobList extends StatelessWidget {
 
   const PublicJobList({
     required this.id,
+    required this.num,
     required this.title,
     required this.company,
     required this.region,
+    required this.type,
     required this.url,
     required this.person,
     required this.person2,
@@ -34,104 +35,165 @@ class PublicJobList extends StatelessWidget {
     required this.isLiked,
     required this.image_path,
     required this.endday,
-    super.key,
-  });
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  _PublicJobListState createState() => _PublicJobListState();
+}
+
+class _PublicJobListState extends State<PublicJobList> {
+  late bool isFavorite;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    isFavorite = widget.isLiked;
+  }
+
+  Future<void> _saveViewedJob() async {
+    try {
+      final QuerySnapshot result = await _firestore
+          .collection('user')
+          .where('id', isEqualTo: widget.id)
+          .get();
+      final List<DocumentSnapshot> documents = result.docs;
+
+      if (documents.isNotEmpty) {
+        final String docId = documents.first.id;
+        final viewedJobsRef = _firestore
+            .collection('user')
+            .doc(docId)
+            .collection('viewed_jobs')
+            .doc();
+
+        await viewedJobsRef.set({
+          'job_title': widget.title,
+          'viewed_at': Timestamp.now(),
+        });
+      } else {
+        print('User document ID is empty.');
+      }
+    } catch (error) {
+      print('Failed to save job viewing history: $error');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(  // GestureDetector로 클릭 이벤트 감지
-      onTap: () {
-        // 클릭했을 때 상세 페이지로 이동
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => PublicJobsDetail(
-              id: id,
-              title: title,
-              company: company,
-              region: region,
-              url: url,
-              person: person,
-              person2: person2,
-              personcareer: personcareer,
-              personedu: personedu,
-              applystep: applystep,
-              image_path: image_path,
-              endday: endday,
-            ),
-          ),
-        );
-      },
-      child: SizedBox(
-        height: 150,
-        child: Container(
-          margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 1,
-                blurRadius: 5,
-                offset: Offset(0, 3),
+    return SizedBox(
+      height: 110,
+      child:ElevatedButton(
+        onPressed: () {
+          _saveViewedJob();
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PublicJobsDetail(
+                id: widget.id,
+                num: widget.num,
+                title: widget.title,
+                company: widget.company,
+                region: widget.region,
+                type: widget.type,
+                url: widget.url,
+                person: widget.person,
+                person2: widget.person2,
+                personcareer: widget.personcareer,
+                personedu: widget.personedu,
+                applystep: widget.applystep,
+                endday: widget.endday,
+                image_path: widget.image_path,
               ),
-            ],
+            ),
+          );
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.white,
+          padding: EdgeInsets.zero,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
           ),
-          child: Row(
-            children: [
-              Container(
-                width: 100,
-                height: 100,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  image: DecorationImage(
-                    image: AssetImage(image_path),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(
+              children: [
+                const SizedBox(width: 10),
+                Container(
+                  width: 100,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20), // Applying border radius
+                  ),
+                  child: Image.asset(
+                    widget.image_path,
+
                     fit: BoxFit.cover,
                   ),
                 ),
-              ),
-              const SizedBox(width: 15),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      title,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                const SizedBox(width: 15),
+                Container(
+                  width: 250,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              widget.title,
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
                       ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 5),
-                    Text(
-                      company,
-                      style: const TextStyle(
-                        fontSize: 15,
-                        color: Colors.grey,
+                      const SizedBox(height: 3),
+                      Text(
+                        widget.company,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                          color: Color.fromARGB(250, 69, 99, 255),
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 5),
-                    Text(
-                      '마감일: $endday',
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: Colors.blue,
+                      const SizedBox(height: 3),
+                      Text(
+                        widget.region,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.normal,
+                          color: Color.fromARGB(255, 0, 0, 128),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+                      const SizedBox(height: 3),
+                      Text(
+                        '마감일: ${widget.endday}',
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.normal,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ],
         ),
-      ),
+      )
     );
+
   }
 }

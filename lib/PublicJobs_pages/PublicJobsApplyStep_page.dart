@@ -1,31 +1,22 @@
 import 'package:flutter/material.dart';
-import 'PublicJobsCheckQuestion.dart';
+import 'PublicJobsApplyCreate.dart';
 import 'PublicJobsDescribe.main.dart';
-import 'PublicJobsApplyStep_page.dart';
 
-class PublicJobsCheckPage extends StatefulWidget {
+class PublicJobsApplyPage extends StatefulWidget {
   final String id;
-  final String title;
-  final String region;
-  final String career;
-  final String requirementsText;
   final String applystep;
 
-  PublicJobsCheckPage({
+  PublicJobsApplyPage({
     required this.id,
-    required this.title,
-    required this.region,
-    required this.career,
-    required this.requirementsText,
     required this.applystep,
     Key? key,
   }) : super(key: key);
 
   @override
-  _PublicJobsCheckPageState createState() => _PublicJobsCheckPageState();
+  _PublicJobsApplyPageState createState() => _PublicJobsApplyPageState();
 }
 
-class _PublicJobsCheckPageState extends State<PublicJobsCheckPage> {
+class _PublicJobsApplyPageState extends State<PublicJobsApplyPage> {
   late Future<List<String>> _questionsFuture;
   int _currentStep = 0;
   List<bool> _isChecked = [];
@@ -33,15 +24,12 @@ class _PublicJobsCheckPageState extends State<PublicJobsCheckPage> {
   @override
   void initState() {
     super.initState();
-    // 질문 목록 생성
+    // QuestionGeneratorService를 호출해서 질문을 생성
     _questionsFuture = QuestionGeneratorService().generateQuestionsFromText(
-      title: widget.title,
-      hireregion: widget.region,
-      applypersoncareer: widget.career,
-      text: widget.requirementsText,
+      applystep: widget.applystep,
     );
 
-    // 체크박스 상태 초기화
+    // 질문 데이터에 맞춰 체크박스 상태를 초기화
     _questionsFuture.then((questions) {
       setState(() {
         _isChecked = List<bool>.filled(questions.length, false);
@@ -57,7 +45,7 @@ class _PublicJobsCheckPageState extends State<PublicJobsCheckPage> {
         // 모든 질문이 완료되면 다음 페이지로 이동
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => PublicJobsApplyPage(id: widget.id, applystep: widget.applystep,)),
+          MaterialPageRoute(builder: (context) => PublicJobsDescribe(id: widget.id)),
         );
       }
     });
@@ -75,7 +63,7 @@ class _PublicJobsCheckPageState extends State<PublicJobsCheckPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('자격요건 확인하기'),
+        title: const Text('지원 절차 확인하기'),
         backgroundColor: Colors.blue,
       ),
       body: FutureBuilder<List<String>>(
@@ -86,7 +74,7 @@ class _PublicJobsCheckPageState extends State<PublicJobsCheckPage> {
           } else if (snapshot.hasError) {
             return Center(child: Text('에러 발생: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('질문이 없습니다.'));
+            return const Center(child: Text('채용 절차가 없습니다.'));
           } else {
             final questions = snapshot.data!;
             return Stepper(
@@ -95,14 +83,14 @@ class _PublicJobsCheckPageState extends State<PublicJobsCheckPage> {
               onStepCancel: _onStepCancel,
               steps: List.generate(questions.length, (index) {
                 return Step(
-                  title: Text('질문 ${index + 1}'),
+                  title: Text('절차 ${index + 1}'),
                   content: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         questions[index],
-                        style: TextStyle(fontSize: 16),
-                      )
+                        style: const TextStyle(fontSize: 16),
+                      ),
                     ],
                   ),
                   isActive: _currentStep >= index,

@@ -3,11 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:halmoney/get_user_info/step4_workhours.dart';
 import 'package:halmoney/get_user_info/user_Info.dart';
+import 'package:halmoney/myAppPage.dart';
 
 class StepUserField extends StatefulWidget {
   final UserInfo userInfo;
 
-  const StepUserField({
+  StepUserField({
     super.key,
     required this.userInfo,
   });
@@ -89,6 +90,9 @@ class _StepUserFieldState extends State<StepUserField> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
+                        //임시 코드
+                        // 우선 홈페이지로 이동
+                        // 나중에 근무 가능 시간 조사 페이지로
                           builder: (context) =>StepWorkHours(userInfo: widget.userInfo)),
                     );
                   },
@@ -194,7 +198,7 @@ class _FieldChooseWidgetState extends State<FieldChooseWidget> {
     '교육/강사'
   ];
 
-  final TextEditingController _searchTextEditingController = TextEditingController();
+  TextEditingController _searchTextEditingController = TextEditingController();
 
   String get _searchText => _searchTextEditingController.text.trim();
 
@@ -251,10 +255,10 @@ class _FieldChooseWidgetState extends State<FieldChooseWidget> {
         return Chip(
           label: Text(
             field,
-            style: const TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.white),
           ),
           backgroundColor: Colors.blue,
-          deleteIcon: const Icon(Icons.close, color: Colors.white),
+          deleteIcon: Icon(Icons.close, color: Colors.white),
           onDeleted: () {
             setState(() {
               widget.selectedFields.remove(field);
@@ -268,7 +272,7 @@ class _FieldChooseWidgetState extends State<FieldChooseWidget> {
 
   Widget _buildSearchField() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
+      padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey.shade400),
         borderRadius: BorderRadius.circular(5.0),
@@ -321,7 +325,7 @@ class _FieldChooseWidgetState extends State<FieldChooseWidget> {
           child: Chip(
             label: Text(
               field,
-              style: const TextStyle(color: Colors.black),
+              style: TextStyle(color: Colors.black),
             ),
             backgroundColor: Colors.grey.shade300,
           ),

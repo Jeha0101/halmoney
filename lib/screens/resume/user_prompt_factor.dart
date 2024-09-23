@@ -47,7 +47,7 @@ class UserPromptFactor {
   String getCareersString() {
     String result = '';
     for (Career career in careers) {
-      result += '${career.getStringCareer()}\n';
+      result += career.getStringCareer()+'\n';
     }
     return result;
   }

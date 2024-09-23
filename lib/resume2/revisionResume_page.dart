@@ -7,9 +7,9 @@ class SelfIntroductionRevisionPage extends StatefulWidget {
   final String existingIntroduction;
 
   const SelfIntroductionRevisionPage({
-    super.key,
+    Key? key,
     required this.existingIntroduction,
-  });
+  }) : super(key: key);
 
   @override
   _SelfIntroductionRevisionPageState createState() =>
@@ -41,14 +41,14 @@ class _SelfIntroductionRevisionPageState
 
   // 팝업창을 통해 수정사항 입력
   Future<void> _showModificationDialog(String paragraph, int index) async {
-    TextEditingController popupController = TextEditingController();
+    TextEditingController _popupController = TextEditingController();
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('수정사항 입력'),
+          title: Text('수정사항 입력'),
           content: TextField(
-            controller: popupController,
+            controller: _popupController,
             maxLines: 5,
             decoration: const InputDecoration(
               hintText: '수정사항을 입력하세요',
@@ -56,20 +56,20 @@ class _SelfIntroductionRevisionPageState
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('취소'),
+              child: Text('취소'),
               onPressed: () {
                 Navigator.of(context).pop(); // 팝업창 닫기
               },
             ),
             ElevatedButton(
-              child: const Text('확인'),
+              child: Text('확인'),
               onPressed: () {
                 setState(() {
-                  _modificationController.text = popupController.text;
+                  _modificationController.text = _popupController.text;
                   selectedParagraphIndex = index;
                   selectedParagraph = paragraph;
                 });
-                print('선택문단! $selectedParagraph');
+                print('선택문단! ${selectedParagraph}');
                 _generateRevisedIntroduction(); // 수정된 문단과 수정사항을 처리
                 Navigator.of(context).pop(); // 팝업창 닫기
               },
@@ -165,9 +165,9 @@ class _SelfIntroductionRevisionPageState
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   '수정할 문단을 선택해 주세요!',
-                  style: TextStyle(fontSize: 20),
+                  style: const TextStyle(fontSize: 20),
                 ),
                 const SizedBox(height: 10),
                 // 첫번째 문단 클릭 가능하도록 설정

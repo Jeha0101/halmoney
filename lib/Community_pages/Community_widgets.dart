@@ -14,8 +14,8 @@ class Community_widget extends StatefulWidget {
     required this.title,
     required this.contents,
     required this.timestamp,
-    super.key,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   _CommunityState createState() => _CommunityState();
@@ -70,7 +70,7 @@ class _CommunityState extends State<Community_widget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               child: Text(
                 widget.title,
                 style: const TextStyle(
@@ -99,7 +99,7 @@ class _CommunityState extends State<Community_widget> {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Text(
                     formattedDate,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 15,
                       color: Colors.black,
                     ),

@@ -132,7 +132,6 @@ class _JobListState extends State<JobList> {
               workweek: widget.workweek,
               endday:widget.endday,
               image_path: widget.image_path,
-              manager_call: widget.manager_call,
             ),
           ),
         );

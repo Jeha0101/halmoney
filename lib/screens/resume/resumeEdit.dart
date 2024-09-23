@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:halmoney/screens/resume/step4_career.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:convert';
+import 'package:halmoney/screens/resume/resumeManage.dart';
 import 'package:halmoney/get_user_info/career.dart';
 
 //이력서 데이터
@@ -51,12 +53,12 @@ class ResumeEdit extends StatefulWidget {
   final List<Career> workExperiences;
 
   const ResumeEdit({
-    super.key,
+    Key? key,
     required this.id,
     required this.selectedSkills,
     required this.selectedStrens,
     required this.workExperiences,
-  });
+  }) : super(key: key);
 
   @override
   _ResumeEditState createState() => _ResumeEditState();
@@ -149,7 +151,7 @@ class _ResumeEditState extends State<ResumeEdit> {
   }) async {
     final apiKey = dotenv.get('GPT_API_KEY');
     const endpoint = 'https://api.openai.com/v1/chat/completions';
-    const requestsTimeOut = Duration(seconds: 60);
+    const requestsTimeOut = const Duration(seconds: 60);
 
     String prompt = '''다음 특징을 갖는 사람의 자기소개서 작성 :
     성별:$gender, 생년:$dob, 경력 :$workExperiences, 기술:$selectedSkills, 장점:$selectedStrens;
@@ -219,7 +221,7 @@ class _ResumeEditState extends State<ResumeEdit> {
         });
 
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Resume saved successfully")),
+          SnackBar(content: Text("Resume saved successfully")),
         );
       } catch (error) {
         print("Failed to save resume data: $error");
@@ -245,17 +247,17 @@ class _ResumeEditState extends State<ResumeEdit> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('이력서 작성을 취소하시겠습니까?'),
-          content: const Text('지금까지 작성한 이력서는 저장되지 않습니다.'),
+          title: Text('이력서 작성을 취소하시겠습니까?'),
+          content: Text('지금까지 작성한 이력서는 저장되지 않습니다.'),
           actions: <Widget>[
             TextButton(
-              child: const Text('취소'),
+              child: Text('취소'),
               onPressed: () {
                 Navigator.of(context).pop(false);
               },
             ),
             ElevatedButton(
-              child: const Text('확인'),
+              child: Text('확인'),
               onPressed: () {
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
@@ -272,31 +274,31 @@ class _ResumeEditState extends State<ResumeEdit> {
 
   // 이력서 제목 입력받는 팝업창
   Future<void> _showSaveDialog() async {
-    TextEditingController titleController = TextEditingController();
+    TextEditingController _titleController = TextEditingController();
 
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('이력서 제목을 입력하세요'),
+          title: Text('이력서 제목을 입력하세요'),
           content: TextField(
-            controller: titleController,
-            decoration: const InputDecoration(
+            controller: _titleController,
+            decoration: InputDecoration(
               hintText: '이력서 제목',
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('취소'),
+              child: Text('취소'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             ElevatedButton(
-              child: const Text('확인'),
+              child: Text('확인'),
               onPressed: () {
                 Navigator.of(context).pop();
-                _saveResume(titleController.text);
+                _saveResume(_titleController.text);
               },
             ),
           ],
@@ -318,12 +320,12 @@ class _ResumeEditState extends State<ResumeEdit> {
             elevation: 1.0,
             backgroundColor: Colors.white,
             leading: IconButton(
-              icon: const Icon(Icons.arrow_back),
+              icon: Icon(Icons.arrow_back),
               onPressed: _goBack,
             ),
           ),
           body: _isLoading
-              ? const Center(
+              ? Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -356,25 +358,25 @@ class _ResumeEditState extends State<ResumeEdit> {
                       children: [
                         Text(
                           resumeItem.name,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 25,
                           ),
                         ),
-                        const SizedBox(
+                        SizedBox(
                           height: 8,
                         ),
                         Text(
                           resumeItem.gender,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 15,
                           ),
                         ),
-                        const SizedBox(
+                        SizedBox(
                           height: 8,
                         ),
                         Text(
-                          '${resumeItem.dob}년생',
-                          style: const TextStyle(
+                          resumeItem.dob + '년생',
+                          style: TextStyle(
                             fontSize: 15,
                           ),
                         )
@@ -388,7 +390,7 @@ class _ResumeEditState extends State<ResumeEdit> {
                 // 주소, 전화번호란
                 Row(
                   children: [
-                    const Column(
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
@@ -404,7 +406,7 @@ class _ResumeEditState extends State<ResumeEdit> {
                         ),
                       ],
                     ),
-                    const SizedBox(
+                    SizedBox(
                       width: 30,
                     ),
                     Column(
@@ -412,23 +414,23 @@ class _ResumeEditState extends State<ResumeEdit> {
                       children: [
                         Text(
                           resumeItem.address,
-                          style: const TextStyle(fontSize: 18),
+                          style: TextStyle(fontSize: 18),
                         ),
-                        const SizedBox(
+                        SizedBox(
                           height: 10,
                         ),
                         Text(
                           resumeItem.phone,
-                          style: const TextStyle(fontSize: 18),
+                          style: TextStyle(fontSize: 18),
                         ),
                       ],
                     ),
                   ],
                 ),
-                const SizedBox(
+                SizedBox(
                   height: 10,
                 ),
-                const Divider(),
+                Divider(),
 
                 // 경력란
                 const SizedBox(height: 10),
@@ -452,25 +454,25 @@ class _ResumeEditState extends State<ResumeEdit> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            experience.workPlace,
-                            style: const TextStyle(fontSize: 18),
+                            '${experience.workPlace}',
+                            style: TextStyle(fontSize: 18),
                           ),
-                          const SizedBox(height: 5),
+                          SizedBox(height: 5),
                           Text(
                             '근무 기간   ${experience.workDuration}년 ${experience.workUnit}개월',
-                            style: const TextStyle(fontSize: 14),
+                            style: TextStyle(fontSize: 14),
                           ),
-                          const SizedBox(height: 5),
+                          SizedBox(height: 5),
                           Text(
                             '근무 내용   ${experience.workDescription}',
-                            style: const TextStyle(fontSize: 14),
+                            style: TextStyle(fontSize: 14),
                           ),
                         ],
                       ),
                     );
                   }).toList(),
                 ),
-                const Divider(),
+                Divider(),
 
                 // 자기소개서
                 const SizedBox(height: 10),
@@ -482,7 +484,7 @@ class _ResumeEditState extends State<ResumeEdit> {
                 TextField(
                   controller: _selfIntroductionController,
                   maxLines: 10,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: '자기소개서를 입력하세요',
                   ),
@@ -490,6 +492,8 @@ class _ResumeEditState extends State<ResumeEdit> {
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: _showSaveDialog,
+                  child: const Text('저장하기',
+                      style: TextStyle(color: Colors.white)),
                   style: ElevatedButton.styleFrom(
                     backgroundColor:
                     const Color.fromARGB(250, 51, 51, 255),
@@ -498,8 +502,6 @@ class _ResumeEditState extends State<ResumeEdit> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: const Text('저장하기',
-                      style: TextStyle(color: Colors.white)),
                 ),
               ],
             ),
