@@ -241,7 +241,8 @@ class PublicJobsDetail extends StatelessWidget {
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        const SizedBox(height: 10.0),
+                        const SizedBox(height:10.0),
+
                         Text(
                           person,
                           style: const TextStyle(
@@ -250,6 +251,7 @@ class PublicJobsDetail extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 30),
+
                         const Text(
                           '결격사유',
                           style: TextStyle(
@@ -258,7 +260,8 @@ class PublicJobsDetail extends StatelessWidget {
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        const SizedBox(height: 10.0),
+                        const SizedBox(height:10.0),
+
                         Text(
                           person2,
                           style: const TextStyle(
@@ -267,6 +270,7 @@ class PublicJobsDetail extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 30),
+
                         const Text(
                           '경력',
                           style: TextStyle(
@@ -275,7 +279,8 @@ class PublicJobsDetail extends StatelessWidget {
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        const SizedBox(height: 10.0),
+                        const SizedBox(height:10.0),
+
                         Text(
                           personcareer,
                           style: const TextStyle(
@@ -284,6 +289,7 @@ class PublicJobsDetail extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 30),
+
                         const Text(
                           '학력',
                           style: TextStyle(
@@ -292,7 +298,9 @@ class PublicJobsDetail extends StatelessWidget {
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        const SizedBox(height: 10.0),
+
+                        const SizedBox(height:10.0),
+
                         Text(
                           personedu,
                           style: const TextStyle(

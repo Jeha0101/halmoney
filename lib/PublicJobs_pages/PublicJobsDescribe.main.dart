@@ -32,17 +32,16 @@ class _PublicJobsDescribeState extends State<PublicJobsDescribe> {
 
   Future<void> _fetchPublicJobs() async {
     try {
-      final List<Map<String, dynamic>> fetchedJobs =
-          await _publicJobsData.fetchPublicJobs();
+      final List<Map<String, dynamic>> fetchedJobs = await _publicJobsData.fetchPublicJobs();
 
       setState(() {
         jobs = fetchedJobs.map((job) {
-// Convert the Timestamp to a DateTime object and then to a formatted string
+          // Convert the Timestamp to a DateTime object and then to a formatted string
           String endDayStr = 'No end_day';
           if (job['endday'] != null) {
             DateTime endDay = (job['endday'] as Timestamp).toDate();
-            endDayStr =
-                DateFormat('yyyy-MM-dd').format(endDay); // Format the DateTime
+            endDayStr = DateFormat('yyyy-MM-dd').format(endDay); // Format the DateTime
+
           }
 
           return {
@@ -88,10 +87,8 @@ class _PublicJobsDescribeState extends State<PublicJobsDescribe> {
         right: false,
         child: Scaffold(
           appBar: AppBar(
-            title: const Text(
-              '공공일자리 리스트',
-              style: TextStyle(color: Colors.white),
-            ),
+            title: const Text('공공일자리 리스트', style: TextStyle(color: Colors.white),),
+
             centerTitle: true,
             backgroundColor: const Color.fromARGB(250, 51, 51, 255),
             leading: IconButton(
@@ -105,28 +102,26 @@ class _PublicJobsDescribeState extends State<PublicJobsDescribe> {
           body: jobs.isEmpty
               ? const Center(child: Text('No jobs available'))
               : ListView.builder(
-                  itemCount: jobs.length,
-                  itemBuilder: (context, index) {
-                    final job = jobs[index];
-                    return Padding(
-                      padding: EdgeInsets.all(2.0),
-                      child: PublicJobList(
-                        id: widget.id,
-                        title: job['title'] ?? 'No Title',
-                        company: job['company'] ?? 'No Company',
-                        region: job['region'] ?? 'No Region',
-                        url: job['url'] ?? 'No URL',
-                        person: job['person'] ?? 'No Person',
-                        person2: job['person2'] ?? 'No Person2',
-                        personcareer: job['personcareer'] ?? 'No Person Career',
-                        personedu: job['personedu'] ?? 'No Person Education',
-                        applystep: job['applystep'] ?? 'No Apply Step',
-                        image_path: job['image_path'] ?? 'No Image Path',
-                        isLiked: job['isLiked'] ?? false,
-                        endday: job['end_day'] ?? 'No End Day',
-                      ),
-                    );
-                  },
+            itemCount: jobs.length,
+            itemBuilder: (context, index) {
+              final job = jobs[index];
+              return Padding(
+                padding: EdgeInsets.all(2.0),
+                child: PublicJobList(
+                  id: widget.id,
+                  title: job['title'] ?? 'No Title',
+                  company: job['company'] ?? 'No Company',
+                  region: job['region'] ?? 'No Region',
+                  url: job['url'] ?? 'No URL',
+                  person: job['person'] ?? 'No Person',
+                  person2: job['person2'] ?? 'No Person2',
+                  personcareer: job['personcareer'] ?? 'No Person Career',
+                  personedu: job['personedu'] ?? 'No Person Education',
+                  applystep: job['applystep'] ?? 'No Apply Step',
+                  image_path: job['image_path'] ?? 'No Image Path',
+                  isLiked: job['isLiked'] ?? false,
+                  endday: job['end_day'] ?? 'No End Day',
+
                 ),
         ),
       ),
