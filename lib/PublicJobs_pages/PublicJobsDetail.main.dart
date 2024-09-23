@@ -21,11 +21,11 @@ class PublicJobsDetail extends StatelessWidget {
 
   PublicJobsDetail({
     required this.id,
-    required this.num,
+    this.num = 0,
     required this.title,
     required this.company,
     required this.region,
-    required this.type,
+    this.type = '',
     required this.url,
     required this.person,
     required this.person2,
