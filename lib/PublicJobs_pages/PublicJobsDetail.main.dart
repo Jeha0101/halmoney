@@ -289,7 +289,8 @@ class PublicJobsDetail extends StatelessWidget {
                         title: title,
                         region: region,
                         career: personcareer,
-                        requirementsText: person,  // Text for question generation
+                        requirementsText: person,
+                            applystep:applystep,// Text for question generation
                       ),
                       ),
                       );
