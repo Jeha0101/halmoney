@@ -76,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
           backgroundColor: Colors.white,
           appBar: AppBar(
             backgroundColor: Colors.white,
-            elevation: 1.0,
+            //elevation: 1.0,
             title: Row(
               children: [
                 Image.asset(
@@ -127,13 +127,13 @@ class _MyHomePageState extends State<MyHomePage> {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                AIRecommPage(id: widget.userInfo.userId)),
+                                AIRecommPage(userInfo: widget.userInfo,)),
                       );
                     } else if (imageUrl == "assets/images/homeimages/search_engine_page.png") {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const SearchEngine()),
+                            builder: (context) => SearchEngine(userInfo: widget.userInfo,)),
                       );
                     } else if (imageUrl == "assets/images/homeimages/public_work_page.png") {
                       Navigator.push(
@@ -159,7 +159,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const SearchEngine()),
+                      builder: (context) => SearchEngine(userInfo: widget.userInfo,)),
                 );
               },
               child: Container(
@@ -227,7 +227,7 @@ class _MyHomePageState extends State<MyHomePage> {
             // 이력서 생성 버튼
             Container(
               padding: const EdgeInsets.only(left: 20.0, right: 20.0),
-              height: 330,
+              height: 370,
               color: const Color.fromARGB(50, 173, 216, 230),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -236,8 +236,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     height: 25,
                   ),
                   const Text(
-                    '이력서를 어떻게 작성할지 모르겠다면?\n'
-                        '자동으로 이력서를 만들어드려요!',
+                    '자소서를 어떻게 작성할지 모르겠다면?\n'
+                        '자동으로 자소서를 만들어드려요!',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
@@ -256,7 +256,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     },
                     child: Container(
                       padding: const EdgeInsets.all(20.0),
-                      height: 190,
+                      height: 220,
                       decoration: const BoxDecoration(
                         color: Colors.white,
                       ),
@@ -275,7 +275,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Text(
-                                  'AI가 만들어주는 이력서',
+                                  'AI가 만들어주는 자기소개서',
                                   style: TextStyle(
                                       fontSize: 17, color: Colors.black54),
                                 ),
@@ -292,7 +292,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 Container(
                                   padding: const EdgeInsets.all(10),
                                   width: 230,
-                                  height: 50,
+                                  height: 60,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(25.0),
                                     border: Border.all(
@@ -301,10 +301,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                   ),
                                   child: const Center(
                                     child: Text(
-                                      '이력서 작성하기',
+                                      '자기소개서 작성하기',
                                       style: TextStyle(
                                           color: Color.fromARGB(250, 51, 51, 255),
-                                          fontSize: 20,
+                                          fontSize:18,
                                           fontWeight: FontWeight.w600),
                                     ),
                                   ),
@@ -323,7 +323,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
             // AI 추천 시스템
             Padding(
-              padding: const EdgeInsets.only(left: 25.0, right: 20.0, top: 25, bottom: 50),
+              padding: const EdgeInsets.only(left: 25.0, right: 20.0, top: 40, bottom: 60),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -348,7 +348,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                AIRecommPage(id: widget.userInfo.userId)),
+                                AIRecommPage(userInfo: widget.userInfo,)),
                       );
                     },
                     child: Container(
@@ -431,7 +431,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   isLoading
                       ? const Center(child: CircularProgressIndicator())
                       : Container(
-                      height: 300,
+                      height: 320,
                       child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: publicJobs.length,
@@ -495,7 +495,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      AISelectCondPage(id: widget.userInfo.userId)),
+                                      AISelectCondPage(userInfo: widget.userInfo,)),
                             );
                           },
                           child: Row(
@@ -584,7 +584,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      MapScreen()),
+                                      MapScreen(userInfo: widget.userInfo,)),
                             );
                           },
                           child: Row(

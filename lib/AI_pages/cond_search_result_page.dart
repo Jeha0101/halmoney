@@ -2,13 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:halmoney/Recruit_detail_pages/Recruit_main_page.dart';
 
-class CondSearchResultPage extends StatelessWidget {
-  final List<DocumentSnapshot> jobs;
+import '../get_user_info/user_Info.dart';
 
-  const CondSearchResultPage({
-    required this.jobs,
-    super.key,
-  });
+class CondSearchResultPage extends StatelessWidget {
+  final UserInfo userInfo;
+  final List<DocumentSnapshot> jobs;
+  const CondSearchResultPage({super.key, required this.userInfo, required this.jobs});
+
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +44,7 @@ class CondSearchResultPage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: jobs.map((job) => Cond_Search(job: job)).toList(),
+            children: jobs.map((job) => Cond_Search(userInfo: userInfo, job: job)).toList(),
           ),
         ),
       ),
@@ -53,8 +53,9 @@ class CondSearchResultPage extends StatelessWidget {
 }
 
 class Cond_Search extends StatelessWidget {
+  final UserInfo userInfo;
   final DocumentSnapshot job;
-  const Cond_Search({super.key, required this.job});
+  const Cond_Search({super.key, required this.userInfo, required this.job});
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +81,7 @@ class Cond_Search extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => Recruit_main(
-              id: jobData['id'] ?? 'No',
+              userInfo: userInfo,
               num: jobData['num'] ?? 'No',
               title: jobData['title'] ?? 'NO',
               address: address,
@@ -90,7 +91,7 @@ class Cond_Search extends StatelessWidget {
               workweek: jobData['work_week'] ?? '',
               image_path: jobData['image_path'] ?? '',
               endday: jobData['endday'] ?? '',
-              manager_call: jobData['manager_call']??'',
+              manager_call: jobData['manager_call']??''
               //userId: widget.id,
             ),
           ),

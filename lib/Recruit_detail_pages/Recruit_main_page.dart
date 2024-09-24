@@ -4,12 +4,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:halmoney/get_user_info/user_Info.dart';
 import 'package:halmoney/resume2/resumeManage2.dart';
 import '../screens/resume/resumeManage.dart';
 import 'Recurit_CallButton.dart';
 
 class Recruit_main extends StatelessWidget {
-  final String id;
+  final UserInfo userInfo;
   final int num;
   final String title;
   final String address;
@@ -22,7 +23,7 @@ class Recruit_main extends StatelessWidget {
   final String manager_call;
 
   Recruit_main({
-    required this.id,
+    required this.userInfo,
     required this.num,
     required this.title,
     required this.address,
@@ -336,11 +337,10 @@ class Recruit_main extends StatelessWidget {
                         ),
 
                         onPressed: () {
-                          print('id:$id');
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ResumeManage(id: id),
+                              builder: (context) => ResumeManage(id: userInfo.userId),
                             ),
                           );
 

@@ -2,11 +2,12 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:halmoney/get_user_info/user_Info.dart';
 import 'cond_search_result_page.dart';
 
 class AIRecommPage extends StatefulWidget {
-  final String id;
-  const AIRecommPage({super.key, required this.id});
+  final UserInfo userInfo;
+  const AIRecommPage({super.key, required this.userInfo});
 
   @override
   _AIRecommPage createState() => _AIRecommPage();
@@ -35,7 +36,7 @@ class _AIRecommPage extends State<AIRecommPage> {
       // 사용자의 ID로 Firestore에서 사용자 문서 가져오기
       final QuerySnapshot result = await _firestore
           .collection('user')
-          .where('id', isEqualTo: widget.id)
+          .where('id', isEqualTo: widget.userInfo.userId)
           .get();
       final List<DocumentSnapshot> documents = result.docs;
 
@@ -266,7 +267,7 @@ class _AIRecommPage extends State<AIRecommPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => CondSearchResultPage(jobs: recommendedJobs),
+        builder: (context) => CondSearchResultPage(userInfo: widget.userInfo, jobs: recommendedJobs),
       ),
     );
   }
