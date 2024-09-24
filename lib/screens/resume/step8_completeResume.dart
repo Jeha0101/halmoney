@@ -28,82 +28,43 @@ class _StepCompleteResumeState extends State<StepCompleteResume> {
       home: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
+          backgroundColor: const Color.fromARGB(250, 51, 51, 255),
+          elevation: 1.0,
+          leading: null,
+          automaticallyImplyLeading: false,
           title: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Image.asset(
-                'assets/images/img_logo.png',
-                fit: BoxFit.contain,
-                height: 40,
-              ),
-              Container(
-                  padding: const EdgeInsets.all(8.0),
-                  child: const Text(
-                    '할MONEY',
-                    style: TextStyle(
-                      fontFamily: 'NanumGothicFamily',
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18.0,
-                      color: Colors.black,
+              GestureDetector(
+                onTap: () {
+                  for (int i = 0; i < 7; i++) {
+                    Navigator.of(context).pop();
+                  }
+                },
+                child: const Row(
+                  children: [
+                    Icon(
+                      Icons.home,
+                      size: 30,
+                      color: Colors.white,
                     ),
-                  )),
+                    Text('홈으로',
+                        style: TextStyle(
+                          fontFamily: 'NanumGothicFamily',
+                          fontSize: 20.0,
+                          color: Colors.white,
+                        )),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
         body: Padding(
             padding: const EdgeInsets.all(25.0),
             child: ListView(children: [
-              // 페이지 이동 영역
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // 이전 페이지로 이동
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Row(
-                      children: [
-                        Icon(
-                          Icons.chevron_left,
-                          size: 30,
-                        ),
-                        Text('이전',
-                            style: TextStyle(
-                              fontFamily: 'NanumGothicFamily',
-                              fontSize: 20.0,
-                              color: Colors.black,
-                            )),
-                      ],
-                    ),
-                  ),
-
-                  //홈 페이지로 이동
-                  GestureDetector(
-                    onTap: () {
-                      for (int i = 0; i < 7; i++) {
-                        Navigator.of(context).pop();
-                      }
-                    },
-                    child: const Row(
-                      children: [
-                        Icon(
-                          Icons.home,
-                          size: 30,
-                        ),
-                        Text('홈으로',
-                            style: TextStyle(
-                              fontFamily: 'NanumGothicFamily',
-                              fontSize: 20.0,
-                              color: Colors.black,
-                            )),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-
               const SizedBox(
-                height: 25,
+                height: 40,
               ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -115,7 +76,7 @@ class _StepCompleteResumeState extends State<StepCompleteResume> {
                     fit: BoxFit.contain,
                   ),
                   const SizedBox(
-                    height: 15,
+                    height: 30,
                   ),
                   const Text(
                     '자기소개서 저장 완료',
@@ -207,7 +168,7 @@ class _StepCompleteResumeState extends State<StepCompleteResume> {
                   ),
                 ],
               ),
-              SizedBox(height: 20,),
+              SizedBox(height: 40,),
               Divider(),
               SizedBox(height: 20,),
               Text(widget.userInfo.userName + '님을 위한 추천 공고',
@@ -216,8 +177,6 @@ class _StepCompleteResumeState extends State<StepCompleteResume> {
                     fontSize: 20.0,
                     color: Colors.black,
                   )),
-
-
               //추천 이력서 리스트 보여주기
             ])),
       ),

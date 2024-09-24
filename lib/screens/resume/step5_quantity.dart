@@ -24,26 +24,72 @@ class _StepQuantityPageState extends State<StepQuantityPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: const Color.fromARGB(250, 51, 51, 255),
         elevation: 1.0,
+        leading: null,
+        automaticallyImplyLeading: false,
         title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Image.asset(
-              'assets/images/img_logo.png',
-              fit: BoxFit.contain,
-              height: 40,
+            GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: const Row(
+                children: [
+                  //SizedBox(width: 5),
+                  Icon(
+                    Icons.chevron_left,
+                    size: 30,
+                  ),
+                  Text('이전',
+                      style: TextStyle(
+                        fontFamily: 'NanumGothicFamily',
+                        fontSize: 20.0,
+                        color: Colors.white,
+                      )),
+                ],
+              ),
             ),
             Container(
                 padding: const EdgeInsets.all(8.0),
                 child: const Text(
-                  '할MONEY',
+                  '4 / 5',
                   style: TextStyle(
                     fontFamily: 'NanumGothicFamily',
                     fontWeight: FontWeight.w600,
                     fontSize: 18.0,
-                    color: Colors.black,
+                    color: Colors.white,
                   ),
                 )),
+            GestureDetector(
+              onTap: () {
+                widget.userPromptFactor.editQuantity(quantity);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => StepResumeCreate(
+                        userInfo : widget.userInfo,
+                        userPromptFactor : widget.userPromptFactor,
+                      )),
+                );
+              },
+              child: const Row(
+                children: [
+                  Text('다음',
+                      style: TextStyle(
+                        fontFamily: 'NanumGothicFamily',
+                        fontSize: 20.0,
+                        color: Colors.white,
+                      )),
+                  Icon(
+                    Icons.chevron_right,
+                    size: 30,
+                    color: Colors.white,
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -52,64 +98,8 @@ class _StepQuantityPageState extends State<StepQuantityPage> {
             left: 25.0, right: 25.0, top: 25.0, bottom: 15.0),
         child: Column(
           children: [
-            // 페이지 이동 영역
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // 이전 페이지로 이동
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Row(
-                    children: [
-                      Icon(
-                        Icons.chevron_left,
-                        size: 30,
-                      ),
-                      Text('이전',
-                          style: TextStyle(
-                            fontFamily: 'NanumGothicFamily',
-                            fontSize: 20.0,
-                            color: Colors.black,
-                          )),
-                    ],
-                  ),
-                ),
-
-                //다음 페이지로 이동
-                GestureDetector(
-                  onTap: () {
-                    widget.userPromptFactor.editQuantity(quantity);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => StepResumeCreate(
-                              userInfo : widget.userInfo,
-                              userPromptFactor : widget.userPromptFactor,
-                          )),
-                    );
-                  },
-                  child: const Row(
-                    children: [
-                      Text('다음',
-                          style: TextStyle(
-                            fontFamily: 'NanumGothicFamily',
-                            fontSize: 20.0,
-                            color: Colors.black,
-                          )),
-                      Icon(
-                        Icons.chevron_right,
-                        size: 30,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-
             const SizedBox(
-              height: 20,
+              height: 30,
             ),
 
             Expanded(
@@ -127,7 +117,7 @@ class _StepQuantityPageState extends State<StepQuantityPage> {
                           )),
                     ],
                   ),
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 60),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
