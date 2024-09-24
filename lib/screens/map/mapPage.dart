@@ -9,10 +9,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../AI_pages/cond_search_result_page.dart';
 import '../../address/address_bloc.dart';
+import '../../get_user_info/user_Info.dart';
 
 
 class MapScreen extends StatelessWidget {
-  const MapScreen({super.key});
+  final UserInfo userInfo;
+  const MapScreen({super.key, required this.userInfo});
 
   //지역 필터링
   Future<void> placefilterJobs(BuildContext context, AddressDepthState state) async{
@@ -49,7 +51,7 @@ class MapScreen extends StatelessWidget {
       if(filteredJobs.isNotEmpty){
         Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => CondSearchResultPage(jobs: filteredJobs))
+            MaterialPageRoute(builder: (context) => CondSearchResultPage(userInfo: userInfo, jobs: filteredJobs))
         );
       } else {
         print('매칭된 공고 페이지가 없습니다');

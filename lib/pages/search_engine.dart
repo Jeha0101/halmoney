@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:halmoney/get_user_info/user_Info.dart';
 import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +7,8 @@ import 'package:huggingface_dart/huggingface_dart.dart';
 import '../AI_pages/cond_search_result_page.dart';
 
 class SearchEngine extends StatefulWidget {
-  const SearchEngine({super.key});
+  final UserInfo userInfo;
+  const SearchEngine({super.key, required this.userInfo});
 
   @override
   _SearchEngine createState() => _SearchEngine();
@@ -88,7 +90,7 @@ class _SearchEngine extends State<SearchEngine> {
       if (filteredJobs.isNotEmpty) {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => CondSearchResultPage(jobs: filteredJobs)),
+          MaterialPageRoute(builder: (context) => CondSearchResultPage(userInfo: widget.userInfo, jobs: filteredJobs)),
         );
       } else {
         print('No matching jobs found');

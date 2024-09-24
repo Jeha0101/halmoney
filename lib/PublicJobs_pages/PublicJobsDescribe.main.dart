@@ -13,7 +13,6 @@ class PublicJobsDescribe extends StatefulWidget {
 
   PublicJobsDescribe ({
     required this.id,
-
     required this.userInfo,
     Key? key,
   }) : super(key: key);

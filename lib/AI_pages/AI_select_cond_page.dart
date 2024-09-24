@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:halmoney/AI_pages/cond_search_result_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:halmoney/get_user_info/user_Info.dart';
 
 class AISelectCondPage extends StatefulWidget {
-  final String id;
-  const AISelectCondPage({super.key, required this.id});
+  final UserInfo userInfo;
+  const AISelectCondPage({super.key, required this.userInfo});
 
   @override
   _AISelectCondPageState createState() => _AISelectCondPageState();
@@ -24,7 +25,7 @@ class _AISelectCondPageState extends State<AISelectCondPage> {
     try {
       final QuerySnapshot result = await firestore
           .collection('user')
-          .where('id', isEqualTo: widget.id)
+          .where('id', isEqualTo: widget.userInfo.userId)
           .get();
 
       final List<DocumentSnapshot> documents = result.docs;
@@ -69,7 +70,7 @@ class _AISelectCondPageState extends State<AISelectCondPage> {
         if (filteredJobs.isNotEmpty) {
           Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => CondSearchResultPage(jobs: filteredJobs)));
+              MaterialPageRoute(builder: (context) => CondSearchResultPage(userInfo: widget.userInfo, jobs: filteredJobs)));
         } else {
           _showNoJobsDialog(context);
         }

@@ -24,7 +24,7 @@ class MyAppState extends State<MyAppPage>{
     super.initState();
     _navIndex = [
       MyHomePage(userInfo: widget.userInfo),
-      JobSearch(id: widget.userInfo.userId),
+      JobSearch(userInfo: widget.userInfo),
       Communitypage(id: widget.userInfo.userId),
       MyPageScreen(id: widget.userInfo.userId),
     ];

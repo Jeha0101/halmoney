@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:halmoney/Recruit_detail_pages/Recruit_main_page.dart';
 
+import '../get_user_info/user_Info.dart';
+
 class JobList extends StatefulWidget {
-  final String id;
+  final UserInfo userInfo;
   final int num;
   final String title;
   final String address;
@@ -17,7 +19,7 @@ class JobList extends StatefulWidget {
   final String manager_call;
 
   const JobList({
-    required this.id,
+    required this.userInfo,
     required this.num,
     required this.title,
     required this.address,
@@ -49,7 +51,7 @@ class _JobListState extends State<JobList> {
   Future<void> toggleFavorite() async {
     final QuerySnapshot result = await _firestore
         .collection('user')
-        .where('id', isEqualTo: widget.id)
+        .where('id', isEqualTo: widget.userInfo.userId)
         .get();
     final List<DocumentSnapshot> documents = result.docs;
 
@@ -89,7 +91,7 @@ class _JobListState extends State<JobList> {
     try {
       final QuerySnapshot result = await _firestore
           .collection('user')
-          .where('id', isEqualTo: widget.id)
+          .where('id', isEqualTo: widget.userInfo.userId)
           .get();
       final List<DocumentSnapshot> documents = result.docs;
 
@@ -122,7 +124,7 @@ class _JobListState extends State<JobList> {
           context,
           MaterialPageRoute(
             builder: (context) => Recruit_main(
-              id: widget.id,
+              userInfo: widget.userInfo,
               num: widget.num,
               title: widget.title,
               address: widget.address,
