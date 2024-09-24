@@ -84,7 +84,7 @@ class PublicJobList extends StatelessWidget {
                 width: 100,
                 height: 100,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
+                  //borderRadius: BorderRadius.circular(5),
                   image: DecorationImage(
                     image: AssetImage(image_path),
                     fit: BoxFit.cover,
