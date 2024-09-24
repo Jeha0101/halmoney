@@ -18,6 +18,7 @@ class _AISelectCondPageState extends State<AISelectCondPage> {
   List<String> selectedPay = [];
   List<String> selectedTime = [];
   List<String> selectedLocations = [];
+  List<DocumentSnapshot> jobDocuments = [];
 
   Future<void> _AIrecommCondition(BuildContext context, String seladdress, List<String> selectedJobs, List<String> selectedPay, List<String> selectedTime) async {
     final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -52,28 +53,9 @@ class _AISelectCondPageState extends State<AISelectCondPage> {
         final QuerySnapshot jobResult = await jobQuery.get();
         final List<DocumentSnapshot> jobDocuments = jobResult.docs;
 
-        final filteredJobs = jobDocuments.where((job) {
-          final jobData = job.data() as Map<String, dynamic>;
-          final address = jobData['address'] as String;
-          final jobName = jobData['job_name'] as String;
-          final wage = jobData['wage'] as String;
-          final workTimeWeek = jobData['work_time_week'] as String;
+        _filterJobs(context);
 
-          final addMatch = selectedLocations.any((selectedGugun) => address.contains(selectedGugun));
-          final jobMatch = selectedJobs.isEmpty || selectedJobs.any((job) => jobName.contains(job));
-          final payMatch = selectedPay.isEmpty || selectedPay.any((pay) => wage.contains(pay));
-          final timeMatch = selectedTime.isEmpty || selectedTime.any((time) => workTimeWeek.contains(time));
 
-          return addMatch && jobMatch && payMatch && timeMatch;
-        }).toList();
-
-        if (filteredJobs.isNotEmpty) {
-          Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => CondSearchResultPage(userInfo: widget.userInfo, jobs: filteredJobs)));
-        } else {
-          _showNoJobsDialog(context);
-        }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("User not found")),
@@ -86,7 +68,94 @@ class _AISelectCondPageState extends State<AISelectCondPage> {
     }
   }
 
-  void _showNoJobsDialog(BuildContext context) {
+  void _filterJobs(BuildContext context){
+    final filteredJobs = jobDocuments.where((job) {
+      final jobData = job.data() as Map<String, dynamic>;
+      final address = jobData['address'] as String;
+      final jobName = jobData['job_name'] as String;
+      final wage = jobData['wage'] as String;
+      final workTimeWeek = jobData['work_time_week'] as String;
+
+      final addMatch = selectedLocations.any((selectedGugun) => address.contains(selectedGugun));
+      final jobMatch = selectedJobs.isEmpty || selectedJobs.any((job) => jobName.contains(job));
+      final payMatch = selectedPay.isEmpty || selectedPay.any((pay) => wage.contains(pay));
+      final timeMatch = selectedTime.isEmpty || selectedTime.any((time) => workTimeWeek.contains(time));
+
+      return addMatch && jobMatch && payMatch && timeMatch;
+    }).toList();
+
+    if (filteredJobs.isNotEmpty) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => CondSearchResultPage(userInfo: widget.userInfo, jobs: filteredJobs)));
+    } else {
+      _showAlternativeJobs();
+    }
+  }
+
+  void _showAlternativeJobs(){
+    final alternativeJobs = jobDocuments.map((job){
+      final jobData = job.data() as Map<String, dynamic>;
+      final address = jobData['adddress'] as String;
+      final jobName = jobData['job_name'] as String;
+      final wage = jobData['wage'] as String;
+      final workTimeWeek = jobData['work_time_week'] as String;
+
+      int matchScore = 0;
+
+      if(selectedJobs.isEmpty || selectedJobs.any((job) => jobName.contains(job))){
+        matchScore += 4; //Job 조건 우선순위 1
+      }
+      if (selectedLocations.any((selectedGugun) => address.contains(selectedGugun))) {
+        matchScore += 3; // Location 조건이 우선순위 1
+      }
+      if (selectedTime.isEmpty || selectedTime.any((time) => workTimeWeek.contains(time))) {
+        matchScore += 2; // Time 조건이 우선순위 3
+      }
+      if (selectedPay.isEmpty || selectedPay.any((pay) => wage.contains(pay))) {
+        matchScore += 1; // Pay 조건이 우선순위 4
+      }
+
+      return {
+        'jobData': job,
+        'matchScore': matchScore,
+      };
+    }).toList();
+
+    // 매칭 점수에 따라 정렬
+    alternativeJobs.sort((a, b) {
+      final scoreA = a['matchScore'] as int;
+      final scoreB = b['matchScore'] as int;
+
+      // scoreB가 scoreA보다 크면 1을 반환하여 scoreB가 앞으로 가도록
+      if (scoreB > scoreA) {
+        return 1;
+      } else if (scoreB < scoreA) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
+
+    // 점수가 0 이상인 공고만 필터링
+    final sortedJobs = alternativeJobs
+        .where((job) => (job['matchScore'] as int? ?? 0) > 0)
+        .map((job) => job['jobData'] as DocumentSnapshot)
+        .toList();
+
+    if (sortedJobs.isNotEmpty) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => CondSearchResultPage(userInfo: widget.userInfo, jobs: sortedJobs)),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("No alternative jobs found")),
+      );
+    }
+  }
+
+  /*void _showNoJobsDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -103,7 +172,7 @@ class _AISelectCondPageState extends State<AISelectCondPage> {
         );
       },
     );
-  }
+  }*/
 
   void removeLocation(String location) {
     setState(() {
