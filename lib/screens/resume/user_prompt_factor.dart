@@ -56,7 +56,7 @@ class UserPromptFactor {
   void editSelectedStrens(List<String> selectedStrens) {
     this.selectedStrens = selectedStrens;
   }
-  List<String> getSelctedStrens() {
+  List<String> getSelectedStrens() {
     return selectedStrens;
   }
 
