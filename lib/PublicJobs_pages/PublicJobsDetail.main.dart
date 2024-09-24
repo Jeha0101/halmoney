@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:halmoney/resume2/resumeManage2.dart';
 import 'PublicJobsCheck_page.dart';
+import 'package:halmoney/get_user_info/user_Info.dart';
 
 class PublicJobsDetail extends StatelessWidget {
   final String id;
@@ -16,6 +17,7 @@ class PublicJobsDetail extends StatelessWidget {
   final String applystep;
   final String image_path;
   final String endday;
+  final UserInfo userInfo;
 
   PublicJobsDetail({
     required this.id,
@@ -30,6 +32,7 @@ class PublicJobsDetail extends StatelessWidget {
     required this.applystep,
     required this.image_path,
     required this.endday,
+    required this.userInfo,
     super.key,
   });
 
@@ -350,7 +353,8 @@ class PublicJobsDetail extends StatelessWidget {
                             region: region,
                             career: personcareer,
                             requirementsText: person,
-                            applystep:applystep,// Text for question generation
+                            applystep:applystep,
+                            userInfo: userInfo,// Text for question generation
                           ),
                         ),
                       );

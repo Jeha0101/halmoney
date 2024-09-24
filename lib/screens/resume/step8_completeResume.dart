@@ -6,6 +6,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:halmoney/get_user_info/user_Info.dart';
+import 'package:halmoney/screens/resume/resumeEdit.dart';
+import 'package:halmoney/screens/resume/resumeManage.dart';
 import 'package:halmoney/screens/resume/resume_JobsList/fetchRecommendations.dart';
 import 'package:halmoney/screens/resume/user_prompt_factor.dart';
 
@@ -169,7 +171,19 @@ class _StepCompleteResumeState extends State<StepCompleteResume> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      //이력서 생성 페이지로 이동
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ResumeEdit(
+                                userInfo: widget.userInfo,
+                                userPromptFactor: widget.userPromptFactor,
+                                userSelfIntroduction: widget.userSelfIntroduction,))
+                        // builder: (context) => RecommendationPage(
+                        //       userInfo: widget.userInfo,
+                        //       userPromptFactor:
+                        //           widget.userPromptFactor,
+                        //     )),
+                      );
                     },
                     child: const Text("이력서 만들기",
                         style: TextStyle(color: Colors.white, fontSize: 20)),
@@ -186,7 +200,14 @@ class _StepCompleteResumeState extends State<StepCompleteResume> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      //이력서 생성 페이지로 연결
+                      for (int i = 0; i < 7; i++) {
+                        Navigator.of(context).pop();
+                      }
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ResumeManage(id: widget.userInfo.userId))
+                      );
                     },
                     child: const Text("자기소개서 보러가기",
                         style: TextStyle(color: Colors.white, fontSize: 20)),

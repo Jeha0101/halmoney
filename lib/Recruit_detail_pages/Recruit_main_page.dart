@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:halmoney/resume2/resumeManage2.dart';
+import '../screens/resume/resumeManage.dart';
 import 'Recurit_CallButton.dart';
 
 class Recruit_main extends StatelessWidget {
@@ -338,7 +339,7 @@ class Recruit_main extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ResumeManage2(id: id, num:num, title:title),
+                              builder: (context) => ResumeManage(id: id),
                             ),
                           );
 

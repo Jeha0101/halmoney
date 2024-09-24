@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
-import 'PublicJobsApplyCreate.dart';
 import 'PublicJobsDescribe.main.dart';
+import 'package:halmoney/screens/resume/step1_hello.dart';
+import 'package:halmoney/get_user_info/user_Info.dart';
 
 class PublicJobsApplyPage extends StatefulWidget {
   final String id;
   final String applystep;
+  final UserInfo userInfo;
 
   PublicJobsApplyPage({
     required this.id,
     required this.applystep,
+    required this.userInfo,
+
     Key? key,
   }) : super(key: key);
 
@@ -17,36 +21,23 @@ class PublicJobsApplyPage extends StatefulWidget {
 }
 
 class _PublicJobsApplyPageState extends State<PublicJobsApplyPage> {
-  late Future<List<String>> _questionsFuture;
   int _currentStep = 0;
-  List<bool> _isChecked = [];
+  List<String> _steps = [];
 
   @override
   void initState() {
     super.initState();
-    // QuestionGeneratorService를 호출해서 질문을 생성
-    _questionsFuture = QuestionGeneratorService().generateQuestionsFromText(
-      applystep: widget.applystep,
-    );
-
-    // 질문 데이터에 맞춰 체크박스 상태를 초기화
-    _questionsFuture.then((questions) {
-      setState(() {
-        _isChecked = List<bool>.filled(questions.length, false);
-      });
-    });
+    // applystep을 쉼표로 나누어 각각의 절차를 리스트로 변환
+    _steps = widget.applystep.split(',').map((step) => step.trim()).toList();
   }
 
-  void _onStepContinue(List<String> questions) {
+  void _onStepContinue() {
     setState(() {
-      if (_currentStep < questions.length - 1) {
+      if (_currentStep < _steps.length - 1) {
         _currentStep++;
       } else {
-        // 모든 질문이 완료되면 다음 페이지로 이동
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => PublicJobsDescribe(id: widget.id)),
-        );
+        // 모든 스텝이 완료되면 팝업을 띄움
+        _showCompletionDialog();
       }
     });
   }
@@ -59,6 +50,41 @@ class _PublicJobsApplyPageState extends State<PublicJobsApplyPage> {
     });
   }
 
+  // 팝업 다이얼로그를 보여주는 함수
+  void _showCompletionDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('모든 절차 확인완료!'),
+          content: const Text('다시 공공 일자리 리스트로 돌아갈까요? 지원서를 작성할까요?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PublicJobsDescribe(id: widget.id, userInfo: widget.userInfo,)),
+                );// 팝업 닫기
+              },
+              child: const Text('리스트로 돌아가기'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // 팝업 닫기
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => StepHelloPage(userInfo: widget.userInfo,)),
+                );
+              },
+              child: const Text('이력서 작성하기'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,42 +92,35 @@ class _PublicJobsApplyPageState extends State<PublicJobsApplyPage> {
         title: const Text('지원 절차 확인하기'),
         backgroundColor: Colors.blue,
       ),
-      body: FutureBuilder<List<String>>(
-        future: _questionsFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('에러 발생: ${snapshot.error}'));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('채용 절차가 없습니다.'));
-          } else {
-            final questions = snapshot.data!;
-            return Stepper(
-              currentStep: _currentStep,
-              onStepContinue: () => _onStepContinue(questions),
-              onStepCancel: _onStepCancel,
-              steps: List.generate(questions.length, (index) {
-                return Step(
-                  title: Text('절차 ${index + 1}'),
-                  content: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        questions[index],
-                        style: const TextStyle(fontSize: 16),
-                      ),
-                    ],
+      body: Stepper(
+        currentStep: _currentStep,
+        onStepContinue: _onStepContinue,
+        onStepCancel: _onStepCancel,
+        steps: List.generate(_steps.length, (index) {
+          return Step(
+            title: Text('절차 ${index + 1}'),
+            content: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  _steps[index],
+                  style: const TextStyle(fontSize: 16),
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  '준비되셨나요...?',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.blue,
+                    fontWeight: FontWeight.bold,
                   ),
-                  isActive: _currentStep >= index,
-                  state: _isChecked.length > index && _isChecked[index]
-                      ? StepState.complete
-                      : StepState.indexed,
-                );
-              }),
-            );
-          }
-        },
+                ),
+              ],
+            ),
+            isActive: _currentStep >= index,
+            state: _currentStep > index ? StepState.complete : StepState.indexed,
+          );
+        }),
       ),
     );
   }

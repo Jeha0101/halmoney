@@ -264,21 +264,21 @@ class _StepResumeCreateState extends State<StepResumeCreate> {
                   )),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          // builder: (context) => StepCompleteResume(
-                          //   userInfo: widget.userInfo,
-                          //   userPromptFactor: widget.userPromptFactor,
-                          //   userSelfIntroduction: selfIntroduction,))
-
-
-                    builder: (context) => RecommendationPage(
-                          userInfo: widget.userInfo,
-                          userPromptFactor:
-                              widget.userPromptFactor,
-                        )),
-                  );
+                  if (_isLoading == false) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => StepCompleteResume(
+                              userInfo: widget.userInfo,
+                              userPromptFactor: widget.userPromptFactor,
+                              userSelfIntroduction: selfIntroduction,))
+                      // builder: (context) => RecommendationPage(
+                      //       userInfo: widget.userInfo,
+                      //       userPromptFactor:
+                      //           widget.userPromptFactor,
+                      //     )),
+                    );
+                  }
                 },
                 child: const Row(
                   children: [
