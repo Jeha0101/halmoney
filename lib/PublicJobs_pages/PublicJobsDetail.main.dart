@@ -315,26 +315,28 @@ class PublicJobsDetail extends StatelessWidget {
             Positioned(
               bottom: 0,
               right: 15,
+              left: 15,
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(250, 51, 51, 255),
-                      padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 13),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    onPressed: _launchURL, // Open the provided URL
-                    child: const Text(
-                      '지원하기',
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
+                  // ElevatedButton(
+                  //   style: ElevatedButton.styleFrom(
+                  //     backgroundColor: const Color.fromARGB(250, 51, 51, 255),
+                  //     padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 13),
+                  //     shape: RoundedRectangleBorder(
+                  //       borderRadius: BorderRadius.circular(8),
+                  //     ),
+                  //   ),
+                  //   onPressed: _launchURL, // Open the provided URL
+                  //   child: const Text(
+                  //     '지원하기',
+                  //     style: TextStyle(
+                  //       fontSize: 15,
+                  //       color: Colors.white,
+                  //     ),
+                  //   ),
+                  // ),
+                  // const SizedBox(width: 10),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color.fromARGB(255, 100, 100, 255),
@@ -360,7 +362,7 @@ class PublicJobsDetail extends StatelessWidget {
                       );
                     },
                     child: const Text(
-                      '자격요건 확인하기',
+                      '자격요건 간편확인 및 이력서 생성',
                       style: TextStyle(
                         fontSize: 15,
                         color: Colors.white,

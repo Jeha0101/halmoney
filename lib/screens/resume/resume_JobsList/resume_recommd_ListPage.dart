@@ -2,9 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:halmoney/Recruit_detail_pages/Recruit_main_page.dart';
 
+import '../../../get_user_info/user_Info.dart';
+
 class Recommen_Component extends StatelessWidget {
+  final UserInfo userInfo;
   final List<DocumentSnapshot> jobs;
-  const Recommen_Component({super.key, required this.jobs});
+  const Recommen_Component({super.key, required this.userInfo, required this.jobs});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +18,7 @@ class Recommen_Component extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: jobs.map((job) => Cond_Search(job: job)).toList(),
+            children: jobs.map((job) => Cond_Search(userInfo: userInfo, job: job)).toList(),
           ),
         ),
       ),
@@ -24,8 +27,9 @@ class Recommen_Component extends StatelessWidget {
 }
 
 class Cond_Search extends StatelessWidget {
+  final UserInfo userInfo;
   final DocumentSnapshot job;
-  const Cond_Search({super.key, required this.job});
+  const Cond_Search({super.key, required this.userInfo, required this.job});
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +55,7 @@ class Cond_Search extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => Recruit_main(
-              id: jobData['id'] ?? 'No',
+              userInfo: userInfo,
               num: jobData['num'] ?? 'No',
               title: jobData['title'] ?? 'NO',
               address: address,

@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:halmoney/JobSearch_pages/JobList_widget.dart';
 
 import '../../../Recruit_detail_pages/Recruit_main_page.dart';
+import '../../../get_user_info/user_Info.dart';
 
 class Recommen_Component extends StatelessWidget {
+  final UserInfo userInfo;
   final List<DocumentSnapshot> jobs;
 
-  const Recommen_Component({super.key, required this.jobs});
+  const Recommen_Component(
+      {super.key, required this.userInfo, required this.jobs});
 
   @override
   Widget build(BuildContext context) {
@@ -15,11 +18,13 @@ class Recommen_Component extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
         child: Column(
-          children: jobs.map((job){
+          children: jobs.map((job) {
             return Column(
               children: [
-                Cond_Search(job: job),
-                const SizedBox(height: 10,)
+                Cond_Search(userInfo: userInfo, job: job),
+                const SizedBox(
+                  height: 10,
+                )
               ],
             );
           }).toList(),
@@ -30,8 +35,10 @@ class Recommen_Component extends StatelessWidget {
 }
 
 class Cond_Search extends StatelessWidget {
+  final UserInfo userInfo;
   final DocumentSnapshot job;
-  const Cond_Search({super.key, required this.job});
+
+  const Cond_Search({super.key, required this.job, required this.userInfo});
 
   @override
   Widget build(BuildContext context) {
@@ -50,14 +57,13 @@ class Cond_Search extends StatelessWidget {
     String address = jobData['address'] ?? '주소 정보 없음';
     String wage = jobData['wage'] ?? '급여 정보 없음';
 
-
     return ElevatedButton(
       onPressed: () {
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => Recruit_main(
-                id: jobData['id'] ?? 'No',
+                userInfo: userInfo,
                 num: jobData['num'] ?? 'No',
                 title: jobData['title'] ?? 'NO',
                 address: address,
@@ -67,9 +73,9 @@ class Cond_Search extends StatelessWidget {
                 workweek: jobData['work_week'] ?? '',
                 image_path: jobData['image_path'] ?? '',
                 endday: jobData['endday'] ?? '',
-                manager_call: jobData['manager_call']??''
-              //userId: widget.id,
-            ),
+                manager_call: jobData['manager_call'] ?? ''
+                //userId: widget.id,
+                ),
           ),
         );
       },
@@ -140,7 +146,6 @@ class Cond_Search extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 3),
-
                   Container(
                     child: Row(
                       children: [
