@@ -5,10 +5,20 @@ import 'package:intl/intl.dart';
 import 'package:halmoney/myAppPage.dart';
 import 'PublicJobsData.dart';
 import 'PublicJobsList_widget.dart';
+import 'package:halmoney/get_user_info/user_Info.dart';
 
 class PublicJobsDescribe extends StatefulWidget {
   final String id;
-  const PublicJobsDescribe({super.key, required this.id});
+  final UserInfo userInfo;
+
+  PublicJobsDescribe ({
+    required this.id,
+
+    required this.userInfo,
+    Key? key,
+  }) : super(key: key);
+
+
 
   @override
   _PublicJobsDescribeState createState() => _PublicJobsDescribeState();
@@ -118,6 +128,7 @@ class _PublicJobsDescribeState extends State<PublicJobsDescribe> {
                   image_path: job['image_path'] ?? 'No Image Path',
                   isLiked: job['isLiked'] ?? false,
                   endday: job['end_day'] ?? 'No End Day',
+                  userInfo: widget.userInfo,
                 ),
               );
             },

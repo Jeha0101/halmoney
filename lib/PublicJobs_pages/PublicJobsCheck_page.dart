@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'PublicJobsCheckQuestion.dart';
 import 'PublicJobsDescribe.main.dart';
 import 'PublicJobsApplyStep_page.dart';
+import 'package:halmoney/get_user_info/user_Info.dart';
 
 class PublicJobsCheckPage extends StatefulWidget {
   final String id;
@@ -10,6 +11,7 @@ class PublicJobsCheckPage extends StatefulWidget {
   final String career;
   final String requirementsText;
   final String applystep;
+  final UserInfo userInfo;
 
   PublicJobsCheckPage({
     required this.id,
@@ -18,6 +20,7 @@ class PublicJobsCheckPage extends StatefulWidget {
     required this.career,
     required this.requirementsText,
     required this.applystep,
+    required this.userInfo,
     Key? key,
   }) : super(key: key);
 
@@ -57,7 +60,7 @@ class _PublicJobsCheckPageState extends State<PublicJobsCheckPage> {
         // 모든 질문이 완료되면 다음 페이지로 이동
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => PublicJobsApplyPage(id: widget.id, applystep: widget.applystep,)),
+          MaterialPageRoute(builder: (context) => PublicJobsApplyPage(id: widget.id, applystep: widget.applystep, userInfo: widget.userInfo,)),
         );
       }
     });
