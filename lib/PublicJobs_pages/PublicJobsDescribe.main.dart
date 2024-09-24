@@ -41,7 +41,6 @@ class _PublicJobsDescribeState extends State<PublicJobsDescribe> {
           if (job['endday'] != null) {
             DateTime endDay = (job['endday'] as Timestamp).toDate();
             endDayStr = DateFormat('yyyy-MM-dd').format(endDay); // Format the DateTime
-
           }
 
           return {
@@ -87,8 +86,10 @@ class _PublicJobsDescribeState extends State<PublicJobsDescribe> {
         right: false,
         child: Scaffold(
           appBar: AppBar(
-            title: const Text('공공일자리 리스트', style: TextStyle(color: Colors.white),),
-
+            title: const Text(
+              '공공일자리 리스트',
+              style: TextStyle(color: Colors.white),
+            ),
             centerTitle: true,
             backgroundColor: const Color.fromARGB(250, 51, 51, 255),
             leading: IconButton(
@@ -106,7 +107,7 @@ class _PublicJobsDescribeState extends State<PublicJobsDescribe> {
             itemBuilder: (context, index) {
               final job = jobs[index];
               return Padding(
-                padding: EdgeInsets.all(2.0),
+                padding: const EdgeInsets.all(2.0),
                 child: PublicJobList(
                   id: widget.id,
                   title: job['title'] ?? 'No Title',
@@ -121,8 +122,10 @@ class _PublicJobsDescribeState extends State<PublicJobsDescribe> {
                   image_path: job['image_path'] ?? 'No Image Path',
                   isLiked: job['isLiked'] ?? false,
                   endday: job['end_day'] ?? 'No End Day',
-
                 ),
+              );
+            },
+          ),
         ),
       ),
     );
