@@ -8,8 +8,8 @@ import 'package:intl/intl.dart';
 import '../get_user_info/user_Info.dart';
 
 class JobSearch extends StatefulWidget {
-  final String id;
-  const JobSearch({super.key, required this.id});
+  final UserInfo userInfo;
+  const JobSearch({super.key, required this.userInfo});
 
   @override
   _JobSearchState createState() => _JobSearchState();
@@ -37,7 +37,7 @@ class _JobSearchState extends State<JobSearch> {
       // Fetch the user document based on the provided widget.id
       final QuerySnapshot userQuery = await _firestore
           .collection('user')
-          .where('id', isEqualTo: widget.id)
+          .where('id', isEqualTo: widget.userInfo.userId)
           .get();
 
       if (userQuery.docs.isNotEmpty) {
@@ -131,11 +131,7 @@ class _JobSearchState extends State<JobSearch> {
             backgroundColor: const Color.fromARGB(250, 51, 51, 255),
             leading: IconButton(
               onPressed: () async {
-                UserInfo userInfo = await UserInfo.create(widget.id);
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => MyAppPage(userInfo: userInfo)),
-                );
+                Navigator.pop(context);
               },
               icon: const Icon(Icons.arrow_back_ios_rounded),
               color: Colors.grey,
@@ -150,7 +146,7 @@ class _JobSearchState extends State<JobSearch> {
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: JobList(
-                  id: widget.id,
+                  userInfo: widget.userInfo,
                   num: job['num'],
                   title: job['title'],
                   address: job['address'],

@@ -75,25 +75,70 @@ class _StepStrenPageState extends State<StepStrenPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: const Color.fromARGB(250, 51, 51, 255),
         elevation: 1.0,
+        leading: null,
+        automaticallyImplyLeading: false,
         title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Image.asset(
-              'assets/images/img_logo.png',
-              fit: BoxFit.contain,
-              height: 40,
+            GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: const Row(
+                children: [
+                  //SizedBox(width: 5),
+                  Icon(
+                    Icons.chevron_left,
+                    size: 30,
+                  ),
+                  Text('이전',
+                      style: TextStyle(
+                        fontFamily: 'NanumGothicFamily',
+                        fontSize: 20.0,
+                        color: Colors.white,
+                      )),
+                ],
+              ),
             ),
             Container(
-              padding: const EdgeInsets.all(8.0),
-              child: const Text(
-                '할MONEY',
-                style: TextStyle(
-                  fontFamily: 'NanumGothicFamily',
-                  fontWeight: FontWeight.w600,
-                  fontSize: 18.0,
-                  color: Colors.black,
-                ),
+                padding: const EdgeInsets.all(8.0),
+                child: const Text(
+                  '2 / 5',
+                  style: TextStyle(
+                    fontFamily: 'NanumGothicFamily',
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18.0,
+                    color: Colors.white,
+                  ),
+                )),
+            GestureDetector(
+              onTap: () {
+                widget.userPromptFactor.editSelectedStrens(selectedAbilities);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => StepCareerPage(
+                        userInfo: widget.userInfo,
+                        userPromptFactor: widget.userPromptFactor,
+                      )),
+                );
+              },
+              child: const Row(
+                children: [
+                  Text('다음',
+                      style: TextStyle(
+                        fontFamily: 'NanumGothicFamily',
+                        fontSize: 20.0,
+                        color: Colors.white,
+                      )),
+                  Icon(
+                    Icons.chevron_right,
+                    size: 30,
+                    color: Colors.white,
+                  ),
+                ],
               ),
             ),
           ],
@@ -104,57 +149,6 @@ class _StepStrenPageState extends State<StepStrenPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Row(
-                      children: [
-                        Icon(
-                          Icons.chevron_left,
-                          size: 30,
-                        ),
-                        Text('이전',
-                            style: TextStyle(
-                              fontFamily: 'NanumGothicFamily',
-                              fontSize: 20.0,
-                              color: Colors.black,
-                            )),
-                      ],
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      widget.userPromptFactor.editSelectedStrens(selectedAbilities);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => StepCareerPage(
-                              userInfo: widget.userInfo,
-                              userPromptFactor: widget.userPromptFactor,
-                            )),
-                      );
-                    },
-                    child: const Row(
-                      children: [
-                        Text('다음',
-                            style: TextStyle(
-                              fontFamily: 'NanumGothicFamily',
-                              fontSize: 20.0,
-                              color: Colors.black,
-                            )),
-                        Icon(
-                          Icons.chevron_right,
-                          size: 30,
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
               const SizedBox(height: 20),
               const Text(
                 '자신의 장점은 무엇이라고 생각하나요?',
@@ -241,7 +235,7 @@ class _AbilitiesChooseWidgetState extends State<AbilitiesChooseWidget>{
         _buildSearchField(),
         const SizedBox(height: 20),
         SizedBox(
-          height: 350,
+          height: 500,
           child: _buildTags(),
         ),
       ],
@@ -258,7 +252,7 @@ class _AbilitiesChooseWidgetState extends State<AbilitiesChooseWidget>{
             field,
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),
-          backgroundColor: Colors.blue,
+          backgroundColor: Color.fromARGB(250, 51, 51, 255),
           deleteIcon: Icon(Icons.close, color: Colors.white),
           onDeleted: () {
             setState(() {

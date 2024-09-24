@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:halmoney/resume2/resumeManage2.dart';
 import 'PublicJobsCheck_page.dart';
+import 'package:halmoney/get_user_info/user_Info.dart';
 
 class PublicJobsDetail extends StatelessWidget {
   final String id;
@@ -15,8 +17,9 @@ class PublicJobsDetail extends StatelessWidget {
   final String applystep;
   final String image_path;
   final String endday;
+  final UserInfo userInfo;
 
-  const PublicJobsDetail({
+  PublicJobsDetail({
     required this.id,
     required this.title,
     required this.company,
@@ -29,6 +32,7 @@ class PublicJobsDetail extends StatelessWidget {
     required this.applystep,
     required this.image_path,
     required this.endday,
+    required this.userInfo,
     super.key,
   });
 
@@ -81,8 +85,7 @@ class PublicJobsDetail extends StatelessWidget {
           children: [
             SingleChildScrollView(
               child: Padding(
-                padding:
-                    const EdgeInsets.only(left: 30.0, right: 25.0, top: 30.0),
+                padding: const EdgeInsets.only(left: 30.0, right: 25.0, top: 30.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -185,8 +188,7 @@ class PublicJobsDetail extends StatelessWidget {
                         const SizedBox(width: 25),
                         Expanded(
                           child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            // Enable horizontal scrolling
+                            scrollDirection: Axis.horizontal,  // Enable horizontal scrolling
                             child: Text(
                               title,
                               style: const TextStyle(
@@ -242,7 +244,6 @@ class PublicJobsDetail extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height:10.0),
-
                         Text(
                           person,
                           style: const TextStyle(
@@ -261,7 +262,6 @@ class PublicJobsDetail extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height:10.0),
-
                         Text(
                           person2,
                           style: const TextStyle(
@@ -280,7 +280,6 @@ class PublicJobsDetail extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height:10.0),
-
                         Text(
                           personcareer,
                           style: const TextStyle(
@@ -298,9 +297,7 @@ class PublicJobsDetail extends StatelessWidget {
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-
                         const SizedBox(height:10.0),
-
                         Text(
                           personedu,
                           style: const TextStyle(
@@ -318,32 +315,32 @@ class PublicJobsDetail extends StatelessWidget {
             Positioned(
               bottom: 0,
               right: 15,
+              left: 15,
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(250, 51, 51, 255),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 50, vertical: 13),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    onPressed: _launchURL, // Open the provided URL
-                    child: const Text(
-                      '지원하기',
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
+                  // ElevatedButton(
+                  //   style: ElevatedButton.styleFrom(
+                  //     backgroundColor: const Color.fromARGB(250, 51, 51, 255),
+                  //     padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 13),
+                  //     shape: RoundedRectangleBorder(
+                  //       borderRadius: BorderRadius.circular(8),
+                  //     ),
+                  //   ),
+                  //   onPressed: _launchURL, // Open the provided URL
+                  //   child: const Text(
+                  //     '지원하기',
+                  //     style: TextStyle(
+                  //       fontSize: 15,
+                  //       color: Colors.white,
+                  //     ),
+                  //   ),
+                  // ),
+                  // const SizedBox(width: 10),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color.fromARGB(255, 100, 100, 255),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 50, vertical: 13),
+                      padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 13),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -357,15 +354,15 @@ class PublicJobsDetail extends StatelessWidget {
                             title: title,
                             region: region,
                             career: personcareer,
-                            requirementsText:
-                                person, // Text for question generation
-                            applystep: applystep,
+                            requirementsText: person,
+                            applystep:applystep,
+                            userInfo: userInfo,// Text for question generation
                           ),
                         ),
                       );
                     },
                     child: const Text(
-                      '자격요건 확인하기',
+                      '자격요건 간편확인 및 이력서 생성',
                       style: TextStyle(
                         fontSize: 15,
                         color: Colors.white,

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:halmoney/get_user_info/user_Info.dart';
 import 'package:intl/intl.dart';
 import 'PublicJobsDetail.main.dart';
 import 'PublicJobsData.dart';
+
 
 
 class PublicJobList extends StatelessWidget {
@@ -19,6 +21,7 @@ class PublicJobList extends StatelessWidget {
   final bool isLiked;
   final String image_path;
   final String endday;
+  final UserInfo userInfo;
 
   const PublicJobList({
     required this.id,
@@ -34,6 +37,7 @@ class PublicJobList extends StatelessWidget {
     required this.isLiked,
     required this.image_path,
     required this.endday,
+    required this.userInfo,
     super.key,
   });
 
@@ -58,6 +62,7 @@ class PublicJobList extends StatelessWidget {
               applystep: applystep,
               image_path: image_path,
               endday: endday,
+              userInfo: userInfo,
             ),
           ),
         );

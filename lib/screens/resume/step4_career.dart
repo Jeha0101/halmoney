@@ -109,25 +109,70 @@ class _StepCareerPageState extends State<StepCareerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: const Color.fromARGB(250, 51, 51, 255),
         elevation: 1.0,
+        leading: null,
+        automaticallyImplyLeading: false,
         title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Image.asset(
-              'assets/images/img_logo.png',
-              fit: BoxFit.contain,
-              height: 40,
+            GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: const Row(
+                children: [
+                  //SizedBox(width: 5),
+                  Icon(
+                    Icons.chevron_left,
+                    size: 30,
+                  ),
+                  Text('이전',
+                      style: TextStyle(
+                        fontFamily: 'NanumGothicFamily',
+                        fontSize: 20.0,
+                        color: Colors.white,
+                      )),
+                ],
+              ),
             ),
             Container(
-              padding: const EdgeInsets.all(8.0),
-              child: const Text(
-                '할MONEY',
-                style: TextStyle(
-                  fontFamily: 'NanumGothicFamily',
-                  fontWeight: FontWeight.w600,
-                  fontSize: 18.0,
-                  color: Colors.black,
-                ),
+                padding: const EdgeInsets.all(8.0),
+                child: const Text(
+                  '3 / 5',
+                  style: TextStyle(
+                    fontFamily: 'NanumGothicFamily',
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18.0,
+                    color: Colors.white,
+                  ),
+                )),
+            GestureDetector(
+              onTap: () {
+                widget.userPromptFactor.editCareers(careers);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => StepQuantityPage(
+                        userInfo: widget.userInfo,
+                        userPromptFactor: widget.userPromptFactor,
+                      )),
+                );
+              },
+              child: const Row(
+                children: [
+                  Text('다음',
+                      style: TextStyle(
+                        fontFamily: 'NanumGothicFamily',
+                        fontSize: 20.0,
+                        color: Colors.white,
+                      )),
+                  Icon(
+                    Icons.chevron_right,
+                    size: 30,
+                    color: Colors.white,
+                  ),
+                ],
               ),
             ),
           ],
@@ -137,60 +182,6 @@ class _StepCareerPageState extends State<StepCareerPage> {
         padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // 이전 페이지로 이동
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Row(
-                    children: [
-                      Icon(
-                        Icons.chevron_left,
-                        size: 30,
-                      ),
-                      Text('이전',
-                          style: TextStyle(
-                            fontFamily: 'NanumGothicFamily',
-                            fontSize: 20.0,
-                            color: Colors.black,
-                          )),
-                    ],
-                  ),
-                ),
-
-                //다음 페이지로 이동
-                GestureDetector(
-                  onTap: () {
-                    widget.userPromptFactor.editCareers(careers);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => StepQuantityPage(
-                            userInfo: widget.userInfo,
-                            userPromptFactor: widget.userPromptFactor,
-                          )),
-                    );
-                  },
-                  child: const Row(
-                    children: [
-                      Text('다음',
-                          style: TextStyle(
-                            fontFamily: 'NanumGothicFamily',
-                            fontSize: 20.0,
-                            color: Colors.black,
-                          )),
-                      Icon(
-                        Icons.chevron_right,
-                        size: 30,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
             const SizedBox(
               height: 25,
             ),
@@ -242,11 +233,11 @@ class _StepCareerPageState extends State<StepCareerPage> {
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.add, color: Colors.blue),
+                    Icon(Icons.add, color: Color.fromARGB(250, 51, 51, 255)),
                     SizedBox(width: 10),
                     Text('경력 추가',
                         style: TextStyle(
-                          color: Colors.blue,
+                          color: Color.fromARGB(250, 51, 51, 255),
                           fontSize: 20,
                           fontFamily: 'NanumGothicFamily',
                           fontWeight: FontWeight.w500,
@@ -440,7 +431,7 @@ class CareerDisplay extends StatelessWidget {
                           MaterialStateProperty.resolveWith<Color?>(
                                 (Set<MaterialState> states) {
                               if (onSave != null) {
-                                return Colors.blue; // 활성화 시 파란색
+                                return Color.fromARGB(250, 51, 51, 255); // 활성화 시 파란색
                               }
                               return Colors.grey; // 비활성화 시 회색
                             },
@@ -511,7 +502,7 @@ class CareerDisplay extends StatelessWidget {
                         onPressed: onEdit,
                         style: ButtonStyle(
                           backgroundColor:
-                          MaterialStateProperty.all(Colors.blue),
+                          MaterialStateProperty.all(Color.fromARGB(250, 51, 51, 255)),
                         ),
                         child: const Text('편집',
                             style:

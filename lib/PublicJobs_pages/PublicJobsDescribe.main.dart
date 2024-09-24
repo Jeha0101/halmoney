@@ -5,11 +5,19 @@ import 'package:intl/intl.dart';
 import 'package:halmoney/myAppPage.dart';
 import 'PublicJobsData.dart';
 import 'PublicJobsList_widget.dart';
+import 'package:halmoney/get_user_info/user_Info.dart';
 
 class PublicJobsDescribe extends StatefulWidget {
   final String id;
+  final UserInfo userInfo;
 
-  const PublicJobsDescribe({super.key, required this.id});
+  PublicJobsDescribe ({
+    required this.id,
+    required this.userInfo,
+    Key? key,
+  }) : super(key: key);
+
+
 
   @override
   _PublicJobsDescribeState createState() => _PublicJobsDescribeState();
@@ -41,7 +49,6 @@ class _PublicJobsDescribeState extends State<PublicJobsDescribe> {
           if (job['endday'] != null) {
             DateTime endDay = (job['endday'] as Timestamp).toDate();
             endDayStr = DateFormat('yyyy-MM-dd').format(endDay); // Format the DateTime
-
           }
 
           return {
@@ -72,7 +79,6 @@ class _PublicJobsDescribeState extends State<PublicJobsDescribe> {
   }
 
   @override
-  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -82,6 +88,10 @@ class _PublicJobsDescribeState extends State<PublicJobsDescribe> {
         ),
       ),
       home: SafeArea(
+        top: true,
+        left: false,
+        bottom: true,
+        right: false,
         child: Scaffold(
           appBar: AppBar(
             title: const Text('공공일자리 리스트', style: TextStyle(color: Colors.white)),
@@ -102,7 +112,7 @@ class _PublicJobsDescribeState extends State<PublicJobsDescribe> {
             itemBuilder: (context, index) {
               final job = jobs[index];
               return Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(2.0),
                 child: PublicJobList(
                   id: widget.id,
                   title: job['title'] ?? 'No Title',
@@ -110,13 +120,14 @@ class _PublicJobsDescribeState extends State<PublicJobsDescribe> {
                   region: job['region'] ?? 'No Region',
                   url: job['url'] ?? 'No URL',
                   person: job['person'] ?? 'No Person',
-                  person2: job['person2'] ?? 'No Person2',
+                  person2: job['persoㄱn2'] ?? 'No Person2',
                   personcareer: job['personcareer'] ?? 'No Person Career',
                   personedu: job['personedu'] ?? 'No Person Education',
                   applystep: job['applystep'] ?? 'No Apply Step',
                   image_path: job['image_path'] ?? 'No Image Path',
                   isLiked: job['isLiked'] ?? false,
                   endday: job['end_day'] ?? 'No End Day',
+                  userInfo: widget.userInfo,
                 ),
               );
             },

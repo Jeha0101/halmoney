@@ -184,18 +184,27 @@ class FieldChooseWidget extends StatefulWidget {
 
 class _FieldChooseWidgetState extends State<FieldChooseWidget> {
   List<String> fields = [
-    '외식/음료',
-    '매장관리/판매',
-    '서비스',
-    '사무직',
-    '고객응대',
-    '생산/건설/노무',
-    'IT/기술',
+    '개발·데이터',
+    '건축·시설',
+    '고객상담·TM',
+    '고객서비스·리테일',
+    '공공·복지',
+    '교육',
+    '금융·보험',
+    '기획·전략',
     '디자인',
-    '미디어',
-    '운전/배달',
-    '병원/간호/연구',
-    '교육/강사'
+    '마케팅·광고·MD',
+    '물류·무역',
+    '미디어·문화·스포츠',
+    '법무·사무·총무',
+    '식음료',
+    '엔지니어링·설계',
+    '영업',
+    '운전·운송·배송',
+    '의료·바이오',
+    '인사·HR',
+    '제조·생산',
+    '회계·세무'
   ];
 
   TextEditingController _searchTextEditingController = TextEditingController();

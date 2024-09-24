@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:halmoney/get_user_info/user_Info.dart';
 import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +7,8 @@ import 'package:huggingface_dart/huggingface_dart.dart';
 import '../AI_pages/cond_search_result_page.dart';
 
 class SearchEngine extends StatefulWidget {
-  const SearchEngine({super.key});
+  final UserInfo userInfo;
+  const SearchEngine({super.key, required this.userInfo});
 
   @override
   _SearchEngine createState() => _SearchEngine();
@@ -24,7 +26,7 @@ class _SearchEngine extends State<SearchEngine> {
   Future<void> _searchKeyWords() async {
     try {
       final response = await http.post(
-        Uri.parse('http://172.20.3.47:5000/nerExtraction'), // Flask 서버의 IP 주소
+        Uri.parse('http://192.168.0.10:5000/nerExtraction'), // Flask 서버의 IP 주소
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -88,7 +90,7 @@ class _SearchEngine extends State<SearchEngine> {
       if (filteredJobs.isNotEmpty) {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => CondSearchResultPage(jobs: filteredJobs)),
+          MaterialPageRoute(builder: (context) => CondSearchResultPage(userInfo: widget.userInfo, jobs: filteredJobs)),
         );
       } else {
         print('No matching jobs found');
@@ -170,7 +172,7 @@ class _SearchEngine extends State<SearchEngine> {
             SizedBox(height: 20.0),
             // 텍스트 입력 필드
             SizedBox(
-              height: 45,
+              height: 80,
               child: TextField(
                 controller: _controller,
                 style: const TextStyle(fontSize: 18.0, height: 2.0),
