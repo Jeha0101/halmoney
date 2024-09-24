@@ -24,7 +24,7 @@ class _SearchEngine extends State<SearchEngine> {
   Future<void> _searchKeyWords() async {
     try {
       final response = await http.post(
-        Uri.parse('http://172.20.3.47:5000/nerExtraction'), // Flask 서버의 IP 주소
+        Uri.parse('http://192.168.0.10:5000/nerExtraction'), // Flask 서버의 IP 주소
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -170,7 +170,7 @@ class _SearchEngine extends State<SearchEngine> {
             SizedBox(height: 20.0),
             // 텍스트 입력 필드
             SizedBox(
-              height: 45,
+              height: 80,
               child: TextField(
                 controller: _controller,
                 style: const TextStyle(fontSize: 18.0, height: 2.0),
