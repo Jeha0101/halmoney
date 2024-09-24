@@ -418,7 +418,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         onPressed: (){
                           Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context)=> PublicJobsDescribe(id: widget.userInfo.userId))
+                              MaterialPageRoute(builder: (context)=> PublicJobsDescribe(id: widget.userInfo.userId, userInfo: widget.userInfo,))
                           );
                         },
                         child: Text('전체보기', style: TextStyle(color:Colors.black, fontSize: 17),),
@@ -458,6 +458,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   personcareer: job['personcareer'] ?? '미정',
                                   personedu: job['personedu'] ?? '미정',
                                   applystep: job['applystep'] ?? '미정',
+                                  userInfo: widget.userInfo,
 
                                 )
                             );
@@ -663,6 +664,7 @@ class JobCard extends StatelessWidget{
   final String personedu;
   final String applystep;
   final String id;
+  final UserInfo userInfo;
 
   const JobCard({
     required this.image,
@@ -677,6 +679,7 @@ class JobCard extends StatelessWidget{
     required this.personedu,
     required this.applystep,
     required this.id,
+    required this.userInfo,
   });
 
   @override
@@ -702,6 +705,7 @@ class JobCard extends StatelessWidget{
               applystep: applystep,
               image_path: image,
               endday: endday,
+              userInfo: userInfo,
             ),
           ),
         );
