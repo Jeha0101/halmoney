@@ -236,8 +236,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     height: 25,
                   ),
                   const Text(
-                    '이력서를 어떻게 작성할지 모르겠다면?\n'
-                        '자동으로 이력서를 만들어드려요!',
+                    '자소서를 어떻게 작성할지 모르겠다면?\n'
+                        '자동으로 자소서를 만들어드려요!',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
@@ -275,7 +275,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Text(
-                                  'AI가 만들어주는 이력서',
+                                  'AI가 만들어주는 자기소개서',
                                   style: TextStyle(
                                       fontSize: 17, color: Colors.black54),
                                 ),
@@ -301,10 +301,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                   ),
                                   child: const Center(
                                     child: Text(
-                                      '이력서 작성하기',
+                                      '자기소개서 작성하기',
                                       style: TextStyle(
                                           color: Color.fromARGB(250, 51, 51, 255),
-                                          fontSize: 20,
+                                          fontSize: 18,
                                           fontWeight: FontWeight.w600),
                                     ),
                                   ),

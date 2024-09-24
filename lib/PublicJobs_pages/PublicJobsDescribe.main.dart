@@ -8,7 +8,6 @@ import 'PublicJobsList_widget.dart';
 
 class PublicJobsDescribe extends StatefulWidget {
   final String id;
-
   const PublicJobsDescribe({super.key, required this.id});
 
   @override
@@ -86,10 +85,7 @@ class _PublicJobsDescribeState extends State<PublicJobsDescribe> {
         right: false,
         child: Scaffold(
           appBar: AppBar(
-            title: const Text(
-              '공공일자리 리스트',
-              style: TextStyle(color: Colors.white),
-            ),
+            title: const Text('공공일자리 리스트', style: TextStyle(color: Colors.white)),
             centerTitle: true,
             backgroundColor: const Color.fromARGB(250, 51, 51, 255),
             leading: IconButton(
@@ -115,7 +111,7 @@ class _PublicJobsDescribeState extends State<PublicJobsDescribe> {
                   region: job['region'] ?? 'No Region',
                   url: job['url'] ?? 'No URL',
                   person: job['person'] ?? 'No Person',
-                  person2: job['person2'] ?? 'No Person2',
+                  person2: job['persoㄱn2'] ?? 'No Person2',
                   personcareer: job['personcareer'] ?? 'No Person Career',
                   personedu: job['personedu'] ?? 'No Person Education',
                   applystep: job['applystep'] ?? 'No Apply Step',
