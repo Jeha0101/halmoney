@@ -98,6 +98,15 @@ class UserInfo {
   String getUserAddress(){
     return userAddress;
   }
+  String gerUserPhone(){
+    return userPhone;
+  }
+  String getUserGender(){
+    return userGender;
+  }
+  String getUserAgeGroup(){
+    return userAgeGroup;
+  }
 
   // 지원 분야 메소드
   void editSelectedFields(List<String> selectedFields) {

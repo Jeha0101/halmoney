@@ -1,21 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:halmoney/screens/resume/step4_career.dart';
-import 'package:http/http.dart' as http;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'dart:convert';
 import 'package:halmoney/screens/resume/resumeManage.dart';
+import 'package:halmoney/screens/resume/user_prompt_factor.dart';
 import 'package:halmoney/get_user_info/career.dart';
+
+import '../../get_user_info/user_Info.dart';
 
 //이력서 데이터
 class ResumeItem {
   late String name;
   late String gender;
-  late String dob;
+  late String ageGroup;
   late String address;
   late String phone;
-  late List<Career> workExperiences;
-  late List<String> selectedSkills;
+  late List<Career> careers;
   late List<String> selectedStrens;
   late String selfIntroduction;
   late String title;
@@ -23,11 +21,10 @@ class ResumeItem {
   ResumeItem({
     required this.name,
     required this.gender,
-    required this.dob,
+    required this.ageGroup,
     required this.address,
     required this.phone,
-    required this.workExperiences,
-    required this.selectedSkills,
+    required this.careers,
     required this.selectedStrens,
     required this.selfIntroduction,
   });
@@ -37,27 +34,25 @@ class ResumeItem {
     return {
       'name': name,
       'gender': gender,
-      'dob': dob,
+      'dob': ageGroup,
       'address': address,
       'phone': phone,
-      'workExperiences': workExperiences.map((e) => e.toMap()).toList(),
+      'workExperiences': careers.map((e) => e.toMap()).toList(),
       'selfIntroduction': selfIntroduction,
     };
   }
 }
 
 class ResumeEdit extends StatefulWidget {
-  final String id;
-  final List<String> selectedSkills;
-  final List<String> selectedStrens;
-  final List<Career> workExperiences;
+  final UserInfo userInfo;
+  final UserPromptFactor userPromptFactor;
+  final String userSelfIntroduction;
 
   const ResumeEdit({
     Key? key,
-    required this.id,
-    required this.selectedSkills,
-    required this.selectedStrens,
-    required this.workExperiences,
+    required this.userInfo,
+    required this.userPromptFactor,
+    required this.userSelfIntroduction,
   }) : super(key: key);
 
   @override
@@ -67,7 +62,6 @@ class ResumeEdit extends StatefulWidget {
 class _ResumeEditState extends State<ResumeEdit> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   late ResumeItem resumeItem;
-  bool _isLoading = true;
   final TextEditingController _selfIntroductionController =
   TextEditingController();
 
@@ -75,123 +69,37 @@ class _ResumeEditState extends State<ResumeEdit> {
   void initState() {
     super.initState();
     _fetchResumeData();
+    _selfIntroductionController.text = resumeItem.selfIntroduction;
+    _selfIntroductionController.addListener(() {
+      setState(() {
+        resumeItem.selfIntroduction = _selfIntroductionController.text;
+      });
+    });
   }
 
   //사용자 정보 불러오기
   Future<void> _fetchResumeData() async {
-    try {
-      final QuerySnapshot result = await _firestore
-          .collection('user')
-          .where('id', isEqualTo: widget.id)
-          .get();
+    final String name = widget.userInfo.getUserName();
+    final String ageGroup = widget.userInfo.getUserAgeGroup();
+    final String gender = widget.userInfo.getUserGender();
+    final String address = widget.userInfo.getUserAddress();
+    final String phone =  widget.userInfo.gerUserPhone();
+    final List<Career> careers = widget.userPromptFactor.getCareers();
+    final List<String> selectedStrens = widget.userPromptFactor.getSelectedStrens();
+    final String selfIntroduction = widget.userSelfIntroduction;
 
-      final List<DocumentSnapshot> documents = result.docs;
-
-      if (documents.isNotEmpty) {
-        final String docId = documents.first.id;
-
-        final DocumentSnapshot ds =
-        await _firestore.collection('user').doc(docId).get();
-
-        final data = ds.data() as Map<String, dynamic>;
-
-        // Fetching user information
-        final String name = data['name'];
-        final String dob = data['dob'].substring(0, 4);
-        final String gender = data['gender'];
-        final String address = data['address'];
-        final String phone = data['phone'];
-
-        // Fetching work experiences
-        List<Career> workExperiences = [];
-        for (var experience in widget.workExperiences) {
-          workExperiences.add(experience);
-        }
-
-        // Fetching AI response
-        final response = await _fetchGPTResponse(
-          dob: dob,
-          gender: gender,
-          workExperiences: workExperiences,
-          selectedSkills: widget.selectedSkills,
-          selectedStrens: widget.selectedStrens,
-        );
-
-        setState(() {
-          resumeItem = ResumeItem(
-            name: name,
-            gender: gender,
-            dob: dob,
-            address: address,
-            phone: phone,
-            workExperiences: workExperiences,
-            selectedSkills: widget.selectedSkills,
-            selectedStrens: widget.selectedStrens,
-            selfIntroduction: response,
-          );
-          _selfIntroductionController.text = response;
-          _isLoading = false;
-        });
-      }
-    } catch (error) {
-      print("Failed to fetch resume data: $error");
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Failed to fetch resume data: $error")),
+    setState(() {
+      resumeItem = ResumeItem(
+        name: name,
+        gender: gender,
+        ageGroup: ageGroup,
+        address: address,
+        phone: phone,
+        careers: careers,
+        selectedStrens: selectedStrens,
+        selfIntroduction: selfIntroduction,
       );
-    }
-  }
-
-  //GPT 자기소개서 작성
-  Future<String> _fetchGPTResponse({
-    required String dob,
-    required String gender,
-    required List<Career> workExperiences,
-    required List<String> selectedSkills,
-    required List<String> selectedStrens,
-  }) async {
-    final apiKey = dotenv.get('GPT_API_KEY');
-    const endpoint = 'https://api.openai.com/v1/chat/completions';
-    const requestsTimeOut = const Duration(seconds: 60);
-
-    String prompt = '''다음 특징을 갖는 사람의 자기소개서 작성 :
-    성별:$gender, 생년:$dob, 경력 :$workExperiences, 기술:$selectedSkills, 장점:$selectedStrens;
-    주의 : 성별과 생년월을 언급할 필요는 없다. 공적인 말투.'안녕하세요'와 같은 인사는 생략한다''';
-
-    try {
-      final response = await http.post(
-        Uri.parse(endpoint),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $apiKey',
-        },
-        body: json.encode({
-          'model': 'gpt-3.5-turbo',
-          'messages': [
-            {'role': 'system', 'content': prompt},
-          ],
-          'max_tokens': 500,
-        }),
-      );
-
-      if (response.statusCode == 200) {
-        final responseBody = json.decode(utf8.decode(response.bodyBytes));
-
-        if (responseBody.containsKey('choices') &&
-            responseBody['choices'] is List &&
-            responseBody['choices'].isNotEmpty) {
-          final text = responseBody['choices'][0]['message']['content'];
-          return text;
-        } else {
-          return 'Failed to fetch response: Invalid response format';
-        }
-      } else {
-        print('Error: ${response.statusCode} - ${response.body}');
-        return 'Failed to fetch response: ${response.statusCode} - ${response.body}';
-      }
-    } catch (e) {
-      print('Exception: $e');
-      return 'Failed to fetch response: $e';
-    }
+    });
   }
 
   // 이력서 저장
@@ -201,7 +109,7 @@ class _ResumeEditState extends State<ResumeEdit> {
 
     final QuerySnapshot result = await _firestore
         .collection('user')
-        .where('id', isEqualTo: widget.id)
+        .where('id', isEqualTo: widget.userInfo.userId)
         .get();
     final List<DocumentSnapshot> documents = result.docs;
 
@@ -230,10 +138,15 @@ class _ResumeEditState extends State<ResumeEdit> {
         );
       }
     }
-    Navigator.of(context).pop(true);
-    Navigator.of(context).pop(true);
-    Navigator.of(context).pop(true);
-    Navigator.of(context).pop(true);
+    for (int i = 0; i < 8; i++) {
+      Navigator.of(context).pop();
+    }
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ResumeManage(id: widget.userInfo.userId))
+    );
+
   }
 
   // 앱 바 뒤로가기 버튼
@@ -314,6 +227,7 @@ class _ResumeEditState extends State<ResumeEdit> {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
+          backgroundColor: Colors.white,
           appBar: AppBar(
             title: const Text('이력서 작성'),
             centerTitle: true,
@@ -324,23 +238,7 @@ class _ResumeEditState extends State<ResumeEdit> {
               onPressed: _goBack,
             ),
           ),
-          body: _isLoading
-              ? Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CircularProgressIndicator(
-                  color: Color(0xff1044FC),
-                ),
-                SizedBox(height: 20),
-                Text(
-                  'AI 이력서를 생성중입니다',
-                  style: TextStyle(fontSize: 16),
-                ),
-              ],
-            ),
-          )
-              : Padding(
+          body: Padding(
             padding: const EdgeInsets.only(left: 30.0, right: 30.0),
             child: ListView(
               children: [
@@ -375,7 +273,7 @@ class _ResumeEditState extends State<ResumeEdit> {
                           height: 8,
                         ),
                         Text(
-                          resumeItem.dob + '년생',
+                          resumeItem.ageGroup,
                           style: TextStyle(
                             fontSize: 15,
                           ),
@@ -440,7 +338,7 @@ class _ResumeEditState extends State<ResumeEdit> {
                 ),
                 const SizedBox(height: 10),
                 Column(
-                  children: resumeItem.workExperiences.map((experience) {
+                  children: resumeItem.careers.map((experience) {
                     return Container(
                       margin: const EdgeInsets.symmetric(vertical: 10.0),
                       padding: const EdgeInsets.all(15.0),

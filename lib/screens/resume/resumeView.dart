@@ -276,9 +276,14 @@ class _ResumeViewState extends State<ResumeView> {
                 height: 10,
               ),
               //경력란
-              const Text(
-                '경력 사항',
-                style: TextStyle(fontSize: 18),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const Text(
+                    '경력 사항',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ],
               ),
               const SizedBox(height: 10),
               ...(_resumeData!['resumeItem']['workExperiences']
@@ -318,9 +323,14 @@ class _ResumeViewState extends State<ResumeView> {
 
               //자기소개서
               const SizedBox(height: 10),
-              const Text(
-                '자기소개서',
-                style: TextStyle(fontSize: 18),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const Text(
+                    '자기소개서',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ],
               ),
               const SizedBox(height: 10),
               Container(
