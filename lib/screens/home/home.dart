@@ -431,7 +431,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   isLoading
                       ? const Center(child: CircularProgressIndicator())
                       : Container(
-                      height: 290,
+                      height: 300,
                       child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: publicJobs.length,
@@ -683,8 +683,8 @@ class JobCard extends StatelessWidget{
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        print('Navigating to details with:');
-        print('person: $person, person2: $person2, personcareer: $personcareer, personedu: $personedu');
+        //print('Navigating to details with:');
+        //print('person: $person, person2: $person2, personcareer: $personcareer, personedu: $personedu');
 
         Navigator.push(
           context,
@@ -724,12 +724,15 @@ class JobCard extends StatelessWidget{
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ClipRRect(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(10),
-                topRight: Radius.circular(10),
+            Padding(
+              padding: EdgeInsets.only(top: 10.0), // 여백 추가
+              child: ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(10),
+                  topRight: Radius.circular(10),
+                ),
+                child: Center(child: Image.asset(image, height: 100)),
               ),
-              child: Center(child: Image.asset(image, height: 100)),
             ),
             Padding(
               padding: const EdgeInsets.all(13.0),
