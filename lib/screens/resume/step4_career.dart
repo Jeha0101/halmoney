@@ -233,11 +233,11 @@ class _StepCareerPageState extends State<StepCareerPage> {
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.add, color: Colors.blue),
+                    Icon(Icons.add, color: Color.fromARGB(250, 51, 51, 255)),
                     SizedBox(width: 10),
                     Text('경력 추가',
                         style: TextStyle(
-                          color: Colors.blue,
+                          color: Color.fromARGB(250, 51, 51, 255),
                           fontSize: 20,
                           fontFamily: 'NanumGothicFamily',
                           fontWeight: FontWeight.w500,
@@ -431,7 +431,7 @@ class CareerDisplay extends StatelessWidget {
                           MaterialStateProperty.resolveWith<Color?>(
                                 (Set<MaterialState> states) {
                               if (onSave != null) {
-                                return Colors.blue; // 활성화 시 파란색
+                                return Color.fromARGB(250, 51, 51, 255); // 활성화 시 파란색
                               }
                               return Colors.grey; // 비활성화 시 회색
                             },
@@ -502,7 +502,7 @@ class CareerDisplay extends StatelessWidget {
                         onPressed: onEdit,
                         style: ButtonStyle(
                           backgroundColor:
-                          MaterialStateProperty.all(Colors.blue),
+                          MaterialStateProperty.all(Color.fromARGB(250, 51, 51, 255)),
                         ),
                         child: const Text('편집',
                             style:

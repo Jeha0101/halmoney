@@ -267,16 +267,17 @@ class _StepResumeCreateState extends State<StepResumeCreate> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => StepCompleteResume(
-                            userInfo: widget.userInfo,
-                            userSelfIntroduction: selfIntroduction,))
+                          // builder: (context) => StepCompleteResume(
+                          //   userInfo: widget.userInfo,
+                          //   userPromptFactor: widget.userPromptFactor,
+                          //   userSelfIntroduction: selfIntroduction,))
 
 
-                    // builder: (context) => RecommendationPage(
-                    //       userInfo: widget.userInfo,
-                    //       userPromptFactor:
-                    //           widget.userPromptFactor,
-                    //     )),
+                    builder: (context) => RecommendationPage(
+                          userInfo: widget.userInfo,
+                          userPromptFactor:
+                              widget.userPromptFactor,
+                        )),
                   );
                 },
                 child: const Row(

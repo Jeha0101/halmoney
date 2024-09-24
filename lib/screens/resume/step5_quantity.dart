@@ -126,7 +126,7 @@ class _StepQuantityPageState extends State<StepQuantityPage> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)),
                           minimumSize: const Size(200, 80),
-                          backgroundColor: quantity == 150 ? Colors.blue : Colors.grey,
+                          backgroundColor: quantity == 150 ? Color.fromARGB(250, 51, 51, 255) : Colors.grey,
                         ),
                         onPressed: () {
                           setState(() {
@@ -149,7 +149,7 @@ class _StepQuantityPageState extends State<StepQuantityPage> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)),
                           minimumSize: const Size(200, 80),
-                          backgroundColor: quantity == 300 ? Colors.blue : Colors.grey,
+                          backgroundColor: quantity == 300 ? Color.fromARGB(250, 51, 51, 255) : Colors.grey,
                         ),
                         onPressed: () {
                           setState(() {
@@ -172,7 +172,7 @@ class _StepQuantityPageState extends State<StepQuantityPage> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)),
                           minimumSize: const Size(200, 80),
-                          backgroundColor: quantity == 500 ? Colors.blue : Colors.grey,
+                          backgroundColor: quantity == 500 ? Color.fromARGB(250, 51, 51, 255) : Colors.grey,
                         ),
                         onPressed: () {
                           setState(() {
