@@ -336,6 +336,7 @@ class Recruit_main extends StatelessWidget {
                         ),
 
                         onPressed: () {
+                          print('id:$id');
                           Navigator.push(
                             context,
                             MaterialPageRoute(

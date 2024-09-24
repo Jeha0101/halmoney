@@ -4,7 +4,11 @@ import 'package:halmoney/Recruit_detail_pages/Recruit_main_page.dart';
 
 class CondSearchResultPage extends StatelessWidget {
   final List<DocumentSnapshot> jobs;
-  const CondSearchResultPage({super.key, required this.jobs});
+
+  const CondSearchResultPage({
+    required this.jobs,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +90,7 @@ class Cond_Search extends StatelessWidget {
               workweek: jobData['work_week'] ?? '',
               image_path: jobData['image_path'] ?? '',
               endday: jobData['endday'] ?? '',
-              manager_call: jobData['manager_call']??''
+              manager_call: jobData['manager_call']??'',
               //userId: widget.id,
             ),
           ),
