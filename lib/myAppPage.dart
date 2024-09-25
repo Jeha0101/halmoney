@@ -26,7 +26,7 @@ class MyAppState extends State<MyAppPage>{
       MyHomePage(userInfo: widget.userInfo),
       JobSearch(userInfo: widget.userInfo),
       Communitypage(id: widget.userInfo.userId),
-      MyPageScreen(id: widget.userInfo.userId),
+      MyPageScreen(userInfo: widget.userInfo),
     ];
   }
   /*final List<Widget> _navIndex = [
