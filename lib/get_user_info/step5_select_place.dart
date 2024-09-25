@@ -21,12 +21,11 @@ class _SelectPlaceState extends State<SelectPlace> {
   void initState() {
     super.initState();
     originalAddress = widget.userInfo.userAddress;
-    print('주소소소'+originalAddress);
-    //_fetchUserAddress();
   }
 
-  // 원래 주소 Firebase에서 가져오기
-  // Future<void> _fetchUserAddress() async {
+  // 아래 절차는 UserInfo setUserInfo() 메소드에서 처리하도록 변경
+  // Interest 컬렉션에 업데이트하기
+  // Future<void> _updateInterest(String address) async {
   //   try {
   //     final QuerySnapshot result = await _firestore
   //         .collection('user')
@@ -41,65 +40,27 @@ class _SelectPlaceState extends State<SelectPlace> {
   //       await _firestore
   //           .collection('user')
   //           .doc(docId)
-  //           .get().then((DocumentSnapshot ds){
-  //             final data = ds.data() as Map<String, dynamic>;
-  //             setState(() { //업데이트 된 정보를 화면에 자동 반영
-  //               originalAddress = data["address"];
-  //             });
-  //       });
-  //
-  //       /*await _firestore
-  //           .collection('user')
-  //           .doc(docId)
   //           .collection('Interest')
   //           .doc('interest_place')
-  //           .set({'inter_place': data['address']});*/
+  //           .set({'inter_place': address});
+  //
+  //       print("Interest place updated successfully");
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         const SnackBar(content: Text("Interest place updated successfully")),
+  //       );
+  //     } else {
+  //       print("User not found");
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         const SnackBar(content: Text("User not found")),
+  //       );
   //     }
   //   } catch (error) {
-  //     print("Failed to update interests: $error");
+  //     print("Failed to update interest place: $error");
   //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(content: Text("Failed to update interests: $error")),
+  //       SnackBar(content: Text("Failed to update interest place: $error")),
   //     );
   //   }
   // }
-
-  // Interest 컬렉션에 업데이트하기
-  Future<void> _updateInterest(String address) async {
-    try {
-      final QuerySnapshot result = await _firestore
-          .collection('user')
-          .where('id', isEqualTo: widget.userInfo.userId)
-          .get();
-
-      final List<DocumentSnapshot> documents = result.docs;
-
-      if (documents.isNotEmpty) {
-        final String docId = documents.first.id;
-
-        await _firestore
-            .collection('user')
-            .doc(docId)
-            .collection('Interest')
-            .doc('interest_place')
-            .set({'inter_place': address});
-
-        print("Interest place updated successfully");
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Interest place updated successfully")),
-        );
-      } else {
-        print("User not found");
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("User not found")),
-        );
-      }
-    } catch (error) {
-      print("Failed to update interest place: $error");
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Failed to update interest place: $error")),
-      );
-    }
-  }
 
   // 내 주소 선택 버튼 눌렀을 때
   void _onSelectAddressButtonPressed() async {
@@ -107,7 +68,7 @@ class _SelectPlaceState extends State<SelectPlace> {
     setState(() {
       selectedAddress='';
     });
-    await _updateInterest(originalAddress);
+    //await _updateInterest(originalAddress);
   }
   // 다른 주소 선택 버튼 눌렀을 때
   void _onAddressSelected(String address) {
@@ -120,10 +81,10 @@ class _SelectPlaceState extends State<SelectPlace> {
   void _onSaveButtonPressed() async {
     if (selectedAddress.isEmpty) {
       // 다른 주소를 선택하지 않았다면, 기존 주소를 사용
-      await _updateInterest(originalAddress);
+      widget.userInfo.preferredWorkPlace = originalAddress;
     } else {
       // 다른 주소를 선택했다면, 선택된 주소를 사용
-      await _updateInterest(selectedAddress);
+      widget.userInfo.preferredWorkPlace = selectedAddress;
     }
   }
 
@@ -250,7 +211,7 @@ class _SelectPlaceState extends State<SelectPlace> {
                     ),
                     onPressed: () {
                       _onSaveButtonPressed();
-                      widget.userInfo.updateUserInfo();
+                      widget.userInfo.setUserInfo();
                       Navigator.push(
                           context,
                           MaterialPageRoute(

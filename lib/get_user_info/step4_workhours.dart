@@ -80,8 +80,7 @@ class _StepWorkHoursState extends State<StepWorkHours>{
                 // 다음 페이지로 이동
                 GestureDetector(
                   onTap: () {
-                    widget.userInfo.preferredWorkTime.clear();
-                    widget.userInfo.preferredWorkTime.add('${_selectedDays.toInt()}일');
+                    widget.userInfo.preferredWorkTime = '${_selectedDays.toInt()}일';
                     Navigator.push(
                       context,
                       MaterialPageRoute(

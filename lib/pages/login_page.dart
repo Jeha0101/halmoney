@@ -36,6 +36,7 @@ class LoginPage extends StatelessWidget{
       if(documents.isNotEmpty){
         //로그인 성공
         UserInfo userInfo = await UserInfo.create(id);
+        userInfo.printUserInfo();
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => MyAppPage(userInfo: userInfo)),
