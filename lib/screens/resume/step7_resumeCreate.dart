@@ -9,7 +9,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:convert';
 import 'package:halmoney/FirestoreData/user_Info.dart';
 import 'package:halmoney/screens/resume/user_prompt_factor.dart';
-import 'package:halmoney/resume2/resume_revision/first_revision.dart';
+import 'package:halmoney/screens/resume/resume_revision/first_revision.dart';
 
 class StepResumeCreate extends StatefulWidget {
   final UserInfo userInfo;

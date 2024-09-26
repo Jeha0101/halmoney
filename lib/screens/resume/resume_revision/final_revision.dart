@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:halmoney/FirestoreData/user_Info.dart';
 
-import '../../screens/resume/step8_completeResume.dart';
-import '../../screens/resume/user_prompt_factor.dart';
+import 'package:halmoney/screens/resume/step8_completeResume.dart';
+import 'package:halmoney/screens/resume/user_prompt_factor.dart';
 
 class FinalPage extends StatelessWidget {
   final String firstParagraph;
