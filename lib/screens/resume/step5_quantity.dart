@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:halmoney/get_user_info/user_Info.dart';
+import 'package:halmoney/FirestoreData/user_Info.dart';
 import 'package:halmoney/screens/resume/step7_resumeCreate.dart';
 import 'package:halmoney/screens/resume/user_prompt_factor.dart';
 

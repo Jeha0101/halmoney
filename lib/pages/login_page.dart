@@ -6,7 +6,7 @@ import 'package:halmoney/signup_pages/agreement_page.dart';
 import 'package:halmoney/signup_pages/signupStepper_page1.dart';
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
-import '../get_user_info/user_Info.dart';
+import '../FirestoreData/user_Info.dart';
 
 final storage = FirebaseStorage.instance;
 

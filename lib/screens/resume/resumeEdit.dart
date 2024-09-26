@@ -4,7 +4,7 @@ import 'package:halmoney/screens/resume/resumeManage.dart';
 import 'package:halmoney/screens/resume/user_prompt_factor.dart';
 import 'package:halmoney/get_user_info/career.dart';
 
-import '../../get_user_info/user_Info.dart';
+import '../../FirestoreData/user_Info.dart';
 
 //이력서 데이터
 class ResumeItem {

@@ -38,7 +38,7 @@ class UserInfo {
         final String docId = documents.first.id;
 
         final DocumentSnapshot ds =
-            await FirebaseFirestore.instance.collection('user').doc(docId).get();
+        await FirebaseFirestore.instance.collection('user').doc(docId).get();
 
         final data = ds.data() as Map<String, dynamic>;
 
