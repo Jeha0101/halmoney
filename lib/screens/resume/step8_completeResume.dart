@@ -10,6 +10,11 @@ import 'package:halmoney/screens/resume/resumeEdit.dart';
 import 'package:halmoney/screens/resume/resumeManage.dart';
 import 'package:halmoney/screens/resume/resume_JobsList/fetchRecommendations.dart';
 import 'package:halmoney/screens/resume/user_prompt_factor.dart';
+import 'package:halmoney/JobSearch_pages/Recruit_main_page.dart';
+import 'package:halmoney/JobSearch_pages/JobList_widget.dart';
+import 'package:halmoney/FirestoreData/user_Info.dart';
+import 'package:intl/intl.dart';
+
 
 class StepCompleteResume extends StatefulWidget {
   final UserInfo userInfo;
@@ -241,7 +246,7 @@ class _StepCompleteResumeState extends State<StepCompleteResume> {
                     children: recommendedJobs.map((job) {
                       return Column(
                         children: [
-                          CondSearch(job: job),
+                          CondSearch(userInfo:widget.userInfo, job: job),
                           const SizedBox(height: 10),
                         ],
                       );
@@ -257,8 +262,14 @@ class _StepCompleteResumeState extends State<StepCompleteResume> {
 
 class CondSearch extends StatelessWidget {
   final DocumentSnapshot job;
+  final UserInfo userInfo;
 
-  const CondSearch({super.key, required this.job});
+  const CondSearch({
+
+    required this.job,
+    required this.userInfo,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -273,27 +284,32 @@ class CondSearch extends StatelessWidget {
     String jobName = jobData['job_name'] ?? '직종 정보 없음';
     String address = jobData['address'] ?? '주소 정보 없음';
     String wage = jobData['wage'] ?? '급여 정보 없음';
+    String workweek = jobData.containsKey('workweek') ? jobData['workweek'] : '근무 요일 정보 없음';
+
+    Timestamp endDayTimestamp = jobData['end_day'] ?? Timestamp.now(); // 기본값을 현재 날짜로 설정
+    DateTime endDay = endDayTimestamp.toDate(); // Timestamp를 DateTime으로 변환
+    String formattedEndDay = DateFormat('yyyy-MM-dd').format(endDay); // 원하는 날짜 형식으로 변환
 
     return ElevatedButton(
       onPressed: () {
-        /*Navigator.push(
+        Navigator.push(
           context, // 콤마 추가
           MaterialPageRoute(
-            builder: (context) => RecruitMain(
-              id: jobData['id'] ?? 'No',
-              num: jobData['num'] ?? 'No',
-              title: jobData['title'] ?? 'NO',
-              address: address,
-              wage: wage,
-              career: jobData['job_name'] ?? '',
-              detail: jobData['detail'] ?? '',
-              workweek: jobData['work_week'] ?? '',
-              image_path: jobData['image_path'] ?? '',
-              endday: jobData['endday'] ?? '',
-              manager_call: jobData['manager_call'] ?? '',
+            builder: (context) => Recruit_main(
+              userInfo: userInfo,
+              num: job['num'],
+              title: job['title'],
+              address: job['address'],
+              wage: job['wage'],
+              career: job['career'],
+              detail: job['detail'],
+              workweek: workweek,
+              image_path: job['image_path'],
+              endday: formattedEndDay,
+              manager_call: job['manager_call'] ?? 'No Call Number',
             ),
           ),
-        ); */
+        );
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.white,

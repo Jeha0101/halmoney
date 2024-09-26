@@ -226,18 +226,11 @@ class _SignupStepperOneState extends State<SignupStepperOne> {
                           style:TextStyle(fontSize:20,)),
                       content: TextFormField(
                         decoration: InputDecoration(
-                            labelText: '아이디를 이메일 형식으로 입력하세요'),
+                            labelText: '아이디를 입력하세요'),
                         validator: (value) {
                           if (_currentStep == 1) {
                             if (value == null || value.trim().isEmpty) {
                               return '아이디를 입력해주세요';
-                            }
-                            // 이메일 형식 체크를 위한 정규 표현식
-                            String pattern =
-                                r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
-                            RegExp regex = RegExp(pattern);
-                            if (!regex.hasMatch(value)) {
-                              return '유효한 이메일 형식이 아닙니다.';
                             }
                           }
                           return null;
@@ -258,8 +251,8 @@ class _SignupStepperOneState extends State<SignupStepperOne> {
                             if (value == null || value.trim().isEmpty) {
                               return '비밀번호를 입력해주세요';
                             }
-                            if (value.length < 8) {
-                              return '비밀번호는 8자 이상이어야 합니다';
+                            if (value.length < 6) {
+                              return '비밀번호는 6자 이상이어야 합니다';
                             }
                           }
                           return null;
