@@ -123,9 +123,9 @@ class _StepResumeCreateState extends State<StepResumeCreate> {
     세번째 문단에 포함할 내용 : {
     ($thirdParagraphTokens) tokens 내외.
     지원하는 ($selectedFields) 분야에서 사용자가 이루고자 하는 구체적인 목표와 다짐을 포함하여 작성하세요.
-    이 목표가 어떻게 조직에 기여할 수 있을지 설명하세요.
-    마지막으로 "감사합니다"로 마무리 인사를 추가하세요.}
+    이 목표가 어떻게 조직에 기여할 수 있을지 설명하세요.}
     ''';
+    print(prompt);
 
     try {
       final firstResponse = await http.post(

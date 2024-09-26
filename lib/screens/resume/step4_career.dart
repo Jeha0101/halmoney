@@ -107,184 +107,191 @@ class _StepCareerPageState extends State<StepCareerPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color.fromARGB(250, 51, 51, 255),
-        elevation: 1.0,
-        leading: null,
-        automaticallyImplyLeading: false,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: const Row(
-                children: [
-                  //SizedBox(width: 5),
-                  Icon(
-                    Icons.chevron_left,
-                    size: 30,
-                  ),
-                  Text('이전',
-                      style: TextStyle(
-                        fontFamily: 'NanumGothicFamily',
-                        fontSize: 20.0,
-                        color: Colors.white,
-                      )),
-                ],
-              ),
-            ),
-            Container(
-                padding: const EdgeInsets.all(8.0),
-                child: const Text(
-                  '3 / 5',
-                  style: TextStyle(
-                    fontFamily: 'NanumGothicFamily',
-                    fontWeight: FontWeight.w600,
-                    fontSize: 18.0,
-                    color: Colors.white,
-                  ),
-                )),
-            GestureDetector(
-              onTap: () {
-                widget.userPromptFactor.editCareers(careers);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => StepQuantityPage(
-                        userInfo: widget.userInfo,
-                        userPromptFactor: widget.userPromptFactor,
-                      )),
-                );
-              },
-              child: const Row(
-                children: [
-                  Text('다음',
-                      style: TextStyle(
-                        fontFamily: 'NanumGothicFamily',
-                        fontSize: 20.0,
-                        color: Colors.white,
-                      )),
-                  Icon(
-                    Icons.chevron_right,
-                    size: 30,
-                    color: Colors.white,
-                  ),
-                ],
-              ),
-            ),
-          ],
+    return Theme(
+      data: Theme.of(context).copyWith(
+        textTheme: Theme.of(context).textTheme.apply(
+          fontFamily: 'NanumGothicFamily',
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 25,
-            ),
-
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Flexible(
-                  child: Text('경력을 추가하거나 삭제하세요',
-                      style: TextStyle(
-                        fontFamily: 'NanumGothicFamily',
-                        fontWeight: FontWeight.w500,
-                        fontSize: 28.0,
-                        color: Colors.black,
-                      )),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Flexible(
-                  child: Text('아래의 경력은 자기소개서 생성에 활용됩니다',
-                      style: TextStyle(
-                        fontFamily: 'NanumGothicFamily',
-                        fontWeight: FontWeight.w500,
-                        fontSize: 20.0,
-                        color: Colors.black,
-                      )),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 25,
-            ),
-
-            GestureDetector(
-              onTap: isEditing ? null : addCareer,
-              child: Container(
-                height: 80,
-                width: double.infinity,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(12),
-                ),
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: const Color.fromARGB(250, 51, 51, 255),
+          elevation: 1.0,
+          leading: null,
+          automaticallyImplyLeading: false,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
                 child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.add, color: Color.fromARGB(250, 51, 51, 255)),
-                    SizedBox(width: 10),
-                    Text('경력 추가',
+                    //SizedBox(width: 5),
+                    Icon(
+                      Icons.chevron_left,
+                      size: 30,
+                    ),
+                    Text('이전',
                         style: TextStyle(
-                          color: Color.fromARGB(250, 51, 51, 255),
-                          fontSize: 20,
                           fontFamily: 'NanumGothicFamily',
-                          fontWeight: FontWeight.w500,
+                          fontSize: 20.0,
+                          color: Colors.white,
                         )),
                   ],
                 ),
               ),
-            ),
-            const SizedBox(height: 20),
-
-            // 경력 표시 영역
-            Expanded(
-              child: ListView.builder(
-                itemCount: careers.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 10.0),
-                    child: CareerDisplay(
-                      career: careers[index],
-                      isEditing: isEditing && editingIndex == index,
-                      onSave: areAllFieldsFilled(index)
-                          ? () {
-                        completeEdit();
-                      }
-                          : null,
-                      onCancel: cancelEdit,
-                      onEdit: () => editCareer(index),
-                      onRemove: () => removeCareer(index),
-                      onFieldChange: (String field, String value) {
-                        setState(() {
-                          if (field == 'duration') {
-                            careers[index].workDuration = value;
-                          } else if (field == 'unit') {
-                            careers[index].workUnit = value;
-                          } else if (field == 'place') {
-                            careers[index].workPlace = value;
-                          }
-                        });
-                      },
-                      workPlaceController: userInputControllers[index]['place']!,
-                      workDurationController: userInputControllers[index]['duration']!,
+              Container(
+                  padding: const EdgeInsets.all(8.0),
+                  child: const Text(
+                    '3 / 5',
+                    style: TextStyle(
+                      fontFamily: 'NanumGothicFamily',
+                      fontWeight: FontWeight.w600,
+                      fontSize: 18.0,
+                      color: Colors.white,
                     ),
+                  )),
+              GestureDetector(
+                onTap: () {
+                  widget.userPromptFactor.editCareers(careers);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => StepQuantityPage(
+                          userInfo: widget.userInfo,
+                          userPromptFactor: widget.userPromptFactor,
+                        )),
                   );
                 },
+                child: const Row(
+                  children: [
+                    Text('다음',
+                        style: TextStyle(
+                          fontFamily: 'NanumGothicFamily',
+                          fontSize: 20.0,
+                          color: Colors.white,
+                        )),
+                    Icon(
+                      Icons.chevron_right,
+                      size: 30,
+                      color: Colors.white,
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 25,
+              ),
+
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Flexible(
+                    child: Text('경력을 추가하거나 삭제하세요',
+                        style: TextStyle(
+                          fontFamily: 'NanumGothicFamily',
+                          fontWeight: FontWeight.w500,
+                          fontSize: 28.0,
+                          color: Colors.black,
+                        )),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Flexible(
+                    child: Text('아래의 경력은 자기소개서 생성에 활용됩니다',
+                        style: TextStyle(
+                          fontFamily: 'NanumGothicFamily',
+                          fontWeight: FontWeight.w500,
+                          fontSize: 20.0,
+                          color: Colors.black,
+                        )),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 25,
+              ),
+
+              GestureDetector(
+                onTap: isEditing ? null : addCareer,
+                child: Container(
+                  height: 80,
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.add, size:30, color: Color.fromARGB(250, 51, 51, 255)),
+                      SizedBox(width: 10),
+                      Text('경력 추가',
+                          style: TextStyle(
+                            color: Color.fromARGB(250, 51, 51, 255),
+                            fontSize: 28,
+                            fontFamily: 'NanumGothicFamily',
+                            fontWeight: FontWeight.w500,
+                          )),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              // 경력 표시 영역
+              Expanded(
+                child: ListView.builder(
+                  itemCount: careers.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 10.0),
+                      child: CareerDisplay(
+                        career: careers[index],
+                        isEditing: isEditing && editingIndex == index,
+                        onSave: areAllFieldsFilled(index)
+                            ? () {
+                          completeEdit();
+                        }
+                            : null,
+                        onCancel: cancelEdit,
+                        onEdit: () => editCareer(index),
+                        onRemove: () => removeCareer(index),
+                        onFieldChange: (String field, String value) {
+                          setState(() {
+                            if (field == 'duration') {
+                              careers[index].workDuration = value;
+                            } else if (field == 'unit') {
+                              careers[index].workUnit = value;
+                            } else if (field == 'place') {
+                              careers[index].workPlace = value;
+                            }
+                          });
+                        },
+                        workPlaceController: userInputControllers[index]['place']!,
+                        workDurationController: userInputControllers[index]['duration']!,
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -340,13 +347,13 @@ class CareerDisplay extends StatelessWidget {
               children: <Widget>[
                 Container(
                   padding: const EdgeInsets.all(10),
-                  child: const Text("근무한 곳", style: TextStyle(fontSize: 20)),
+                  child: const Text("근무한 곳", style: TextStyle(fontSize: 20, fontFamily: 'NanumGothicFamily')),
                 ),
                 Container(
                   padding: const EdgeInsets.all(10),
                   child: const Text(
                     "근무한 기간",
-                    style: TextStyle(fontSize: 20),
+                    style: TextStyle(fontSize: 20, fontFamily: 'NanumGothicFamily'),
                   ),
                 ),
                 Container(
@@ -402,7 +409,7 @@ class CareerDisplay extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(5),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -420,7 +427,7 @@ class CareerDisplay extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(5),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -455,11 +462,11 @@ class CareerDisplay extends StatelessWidget {
               children: <Widget>[
                 Container(
                   padding: const EdgeInsets.all(10),
-                  child: Text("근무한 곳", style: const TextStyle(fontSize: 20)),
+                  child: Text("근무한 곳", style: const TextStyle(fontSize: 20, fontFamily: 'NanumGothicFamily')),
                 ),
                 Container(
                   padding: const EdgeInsets.all(10),
-                  child: Text("근무한 기간", style: const TextStyle(fontSize: 20)),
+                  child: Text("근무한 기간", style: const TextStyle(fontSize: 20, fontFamily: 'NanumGothicFamily')),
                 ),
                 Container(
                   padding: const EdgeInsets.all(10),
@@ -467,16 +474,16 @@ class CareerDisplay extends StatelessWidget {
                     softWrap: true,
                     overflow: TextOverflow.ellipsis,
                     career.workPlace,
-                    style: const TextStyle(fontSize: 20),
+                    style: const TextStyle(fontSize: 20, fontFamily: 'NanumGothicFamily'),
                   ),
                 ),
                 Container(
                   padding: const EdgeInsets.all(10),
                   child: Text('${career.workDuration} ${career.workUnit}',
-                      style: const TextStyle(fontSize: 20)),
+                      style: const TextStyle(fontSize: 20, fontFamily: 'NanumGothicFamily')),
                 ),
                 Container(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(5),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -488,13 +495,13 @@ class CareerDisplay extends StatelessWidget {
                         ),
                         child: const Text('삭제',
                             style:
-                            TextStyle(color: Colors.white, fontSize: 20)),
+                            TextStyle(color: Colors.white, fontSize: 20, fontFamily: 'NanumGothicFamily')),
                       ),
                     ],
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(5),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -506,7 +513,7 @@ class CareerDisplay extends StatelessWidget {
                         ),
                         child: const Text('편집',
                             style:
-                            TextStyle(color: Colors.white, fontSize: 20)),
+                            TextStyle(color: Colors.white, fontSize: 20, fontFamily: 'NanumGothicFamily')),
                       ),
                     ],
                   ),
