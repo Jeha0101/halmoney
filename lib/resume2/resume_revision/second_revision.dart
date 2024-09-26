@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../FirestoreData/user_Info.dart';
+import '../../screens/resume/user_prompt_factor.dart';
 import '../introduction_service.dart';
 import 'third_revision.dart';
 
@@ -6,12 +8,16 @@ class SecondParagraphPage extends StatefulWidget {
   final String firstParagraph;
   final String secondParagraph;
   final String thirdParagraph;
+  final UserInfo userInfo;
+  final UserPromptFactor userPromptFactor;
 
   const SecondParagraphPage({
     Key? key,
     required this.firstParagraph,
     required this.secondParagraph,
     required this.thirdParagraph,
+    required this.userInfo,
+    required this.userPromptFactor,
   }) : super(key: key);
 
   @override
@@ -67,6 +73,8 @@ class _SecondParagraphPageState extends State<SecondParagraphPage> {
           firstParagraph: widget.firstParagraph,
           secondParagraph: revisedSecondParagraph.isNotEmpty?revisedSecondParagraph:widget.secondParagraph,
           thirdParagraph: widget.thirdParagraph,
+          userInfo: widget.userInfo,
+          userPromptFactor: widget.userPromptFactor,
         ),
       ),
     );

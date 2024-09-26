@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:halmoney/FirestoreData/user_Info.dart';
+
+import '../../screens/resume/step8_completeResume.dart';
+import '../../screens/resume/user_prompt_factor.dart';
 
 class FinalPage extends StatelessWidget {
   final String firstParagraph;
   final String secondParagraph;
   final String thirdParagraph;
+  final UserInfo userInfo;
+  final UserPromptFactor userPromptFactor;
 
   const FinalPage({
     super.key,
     required this.firstParagraph,
     required this.secondParagraph,
     required this.thirdParagraph,
+    required this.userInfo,
+    required this.userPromptFactor,
   });
 
   /*void _goToResumeView(BuildContext context) {
@@ -74,9 +82,19 @@ class FinalPage extends StatelessWidget {
                     backgroundColor: Color.fromARGB(250, 51, 51, 255), // 배경색 설정
                   ),
                   onPressed: () {
-                    Navigator.pop(context); // 이전 화면으로 돌아가기
+                    String selfIntroduction = firstParagraph + '\n\n' + secondParagraph + '\n\n' + thirdParagraph;
+                    Navigator.pop(context);
+                    Navigator.pop(context);// 이전 화면으로 돌아가기
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => StepCompleteResume(
+                              userInfo: userInfo,
+                              userPromptFactor: userPromptFactor,
+                              userSelfIntroduction: selfIntroduction,
+                            )));
                   },
-                  child: const Text('이력서 생성',
+                  child: const Text('자기소개서 저장',
                   style:TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
                 ),
               ),

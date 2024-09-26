@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../FirestoreData/user_Info.dart';
+import '../../screens/resume/user_prompt_factor.dart';
 import '../introduction_service.dart';
 import 'final_revision.dart'; // 마무리 페이지로 이동
 
@@ -6,12 +8,16 @@ class ThirdParagraphPage extends StatefulWidget {
   final String firstParagraph;
   final String secondParagraph;
   final String thirdParagraph;
+  final UserInfo userInfo;
+  final UserPromptFactor userPromptFactor;
 
   const ThirdParagraphPage({
     Key? key,
     required this.firstParagraph,
     required this.secondParagraph,
     required this.thirdParagraph,
+    required this.userInfo,
+    required this.userPromptFactor,
   }) : super(key: key);
 
   @override
@@ -69,6 +75,8 @@ class _ThirdParagraphPageState extends State<ThirdParagraphPage> {
           thirdParagraph: revisedThirdParagraph.isNotEmpty
               ? revisedThirdParagraph
               : widget.thirdParagraph,
+          userInfo: widget.userInfo,
+          userPromptFactor: widget.userPromptFactor,
         ),
       ),
     );

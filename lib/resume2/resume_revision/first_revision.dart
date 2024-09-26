@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:halmoney/FirestoreData/user_Info.dart';
 import 'package:halmoney/resume2/introduction_service.dart';
 import 'package:halmoney/resume2/resume_revision/second_revision.dart';
+
+import '../../screens/resume/user_prompt_factor.dart';
 
 class FirstParagraphPage extends StatefulWidget {
   final String firstParagraph;
   final String secondParagraph;
   final String thirdParagraph;
+  final UserInfo userInfo;
+  final UserPromptFactor userPromptFactor;
 
   const FirstParagraphPage({
     Key? key,
     required this.firstParagraph,
     required this.secondParagraph,
     required this.thirdParagraph,
+    required this.userInfo,
+    required this.userPromptFactor,
   }) : super(key: key);
 
   @override
@@ -71,6 +78,8 @@ class _FirstParagraphPageState extends State<FirstParagraphPage> {
               : widget.firstParagraph,
           secondParagraph: widget.secondParagraph,
           thirdParagraph: widget.thirdParagraph,
+          userInfo: widget.userInfo,
+          userPromptFactor: widget.userPromptFactor,
         ),
       ),
     );
