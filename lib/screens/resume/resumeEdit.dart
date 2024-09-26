@@ -139,7 +139,7 @@ class _ResumeEditState extends State<ResumeEdit> {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => ResumeManage(id: widget.userInfo.userId)));
+            builder: (context) => ResumeManage(userInfo: widget.userInfo)));
   }
 
   // 앱 바 뒤로가기 버튼

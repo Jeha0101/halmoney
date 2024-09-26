@@ -340,7 +340,7 @@ class Recruit_main extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ResumeManage(id: userInfo.userId),
+                              builder: (context) => ResumeManage(userInfo: userInfo),
                             ),
                           );
 

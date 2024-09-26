@@ -93,7 +93,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ResumeManage(id: widget.userInfo.userId)),
+                        MaterialPageRoute(builder: (context) => ResumeManage(userInfo: widget.userInfo)),
                       );
                     },
                     child: Container(
