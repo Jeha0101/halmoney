@@ -4,7 +4,7 @@ import 'package:halmoney/screens/myPage/myPage.dart';
 import 'package:halmoney/Community_pages/Community_main_page.dart';
 import 'package:halmoney/JobSearch_pages/JobSearch_main_page.dart';
 
-import 'get_user_info/user_Info.dart';
+import 'FirestoreData/user_Info.dart';
 
 class MyAppPage extends StatefulWidget{
   final UserInfo userInfo;

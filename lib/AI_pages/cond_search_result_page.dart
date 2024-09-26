@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:halmoney/Recruit_detail_pages/Recruit_main_page.dart';
+import 'package:halmoney/JobSearch_pages/Recruit_main_page.dart';
 
-import '../get_user_info/user_Info.dart';
+import '../FirestoreData/user_Info.dart';
 
 class CondSearchResultPage extends StatelessWidget {
   final UserInfo userInfo;
-  final List<DocumentSnapshot> jobs;
+  final List<Map<String, dynamic>> jobs;
   const CondSearchResultPage({super.key, required this.userInfo, required this.jobs});
 
 
@@ -54,13 +54,13 @@ class CondSearchResultPage extends StatelessWidget {
 
 class Cond_Search extends StatelessWidget {
   final UserInfo userInfo;
-  final DocumentSnapshot job;
+  final Map<String, dynamic> job;
   const Cond_Search({super.key, required this.userInfo, required this.job});
 
   @override
   Widget build(BuildContext context) {
     // jobData가 Map<String, dynamic> 타입이거나 null일 수 있습니다.
-    final Map<String, dynamic>? jobData = job.data() as Map<String, dynamic>?;
+    final Map<String, dynamic>? jobData = job;
 
     // jobData가 null이면 데이터가 없거나 유효하지 않은 경우입니다.
     if (jobData == null) {
@@ -70,7 +70,7 @@ class Cond_Search extends StatelessWidget {
     }
 
     // jobData에서 각 필드를 가져오기 전에 null 여부를 확인하여 처리합니다.
-    String jobName = jobData['job_name'] ?? '직종 정보 없음';
+    String jobName = jobData['title'] ?? '직종 정보 없음';
     String address = jobData['address'] ?? '주소 정보 없음';
     String wage = jobData['wage'] ?? '급여 정보 없음';
 
@@ -86,7 +86,7 @@ class Cond_Search extends StatelessWidget {
               title: jobData['title'] ?? 'NO',
               address: address,
               wage: wage,
-              career: jobData['job_name'] ?? '',
+              career: jobData['career'] ?? '',
               detail: jobData['detail'] ?? '',
               workweek: jobData['work_week'] ?? '',
               image_path: jobData['image_path'] ?? '',

@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:halmoney/JobSearch_pages/JobList_widget.dart';
 
-import '../../../Recruit_detail_pages/Recruit_main_page.dart';
-import '../../../get_user_info/user_Info.dart';
+import '../../../JobSearch_pages/Recruit_main_page.dart';
+import '../../../FirestoreData/user_Info.dart';
 
 class Recommen_Component extends StatelessWidget {
   final UserInfo userInfo;

@@ -2,15 +2,15 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:halmoney/AI_pages/AI_recomm_page.dart';
-import 'package:halmoney/AI_pages/AI_select_cond_page.dart';
-import 'package:halmoney/pages/search_engine.dart';
+import 'package:halmoney/AI_pages/select_conditions_page.dart';
+import 'package:halmoney/AI_pages/search_engine.dart';
 import 'package:halmoney/screens/map/mapPage.dart';
 import 'package:halmoney/screens/resume/step1_hello.dart';
 import 'package:intl/intl.dart';
 import 'package:halmoney/PublicJobs_pages/PublicJobsDescribe.main.dart';
-import 'package:halmoney/get_user_info/user_Info.dart';
+import 'package:halmoney/FirestoreData/user_Info.dart';
 import 'dart:core';
-import 'package:halmoney/PublicJobs_pages/PublicJobsData.dart';
+import 'package:halmoney/FirestoreData/PublicJobsData.dart';
 import '../../PublicJobs_pages/PublicJobsDetail.main.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -140,7 +140,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                StepHelloPage(userInfo: widget.userInfo)),
+                                PublicJobsDescribe(id: widget.userInfo.userId, userInfo: widget.userInfo)),
                       );
                     }
                   },
@@ -495,7 +495,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      AISelectCondPage(userInfo: widget.userInfo,)),
+                                      SelectConditionsPage(userInfo: widget.userInfo,)),
                             );
                           },
                           child: Row(

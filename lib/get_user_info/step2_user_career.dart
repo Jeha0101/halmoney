@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:halmoney/get_user_info/career.dart';
-import 'package:halmoney/get_user_info/user_Info.dart';
+import 'package:halmoney/FirestoreData/user_Info.dart';
 import 'package:halmoney/get_user_info/step3_user_field.dart';
 
 class StepUserCareer extends StatefulWidget {
