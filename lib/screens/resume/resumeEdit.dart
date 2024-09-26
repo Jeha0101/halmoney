@@ -411,36 +411,36 @@ class _ResumeEditState extends State<ResumeEdit> {
                                 
                                 //추후에 수정
                                 const SizedBox(height: 10),
-                                // Column(
-                                //   children: resumeItem.careers.map((experience) {
-                                //     return Container(
-                                //       margin: const EdgeInsets.symmetric(
-                                //           vertical: 10.0),
-                                //       padding: const EdgeInsets.all(15.0),
-                                //       width: double.infinity,
-                                //       decoration: BoxDecoration(
-                                //         color: Colors.white,
-                                //         border: Border.all(color: Colors.grey),
-                                //         borderRadius: BorderRadius.circular(10.0),
-                                //       ),
-                                //       child: Row(
-                                //         mainAxisAlignment:
-                                //             MainAxisAlignment.spaceEvenly,
-                                //         children: [
-                                //           Text(
-                                //             '${experience.workPlace}',
-                                //             style: TextStyle(fontSize: 18),
-                                //           ),
-                                //           SizedBox(height: 5),
-                                //           Text(
-                                //             '근무 기간   ${experience.workDuration}${experience.workUnit}',
-                                //             style: TextStyle(fontSize: 14),
-                                //           ),
-                                //         ],
-                                //       ),
-                                //     );
-                                //   }).toList(),
-                                // ),
+                                Column(
+                                  children: resumeItem.careers.map((experience) {
+                                    return Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 10.0),
+                                      padding: const EdgeInsets.all(15.0),
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        border: Border.all(color: Colors.grey),
+                                        borderRadius: BorderRadius.circular(10.0),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Text(
+                                            '${experience.workPlace}',
+                                            style: TextStyle(fontSize: 18),
+                                          ),
+                                          SizedBox(height: 5),
+                                          Text(
+                                            '근무 기간   ${experience.workDuration}${experience.workUnit}',
+                                            style: TextStyle(fontSize: 14),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
                                 Divider(),
                               ],
                             ),

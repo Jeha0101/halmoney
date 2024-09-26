@@ -221,10 +221,10 @@ class _ResumeViewState extends State<ResumeView> {
                         style: TextStyle(fontSize: 15),
                       ),
                       SizedBox(height: 8),
-                      Text(
-                        '${_resumeData!['resumeItem']['dob']}년생',
-                        style: TextStyle(fontSize: 15),
-                      ),
+                      // Text(
+                      //   '${_resumeData!['resumeItem']['dob']}년생',
+                      //   style: TextStyle(fontSize: 15),
+                      // ),
                     ],
                   ),
                 ],
@@ -286,40 +286,40 @@ class _ResumeViewState extends State<ResumeView> {
                 ],
               ),
               const SizedBox(height: 10),
-              ...(_resumeData!['resumeItem']['workExperiences']
-              as List<dynamic>)
-                  .map((experience) {
-                return Container(
-                  margin: const EdgeInsets.symmetric(vertical: 10.0),
-                  padding: const EdgeInsets.all(15.0),
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '${experience['place']}',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      SizedBox(height: 5),
-                      Text(
-                        '근무 기간   ${experience['startYear']}년 ${experience['startMonth']}월 ~ ${experience['endYear']}년 ${experience['endMonth']}월',
-                        style: TextStyle(fontSize: 14),
-                      ),
-                      SizedBox(height: 5),
-                      Text(
-                        '근무 내용   ${experience['description']}',
-                        style: TextStyle(fontSize: 14),
-                      ),
-                    ],
-                  ),
-                );
-              }).toList(),
-              Divider(),
+              // ...(_resumeData!['resumeItem']['workExperiences']
+              // as List<dynamic>)
+              //     .map((experience) {
+              //   return Container(
+              //     margin: const EdgeInsets.symmetric(vertical: 10.0),
+              //     padding: const EdgeInsets.all(15.0),
+              //     width: double.infinity,
+              //     decoration: BoxDecoration(
+              //       color: Colors.white,
+              //       border: Border.all(color: Colors.grey),
+              //       borderRadius: BorderRadius.circular(10.0),
+              //     ),
+              //     child: Column(
+              //       crossAxisAlignment: CrossAxisAlignment.start,
+              //       children: [
+              //         Text(
+              //           '${experience['place']}',
+              //           style: TextStyle(fontSize: 18),
+              //         ),
+              //         SizedBox(height: 5),
+              //         Text(
+              //           '근무 기간   ${experience['startYear']}년 ${experience['startMonth']}월 ~ ${experience['endYear']}년 ${experience['endMonth']}월',
+              //           style: TextStyle(fontSize: 14),
+              //         ),
+              //         SizedBox(height: 5),
+              //         Text(
+              //           '근무 내용   ${experience['description']}',
+              //           style: TextStyle(fontSize: 14),
+              //         ),
+              //       ],
+              //     ),
+              //   );
+              // }).toList(),
+              // Divider(),
 
               //자기소개서
               const SizedBox(height: 10),
