@@ -13,8 +13,8 @@ class UserInfo {
   late String userAddress;
   late List<Career> careers;
   late List<String> selectedFields;
-  late List<String> preferredWorkTime;
-  late List<String> preferredWorkPlace;
+  late String preferredWorkTime;
+  late String preferredWorkPlace;
 
   UserInfo._create(this.userId);
 
@@ -48,46 +48,147 @@ class UserInfo {
         userGender = data['gender'] ?? '';
         userAgeGroup = data['ageGroup'] ?? '';
         userAddress = data['address'] ?? '';
-        selectedFields = data['selectedFields'] != null ? List<String>.from(data['selectedFields']) : []; //수정한 부분
-        preferredWorkTime = data['preferredWorkTime'] != null ? List<String>.from(data['preferredWorkTime']) : []; //수정한 부분
-        preferredWorkPlace = data['preferredWorkPlace'] != null ? List<String>.from(data['preferredWorkPlace']) : []; //수정한 부분
 
-        if (data['careers'] != null && data['careers'] is List) {
-          careers = (data['careers'] as List)
-              .map((careerData) => Career.fromMap(careerData as Map<String, dynamic>))
-              .toList();
+        final DocumentSnapshot careerDoc = await FirebaseFirestore.instance
+            .collection('user')
+            .doc(docId)
+            .collection('Career')
+            .doc('career')
+            .get();
+
+        if (careerDoc.exists) {
+          final careerData = careerDoc.data() as Map<String, dynamic>;
+          if (careerData['careers'] != null && careerData['careers'] is List) {
+            careers = (careerData['careers'] as List)
+                .map((career) => Career.fromMap(career as Map<String, dynamic>))
+                .toList();
+          } else {
+            careers = [];
+          }
         } else {
           careers = [];
         }
 
+        // Fetch interest information
+        final DocumentSnapshot interestDoc = await FirebaseFirestore.instance
+            .collection('user')
+            .doc(docId)
+            .collection('Interest')
+            .doc('interest')
+            .get();
+
+        if (interestDoc.exists) {
+          final interestData = interestDoc.data() as Map<String, dynamic>;
+          selectedFields = interestData['selectedFields'] != null
+              ? List<String>.from(interestData['selectedFields'])
+              : [];
+          preferredWorkTime = interestData['preferredWorkTime'] ?? '';
+          preferredWorkPlace = interestData['preferredWorkPlace'] ?? '';
+        } else {
+          selectedFields = [];
+          preferredWorkTime = '';
+          preferredWorkPlace = '';
+        }
       }
     } catch (error) {
       print('Failed to fetch user info: $error');
     }
   }
 
-  // 사용자 정보 업데이트 메소드
-  Future<void> updateUserInfo() async {
+  // 회원가입 후 사용자 정보 조사 메소드
+  Future<void> setUserInfo() async {
     try {
-      await FirebaseFirestore.instance
+      final QuerySnapshot result = await FirebaseFirestore.instance
           .collection('user')
-          .doc(userId)
-          .update({
-        'name': userName,
-        'phone': userPhone,
-        'gender': userGender,
-        'ageGroup': userAgeGroup,
-        'address': userAddress,
-        'careers': careers.map((career) => career.toMap()).toList(),
-        'selectedFields': selectedFields,
-        'preferredWorkTime': preferredWorkTime,
-        'preferredWorkPlace': preferredWorkPlace,
-      });
+          .where('id', isEqualTo: userId)
+          .get();
+
+      final List<DocumentSnapshot> documents = result.docs;
+
+      if (documents.isNotEmpty) {
+        final String docId = documents.first.id;
+
+        // 경력 정보
+        await FirebaseFirestore.instance
+            .collection('user')
+            .doc(docId)
+            .collection('Career')
+            .doc('career')
+            .set({
+          'careers': careers.map((career) => career.toMap()).toList(),
+        });
+
+        //관심 정보
+        await FirebaseFirestore.instance
+            .collection('user')
+            .doc(docId)
+            .collection('Interest')
+            .doc('interest')
+            .set({
+          'inter_place': preferredWorkPlace, // 추천시스템에서 활용하는 정보일까봐
+          'preferredWorkPlace': preferredWorkPlace, // inter_place와 같은 정보인데 우선 두 개 만듦
+          'preferredWorkTime': preferredWorkTime,
+          'selectedFields': selectedFields,
+        });
+      }
       print('User info updated successfully.');
     } catch (error) {
       print('Failed to update user info: $error');
     }
   }
+
+  // 사용자 정보 수정할 수 있는 메소드 구현하기
+  // 사용자 정보 업데이트 메소드
+  // Future<void> updateUserInfo() async {
+  //   try {
+  //     final QuerySnapshot result = await FirebaseFirestore.instance
+  //         .collection('user')
+  //         .where('id', isEqualTo: userId)
+  //         .get();
+  //
+  //     final List<DocumentSnapshot> documents = result.docs;
+  //
+  //     if (documents.isNotEmpty) {
+  //       final String docId = documents.first.id;
+  //
+  //       // 기본 정보
+  //       await FirebaseFirestore.instance
+  //           .collection('user')
+  //           .doc(docId)
+  //           .update({
+  //         'name': userName,
+  //         'phone': userPhone,
+  //         'gender': userGender,
+  //         'ageGroup': userAgeGroup,
+  //         'address': userAddress,
+  //         'careers': careers.map((career) => career.toMap()).toList(),
+  //       });
+  //
+  //       //관심 정보
+  //       await FirebaseFirestore.instance
+  //           .collection('user')
+  //           .doc(docId)
+  //           .collection('Interest')
+  //           .doc('interest')
+  //           .update({
+  //         'inter_place': preferredWorkPlace,
+  //         'preferredWorkTime': preferredWorkTime,
+  //         'preferredWorkPlace': preferredWorkPlace,
+  //         'selectedFields': selectedFields,
+  //       });
+  //       await FirebaseFirestore.instance
+  //           .collection('user')
+  //           .doc(docId)
+  //           .collection('Interest')
+  //           .doc('interest_place')
+  //           .update({'inter_place': preferredWorkPlace
+  //       });
+  //     }
+  //     print('User info updated successfully.');
+  //   } catch (error) {
+  //     print('Failed to update user info: $error');
+  //   }
+  // }
 
   String getId() {
     return userId;
@@ -131,5 +232,9 @@ class UserInfo {
     print("사용자 성별 : $userGender");
     print("사용자 나이 : $userAgeGroup");
     print("사용자 주소 : $userAddress");
+    print("사용자 선호 근무 지역 : $preferredWorkPlace");
+    print("사용자 선호 근무 시간 : $preferredWorkTime");
+    print("사용자 관심 분야 : $selectedFields");
+    print("사용자 경력 : ${careers[0].getStringCareer()}");
   }
 }

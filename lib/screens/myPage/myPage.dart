@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:halmoney/get_user_info/user_Info.dart';
 import 'package:halmoney/screens/resume/resumeManage.dart';
 import 'package:halmoney/screens/resume/select_skill_page.dart';
 //import 'package:halmoney/screens/resume/resumeCreate.dart';
@@ -10,47 +11,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:halmoney/screens/scrap/UserViewedJobs.dart';
 
 class MyPageScreen extends StatefulWidget {
-  final String id;
-  const MyPageScreen({super.key, required this.id});
+  final UserInfo userInfo;
+  const MyPageScreen({super.key, required this.userInfo});
 
   @override
   _MyPageScreenState createState() => _MyPageScreenState();
 }
 
 class _MyPageScreenState extends State<MyPageScreen> {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  String name = '';
+  late String name;
 
   @override
   void initState() {
     super.initState();
-    _fetchUserData();
-  }
-
-  Future<void> _fetchUserData() async {
-    try {
-      final QuerySnapshot result = await _firestore
-          .collection('user')
-          .where('id', isEqualTo: widget.id)
-          .get();
-
-      final List<DocumentSnapshot> documents = result.docs;
-
-      if (documents.isNotEmpty) {
-        final String docId = documents.first.id;
-        final DocumentSnapshot ds = await _firestore.collection('user').doc(docId).get();
-        final data = ds.data() as Map<String, dynamic>;
-
-        setState(() {
-          name = data['name'] ?? '';
-        });
-      }
-    } catch (error) {
-      print("Failed to fetch user data: $error");
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Failed to fetch user data: $error")),
-      );
-    }
+    name = widget.userInfo.userName;
   }
 
   @override
@@ -118,7 +92,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ResumeManage(id: widget.id)),
+                        MaterialPageRoute(builder: (context) => ResumeManage(id: widget.userInfo.userId)),
                       );
                     },
                     child: Container(
@@ -188,7 +162,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => UserLikesScreen(id: widget.id)),
+                        MaterialPageRoute(builder: (context) => UserLikesScreen(id: widget.userInfo.userId)),
                       );
                     },
                     child: Container(
@@ -227,7 +201,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => UserViewedJobsPage(userId: widget.id)),
+                        MaterialPageRoute(builder: (context) => UserViewedJobsPage(userId: widget.userInfo.userId)),
                       );
                     },
                     child: Container(

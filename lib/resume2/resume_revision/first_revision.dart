@@ -54,6 +54,13 @@ class _FirstParagraphPageState extends State<FirstParagraphPage> {
     }
   }
 
+  void _resetToOriginal() {
+    setState(() {
+      revisedFirstParagraph = widget.firstParagraph;
+    });
+  }
+
+
   void _goToSecondPage() {
     Navigator.push(
       context,
@@ -73,6 +80,7 @@ class _FirstParagraphPageState extends State<FirstParagraphPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: const Color.fromARGB(250, 51, 51, 255),
         title: const Text('첫 번째 문단 수정'),
       ),
       body: Padding(
@@ -459,7 +467,7 @@ class _FirstParagraphPageState extends State<FirstParagraphPage> {
                           if (states.contains(WidgetState.pressed)) {
                             return Colors.blueAccent; // 클릭(pressed) 시 배경색
                           }
-                          return Colors.blue;
+                          return Color.fromARGB(250, 51, 51, 255);
                         },
                       ),
                       elevation: WidgetStateProperty.resolveWith<double>(
@@ -482,10 +490,11 @@ class _FirstParagraphPageState extends State<FirstParagraphPage> {
                       ),
                     ),
                     onPressed: _editFirstParagraph,
-                    child: const Text('수정하기'),
+                    child: const Text('수정하기',
+                      style:TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
                   ),
                 ),
-                const SizedBox(width: 30),
+                const SizedBox(width: 20),
                 Container(
                   height:50,
                   child:ElevatedButton(
@@ -496,7 +505,46 @@ class _FirstParagraphPageState extends State<FirstParagraphPage> {
                           if (states.contains(WidgetState.pressed)) {
                             return Colors.blueAccent; // 클릭(pressed) 시 배경색
                           }
-                          return Colors.blue;
+                          return Color.fromARGB(250, 51, 51, 255);
+                        },
+                      ),
+                      elevation: WidgetStateProperty.resolveWith<double>(
+                            (Set<WidgetState> states) {
+                          if (states.contains(WidgetState.pressed)) {
+                            return 10.0; // 클릭(pressed) 시 그림자 깊이 증가
+                          }
+                          return 5.0; // 기본 그림자 깊이
+                        },
+                      ),
+                      padding: WidgetStateProperty.all<EdgeInsets>(
+                        const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 5),
+                      ),
+                      shape:
+                      WidgetStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
+                    onPressed: _resetToOriginal,
+                    child: const Text('원래대로',
+                        style:TextStyle(fontSize: 15, fontWeight: FontWeight.bold)
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 20),
+                Container(
+                  height:50,
+                  child:ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor:
+                      WidgetStateProperty.resolveWith<Color>(
+                            (Set<WidgetState> states) {
+                          if (states.contains(WidgetState.pressed)) {
+                            return Colors.blueAccent; // 클릭(pressed) 시 배경색
+                          }
+                          return Color.fromARGB(250, 51, 51, 255);
                         },
                       ),
                       elevation: WidgetStateProperty.resolveWith<double>(
@@ -519,9 +567,12 @@ class _FirstParagraphPageState extends State<FirstParagraphPage> {
                       ),
                     ),
                     onPressed: _goToSecondPage,
-                    child: const Text('다음 문단 수정'),
+                    child: const Text('다음 문단 수정',
+                        style:TextStyle(fontSize: 15, fontWeight: FontWeight.bold)
+                    ),
                   ),
-                )
+                ),
+
 
               ],
             ),

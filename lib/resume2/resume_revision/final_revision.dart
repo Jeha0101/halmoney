@@ -33,7 +33,8 @@ class FinalPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('최종 수정된 자기소개서'),
+        backgroundColor: const Color.fromARGB(250, 51, 51, 255),
+        title: const Text('최종 생성 자기소개서'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -69,10 +70,14 @@ class FinalPage extends StatelessWidget {
               const SizedBox(height: 40),
               Center(
                 child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromARGB(250, 51, 51, 255), // 배경색 설정
+                  ),
                   onPressed: () {
                     Navigator.pop(context); // 이전 화면으로 돌아가기
                   },
-                  child: const Text('이력서 생성'),
+                  child: const Text('이력서 생성',
+                  style:TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
                 ),
               ),
             ],
