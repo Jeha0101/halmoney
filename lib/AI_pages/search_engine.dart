@@ -1,10 +1,10 @@
 import 'dart:convert';
-import 'package:halmoney/get_user_info/user_Info.dart';
+import 'package:halmoney/FirestoreData/user_Info.dart';
 import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:huggingface_dart/huggingface_dart.dart';
-import '../AI_pages/cond_search_result_page.dart';
+import 'cond_search_result_page.dart';
 
 class SearchEngine extends StatefulWidget {
   final UserInfo userInfo;
@@ -84,7 +84,7 @@ class _SearchEngine extends State<SearchEngine> {
         final jobMatch = _keywords.isEmpty || _keywords.any((keyword) => jobName.contains(keyword));
 
         return jobMatch;
-      }).toList();
+      }).map((job) => job.data() as Map<String, dynamic>).toList();
 
       print('Filtered jobs count: ${filteredJobs.length}');
       if (filteredJobs.isNotEmpty) {

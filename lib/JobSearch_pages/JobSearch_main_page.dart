@@ -1,11 +1,13 @@
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 import 'package:halmoney/JobSearch_pages/JobList_widget.dart';
-import 'package:halmoney/myAppPage.dart';
 import 'package:intl/intl.dart';
 
-import '../get_user_info/user_Info.dart';
+import 'package:provider/provider.dart';
+import 'package:halmoney/FirestoreData/user_Info.dart';
+import 'package:halmoney/FirestoreData/JobProvider.dart';
 
 class JobSearch extends StatefulWidget {
   final UserInfo userInfo;
@@ -16,8 +18,6 @@ class JobSearch extends StatefulWidget {
 }
 
 class _JobSearchState extends State<JobSearch> {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  List<Map<String, dynamic>> jobs = [];
   String? userDocId;
   List<String> userLikes = [];
 
@@ -29,13 +29,13 @@ class _JobSearchState extends State<JobSearch> {
 
   Future<void> _initializeData() async {
     await _fetchUserLikes();
-    await _fetchJobs();
+    // Jobs data는 JobsProvider를 통해 가져오기 때문에 별도 호출 필요 없음
   }
 
   Future<void> _fetchUserLikes() async {
     try {
       // Fetch the user document based on the provided widget.id
-      final QuerySnapshot userQuery = await _firestore
+      final QuerySnapshot userQuery = await FirebaseFirestore.instance
           .collection('user')
           .where('id', isEqualTo: widget.userInfo.userId)
           .get();
@@ -46,7 +46,7 @@ class _JobSearchState extends State<JobSearch> {
         userDocId = userId;
 
         // Fetch the user's likes sub-collection
-        final QuerySnapshot userLikesQuery = await _firestore
+        final QuerySnapshot userLikesQuery = await FirebaseFirestore.instance
             .collection('user')
             .doc(userId)
             .collection('users_like')
@@ -69,49 +69,11 @@ class _JobSearchState extends State<JobSearch> {
     }
   }
 
-  Future<void> _fetchJobs() async {
-    try {
-      final QuerySnapshot result = await _firestore.collection('jobs').get();
-      final List<DocumentSnapshot> documents = result.docs;
-
-      setState(() {
-        jobs = documents.map((doc) {
-          final data = doc.data() as Map<String, dynamic>;
-
-          // Convert the Timestamp to a DateTime object and then to a formatted string
-          String endDayStr = 'No end_day';
-          if (data['end_day'] != null) {
-            DateTime endDay = (data['end_day'] as Timestamp).toDate();
-            endDayStr = DateFormat('yyyy-MM-dd').format(endDay); // Format the DateTime
-          }
-
-          return {
-            'num': data['num'] ?? 0,
-            'title': data['title'] ?? 'No Title.',
-            'address': data['address'] ?? 'No address',
-            'wage': data['wage'] ?? 'No Wage',
-            'career': data['career'] ?? 'No Career',
-            'detail': data['detail'] ?? 'No detail',
-            'workweek': data['work_time_week'] ?? 'No work Week',
-            'image_path': data['image_path'] ?? 'No_path',
-            'isLiked': userLikes.contains(data['num'].toString()),
-            'end_day': endDayStr,
-            'manager_call': data['manager_call'] ?? 'No call Number'
-          };
-        }).toList();
-        print('공고들! $jobs');
-      });
-    } catch (error) {
-      print("Failed to fetch jobs: $error");
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Failed to fetch jobs: $error")),
-      );
-    }
-  }
-
-
   @override
   Widget build(BuildContext context) {
+    // JobsProvider를 통해 데이터를 가져옴
+    final jobsProvider = Provider.of<JobsProvider>(context);
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -137,12 +99,14 @@ class _JobSearchState extends State<JobSearch> {
               color: Colors.grey,
             ),
           ),
-          body: jobs.isEmpty
-              ? const  Center(child: Text('No jobs available'))
+          body: jobsProvider.isLoading
+              ? const Center(child: CircularProgressIndicator())  // 로딩 중
+              : jobsProvider.jobs.isEmpty
+              ? const Center(child: Text('No jobs available'))
               : ListView.builder(
-            itemCount: jobs.length,
+            itemCount: jobsProvider.jobs.length,
             itemBuilder: (context, index) {
-              final job = jobs[index];
+              final job = jobsProvider.jobs[index];
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: JobList(
@@ -155,9 +119,9 @@ class _JobSearchState extends State<JobSearch> {
                   detail: job['detail'],
                   workweek: job['workweek'],
                   image_path: job['image_path'],
-                  isLiked: job['isLiked'],
+                  isLiked: userLikes.contains(job['num'].toString()),  // 사용자 좋아요 정보 반영
                   endday: job['end_day'],
-                  manager_call : job['manager_call'] ?? 'No Call Number',
+                  manager_call: job['manager_call'] ?? 'No Call Number',
                 ),
               );
             },

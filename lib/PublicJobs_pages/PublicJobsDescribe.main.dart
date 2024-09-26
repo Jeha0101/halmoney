@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:halmoney/myAppPage.dart';
-import 'PublicJobsData.dart';
+import '../FirestoreData/PublicJobsData.dart';
 import 'PublicJobsList_widget.dart';
-import 'package:halmoney/get_user_info/user_Info.dart';
+import 'package:halmoney/FirestoreData/user_Info.dart';
 
 class PublicJobsDescribe extends StatefulWidget {
   final String id;
@@ -120,7 +120,7 @@ class _PublicJobsDescribeState extends State<PublicJobsDescribe> {
                   region: job['region'] ?? 'No Region',
                   url: job['url'] ?? 'No URL',
                   person: job['person'] ?? 'No Person',
-                  person2: job['persoㄱn2'] ?? 'No Person2',
+                  person2: job['person2'] ?? 'No Person2',
                   personcareer: job['personcareer'] ?? 'No Person Career',
                   personedu: job['personedu'] ?? 'No Person Education',
                   applystep: job['applystep'] ?? 'No Apply Step',

@@ -7,7 +7,7 @@ import 'package:halmoney/screens/resume/step8_completeResume.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:convert';
-import 'package:halmoney/get_user_info/user_Info.dart';
+import 'package:halmoney/FirestoreData/user_Info.dart';
 import 'package:halmoney/screens/resume/user_prompt_factor.dart';
 import 'package:halmoney/resume2/resume_revision/first_revision.dart';
 import 'package:halmoney/screens/resume/resume_JobsList/recommendation_page.dart';
