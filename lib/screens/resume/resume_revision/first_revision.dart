@@ -1,47 +1,54 @@
 import 'package:flutter/material.dart';
-import '../introduction_service.dart';
-import 'final_revision.dart'; // 마무리 페이지로 이동
+import 'package:halmoney/FirestoreData/user_Info.dart';
+import 'package:halmoney/resume2/introduction_service.dart';
+import 'package:halmoney/screens/resume/resume_revision/second_revision.dart';
+import 'package:halmoney/screens/resume/user_prompt_factor.dart';
 
-class ThirdParagraphPage extends StatefulWidget {
+class FirstParagraphPage extends StatefulWidget {
   final String firstParagraph;
   final String secondParagraph;
   final String thirdParagraph;
+  final UserInfo userInfo;
+  final UserPromptFactor userPromptFactor;
 
-  const ThirdParagraphPage({
+  const FirstParagraphPage({
     Key? key,
     required this.firstParagraph,
     required this.secondParagraph,
     required this.thirdParagraph,
+    required this.userInfo,
+    required this.userPromptFactor,
   }) : super(key: key);
 
   @override
-  _ThirdParagraphPageState createState() => _ThirdParagraphPageState();
+  _FirstParagraphPageState createState() => _FirstParagraphPageState();
 }
 
-class _ThirdParagraphPageState extends State<ThirdParagraphPage> {
+class _FirstParagraphPageState extends State<FirstParagraphPage> {
   final TextEditingController _modificationController = TextEditingController();
-  String revisedThirdParagraph = '';
+  String revisedFirstParagraph = ''; // 수정된 문단 저장
   bool _isLoading = false;
   final IntroductionService _service = IntroductionService();
 
   @override
   void initState() {
     super.initState();
-    revisedThirdParagraph = widget.thirdParagraph;
+    revisedFirstParagraph = widget.firstParagraph;
   }
 
-  Future<void> _editThirdParagraph({String tag = ''}) async {
+  Future<void> _editFirstParagraph({String tag = ''}) async {
     setState(() {
       _isLoading = true;
     });
 
     try {
+      // 수정 내용에 태그를 추가
       final revisedText = await _service.generateRevisedIntroduction(
-        revisedThirdParagraph,
-        _modificationController.text+' $tag',
+        widget.firstParagraph, // 수정 이전 문단 전달
+        _modificationController.text + ' $tag', // 수정 내용 + 태그 전달
       );
       setState(() {
-        revisedThirdParagraph = revisedText;
+        revisedFirstParagraph = revisedText; // 수정된 문단 업데이트
       });
     } catch (e) {
       ScaffoldMessenger.of(context)
@@ -55,20 +62,23 @@ class _ThirdParagraphPageState extends State<ThirdParagraphPage> {
 
   void _resetToOriginal() {
     setState(() {
-      revisedThirdParagraph = widget.firstParagraph;
+      revisedFirstParagraph = widget.firstParagraph;
     });
   }
 
-  void _goToFinalPage() {
+
+  void _goToSecondPage() {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => FinalPage(
-          firstParagraph: widget.firstParagraph,
+        builder: (context) => SecondParagraphPage(
+          firstParagraph: revisedFirstParagraph.isNotEmpty
+              ? revisedFirstParagraph
+              : widget.firstParagraph,
           secondParagraph: widget.secondParagraph,
-          thirdParagraph: revisedThirdParagraph.isNotEmpty
-              ? revisedThirdParagraph
-              : widget.thirdParagraph,
+          thirdParagraph: widget.thirdParagraph,
+          userInfo: widget.userInfo,
+          userPromptFactor: widget.userPromptFactor,
         ),
       ),
     );
@@ -86,32 +96,38 @@ class _ThirdParagraphPageState extends State<ThirdParagraphPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('세 번째 문단을 수정하세요:', style: TextStyle(fontSize: 20)),
+            const Text('수정 이전 문단:',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             const SizedBox(height: 10),
-            const Text('수정 이전 문단:', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 5),
             Expanded(
               child: SingleChildScrollView(
                 child: Text(
-                  widget.thirdParagraph,
+                  widget.firstParagraph,
                   style: const TextStyle(fontSize: 16),
                 ),
               ),
             ),
+
             const SizedBox(height: 10),
-            const Text('수정 이후 문단:', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 5),
+
+            // 수정 이후 문단 표시
+            const Text('수정 이후 문단:',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 10),
             Expanded(
               child: SingleChildScrollView(
                 child: Text(
-                  revisedThirdParagraph != widget.thirdParagraph
-                      ? revisedThirdParagraph
+                  revisedFirstParagraph != widget.firstParagraph
+                      ? revisedFirstParagraph
                       : '아직 수정된 문단이 없습니다.',
-                  style: const TextStyle(fontSize: 16),
+                  style: const TextStyle(fontSize: 18),
                 ),
               ),
             ),
-            const SizedBox(height:10),
+
+            const SizedBox(height: 10),
+
+            // TextField 및 태그 버튼
             Container(
               height: 120,
               child: Column(
@@ -124,8 +140,8 @@ class _ThirdParagraphPageState extends State<ThirdParagraphPage> {
                   ),
                   const SizedBox(height: 10),
                   SingleChildScrollView(
-                      scrollDirection:Axis.horizontal,
-                      child:Row(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Container(
@@ -169,7 +185,7 @@ class _ThirdParagraphPageState extends State<ThirdParagraphPage> {
                                     ),
                                     onPressed: () {
                                       // 버튼을 클릭했을 때 동작
-                                      _editThirdParagraph(tag: '간략하게');
+                                      _editFirstParagraph(tag: '간략하게');
                                     },
                                     child: const Text('간략하게',
                                         style: TextStyle(color: Colors.black26,
@@ -220,7 +236,7 @@ class _ThirdParagraphPageState extends State<ThirdParagraphPage> {
                                     ),
                                     onPressed: () {
                                       // 버튼을 클릭했을 때 동작
-                                      _editThirdParagraph(tag: '구체적으로');
+                                      _editFirstParagraph(tag: '구체적으로');
                                     },
                                     child: const Text('구체적으로',
                                         style: TextStyle(color: Colors.black26,
@@ -271,7 +287,7 @@ class _ThirdParagraphPageState extends State<ThirdParagraphPage> {
                                     ),
                                     onPressed: () {
                                       // 버튼을 클릭했을 때 동작
-                                      _editThirdParagraph(tag: '정중하게');
+                                      _editFirstParagraph(tag: '정중하게');
                                     },
                                     child: const Text('정중하게',
                                         style: TextStyle(color: Colors.black26,
@@ -322,7 +338,7 @@ class _ThirdParagraphPageState extends State<ThirdParagraphPage> {
                                     ),
                                     onPressed: () {
                                       // 버튼을 클릭했을 때 동작
-                                      _editThirdParagraph(tag: '자연스럽게');
+                                      _editFirstParagraph(tag: '자연스럽게');
                                     },
                                     child: const Text('자연스럽게',
                                         style: TextStyle(color: Colors.black26,
@@ -373,7 +389,7 @@ class _ThirdParagraphPageState extends State<ThirdParagraphPage> {
                                     ),
                                     onPressed: () {
                                       // 버튼을 클릭했을 때 동작
-                                      _editThirdParagraph(tag: '더 길게');
+                                      _editFirstParagraph(tag: '더 길게');
                                     },
                                     child: const Text('더 길게',
                                         style: TextStyle(color: Colors.black26,
@@ -424,7 +440,7 @@ class _ThirdParagraphPageState extends State<ThirdParagraphPage> {
                                     ),
                                     onPressed: () {
                                       // 버튼을 클릭했을 때 동작
-                                      _editThirdParagraph(tag: '더 짧게');
+                                      _editFirstParagraph(tag: '더 짧게');
                                     },
                                     child: const Text('더 짧게',
                                         style: TextStyle(color: Colors.black26,
@@ -435,15 +451,14 @@ class _ThirdParagraphPageState extends State<ThirdParagraphPage> {
                                 ],
                               )),
                         ],
-                      )
-                  )
+                      ))
 
                   // 태그 버튼 추가
                 ],
               ),
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
 
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -482,9 +497,9 @@ class _ThirdParagraphPageState extends State<ThirdParagraphPage> {
                         ),
                       ),
                     ),
-                    onPressed: _editThirdParagraph,
+                    onPressed: _editFirstParagraph,
                     child: const Text('수정하기',
-                        style:TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+                      style:TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
                   ),
                 ),
                 const SizedBox(width: 20),
@@ -559,7 +574,7 @@ class _ThirdParagraphPageState extends State<ThirdParagraphPage> {
                         ),
                       ),
                     ),
-                    onPressed: _goToFinalPage,
+                    onPressed: _goToSecondPage,
                     child: const Text('다음 문단 수정',
                         style:TextStyle(fontSize: 15, fontWeight: FontWeight.bold)
                     ),
