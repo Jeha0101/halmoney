@@ -84,7 +84,10 @@ class FinalPage extends StatelessWidget {
                   onPressed: () {
                     String selfIntroduction = firstParagraph + '\n\n' + secondParagraph + '\n\n' + thirdParagraph;
                     Navigator.pop(context);
-                    Navigator.pop(context);// 이전 화면으로 돌아가기
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    // 이전 화면으로 돌아가기
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -94,7 +97,7 @@ class FinalPage extends StatelessWidget {
                               userSelfIntroduction: selfIntroduction,
                             )));
                   },
-                  child: const Text('자기소개서 저장',
+                  child: const Text('수정 완료',
                   style:TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
                 ),
               ),

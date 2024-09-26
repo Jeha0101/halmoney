@@ -92,8 +92,6 @@ class _SecondParagraphPageState extends State<SecondParagraphPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('두 번째 문단을 수정하세요:', style: TextStyle(fontSize: 20)),
-            const SizedBox(height: 10),
             // 수정 이전 문단 표시
             const Text('수정 이전 문단:', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             const SizedBox(height: 5),
@@ -112,7 +110,7 @@ class _SecondParagraphPageState extends State<SecondParagraphPage> {
             Expanded(
               child: SingleChildScrollView(
                 child: Text(
-                  revisedSecondParagraph.isNotEmpty
+                  revisedSecondParagraph!= widget.secondParagraph
                       ? revisedSecondParagraph
                       : '아직 수정된 문단이 없습니다.', // 수정된 문단이 없으면 기본 메시지 출력
                   style: const TextStyle(fontSize: 16),

@@ -87,15 +87,13 @@ class _ThirdParagraphPageState extends State<ThirdParagraphPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(250, 51, 51, 255),
-        title: const Text('첫 번째 문단 수정'),
+        title: const Text('세 번째 문단 수정'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('세 번째 문단을 수정하세요:', style: TextStyle(fontSize: 20)),
-            const SizedBox(height: 10),
             const Text('수정 이전 문단:', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             const SizedBox(height: 5),
             Expanded(
