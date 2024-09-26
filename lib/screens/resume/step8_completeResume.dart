@@ -5,7 +5,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:halmoney/get_user_info/user_Info.dart';
+import 'package:halmoney/FirestoreData/user_Info.dart';
 import 'package:halmoney/screens/resume/resumeEdit.dart';
 import 'package:halmoney/screens/resume/resumeManage.dart';
 import 'package:halmoney/screens/resume/resume_JobsList/fetchRecommendations.dart';
