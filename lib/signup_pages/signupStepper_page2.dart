@@ -185,7 +185,7 @@ class _SignupPgTwoStepperState extends State<SignupPgTwoStepper> {
   List<Step> _buildSteps() {
     return [
       Step(
-        title: const Text('성별'),
+        title: const Text('성별', style:TextStyle(fontSize:20,)),
         content: MyButtonList(
           buttons: [
             ButtonData(
@@ -205,7 +205,7 @@ class _SignupPgTwoStepperState extends State<SignupPgTwoStepper> {
         isActive: _currentStep == 0,
       ),
       Step(
-        title: const Text('연령대'),
+        title: const Text('연령대', style:TextStyle(fontSize:20,)),
         content: MyButtonList(
           buttons: [
             ButtonData(
@@ -237,7 +237,7 @@ class _SignupPgTwoStepperState extends State<SignupPgTwoStepper> {
         isActive: _currentStep == 1,
       ),
       Step(
-        title: const Text('주소'),
+        title: const Text('주소', style:TextStyle(fontSize:20,)),
         content: DropdownButtonExample(addressController: addressController),
         isActive: _currentStep == 2,
       ),

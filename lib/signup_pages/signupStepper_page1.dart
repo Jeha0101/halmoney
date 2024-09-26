@@ -204,7 +204,8 @@ class _SignupStepperOneState extends State<SignupStepperOne> {
                   },
                   steps: [
                     Step(
-                      title: Text("성명"),
+                      title: Text("성명",
+                      style:TextStyle(fontSize:20,)),
                       content: TextFormField(
                         decoration:
                         InputDecoration(labelText: '성명을 입력하세요'),
@@ -221,7 +222,8 @@ class _SignupStepperOneState extends State<SignupStepperOne> {
                       isActive: _currentStep == 0, // active 상태를 명확히 표시
                     ),
                     Step(
-                      title: Text("아이디"),
+                      title: Text("아이디",
+                          style:TextStyle(fontSize:20,)),
                       content: TextFormField(
                         decoration: InputDecoration(
                             labelText: '아이디를 이메일 형식으로 입력하세요'),
@@ -245,7 +247,8 @@ class _SignupStepperOneState extends State<SignupStepperOne> {
                       isActive: _currentStep == 1, // active 상태
                     ),
                     Step(
-                      title: Text("비밀번호"),
+                      title: Text("비밀번호",
+                          style:TextStyle(fontSize:20,)),
                       content: TextFormField(
                         decoration:
                         InputDecoration(labelText: '비밀번호를 입력하세요'),
@@ -266,7 +269,8 @@ class _SignupStepperOneState extends State<SignupStepperOne> {
                       isActive: _currentStep == 2, // active 상태
                     ),
                     Step(
-                      title: Text("비밀번호 확인"),
+                      title: Text("비밀번호 확인",
+                          style:TextStyle(fontSize:20,)),
                       content: TextFormField(
                         decoration: InputDecoration(
                             labelText: '비밀번호를 다시 입력하세요'),
@@ -287,7 +291,8 @@ class _SignupStepperOneState extends State<SignupStepperOne> {
                       isActive: _currentStep == 3, // active 상태
                     ),
                     Step(
-                      title: Text("전화번호"),
+                      title: Text("전화번호",
+                          style:TextStyle(fontSize:20,)),
                       content: TextFormField(
                         decoration: InputDecoration(labelText: '전화번호를 입력하세요'),
                         keyboardType: TextInputType.phone,
