@@ -3,7 +3,7 @@
 // 회원가입 절차 이후 사용자 정보를 받는 페이지
 
 import 'package:flutter/material.dart';
-import 'package:halmoney/get_user_info/user_Info.dart';
+import 'package:halmoney/FirestoreData/user_Info.dart';
 import 'package:halmoney/get_user_info/step2_user_career.dart';
 
 class StepWelcome extends StatefulWidget {

@@ -5,11 +5,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:halmoney/get_user_info/user_Info.dart';
+import 'package:halmoney/FirestoreData/user_Info.dart';
 import 'package:halmoney/screens/resume/resumeEdit.dart';
-import 'package:halmoney/screens/resume/resumeManage.dart';
 import 'package:halmoney/screens/resume/resume_JobsList/fetchRecommendations.dart';
 import 'package:halmoney/screens/resume/user_prompt_factor.dart';
+import 'package:halmoney/JobSearch_pages/Recruit_main_page.dart';
+import 'package:halmoney/JobSearch_pages/JobList_widget.dart';
+import 'package:halmoney/FirestoreData/user_Info.dart';
+import 'package:intl/intl.dart';
+
 
 class StepCompleteResume extends StatefulWidget {
   final UserInfo userInfo;
@@ -113,7 +117,7 @@ class _StepCompleteResumeState extends State<StepCompleteResume> {
                     height: 30,
                   ),
                   const Text(
-                    '자기소개서 저장 완료',
+                    '자기소개서 생성 완료',
                     style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(
@@ -122,7 +126,7 @@ class _StepCompleteResumeState extends State<StepCompleteResume> {
                   Container(
                     width: 300,
                     child: const Text(
-                      '아래 버튼을 눌러서 자기소개서를 복사하거나 이력서를 만들어보세요.',
+                      '아래 버튼을 눌러서 자기소개서를 복사하거나 이력서로 저장해보세요.',
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 18),
                     ),
@@ -134,30 +138,10 @@ class _StepCompleteResumeState extends State<StepCompleteResume> {
                     onPressed: () {
                       Clipboard.setData(
                           ClipboardData(text: widget.userSelfIntroduction));
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: const Text('복사 완료'),
-                            content: const Text(
-                                '자기소개서가 클립보드에 복사되었습니다. 원하는 곳에 붙여넣으세요.',
-                                style: TextStyle(fontSize: 20)
-                            ),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context)
-                                      .pop(); // 확인 버튼을 누르면 창이 닫힘
-                                },
-                                child: const Text('확인', style: TextStyle(fontSize: 25)),
-                              ),
-                            ],
-                          );
-                        },
-                      );
                     },
                     child: const Text("자기소개서 복사",
-                        style: TextStyle(color: Colors.white, fontSize: 20)),
+                        style: TextStyle(color: Colors.white, fontSize: 20)
+                    ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color.fromARGB(250, 51, 51, 255),
                       minimumSize: const Size(250, 50),
@@ -175,41 +159,19 @@ class _StepCompleteResumeState extends State<StepCompleteResume> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => ResumeEdit(
-                                userInfo: widget.userInfo,
-                                userPromptFactor: widget.userPromptFactor,
-                                userSelfIntroduction: widget.userSelfIntroduction,))
-                        // builder: (context) => RecommendationPage(
-                        //       userInfo: widget.userInfo,
-                        //       userPromptFactor:
-                        //           widget.userPromptFactor,
-                        //     )),
-                      );
+                                    userInfo: widget.userInfo,
+                                    userPromptFactor: widget.userPromptFactor,
+                                    userSelfIntroduction:
+                                        widget.userSelfIntroduction,
+                                  ))
+                          // builder: (context) => RecommendationPage(
+                          //       userInfo: widget.userInfo,
+                          //       userPromptFactor:
+                          //           widget.userPromptFactor,
+                          //     )),
+                          );
                     },
-                    child: const Text("이력서 만들기",
-                        style: TextStyle(color: Colors.white, fontSize: 20)),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(250, 51, 51, 255),
-                      minimumSize: const Size(250, 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      for (int i = 0; i < 7; i++) {
-                        Navigator.of(context).pop();
-                      }
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ResumeManage(id: widget.userInfo.userId))
-                      );
-                    },
-                    child: const Text("자기소개서 보러가기",
+                    child: const Text("이력서로 저장",
                         style: TextStyle(color: Colors.white, fontSize: 20)),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color.fromARGB(250, 51, 51, 255),
@@ -221,9 +183,13 @@ class _StepCompleteResumeState extends State<StepCompleteResume> {
                   ),
                 ],
               ),
-              SizedBox(height: 40,),
+              SizedBox(
+                height: 40,
+              ),
               Divider(),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               Text(widget.userInfo.userName + '님을 위한 추천 공고',
                   style: TextStyle(
                     fontFamily: 'NanumGothicFamily',
@@ -241,7 +207,7 @@ class _StepCompleteResumeState extends State<StepCompleteResume> {
                     children: recommendedJobs.map((job) {
                       return Column(
                         children: [
-                          CondSearch(job: job),
+                          CondSearch(userInfo:widget.userInfo, job: job),
                           const SizedBox(height: 10),
                         ],
                       );
@@ -257,8 +223,14 @@ class _StepCompleteResumeState extends State<StepCompleteResume> {
 
 class CondSearch extends StatelessWidget {
   final DocumentSnapshot job;
+  final UserInfo userInfo;
 
-  const CondSearch({super.key, required this.job});
+  const CondSearch({
+
+    required this.job,
+    required this.userInfo,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -273,27 +245,32 @@ class CondSearch extends StatelessWidget {
     String jobName = jobData['job_name'] ?? '직종 정보 없음';
     String address = jobData['address'] ?? '주소 정보 없음';
     String wage = jobData['wage'] ?? '급여 정보 없음';
+    String workweek = jobData.containsKey('workweek') ? jobData['workweek'] : '근무 요일 정보 없음';
+
+    Timestamp endDayTimestamp = jobData['end_day'] ?? Timestamp.now(); // 기본값을 현재 날짜로 설정
+    DateTime endDay = endDayTimestamp.toDate(); // Timestamp를 DateTime으로 변환
+    String formattedEndDay = DateFormat('yyyy-MM-dd').format(endDay); // 원하는 날짜 형식으로 변환
 
     return ElevatedButton(
       onPressed: () {
-        /*Navigator.push(
+        Navigator.push(
           context, // 콤마 추가
           MaterialPageRoute(
-            builder: (context) => RecruitMain(
-              id: jobData['id'] ?? 'No',
-              num: jobData['num'] ?? 'No',
-              title: jobData['title'] ?? 'NO',
-              address: address,
-              wage: wage,
-              career: jobData['job_name'] ?? '',
-              detail: jobData['detail'] ?? '',
-              workweek: jobData['work_week'] ?? '',
-              image_path: jobData['image_path'] ?? '',
-              endday: jobData['endday'] ?? '',
-              manager_call: jobData['manager_call'] ?? '',
+            builder: (context) => Recruit_main(
+              userInfo: userInfo,
+              num: job['num'],
+              title: job['title'],
+              address: job['address'],
+              wage: job['wage'],
+              career: job['career'],
+              detail: job['detail'],
+              workweek: workweek,
+              image_path: job['image_path'],
+              endday: formattedEndDay,
+              manager_call: job['manager_call'] ?? 'No Call Number',
             ),
           ),
-        ); */
+        );
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.white,
@@ -302,7 +279,8 @@ class CondSearch extends StatelessWidget {
           borderRadius: BorderRadius.circular(8.0),
         ),
       ),
-      child: SizedBox( // SizedBox로 수정
+      child: SizedBox(
+        // SizedBox로 수정
         height: 80,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

@@ -7,10 +7,9 @@ import 'package:halmoney/screens/resume/step8_completeResume.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:convert';
-import 'package:halmoney/get_user_info/user_Info.dart';
+import 'package:halmoney/FirestoreData/user_Info.dart';
 import 'package:halmoney/screens/resume/user_prompt_factor.dart';
-import 'package:halmoney/resume2/resume_revision/first_revision.dart';
-import 'package:halmoney/screens/resume/resume_JobsList/recommendation_page.dart';
+import 'package:halmoney/screens/resume/resume_revision/first_revision.dart';
 
 class StepResumeCreate extends StatefulWidget {
   final UserInfo userInfo;
@@ -123,9 +122,9 @@ class _StepResumeCreateState extends State<StepResumeCreate> {
     세번째 문단에 포함할 내용 : {
     ($thirdParagraphTokens) tokens 내외.
     지원하는 ($selectedFields) 분야에서 사용자가 이루고자 하는 구체적인 목표와 다짐을 포함하여 작성하세요.
-    이 목표가 어떻게 조직에 기여할 수 있을지 설명하세요.
-    마지막으로 "감사합니다"로 마무리 인사를 추가하세요.}
+    이 목표가 어떻게 조직에 기여할 수 있을지 설명하세요.}
     ''';
+    print(prompt);
 
     try {
       final firstResponse = await http.post(
@@ -269,29 +268,28 @@ class _StepResumeCreateState extends State<StepResumeCreate> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => StepCompleteResume(
-                              userInfo: widget.userInfo,
-                              userPromptFactor: widget.userPromptFactor,
-                              userSelfIntroduction: selfIntroduction,))
-                      // builder: (context) => RecommendationPage(
-                      //       userInfo: widget.userInfo,
-                      //       userPromptFactor:
-                      //           widget.userPromptFactor,
-                      //     )),
-                    );
+                                  userInfo: widget.userInfo,
+                                  userPromptFactor: widget.userPromptFactor,
+                                  userSelfIntroduction: selfIntroduction,
+                                )));
                   }
                 },
-                child: const Row(
+                child: Row(
                   children: [
                     Text('완료',
                         style: TextStyle(
                           fontFamily: 'NanumGothicFamily',
                           fontSize: 20.0,
-                          color: Colors.white,
+                          color: _isLoading
+                              ? Color.fromARGB(250, 51, 51, 255)
+                              : Colors.white,
                         )),
                     Icon(
                       Icons.chevron_right,
                       size: 30,
-                      color: Colors.white,
+                      color: _isLoading
+                          ? Color.fromARGB(250, 51, 51, 255)
+                          : Colors.white,
                     ),
                   ],
                 ),
@@ -322,10 +320,8 @@ class _StepResumeCreateState extends State<StepResumeCreate> {
                     const SizedBox(
                       height: 10,
                     ),
-                    const Text(
-                        'AI가 작성한 자기소개서입니다.',
-                        style: TextStyle(fontSize: 20)
-                    ),
+                    const Text('AI가 작성한 자기소개서입니다.',
+                        style: TextStyle(fontSize: 20)),
                     const SizedBox(
                       height: 5,
                     ),
@@ -376,6 +372,8 @@ class _StepResumeCreateState extends State<StepResumeCreate> {
                                   firstParagraph: firstParagraph,
                                   secondParagraph: secondParagraph,
                                   thirdParagraph: thirdParagraph,
+                                  userInfo: widget.userInfo,
+                                  userPromptFactor: widget.userPromptFactor,
                                 ),
                               ),
                             );
@@ -418,6 +416,7 @@ class _StepResumeCreateState extends State<StepResumeCreate> {
                   ],
                 ),
               ),
+
       ),
     );
   }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'PublicJobsCheckQuestion.dart';
 import 'PublicJobsDescribe.main.dart';
 import 'PublicJobsApplyStep_page.dart';
-import 'package:halmoney/get_user_info/user_Info.dart';
+import 'package:halmoney/FirestoreData/user_Info.dart';
 
 class PublicJobsCheckPage extends StatefulWidget {
   final String id;
@@ -78,8 +78,8 @@ class _PublicJobsCheckPageState extends State<PublicJobsCheckPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: const Color.fromARGB(250, 51, 51, 255),
         title: const Text('자격요건 확인하기'),
-        backgroundColor: Colors.blue,
       ),
       body: FutureBuilder<List<String>>(
         future: _questionsFuture,

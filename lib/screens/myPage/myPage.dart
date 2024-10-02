@@ -1,14 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:halmoney/get_user_info/user_Info.dart';
 import 'package:halmoney/screens/resume/resumeManage.dart';
-import 'package:halmoney/screens/resume/select_skill_page.dart';
-//import 'package:halmoney/screens/resume/resumeCreate.dart';
 import 'package:halmoney/screens/scrap/UserLikes.dart';
-import 'package:halmoney/pages/extra_resume_page.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:halmoney/screens/scrap/UserViewedJobs.dart';
+import '../../FirestoreData/user_Info.dart';
 
 class MyPageScreen extends StatefulWidget {
   final UserInfo userInfo;
@@ -38,6 +32,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
         bottom: true,
         right: false,
         child: Scaffold(
+          backgroundColor: Colors.white,
           appBar: AppBar(
             backgroundColor: Colors.white,
             elevation: 1.0,
@@ -92,7 +87,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ResumeManage(id: widget.userInfo.userId)),
+                        MaterialPageRoute(builder: (context) => ResumeManage(userInfo: widget.userInfo)),
                       );
                     },
                     child: Container(

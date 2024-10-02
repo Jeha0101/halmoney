@@ -1,26 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:halmoney/AI_pages/cond_search_result_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:halmoney/get_user_info/user_Info.dart';
+import 'package:halmoney/FirestoreData/user_Info.dart';
+import 'package:halmoney/FirestoreData/JobProvider.dart';
+import 'package:provider/provider.dart';
 
-class AISelectCondPage extends StatefulWidget {
+class SelectConditionsPage extends StatefulWidget {
   final UserInfo userInfo;
-  const AISelectCondPage({super.key, required this.userInfo});
+  const SelectConditionsPage({super.key, required this.userInfo});
 
   @override
-  _AISelectCondPageState createState() => _AISelectCondPageState();
+  _SelectConditionsPageState createState() => _SelectConditionsPageState();
 }
 
-class _AISelectCondPageState extends State<AISelectCondPage> {
+class _SelectConditionsPageState extends State<SelectConditionsPage> {
   int _currentStep = 0;
   final TextEditingController addressController = TextEditingController();
   List<String> selectedJobs = [];
   List<String> selectedPay = [];
   List<String> selectedTime = [];
   List<String> selectedLocations = [];
-  List<DocumentSnapshot> jobDocuments = [];
 
-  Future<void> _AIrecommCondition(BuildContext context, String seladdress, List<String> selectedJobs, List<String> selectedPay, List<String> selectedTime) async {
+  Future<void> _preferredCondition(BuildContext context, String seladdress, List<String> selectedJobs, List<String> selectedPay, List<String> selectedTime) async {
     final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
     try {
@@ -34,14 +35,11 @@ class _AISelectCondPageState extends State<AISelectCondPage> {
       if (documents.isNotEmpty) {
         final String docId = documents.first.id;
 
-        //var addressParts = seladdress.split(',');
-        //var selectedGugun = addressParts.length > 1 ? addressParts[1].trim() : '';
-
         await firestore
             .collection('user')
             .doc(docId)
-            .collection('AIRecommendation')
-            .doc('recomCondition')
+            .collection('preferredConditions')
+            .doc('conditions')
             .set({
           'location': selectedLocations,
           'job_type': selectedJobs,
@@ -49,12 +47,7 @@ class _AISelectCondPageState extends State<AISelectCondPage> {
           'working_days': selectedTime,
         });
 
-        Query jobQuery = firestore.collection('jobs');
-        final QuerySnapshot jobResult = await jobQuery.get();
-        final List<DocumentSnapshot> jobDocuments = jobResult.docs;
-
         _filterJobs(context);
-
 
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -68,13 +61,18 @@ class _AISelectCondPageState extends State<AISelectCondPage> {
     }
   }
 
-  void _filterJobs(BuildContext context){
+  void _filterJobs(BuildContext context) {
+    // JobsProvider에서 jobs 데이터를 가져옴
+    final jobsProvider = Provider.of<JobsProvider>(context, listen: false);
+    final jobDocuments = jobsProvider.jobs;
+
     final filteredJobs = jobDocuments.where((job) {
-      final jobData = job.data() as Map<String, dynamic>;
-      final address = jobData['address'] as String;
-      final jobName = jobData['job_name'] as String;
-      final wage = jobData['wage'] as String;
-      final workTimeWeek = jobData['work_time_week'] as String;
+      // Use null-safety and ensure jobData is not null before processing
+      final jobData = job;
+      final address = jobData['address'] ?? '';
+      final jobName = jobData['title'] ?? '';
+      final wage = jobData['wage'] ?? '';
+      final workTimeWeek = jobData['workweek'] ?? '';
 
       final addMatch = selectedLocations.any((selectedGugun) => address.contains(selectedGugun));
       final jobMatch = selectedJobs.isEmpty || selectedJobs.any((job) => jobName.contains(job));
@@ -86,25 +84,36 @@ class _AISelectCondPageState extends State<AISelectCondPage> {
 
     if (filteredJobs.isNotEmpty) {
       Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => CondSearchResultPage(userInfo: widget.userInfo, jobs: filteredJobs)));
+        context,
+        MaterialPageRoute(
+          builder: (context) => CondSearchResultPage(
+            userInfo: widget.userInfo,
+            jobs: filteredJobs.map((job) => job).toList(),
+          ),
+        ),
+      );
     } else {
       _showAlternativeJobs();
     }
   }
 
-  void _showAlternativeJobs(){
-    final alternativeJobs = jobDocuments.map((job){
-      final jobData = job.data() as Map<String, dynamic>;
-      final address = jobData['adddress'] as String;
-      final jobName = jobData['job_name'] as String;
-      final wage = jobData['wage'] as String;
-      final workTimeWeek = jobData['work_time_week'] as String;
+  void _showAlternativeJobs() {
+    // JobsProvider에서 jobs 데이터를 가져옴
+    final jobsProvider = Provider.of<JobsProvider>(context, listen: false);
+    final jobDocuments = jobsProvider.jobs;
+
+    final alternativeJobs = jobDocuments.map((job) {
+      // Safely handle null values
+      final jobData = job;
+      final address = jobData['address'] ?? '';
+      final jobName = jobData['title'] ?? '';
+      final wage = jobData['wage'] ?? '';
+      final workTimeWeek = jobData['workweek'] ?? '';
 
       int matchScore = 0;
 
-      if(selectedJobs.isEmpty || selectedJobs.any((job) => jobName.contains(job))){
-        matchScore += 4; //Job 조건 우선순위 1
+      if (selectedJobs.isEmpty || selectedJobs.any((job) => jobName.contains(job))) {
+        matchScore += 5; // Job 조건 우선순위 1
       }
       if (selectedLocations.any((selectedGugun) => address.contains(selectedGugun))) {
         matchScore += 3; // Location 조건이 우선순위 1
@@ -115,6 +124,8 @@ class _AISelectCondPageState extends State<AISelectCondPage> {
       if (selectedPay.isEmpty || selectedPay.any((pay) => wage.contains(pay))) {
         matchScore += 1; // Pay 조건이 우선순위 4
       }
+
+      //print("Job: $jobName, Score: $matchScore");
 
       return {
         'jobData': job,
@@ -127,26 +138,23 @@ class _AISelectCondPageState extends State<AISelectCondPage> {
       final scoreA = a['matchScore'] as int;
       final scoreB = b['matchScore'] as int;
 
-      // scoreB가 scoreA보다 크면 1을 반환하여 scoreB가 앞으로 가도록
-      if (scoreB > scoreA) {
-        return 1;
-      } else if (scoreB < scoreA) {
-        return -1;
-      } else {
-        return 0;
-      }
+      return scoreB.compareTo(scoreA);
     });
 
     // 점수가 0 이상인 공고만 필터링
     final sortedJobs = alternativeJobs
-        .where((job) => (job['matchScore'] as int? ?? 0) > 0)
-        .map((job) => job['jobData'] as DocumentSnapshot)
+        .where((job) => (job['matchScore'] as int? ?? 0) > 3)
+        .map((job) => job['jobData'] as Map<String, dynamic>)
+        .take(10)
         .toList();
+
 
     if (sortedJobs.isNotEmpty) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => CondSearchResultPage(userInfo: widget.userInfo, jobs: sortedJobs)),
+        MaterialPageRoute(
+          builder: (context) => CondSearchResultPage(userInfo: widget.userInfo, jobs: sortedJobs),
+        ),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -154,25 +162,6 @@ class _AISelectCondPageState extends State<AISelectCondPage> {
       );
     }
   }
-
-  /*void _showNoJobsDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('조건에 맞는 공고가 없습니다!'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('확인'),
-            ),
-          ],
-        );
-      },
-    );
-  }*/
 
   void removeLocation(String location) {
     setState(() {
@@ -279,7 +268,7 @@ class _AISelectCondPageState extends State<AISelectCondPage> {
             ),
             onPressed: () {
               final seladdress = addressController.text;
-              _AIrecommCondition(context, seladdress, selectedJobs, selectedPay, selectedTime);
+              _preferredCondition(context, seladdress, selectedJobs, selectedPay, selectedTime);
             },
             child: const Text(
               '결과보기',
@@ -292,6 +281,7 @@ class _AISelectCondPageState extends State<AISelectCondPage> {
     );
   }
 }
+
 
 class DropdownButtonExample extends StatefulWidget {
   final Function(String) onLocationAdded;  // 지역 추가를 위한 콜백
@@ -392,7 +382,7 @@ class _DropdownButtonExampleState extends State<DropdownButtonExample> {
             items: cities.map((String value) {
               return DropdownMenuItem<String>(
                 value: value,
-                child: Text(value),
+                child: Text(value, style: TextStyle(fontSize : 18)),
               );
             }).toList(),
           ),
@@ -409,7 +399,7 @@ class _DropdownButtonExampleState extends State<DropdownButtonExample> {
             items: gugun[cities.indexOf(selectedSido)].map((String value) {
               return DropdownMenuItem<String>(
                 value: value,
-                child: Text(value),
+                child: Text(value, style: TextStyle(fontSize : 18)),
               );
             }).toList(),
           ),
@@ -461,6 +451,12 @@ class _ChooseJobButtonState extends State<ChooseJobButton> {
           label: Text(job),
           selected: isSelected,
           onSelected: (selected) => toggleJob(job),
+          selectedColor: Color.fromARGB(250, 51, 51, 255),
+          backgroundColor : Color.fromARGB(250, 211, 211, 211),
+          labelStyle: TextStyle(
+            color: isSelected ? Colors.white : Colors.black,
+            fontSize : 18,
+          ),
         );
       }).toList(),
     );
@@ -499,6 +495,12 @@ class _ChoosePayButtonState extends State<ChoosePayButton> {
           label: Text(pay),
           selected: isSelected,
           onSelected: (selected) => togglePay(pay),
+          selectedColor: Color.fromARGB(250, 51, 51, 255),
+          backgroundColor : Color.fromARGB(250, 211, 211, 211),
+          labelStyle: TextStyle(
+              color: isSelected ? Colors.white : Colors.black,
+              fontSize : 18,
+          ),
         );
       }).toList(),
     );
@@ -538,6 +540,12 @@ class _ChooseTimeButtonState extends State<ChooseTimeButton> {
           label: Text(time),
           selected: isSelected,
           onSelected: (selected) => toggleTime(time),
+          selectedColor: Color.fromARGB(250, 51, 51, 255),
+          backgroundColor : Color.fromARGB(250, 211, 211, 211),
+          labelStyle: TextStyle(
+            color: isSelected ? Colors.white : Colors.black,
+            fontSize : 18,
+          ),
         );
       }).toList(),
     );

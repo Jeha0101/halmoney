@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'PublicJobsDescribe.main.dart';
 import 'package:halmoney/screens/resume/step1_hello.dart';
-import 'package:halmoney/get_user_info/user_Info.dart';
+import 'package:halmoney/FirestoreData/user_Info.dart';
 
 class PublicJobsApplyPage extends StatefulWidget {
   final String id;
@@ -89,8 +89,9 @@ class _PublicJobsApplyPageState extends State<PublicJobsApplyPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('지원 절차 확인하기'),
-        backgroundColor: Colors.blue,
+        backgroundColor: const Color.fromARGB(250, 51, 51, 255),
+        title: const Text('자격요견 확인하기',
+        ),
       ),
       body: Stepper(
         currentStep: _currentStep,

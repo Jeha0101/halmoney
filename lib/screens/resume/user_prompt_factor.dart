@@ -2,7 +2,7 @@
 
 import 'dart:async';
 import 'package:halmoney/get_user_info/career.dart';
-import 'package:halmoney/get_user_info/user_Info.dart';
+import 'package:halmoney/FirestoreData/user_Info.dart';
 
 class UserPromptFactor {
   late UserInfo userInfo;

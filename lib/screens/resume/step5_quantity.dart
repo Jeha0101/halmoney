@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:halmoney/get_user_info/user_Info.dart';
+import 'package:halmoney/FirestoreData/user_Info.dart';
 import 'package:halmoney/screens/resume/step7_resumeCreate.dart';
 import 'package:halmoney/screens/resume/user_prompt_factor.dart';
 
@@ -126,29 +126,6 @@ class _StepQuantityPageState extends State<StepQuantityPage> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)),
                           minimumSize: const Size(200, 80),
-                          backgroundColor: quantity == 150 ? Color.fromARGB(250, 51, 51, 255) : Colors.grey,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            quantity = 150;
-                          });
-                        },
-                        child: const Text(
-                          '150자',
-                          style: TextStyle(
-                            fontFamily: 'NanumGothicFamily',
-                            //fontWeight: FontWeight.w500,
-                            fontSize: 30.0,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 30,),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          minimumSize: const Size(200, 80),
                           backgroundColor: quantity == 300 ? Color.fromARGB(250, 51, 51, 255) : Colors.grey,
                         ),
                         onPressed: () {
@@ -160,7 +137,7 @@ class _StepQuantityPageState extends State<StepQuantityPage> {
                           '300자',
                           style: TextStyle(
                             fontFamily: 'NanumGothicFamily',
-                            fontWeight: FontWeight.w500,
+                            //fontWeight: FontWeight.w500,
                             fontSize: 30.0,
                             color: Colors.white,
                           ),
@@ -181,6 +158,29 @@ class _StepQuantityPageState extends State<StepQuantityPage> {
                         },
                         child: const Text(
                           '500자',
+                          style: TextStyle(
+                            fontFamily: 'NanumGothicFamily',
+                            fontWeight: FontWeight.w500,
+                            fontSize: 30.0,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 30,),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          minimumSize: const Size(200, 80),
+                          backgroundColor: quantity == 750 ? Color.fromARGB(250, 51, 51, 255) : Colors.grey,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            quantity = 750;
+                          });
+                        },
+                        child: const Text(
+                          '750자',
                           style: TextStyle(
                             fontFamily: 'NanumGothicFamily',
                             fontWeight: FontWeight.w500,
