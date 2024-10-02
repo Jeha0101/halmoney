@@ -92,6 +92,7 @@ flutter:
     - assets/images/mainImages/
     - assets/images/homeimages/
     - assets/images/publicwork/
+    - assets/images/
     - assets/font/
     - .env
 
