@@ -26,3 +26,7 @@
 - flask Server
 - OpenAI
 - Firebase
+
+## PPT
+[일자리 추천시스템.pdf](https://github.com/user-attachments/files/17867218/default.pdf)
+
