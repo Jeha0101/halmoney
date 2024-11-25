@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:halmoney/chatbots/chatbots_list.dart';
 import 'package:halmoney/screens/home/home.dart';
 import 'package:halmoney/screens/myPage/myPage.dart';
 import 'package:halmoney/Community_pages/Community_main_page.dart';
@@ -26,15 +27,10 @@ class MyAppState extends State<MyAppPage>{
       MyHomePage(userInfo: widget.userInfo),
       JobSearch(userInfo: widget.userInfo),
       Communitypage(id: widget.userInfo.userId),
+      ChatbotsList(userInfo:widget.userInfo),
       MyPageScreen(userInfo: widget.userInfo),
     ];
   }
-  /*final List<Widget> _navIndex = [
-    const MyHomePage(),
-    const JobSearch(),
-    const Communitypage(),
-    const MyPageScreen(),
-  ];*/
 
   void _onNavTapped(int index) {
     setState(() {
@@ -57,6 +53,7 @@ class MyAppState extends State<MyAppPage>{
           BottomNavigationBarItem(icon: Icon(Icons.home), label : '홈',),
           BottomNavigationBarItem(icon: Icon(Icons.person_search_outlined), label: '채용공고',),
           BottomNavigationBarItem(icon: Icon(Icons.chat_outlined), label: '커뮤니티',),
+          BottomNavigationBarItem(icon: Icon(Icons.chat_bubble_outline), label: '챗봇',),
           BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: '마이페이지',),
         ],
         onTap: _onNavTapped,
