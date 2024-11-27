@@ -24,7 +24,7 @@ class ChatBubble extends StatelessWidget {
 
   void setBotMessage(){
     messageLocation = Alignment.centerLeft;
-    messageBoxColor = Colors.grey;
+    messageBoxColor = Color.fromARGB(225, 225, 225, 225);
     messageTextColor = Colors.black;
   }
 
@@ -33,8 +33,11 @@ class ChatBubble extends StatelessWidget {
     return Align(
         alignment: messageLocation,
         child: Container(
-            margin: const EdgeInsets.all(5.0),
-            padding: const EdgeInsets.all(5.0),
+            margin: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(13.0),
+            constraints: BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.width * 0.8, // 최대 가로 길이 제한
+            ),
             decoration: BoxDecoration(
               color: messageBoxColor,
               borderRadius: BorderRadius.circular(10.0),
@@ -43,7 +46,7 @@ class ChatBubble extends StatelessWidget {
               messageContent,
               style: TextStyle(
                 color: messageTextColor,
-                fontSize: 16.0,
+                fontSize: 18.0,
               ),
             )));
   }
