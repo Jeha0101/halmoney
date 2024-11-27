@@ -9,10 +9,23 @@ class ChatBubble extends StatelessWidget {
 
   ChatBubble({super.key, required this.messageContent, required this.isUserMessage}){
     if (isUserMessage) {
-      messageLocation = Alignment.centerRight;
-      messageBoxColor = Color.fromARGB(250, 51, 51, 255);
-      messageTextColor = Colors.white;
+      setUserMessage();
     }
+    else {
+      setBotMessage();
+    }
+  }
+
+  void setUserMessage(){
+    messageLocation = Alignment.centerRight;
+    messageBoxColor = Color.fromARGB(250, 51, 51, 255);
+    messageTextColor = Colors.white;
+  }
+
+  void setBotMessage(){
+    messageLocation = Alignment.centerLeft;
+    messageBoxColor = Colors.grey;
+    messageTextColor = Colors.black;
   }
 
   @override
