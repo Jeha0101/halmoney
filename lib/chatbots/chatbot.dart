@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:halmoney/chatbots/chat_bubble.dart';
 import 'package:halmoney/chatbots/chat_message.dart';
+import 'package:halmoney/standard_app_bar.dart';
 
 class ChatBot extends StatefulWidget {
   ChatBot({super.key});
@@ -10,6 +11,7 @@ class ChatBot extends StatefulWidget {
 }
 
 class _ChatBotState extends State<ChatBot> {
+  String title = 'ChatBot';
   List<ChatMessage> messages = [];
   final ScrollController _messagesViewScroll = ScrollController();
   final ScrollController _messageEditorScroll = ScrollController();
@@ -35,6 +37,15 @@ class _ChatBotState extends State<ChatBot> {
     setState(() {
       messages.add(chatMessage);
     });
+
+    Future.delayed(Duration(milliseconds: 100), () {
+      _messagesViewScroll.animateTo(
+        _messagesViewScroll.position.maxScrollExtent,
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    });
+
     print("messages 개수 : "+messages.length.toString());
     print("마지막 메시지 : "+messages[messages.length-1].messageContent);
     return chatMessage;
@@ -43,8 +54,11 @@ class _ChatBotState extends State<ChatBot> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('ChatBot'),
+      appBar: StandardAppBar(
+        title: title,
+        onBackPressed: () {
+          Navigator.pop(context);
+        },
       ),
       body: Column(
         children: <Widget>[
@@ -72,9 +86,11 @@ class _ChatBotState extends State<ChatBot> {
                     minLines: 1,
                     decoration: InputDecoration(
                       hintText: '메시지를 입력하세요',
+                      filled: true,
+                      fillColor: Color.fromARGB(225, 225, 225, 225),
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(25),
+                        borderSide: BorderSide(color: Colors.white),
                       ),
                     ),
                   ),
