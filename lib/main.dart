@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:halmoney/FirestoreData/JobProvider.dart';
+import 'package:halmoney/chatbots/chatbot.dart';
+import 'package:halmoney/chatbots/chatbot_test.dart';
 import 'package:halmoney/pages/login_page.dart';
 import 'package:halmoney/theme.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -45,7 +47,9 @@ class MyApp extends StatelessWidget {
       ],
       debugShowCheckedModeBanner:  false,
 
-      home: LoginPage(),
+      home: ChatBotTest()
+      //home: ChatBot(),
+      //home: LoginPage(),
     );
   }
 }
