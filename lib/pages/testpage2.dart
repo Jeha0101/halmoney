@@ -95,7 +95,7 @@ class _AudioRecorderPageState extends State<AudioRecorderPage> {
       };
 
       // 언어 파라미터 추가
-      Uri uri = Uri.parse('$url?lang=Kor'); // 언어 파라미터를 추가합니다.
+      Uri uri = Uri.parse('$url?lang=ko'); // 언어 파라미터를 추가합니다.
 
       final response = await http.post(uri, headers: headers, body: fileBytes);
 
