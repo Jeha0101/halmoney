@@ -287,9 +287,9 @@ class DropdownButtonExample extends StatefulWidget {
   final Function(String) onLocationAdded;  // 지역 추가를 위한 콜백
 
   const DropdownButtonExample({
-    Key? key,
+    super.key,
     required this.onLocationAdded,  // 콜백 추가
-  }) : super(key: key);
+  });
 
   @override
   State<DropdownButtonExample> createState() => _DropdownButtonExampleState();
@@ -419,7 +419,7 @@ class _DropdownButtonExampleState extends State<DropdownButtonExample> {
 
 class ChooseJobButton extends StatefulWidget {
   final Function(List<String>) onSelectionChanged;
-  const ChooseJobButton({Key? key, required this.onSelectionChanged}) : super(key: key);
+  const ChooseJobButton({super.key, required this.onSelectionChanged});
 
   @override
   State<ChooseJobButton> createState() => _ChooseJobButtonState();
@@ -465,7 +465,7 @@ class _ChooseJobButtonState extends State<ChooseJobButton> {
 
 class ChoosePayButton extends StatefulWidget {
   final Function(List<String>) onSelectionChanged;
-  const ChoosePayButton({Key? key, required this.onSelectionChanged}) : super(key: key);
+  const ChoosePayButton({super.key, required this.onSelectionChanged});
 
   @override
   State<ChoosePayButton> createState() => _ChoosePayButtonState();
@@ -509,7 +509,7 @@ class _ChoosePayButtonState extends State<ChoosePayButton> {
 
 class ChooseTimeButton extends StatefulWidget {
   final Function(List<String>) onSelectionChanged;
-  const ChooseTimeButton({Key? key, required this.onSelectionChanged}) : super(key: key);
+  const ChooseTimeButton({super.key, required this.onSelectionChanged});
 
   @override
   State<ChooseTimeButton> createState() => _ChooseTimeButtonState();

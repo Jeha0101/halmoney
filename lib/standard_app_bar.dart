@@ -8,13 +8,13 @@ class StandardAppBar extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback? onNextPressed;
 
   const StandardAppBar({
-    Key? key,
+    super.key,
     this.title,
     this.leftText = "이전",
     this.rightText = "다음",
     this.onBackPressed,
     this.onNextPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -4,7 +4,7 @@ class Career {
   String workPlace = '';
   String workDescription = '';
 
-  Career(){  }
+  Career();
 
   Map<String, dynamic> toMap() {
     return {

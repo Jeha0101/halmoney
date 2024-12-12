@@ -1,8 +1,5 @@
-import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:crypto/crypto.dart';
-import 'signupStepper_page2.dart';
 import 'package:halmoney/get_user_info/step1_welcome.dart';
 
 class SignupPgTwoStepper extends StatefulWidget {
@@ -146,22 +143,22 @@ class _SignupPgTwoStepperState extends State<SignupPgTwoStepper> {
                   children: [
                     ElevatedButton(
                       onPressed: details.onStepContinue,
-                      child: Text('다음'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.grey, // 버튼 색상
                         foregroundColor: Colors.white,
                         textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
                       ),
+                      child: Text('다음'),
                     ),
                     SizedBox(width: 10),
                     ElevatedButton(
                       onPressed: details.onStepCancel,
-                      child: Text('이전'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.grey,  // 버튼 색상
                         foregroundColor: Colors.white,
                         textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
                       ),
+                      child: Text('이전'),
                     ),
                   ],
                 );

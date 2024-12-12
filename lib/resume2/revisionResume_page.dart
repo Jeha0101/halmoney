@@ -7,9 +7,9 @@ class SelfIntroductionRevisionPage extends StatefulWidget {
   final String existingIntroduction;
 
   const SelfIntroductionRevisionPage({
-    Key? key,
+    super.key,
     required this.existingIntroduction,
-  }) : super(key: key);
+  });
 
   @override
   _SelfIntroductionRevisionPageState createState() =>
@@ -41,14 +41,14 @@ class _SelfIntroductionRevisionPageState
 
   // 팝업창을 통해 수정사항 입력
   Future<void> _showModificationDialog(String paragraph, int index) async {
-    TextEditingController _popupController = TextEditingController();
+    TextEditingController popupController = TextEditingController();
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('수정사항 입력'),
           content: TextField(
-            controller: _popupController,
+            controller: popupController,
             maxLines: 5,
             decoration: const InputDecoration(
               hintText: '수정사항을 입력하세요',
@@ -65,11 +65,11 @@ class _SelfIntroductionRevisionPageState
               child: Text('확인'),
               onPressed: () {
                 setState(() {
-                  _modificationController.text = _popupController.text;
+                  _modificationController.text = popupController.text;
                   selectedParagraphIndex = index;
                   selectedParagraph = paragraph;
                 });
-                print('선택문단! ${selectedParagraph}');
+                print('선택문단! $selectedParagraph');
                 _generateRevisedIntroduction(); // 수정된 문단과 수정사항을 처리
                 Navigator.of(context).pop(); // 팝업창 닫기
               },

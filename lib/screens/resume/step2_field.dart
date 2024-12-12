@@ -7,7 +7,7 @@ class StepFieldPage extends StatefulWidget {
   final UserInfo userInfo;
   final UserPromptFactor userPromptFactor;
 
-  StepFieldPage({
+  const StepFieldPage({
     super.key,
     required this.userInfo,
     required this.userPromptFactor,
@@ -194,7 +194,7 @@ class _FieldChooseWidgetState extends State<FieldChooseWidget> {
     '회계·세무'
   ];
 
-  TextEditingController _searchTextEditingController = TextEditingController();
+  final TextEditingController _searchTextEditingController = TextEditingController();
 
   String get _searchText => _searchTextEditingController.text.trim();
 

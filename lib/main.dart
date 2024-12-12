@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:halmoney/FirestoreData/JobProvider.dart';
-import 'package:halmoney/pages/login_page.dart';
+import 'package:halmoney/pages/test_page.dart';
+import 'package:halmoney/pages/testpage2.dart';
 import 'package:halmoney/theme.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -26,7 +27,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +46,7 @@ class MyApp extends StatelessWidget {
       ],
       debugShowCheckedModeBanner:  false,
 
-      home: LoginPage(),
+      home: AudioRecorderPage(),
     );
   }
 }

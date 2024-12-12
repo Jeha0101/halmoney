@@ -61,14 +61,7 @@ class Cond_Search extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // jobData가 Map<String, dynamic> 타입이거나 null일 수 있습니다.
-    final Map<String, dynamic>? jobData = job;
-
-    // jobData가 null이면 데이터가 없거나 유효하지 않은 경우입니다.
-    if (jobData == null) {
-      return Container(
-        child: Text('데이터가 없거나 유효하지 않습니다'),
-      );
-    }
+    final Map<String, dynamic> jobData = job;
 
     // jobData에서 각 필드를 가져오기 전에 null 여부를 확인하여 처리합니다.
     String jobName = jobData['title'] ?? '직종 정보 없음';

@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:halmoney/FirestoreData/user_Info.dart';
-import 'package:intl/intl.dart';
 import 'PublicJobsDetail.main.dart';
-import '../FirestoreData/PublicJobsData.dart';
 
 
 

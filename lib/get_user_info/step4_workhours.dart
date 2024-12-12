@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:halmoney/get_user_info/step5_select_place.dart';
 import 'package:halmoney/FirestoreData/user_Info.dart';
-import 'package:halmoney/myAppPage.dart';
 
 class StepWorkHours extends StatefulWidget{
   final UserInfo userInfo;

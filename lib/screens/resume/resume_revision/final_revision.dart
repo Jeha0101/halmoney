@@ -82,7 +82,7 @@ class FinalPage extends StatelessWidget {
                     backgroundColor: Color.fromARGB(250, 51, 51, 255), // 배경색 설정
                   ),
                   onPressed: () {
-                    String selfIntroduction = firstParagraph + '\n\n' + secondParagraph + '\n\n' + thirdParagraph;
+                    String selfIntroduction = '$firstParagraph\n\n$secondParagraph\n\n$thirdParagraph';
                     Navigator.pop(context);
                     Navigator.pop(context);
                     Navigator.pop(context);

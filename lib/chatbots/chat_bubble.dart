@@ -62,12 +62,8 @@ class _ChatBubbleState extends State<ChatBubble> {
   }
 
   Future<void> speak(String text) async {
-    if (chatbotTts != null) {
-      await chatbotTts.speak(text);
-    } else {
-      print("TTS 초기화가 완료되지 않았습니다.\n\n");
+    await chatbotTts.speak(text);
     }
-  }
 
   @override
   void dispose() {

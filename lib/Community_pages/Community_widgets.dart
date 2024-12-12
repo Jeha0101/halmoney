@@ -14,8 +14,8 @@ class Community_widget extends StatefulWidget {
     required this.title,
     required this.contents,
     required this.timestamp,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   _CommunityState createState() => _CommunityState();

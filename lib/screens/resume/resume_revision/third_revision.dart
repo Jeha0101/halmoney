@@ -12,13 +12,13 @@ class ThirdParagraphPage extends StatefulWidget {
   final UserPromptFactor userPromptFactor;
 
   const ThirdParagraphPage({
-    Key? key,
+    super.key,
     required this.firstParagraph,
     required this.secondParagraph,
     required this.thirdParagraph,
     required this.userInfo,
     required this.userPromptFactor,
-  }) : super(key: key);
+  });
 
   @override
   _ThirdParagraphPageState createState() => _ThirdParagraphPageState();
@@ -44,7 +44,7 @@ class _ThirdParagraphPageState extends State<ThirdParagraphPage> {
     try {
       final revisedText = await _service.generateRevisedIntroduction(
         revisedThirdParagraph,
-        _modificationController.text+' $tag',
+        '${_modificationController.text} $tag',
       );
       setState(() {
         revisedThirdParagraph = revisedText;
@@ -118,7 +118,7 @@ class _ThirdParagraphPageState extends State<ThirdParagraphPage> {
               ),
             ),
             const SizedBox(height:10),
-            Container(
+            SizedBox(
               height: 120,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -134,7 +134,7 @@ class _ThirdParagraphPageState extends State<ThirdParagraphPage> {
                       child:Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Container(
+                          SizedBox(
                               height: 55,
                               child: Row(
                                 children: [
@@ -185,7 +185,7 @@ class _ThirdParagraphPageState extends State<ThirdParagraphPage> {
                                   SizedBox(width: 8),
                                 ],
                               )),
-                          Container(
+                          SizedBox(
                               height: 55,
                               child: Row(
                                 children: [
@@ -236,7 +236,7 @@ class _ThirdParagraphPageState extends State<ThirdParagraphPage> {
                                   SizedBox(width: 8),
                                 ],
                               )),
-                          Container(
+                          SizedBox(
                               height: 55,
                               child: Row(
                                 children: [
@@ -287,7 +287,7 @@ class _ThirdParagraphPageState extends State<ThirdParagraphPage> {
                                   SizedBox(width: 8),
                                 ],
                               )),
-                          Container(
+                          SizedBox(
                               height: 55,
                               child: Row(
                                 children: [
@@ -338,7 +338,7 @@ class _ThirdParagraphPageState extends State<ThirdParagraphPage> {
                                   SizedBox(width: 8),
                                 ],
                               )),
-                          Container(
+                          SizedBox(
                               height: 55,
                               child: Row(
                                 children: [
@@ -389,7 +389,7 @@ class _ThirdParagraphPageState extends State<ThirdParagraphPage> {
                                   SizedBox(width: 8),
                                 ],
                               )),
-                          Container(
+                          SizedBox(
                               height: 55,
                               child: Row(
                                 children: [
@@ -456,7 +456,7 @@ class _ThirdParagraphPageState extends State<ThirdParagraphPage> {
               children: [
                 _isLoading
                     ? const CircularProgressIndicator()
-                    : Container(
+                    : SizedBox(
                   height: 50,
                   child:ElevatedButton(
                     style: ButtonStyle(
@@ -494,7 +494,7 @@ class _ThirdParagraphPageState extends State<ThirdParagraphPage> {
                   ),
                 ),
                 const SizedBox(width: 20),
-                Container(
+                SizedBox(
                   height:50,
                   child:ElevatedButton(
                     style: ButtonStyle(
@@ -533,7 +533,7 @@ class _ThirdParagraphPageState extends State<ThirdParagraphPage> {
                   ),
                 ),
                 const SizedBox(width: 20),
-                Container(
+                SizedBox(
                   height:50,
                   child:ElevatedButton(
                     style: ButtonStyle(

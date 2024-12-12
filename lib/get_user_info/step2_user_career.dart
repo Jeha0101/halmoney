@@ -6,7 +6,7 @@ import 'package:halmoney/get_user_info/step3_user_field.dart';
 class StepUserCareer extends StatefulWidget {
   final UserInfo userInfo;
 
-  StepUserCareer({
+  const StepUserCareer({
     super.key,
     required this.userInfo,
   });
@@ -382,7 +382,7 @@ class CareerDisplay extends StatelessWidget {
                         onPressed: onCancel, // 취소 버튼 동작
                         style: ButtonStyle(
                           backgroundColor:
-                              MaterialStateProperty.all(Colors.red),
+                              WidgetStateProperty.all(Colors.red),
                         ),
                         child: const Text('취소',
                             style:
@@ -400,8 +400,8 @@ class CareerDisplay extends StatelessWidget {
                         onPressed: onSave, // 완료 버튼 동작
                         style: ButtonStyle(
                           backgroundColor:
-                              MaterialStateProperty.resolveWith<Color?>(
-                            (Set<MaterialState> states) {
+                              WidgetStateProperty.resolveWith<Color?>(
+                            (Set<WidgetState> states) {
                               if (onSave != null) {
                                 return Colors.blue; // 활성화 시 파란색
                               }
@@ -456,7 +456,7 @@ class CareerDisplay extends StatelessWidget {
                         onPressed: onRemove,
                         style: ButtonStyle(
                           backgroundColor:
-                              MaterialStateProperty.all(Colors.red),
+                              WidgetStateProperty.all(Colors.red),
                         ),
                         child: const Text('삭제',
                             style:
@@ -474,7 +474,7 @@ class CareerDisplay extends StatelessWidget {
                         onPressed: onEdit,
                         style: ButtonStyle(
                           backgroundColor:
-                              MaterialStateProperty.all(Colors.blue),
+                              WidgetStateProperty.all(Colors.blue),
                         ),
                         child: const Text('편집',
                             style:

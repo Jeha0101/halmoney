@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:halmoney/JobSearch_pages/JobList_widget.dart';
-import 'package:intl/intl.dart';
 
 import 'package:provider/provider.dart';
 import 'package:halmoney/FirestoreData/user_Info.dart';

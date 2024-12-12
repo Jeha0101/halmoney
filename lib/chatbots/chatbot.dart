@@ -4,7 +4,7 @@ import 'package:halmoney/chatbots/chat_message.dart';
 import 'package:halmoney/standard_app_bar.dart';
 
 class ChatBot extends StatefulWidget {
-  ChatBot({super.key});
+  const ChatBot({super.key});
 
   @override
   State<ChatBot> createState() => _ChatBotState();
@@ -46,8 +46,8 @@ class _ChatBotState extends State<ChatBot> {
       );
     });
 
-    print("messages 개수 : "+messages.length.toString());
-    print("마지막 메시지 : "+messages[messages.length-1].messageContent);
+    print("messages 개수 : ${messages.length}");
+    print("마지막 메시지 : ${messages[messages.length-1].messageContent}");
     return chatMessage;
   }
 

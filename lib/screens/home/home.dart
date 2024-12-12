@@ -331,8 +331,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     height: 25,
                   ),
                   Text(
-                    widget.userInfo != null && widget.userInfo!.userName.isNotEmpty
-                        ? '${widget.userInfo?.getUserName()}님에게 딱맞는 일자리'
+                    widget.userInfo.userName.isNotEmpty
+                        ? '${widget.userInfo.getUserName()}님에게 딱맞는 일자리'
                         : '사용자 정보를 불러오는 중...',
                     style: const TextStyle(
                       fontSize: 23,
@@ -430,7 +430,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   isLoading
                       ? const Center(child: CircularProgressIndicator())
-                      : Container(
+                      : SizedBox(
                       height: 320,
                       child: ListView.builder(
                           scrollDirection: Axis.horizontal,
@@ -666,7 +666,7 @@ class JobCard extends StatelessWidget{
   final String id;
   final UserInfo userInfo;
 
-  const JobCard({
+  const JobCard({super.key, 
     required this.image,
     required this.title,
     required this.description,

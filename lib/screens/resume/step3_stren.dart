@@ -8,7 +8,7 @@ class StepStrenPage extends StatefulWidget {
   final UserInfo userInfo;
   final UserPromptFactor userPromptFactor;
 
-  StepStrenPage({
+  const StepStrenPage({
     super.key,
     required this.userInfo,
     required this.userPromptFactor,
@@ -190,7 +190,7 @@ class AbilitiesChooseWidget extends StatefulWidget {
 }
 
 class _AbilitiesChooseWidgetState extends State<AbilitiesChooseWidget>{
-  TextEditingController _searchTextEditingController = TextEditingController();
+  final TextEditingController _searchTextEditingController = TextEditingController();
 
   String get _searchText => _searchTextEditingController.text.trim();
 

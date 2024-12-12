@@ -11,14 +11,14 @@ class ResumeView2 extends StatefulWidget {
   final String thirdParagraph;
 
   const ResumeView2({
-    Key? key,
+    super.key,
     required this.id,
     required this.resumeId,
     required this.num,
     required this.firstParagraph,
     required this.secondParagraph,
     required this.thirdParagraph,
-  }) : super(key: key);
+  });
 
   @override
   _ResumeViewState createState() => _ResumeViewState();
@@ -26,7 +26,7 @@ class ResumeView2 extends StatefulWidget {
 class _ResumeViewState extends State<ResumeView2> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   Map<String, dynamic>? _resumeData;
-  GlobalKey _repaintBoundaryKey = GlobalKey();
+  final GlobalKey _repaintBoundaryKey = GlobalKey();
 
   @override
   void initState() {
@@ -284,7 +284,7 @@ class _ResumeViewState extends State<ResumeView2> {
                     ],
                   ),
                 );
-              }).toList(),
+              }),
               Divider(),
 
               //자기소개서
@@ -322,8 +322,8 @@ class _ResumeViewState extends State<ResumeView2> {
                   _applyForJob();
                 },
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 51, 51, 255)),
-                  padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.symmetric(vertical: 15.0)),
+                  backgroundColor: WidgetStateProperty.all<Color>(Color.fromARGB(255, 51, 51, 255)),
+                  padding: WidgetStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.symmetric(vertical: 15.0)),
                 ),
                 child: Text(
                   '지원하기',
@@ -344,8 +344,8 @@ class _ResumeViewState extends State<ResumeView2> {
                   );
                 },
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 51, 51, 255)),
-                  padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.symmetric(vertical: 15.0)),
+                  backgroundColor: WidgetStateProperty.all<Color>(Color.fromARGB(255, 51, 51, 255)),
+                  padding: WidgetStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.symmetric(vertical: 15.0)),
                 ),
                 child: Text(
                   '텍스트 복사하기',

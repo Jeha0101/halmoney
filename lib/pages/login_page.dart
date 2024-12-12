@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:halmoney/myAppPage.dart';
-import 'package:halmoney/signup_pages/agreement_page.dart';
 import 'package:halmoney/signup_pages/signupStepper_page1.dart';
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
@@ -147,7 +146,6 @@ class LoginPage extends StatelessWidget{
                             MaterialPageRoute(builder: (context) => const SignupStepperOne())
                         );
                       },
-                      child : Text('회원가입', textAlign: TextAlign.center,),
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.grey,
                           surfaceTintColor: Colors.grey,
@@ -157,6 +155,7 @@ class LoginPage extends StatelessWidget{
                             borderRadius: BorderRadius.circular(12),
                           )
                       ),
+                      child : Text('회원가입', textAlign: TextAlign.center,),
                     ),
                   ],
                 ),

@@ -3,8 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'dart:ui' as ui;
 import 'dart:io';
-import 'dart:typed_data';
-import 'package:pdf/pdf.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:flutter/rendering.dart';
@@ -15,8 +13,7 @@ class ResumeView extends StatefulWidget {
   final String id;
   final String resumeId;
 
-  const ResumeView({Key? key, required this.id, required this.resumeId})
-      : super(key: key);
+  const ResumeView({super.key, required this.id, required this.resumeId});
 
   @override
   _ResumeViewState createState() => _ResumeViewState();
@@ -25,7 +22,7 @@ class ResumeView extends StatefulWidget {
 class _ResumeViewState extends State<ResumeView> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   Map<String, dynamic>? _resumeData;
-  GlobalKey _repaintBoundaryKey = GlobalKey();
+  final GlobalKey _repaintBoundaryKey = GlobalKey();
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -135,7 +132,7 @@ class _ResumeViewState extends State<ResumeView> {
       if (byteData == null){
         throw Exception('이미지 데이터를 변환할 수 없습니다');
       }
-      final imageBytes = byteData!.buffer.asUint8List();
+      final imageBytes = byteData.buffer.asUint8List();
 
       // pdf 생성
       final pdf = pw.Document();
@@ -387,8 +384,8 @@ class _ResumeViewState extends State<ResumeView> {
                   }
                 },
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 51, 51, 255)),
-                  padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.symmetric(vertical: 15.0)),
+                  backgroundColor: WidgetStateProperty.all<Color>(Color.fromARGB(255, 51, 51, 255)),
+                  padding: WidgetStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.symmetric(vertical: 15.0)),
                 ),
                 child: Text(
                   '삭제하기',
@@ -409,8 +406,8 @@ class _ResumeViewState extends State<ResumeView> {
                   );
                 },
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 51, 51, 255)),
-                  padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.symmetric(vertical: 15.0)),
+                  backgroundColor: WidgetStateProperty.all<Color>(Color.fromARGB(255, 51, 51, 255)),
+                  padding: WidgetStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.symmetric(vertical: 15.0)),
                 ),
                 child: Text(
                   '텍스트 복사하기',
@@ -425,8 +422,8 @@ class _ResumeViewState extends State<ResumeView> {
                   _captureAndSaveAsPdf();
                 },
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 51, 51, 255)),
-                  padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.symmetric(vertical: 15.0)),
+                  backgroundColor: WidgetStateProperty.all<Color>(Color.fromARGB(255, 51, 51, 255)),
+                  padding: WidgetStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.symmetric(vertical: 15.0)),
                 ),
                 child: Text(
                   'PDF로 저장',

@@ -1,6 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 // 하위 카테고리를 생성하는 함수
 List<String> generateSubCategories(List<String> interestWorks) {
@@ -33,12 +31,12 @@ Future<List<DocumentSnapshot>> fetchRecommendations({
   required String interestPlace,
   required List<String> interestWork,
 }) async {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
   List<DocumentSnapshot> recommendedJobs = [];
 
   try {
     // 모든 공고 가져오기
-    final QuerySnapshot jobSnapshot = await _firestore.collection('jobs').get();
+    final QuerySnapshot jobSnapshot = await firestore.collection('jobs').get();
     final List<DocumentSnapshot> allJobs = jobSnapshot.docs;
 
     // 관심 분야에 대한 하위 카테고리 생성

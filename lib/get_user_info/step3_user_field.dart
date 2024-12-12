@@ -3,12 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:halmoney/get_user_info/step4_workhours.dart';
 import 'package:halmoney/FirestoreData/user_Info.dart';
-import 'package:halmoney/myAppPage.dart';
 
 class StepUserField extends StatefulWidget {
   final UserInfo userInfo;
 
-  StepUserField({
+  const StepUserField({
     super.key,
     required this.userInfo,
   });
@@ -207,7 +206,7 @@ class _FieldChooseWidgetState extends State<FieldChooseWidget> {
     '회계·세무'
   ];
 
-  TextEditingController _searchTextEditingController = TextEditingController();
+  final TextEditingController _searchTextEditingController = TextEditingController();
 
   String get _searchText => _searchTextEditingController.text.trim();
 

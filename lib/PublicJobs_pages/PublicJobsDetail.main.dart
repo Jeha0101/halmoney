@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:halmoney/resume2/resumeManage2.dart';
 import 'PublicJobsCheck_page.dart';
 import 'package:halmoney/FirestoreData/user_Info.dart';
 
@@ -19,7 +18,7 @@ class PublicJobsDetail extends StatelessWidget {
   final String endday;
   final UserInfo userInfo;
 
-  PublicJobsDetail({
+  const PublicJobsDetail({
     required this.id,
     required this.title,
     required this.company,

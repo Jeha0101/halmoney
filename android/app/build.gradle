@@ -1,7 +1,7 @@
 plugins {
     id "com.android.application"
     id "kotlin-android"
-    id "com.google.gms.google-services" // Firebase Google Services 플러그인 추가
+    id "com.google.gms.google-services" // Firebase Google Services plugin
     id "dev.flutter.flutter-gradle-plugin"
 }
 
@@ -18,16 +18,17 @@ def flutterVersionName = localProperties.getProperty('flutter.versionName', '1.0
 
 android {
     namespace "com.example.halmoney"
-    compileSdk flutter.compileSdkVersion
+    compileSdk flutter.compileSdkVersion // Ensure this is 33 or higher
     ndkVersion flutter.ndkVersion
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+        coreLibraryDesugaringEnabled true
     }
 
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17' // Updated JVM target
         freeCompilerArgs += ['-Xskip-metadata-version-check']
     }
 
@@ -37,20 +38,29 @@ android {
 
     defaultConfig {
         applicationId "com.example.halmoney"
-        minSdkVersion 21 // Firebase 의존성을 고려한 최소 SDK 버전
-        targetSdkVersion flutter.targetSdkVersion
+        minSdkVersion 24
+        targetSdkVersion flutter.targetSdkVersion // Ensure this matches compileSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        multiDexEnabled true // Firebase와 함께 멀티덱스 활성화
+        multiDexEnabled true // Enable multidex for large method counts
     }
 
     buildTypes {
         release {
-            // 출시 시 서명 설정 (배포 시에 실제 키로 변경)
             signingConfig signingConfigs.debug
-            minifyEnabled true
+            minifyEnabled false
             shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+
+    lintOptions {
+        checkReleaseBuilds false // Ignore lint errors in release builds
+    }
+
+    packagingOptions {
+        resources.excludes.add("META-INF/AL2.0")
+        resources.excludes.add("META-INF/LGPL2.1")
     }
 }
 
@@ -59,7 +69,8 @@ flutter {
 }
 
 dependencies {
-    implementation 'androidx.multidex:multidex:2.0.1' // 멀티덱스 지원 추가
+    implementation 'androidx.multidex:multidex:2.0.1' // Enable multidex for Firebase
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.2.3'
 }
-
-apply plugin: 'com.google.gms.google-services' // Firebase Google Services 플러그인 적용
+apply plugin: 'com.google.gms.google-services'

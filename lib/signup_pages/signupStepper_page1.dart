@@ -162,7 +162,6 @@ class _SignupStepperOneState extends State<SignupStepperOne> {
                               children: [
                                 ElevatedButton(
                                   onPressed: details.onStepContinue,
-                                  child: Text('다음'),
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.grey,
                                     foregroundColor: Colors.white,// 기본 색상
@@ -172,20 +171,20 @@ class _SignupStepperOneState extends State<SignupStepperOne> {
                                     ),
                                   ).copyWith(
                                     // 버튼이 눌린 상태일 때의 색상을 파란색으로 변경
-                                    backgroundColor: MaterialStateProperty.resolveWith<Color?>(
-                                          (Set<MaterialState> states) {
-                                        if (states.contains(MaterialState.pressed)) {
+                                    backgroundColor: WidgetStateProperty.resolveWith<Color?>(
+                                          (Set<WidgetState> states) {
+                                        if (states.contains(WidgetState.pressed)) {
                                           return Color.fromARGB(250, 100, 100, 255); // 눌렸을 때 색상
                                         }
                                         return Colors.grey; // 기본 색상
                                       },
                                     ),
                                   ),
+                                  child: Text('다음'),
                                 ),
                                 SizedBox(width: 10),
                                 ElevatedButton(
                                   onPressed: details.onStepCancel,
-                                  child: Text('이전'),
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.grey,
                                     foregroundColor: Colors.white,
@@ -194,6 +193,7 @@ class _SignupStepperOneState extends State<SignupStepperOne> {
                                       fontWeight: FontWeight.normal,
                                     ),
                                   ),
+                                  child: Text('이전'),
                                 ),
                               ],
                             ),

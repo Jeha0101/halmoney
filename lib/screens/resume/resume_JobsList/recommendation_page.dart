@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:halmoney/JobSearch_pages/Recruit_main_page.dart';
 import '../../../FirestoreData/user_Info.dart';
 import '../user_prompt_factor.dart';
 import 'fetchRecommendations.dart';
@@ -11,10 +10,10 @@ class RecommendationPage extends StatefulWidget {
   final UserPromptFactor userPromptFactor;
 
   const RecommendationPage({
-    Key? key,
+    super.key,
     required this.userInfo,
     required this.userPromptFactor,
-  }) : super(key: key);
+  });
 
   @override
   _RecommendationPageState createState() => _RecommendationPageState();

@@ -199,7 +199,7 @@ class _ResumeManageState extends State<ResumeManage> {
                     ),
                   ),
                 );
-              }).toList(),
+              }),
             ],
           ),
         ),

@@ -10,8 +10,6 @@ import 'package:halmoney/screens/resume/resumeEdit.dart';
 import 'package:halmoney/screens/resume/resume_JobsList/fetchRecommendations.dart';
 import 'package:halmoney/screens/resume/user_prompt_factor.dart';
 import 'package:halmoney/JobSearch_pages/Recruit_main_page.dart';
-import 'package:halmoney/JobSearch_pages/JobList_widget.dart';
-import 'package:halmoney/FirestoreData/user_Info.dart';
 import 'package:intl/intl.dart';
 
 
@@ -20,7 +18,7 @@ class StepCompleteResume extends StatefulWidget {
   final UserPromptFactor userPromptFactor;
   final String userSelfIntroduction;
 
-  StepCompleteResume({
+  const StepCompleteResume({
     super.key,
     required this.userInfo,
     required this.userPromptFactor,
@@ -123,7 +121,7 @@ class _StepCompleteResumeState extends State<StepCompleteResume> {
                   const SizedBox(
                     height: 10,
                   ),
-                  Container(
+                  SizedBox(
                     width: 300,
                     child: const Text(
                       '아래 버튼을 눌러서 자기소개서를 복사하거나 이력서로 저장해보세요.',
@@ -139,15 +137,15 @@ class _StepCompleteResumeState extends State<StepCompleteResume> {
                       Clipboard.setData(
                           ClipboardData(text: widget.userSelfIntroduction));
                     },
-                    child: const Text("자기소개서 복사",
-                        style: TextStyle(color: Colors.white, fontSize: 20)
-                    ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color.fromARGB(250, 51, 51, 255),
                       minimumSize: const Size(250, 50),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
+                    ),
+                    child: const Text("자기소개서 복사",
+                        style: TextStyle(color: Colors.white, fontSize: 20)
                     ),
                   ),
                   const SizedBox(
@@ -171,8 +169,6 @@ class _StepCompleteResumeState extends State<StepCompleteResume> {
                           //     )),
                           );
                     },
-                    child: const Text("이력서로 저장",
-                        style: TextStyle(color: Colors.white, fontSize: 20)),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color.fromARGB(250, 51, 51, 255),
                       minimumSize: const Size(250, 50),
@@ -180,6 +176,8 @@ class _StepCompleteResumeState extends State<StepCompleteResume> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
+                    child: const Text("이력서로 저장",
+                        style: TextStyle(color: Colors.white, fontSize: 20)),
                   ),
                 ],
               ),
@@ -190,7 +188,7 @@ class _StepCompleteResumeState extends State<StepCompleteResume> {
               SizedBox(
                 height: 20,
               ),
-              Text(widget.userInfo.userName + '님을 위한 추천 공고',
+              Text('${widget.userInfo.userName}님을 위한 추천 공고',
                   style: TextStyle(
                     fontFamily: 'NanumGothicFamily',
                     fontSize: 20.0,

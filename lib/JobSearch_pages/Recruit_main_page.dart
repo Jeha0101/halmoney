@@ -1,11 +1,6 @@
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:halmoney/FirestoreData/user_Info.dart';
-import 'package:halmoney/resume2/resumeManage2.dart';
 import '../screens/resume/resumeManage.dart';
 import 'Recurit_CallButton.dart';
 
@@ -22,7 +17,7 @@ class Recruit_main extends StatelessWidget {
   final String endday;
   final String manager_call;
 
-  Recruit_main({
+  const Recruit_main({
     required this.userInfo,
     required this.num,
     required this.title,
@@ -34,8 +29,8 @@ class Recruit_main extends StatelessWidget {
     required this.image_path,
     required this.endday,
     required this.manager_call,
-    Key? key,
-  }): super(key: key);
+    super.key,
+  });
 
 
 
@@ -249,7 +244,7 @@ class Recruit_main extends StatelessWidget {
 
                             SizedBox(width: 25),
 
-                            Container(
+                            SizedBox(
                               width : 270,
                               child : Text(
                                 overflow: TextOverflow.ellipsis,
@@ -324,7 +319,7 @@ class Recruit_main extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Container(
+                    SizedBox(
                       width: 150,
                       height: 50,
                       child:
@@ -356,7 +351,7 @@ class Recruit_main extends StatelessWidget {
                       ),
                     ),
                     SizedBox(width: 20),
-                    Container(
+                    SizedBox(
                       width: 150,
                       height: 50,
                       child:

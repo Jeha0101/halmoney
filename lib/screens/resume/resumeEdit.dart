@@ -46,11 +46,11 @@ class ResumeEdit extends StatefulWidget {
   final String userSelfIntroduction;
 
   const ResumeEdit({
-    Key? key,
+    super.key,
     required this.userInfo,
     required this.userPromptFactor,
     required this.userSelfIntroduction,
-  }) : super(key: key);
+  });
 
   @override
   _ResumeEditState createState() => _ResumeEditState();
@@ -224,7 +224,7 @@ class _ResumeEditState extends State<ResumeEdit> {
 
   // 이력서 제목 입력받는 팝업창
   Future<void> _showSaveDialog() async {
-    TextEditingController _titleController = TextEditingController();
+    TextEditingController titleController = TextEditingController();
 
     return showDialog<void>(
       context: context,
@@ -240,7 +240,7 @@ class _ResumeEditState extends State<ResumeEdit> {
             style: TextStyle(
               fontFamily: 'NanumGothicFamily',
             ),
-            controller: _titleController,
+            controller: titleController,
             decoration: InputDecoration(
               hintText: '이력서 제목',
             ),
@@ -266,7 +266,7 @@ class _ResumeEditState extends State<ResumeEdit> {
               ),
               onPressed: () {
                 Navigator.of(context).pop();
-                _saveResume(_titleController.text);
+                _saveResume(titleController.text);
               },
             ),
           ],
@@ -398,7 +398,7 @@ class _ResumeEditState extends State<ResumeEdit> {
                       Divider(),
 
                       // 경력란
-                      resumeItem.careers.length == 0
+                      resumeItem.careers.isEmpty
                           ? Container()
                           : Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -428,7 +428,7 @@ class _ResumeEditState extends State<ResumeEdit> {
                                             MainAxisAlignment.spaceEvenly,
                                         children: [
                                           Text(
-                                            '${experience.workPlace}',
+                                            experience.workPlace,
                                             style: TextStyle(fontSize: 18),
                                           ),
                                           SizedBox(height: 5),
@@ -473,8 +473,6 @@ class _ResumeEditState extends State<ResumeEdit> {
                   left: 15,
                   child:ElevatedButton(
                     onPressed: _showSaveDialog,
-                    child: const Text('저장하기',
-                        style: TextStyle(color: Colors.white, fontSize: 20)),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color.fromARGB(250, 51, 51, 255),
                       minimumSize: const Size(360, 50),
@@ -482,6 +480,8 @@ class _ResumeEditState extends State<ResumeEdit> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
+                    child: const Text('저장하기',
+                        style: TextStyle(color: Colors.white, fontSize: 20)),
                   ),
                 ),
               ],

@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:halmoney/JobSearch_pages/JobList_widget.dart';
 
 class UserViewedJobsPage extends StatefulWidget {
   final String userId;

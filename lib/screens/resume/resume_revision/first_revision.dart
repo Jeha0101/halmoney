@@ -12,13 +12,13 @@ class FirstParagraphPage extends StatefulWidget {
   final UserPromptFactor userPromptFactor;
 
   const FirstParagraphPage({
-    Key? key,
+    super.key,
     required this.firstParagraph,
     required this.secondParagraph,
     required this.thirdParagraph,
     required this.userInfo,
     required this.userPromptFactor,
-  }) : super(key: key);
+  });
 
   @override
   _FirstParagraphPageState createState() => _FirstParagraphPageState();
@@ -45,7 +45,7 @@ class _FirstParagraphPageState extends State<FirstParagraphPage> {
       // 수정 내용에 태그를 추가
       final revisedText = await _service.generateRevisedIntroduction(
         widget.firstParagraph, // 수정 이전 문단 전달
-        _modificationController.text + ' $tag', // 수정 내용 + 태그 전달
+        '${_modificationController.text} $tag', // 수정 내용 + 태그 전달
       );
       setState(() {
         revisedFirstParagraph = revisedText; // 수정된 문단 업데이트
@@ -128,7 +128,7 @@ class _FirstParagraphPageState extends State<FirstParagraphPage> {
             const SizedBox(height: 10),
 
             // TextField 및 태그 버튼
-            Container(
+            SizedBox(
               height: 120,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -144,7 +144,7 @@ class _FirstParagraphPageState extends State<FirstParagraphPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Container(
+                          SizedBox(
                               height: 55,
                               child: Row(
                                 children: [
@@ -195,7 +195,7 @@ class _FirstParagraphPageState extends State<FirstParagraphPage> {
                                   SizedBox(width: 8),
                                 ],
                               )),
-                          Container(
+                          SizedBox(
                               height: 55,
                               child: Row(
                                 children: [
@@ -246,7 +246,7 @@ class _FirstParagraphPageState extends State<FirstParagraphPage> {
                                   SizedBox(width: 8),
                                 ],
                               )),
-                          Container(
+                          SizedBox(
                               height: 55,
                               child: Row(
                                 children: [
@@ -297,7 +297,7 @@ class _FirstParagraphPageState extends State<FirstParagraphPage> {
                                   SizedBox(width: 8),
                                 ],
                               )),
-                          Container(
+                          SizedBox(
                               height: 55,
                               child: Row(
                                 children: [
@@ -348,7 +348,7 @@ class _FirstParagraphPageState extends State<FirstParagraphPage> {
                                   SizedBox(width: 8),
                                 ],
                               )),
-                          Container(
+                          SizedBox(
                               height: 55,
                               child: Row(
                                 children: [
@@ -399,7 +399,7 @@ class _FirstParagraphPageState extends State<FirstParagraphPage> {
                                   SizedBox(width: 8),
                                 ],
                               )),
-                          Container(
+                          SizedBox(
                               height: 55,
                               child: Row(
                                 children: [
@@ -465,7 +465,7 @@ class _FirstParagraphPageState extends State<FirstParagraphPage> {
               children: [
                 _isLoading
                     ? const CircularProgressIndicator()
-                    : Container(
+                    : SizedBox(
                   height: 50,
                   child:ElevatedButton(
                     style: ButtonStyle(
@@ -503,7 +503,7 @@ class _FirstParagraphPageState extends State<FirstParagraphPage> {
                   ),
                 ),
                 const SizedBox(width: 20),
-                Container(
+                SizedBox(
                   height:50,
                   child:ElevatedButton(
                     style: ButtonStyle(
@@ -542,7 +542,7 @@ class _FirstParagraphPageState extends State<FirstParagraphPage> {
                   ),
                 ),
                 const SizedBox(width: 20),
-                Container(
+                SizedBox(
                   height:50,
                   child:ElevatedButton(
                     style: ButtonStyle(

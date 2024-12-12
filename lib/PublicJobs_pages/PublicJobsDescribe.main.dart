@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:halmoney/myAppPage.dart';
 import '../FirestoreData/PublicJobsData.dart';
 import 'PublicJobsList_widget.dart';
 import 'package:halmoney/FirestoreData/user_Info.dart';
@@ -11,11 +10,11 @@ class PublicJobsDescribe extends StatefulWidget {
   final String id;
   final UserInfo userInfo;
 
-  PublicJobsDescribe ({
+  const PublicJobsDescribe ({
     required this.id,
     required this.userInfo,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
 
 

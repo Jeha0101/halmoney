@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'PublicJobsCheckQuestion.dart';
-import 'PublicJobsDescribe.main.dart';
 import 'PublicJobsApplyStep_page.dart';
 import 'package:halmoney/FirestoreData/user_Info.dart';
 
@@ -13,7 +12,7 @@ class PublicJobsCheckPage extends StatefulWidget {
   final String applystep;
   final UserInfo userInfo;
 
-  PublicJobsCheckPage({
+  const PublicJobsCheckPage({
     required this.id,
     required this.title,
     required this.region,
@@ -21,8 +20,8 @@ class PublicJobsCheckPage extends StatefulWidget {
     required this.requirementsText,
     required this.applystep,
     required this.userInfo,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   _PublicJobsCheckPageState createState() => _PublicJobsCheckPageState();

@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:halmoney/JobSearch_pages/JobList_widget.dart';
 
 import '../../../JobSearch_pages/Recruit_main_page.dart';
 import '../../../FirestoreData/user_Info.dart';
@@ -86,7 +85,7 @@ class Cond_Search extends StatelessWidget {
           borderRadius: BorderRadius.circular(8.0),
         ),
       ),
-      child: Container(
+      child: SizedBox(
         height: 80,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

@@ -16,7 +16,7 @@ class SearchEngine extends StatefulWidget {
 
 class _SearchEngine extends State<SearchEngine> {
   final TextEditingController _controller = TextEditingController();
-  List<String> _keywords = [];
+  final List<String> _keywords = [];
 
   //HuggingFace GLiNER 사용해보기
   HfInference hfInference = HfInference('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');
@@ -154,7 +154,7 @@ class _SearchEngine extends State<SearchEngine> {
             ),
             SizedBox(height: 30.0),
             // 추출된 키워드들이 화면에 표시됩니다
-            Container(
+            SizedBox(
               height: 50.0,
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,

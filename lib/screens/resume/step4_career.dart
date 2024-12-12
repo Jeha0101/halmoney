@@ -8,7 +8,7 @@ class StepCareerPage extends StatefulWidget {
   final UserInfo userInfo;
   final UserPromptFactor userPromptFactor;
 
-  StepCareerPage({
+  const StepCareerPage({
     super.key,
     required this.userInfo,
     required this.userPromptFactor,
@@ -417,7 +417,7 @@ class CareerDisplay extends StatelessWidget {
                         onPressed: onCancel, // 취소 버튼 동작
                         style: ButtonStyle(
                           backgroundColor:
-                          MaterialStateProperty.all(Colors.red),
+                          WidgetStateProperty.all(Colors.red),
                         ),
                         child: const Text('취소',
                             style:
@@ -435,8 +435,8 @@ class CareerDisplay extends StatelessWidget {
                         onPressed: onSave, // 완료 버튼 동작
                         style: ButtonStyle(
                           backgroundColor:
-                          MaterialStateProperty.resolveWith<Color?>(
-                                (Set<MaterialState> states) {
+                          WidgetStateProperty.resolveWith<Color?>(
+                                (Set<WidgetState> states) {
                               if (onSave != null) {
                                 return Color.fromARGB(250, 51, 51, 255); // 활성화 시 파란색
                               }
@@ -491,7 +491,7 @@ class CareerDisplay extends StatelessWidget {
                         onPressed: onRemove,
                         style: ButtonStyle(
                           backgroundColor:
-                          MaterialStateProperty.all(Colors.red),
+                          WidgetStateProperty.all(Colors.red),
                         ),
                         child: const Text('삭제',
                             style:
@@ -509,7 +509,7 @@ class CareerDisplay extends StatelessWidget {
                         onPressed: onEdit,
                         style: ButtonStyle(
                           backgroundColor:
-                          MaterialStateProperty.all(Color.fromARGB(250, 51, 51, 255)),
+                          WidgetStateProperty.all(Color.fromARGB(250, 51, 51, 255)),
                         ),
                         child: const Text('편집',
                             style:

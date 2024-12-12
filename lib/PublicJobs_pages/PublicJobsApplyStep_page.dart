@@ -8,13 +8,13 @@ class PublicJobsApplyPage extends StatefulWidget {
   final String applystep;
   final UserInfo userInfo;
 
-  PublicJobsApplyPage({
+  const PublicJobsApplyPage({
     required this.id,
     required this.applystep,
     required this.userInfo,
 
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   _PublicJobsApplyPageState createState() => _PublicJobsApplyPageState();
