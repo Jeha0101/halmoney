@@ -25,7 +25,7 @@ class _ChatBotState extends State<ChatBot> {
 
   void getMessage() {
     // get the response from the chatbot
-    String messageContent = 'Hello, I am a chatbot. How can I help you today?';
+    String messageContent = '안녕하세요. 챗봇입니다. 어떤 도움이 필요하신가요?';
     addNewMessage(messageContent, false);
   }
 
